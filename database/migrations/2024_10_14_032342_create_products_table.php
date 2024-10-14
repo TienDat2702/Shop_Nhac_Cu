@@ -23,7 +23,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->tinyInteger('publish')->default(1);
             $table->text('summary')->nullable();
-            $table->timestamp('delete_at')->nullable();
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
 
             $table->foreign('category_id')->references('id')->on('product_categories')->onDelete('cascade');

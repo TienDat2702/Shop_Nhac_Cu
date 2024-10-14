@@ -161,3 +161,54 @@ body {
     width: 20px;
     margin: 0 auto;
 }
+
+
+/* nút toggle switch */
+
+.toggle {
+    margin: 0 0 0 2rem;
+    position: relative;
+    display: inline-block;
+    width: 5rem; /* Tăng kích thước chiều rộng */
+    height: 2.5rem; /* Tăng kích thước chiều cao */
+}
+
+.toggle input {
+    display: none;
+}
+
+.roundbutton {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    background-color: #d0d0d0;
+    display: block;
+    transition: all 0.3s;
+    border-radius: 2.5rem; /* Thay đổi góc bo cho phù hợp với kích thước mới */
+    cursor: pointer;
+}
+
+.roundbutton:before {
+    position: absolute;
+    content: "";
+    height: 2rem; /* Tăng kích thước chiều cao */
+    width: 2rem; /* Tăng kích thước chiều rộng */
+    border-radius: 50%; /* Giữ nguyên để nó vẫn là hình tròn */
+    display: block;
+    left: 0.25rem; /* Tăng lề bên trái */
+    bottom: 0.25rem; /* Tăng lề bên dưới */
+    background-color: white;
+    transition: all 0.3s;
+}
+
+input:checked + .roundbutton {
+    background-color: #22C55E; /* Màu nền khi bật */
+}
+
+input:checked + .roundbutton:before {
+    transform: translate(2.5rem, 0); /* Cập nhật khoảng dịch chuyển cho phù hợp với kích thước mới */
+}
+

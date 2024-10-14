@@ -18,7 +18,7 @@ return new class extends Migration
             $table->tinyInteger('publish')->default(1); 
             $table->integer('parent_id'); 
             $table->text('description')->nullable(); 
-            $table->timestamp('delete_at')->nullable(); 
+            $table->timestamp('deleted_at')->nullable(); 
             $table->timestamps();
         });
     }
