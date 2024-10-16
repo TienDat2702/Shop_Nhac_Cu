@@ -33,6 +33,12 @@ Route::prefix('admin')->group(function () {
     Route::prefix('post')->group(function () {
         
         Route::get('category', [PostCategoryController::class,'index'])->name('postCatagory.index');
+        Route::get('category/search', [PostCategoryController::class,'search'])->name('postCatagory.search');
+        Route::get('category/create', [PostCategoryController::class,'create'])->name('postCatagory.create');
+        Route::post('category/store', [PostCategoryController::class,'store'])->name('postCatagory.store');
+        Route::get('category/edit/{id}', [PostCategoryController::class,'edit'])->name('postCatagory.edit');
+        Route::post('category/update/{id}', [PostCategoryController::class,'update'])->name('postCatagory.update');
+        Route::delete('category/destroy/{id}', [PostCategoryController::class,'destroy'])->name('postCatagory.destroy');
     });
     
 });
