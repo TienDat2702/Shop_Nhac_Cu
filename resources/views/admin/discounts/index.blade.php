@@ -1,17 +1,17 @@
 @extends('admin.layout.layout')
 
 @section('content')
-    <h1>Discount Codes</h1>
-    <a href="{{ route('admin.discounts.create') }}">Add New Discount</a>
+    <h1>Mã Giảm Giá</h1>
+    <a href="{{ route('admin.discounts.create') }}">Thêm Mã Giảm Giá Mới</a>
     <table>
         <thead>
             <tr>
-                <th>Code</th>
-                <th>Discount Rate</th>
-                <th>Max Value</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Actions</th>
+                <th>Mã</th>
+                <th>Tỷ Lệ Giảm Giá</th>
+                <th>Giá Trị Tối Đa</th>
+                <th>Ngày Bắt Đầu</th>
+                <th>Ngày Kết Thúc</th>
+                <th>Hành Động</th>
             </tr>
         </thead>
         <tbody>
@@ -23,11 +23,11 @@
                     <td>{{ $discount->start_date }}</td>
                     <td>{{ $discount->end_date }}</td>
                     <td>
-                        <a href="{{ route('admin.discounts.edit', $discount) }}">Edit</a>
+                        <a href="{{ route('admin.discounts.edit', $discount) }}">Chỉnh Sửa</a>
                         <form action="{{ route('admin.discounts.destroy', $discount) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit">Delete</button>
+                            <button type="submit">Xóa</button>
                         </form>
                     </td>
                 </tr>
@@ -35,4 +35,3 @@
         </tbody>
     </table>
 @endsection
-
