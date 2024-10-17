@@ -9,15 +9,15 @@
             <input type="text" name="code" id="code" required>
         </div>
         <div>
-            <label for="discount_rate">Discount Rate</label>
+            <label for="discount_rate">Tỷ lệ triết khấu</label>
             <input type="number" name="discount_rate" id="discount_rate" required>
         </div>
         <div>
-            <label for="max_value">Max Value</label>
+            <label for="max_value">Giảm lớn nhất:</label>
             <input type="number" name="max_value" id="max_value" required>
         </div>
         <div>
-            <label for="start_date">Start Date</label>
+            <label for="start_date">Ngày bắt đầu:</label>
             <input type="date" name="start_date" id="start_date" required>
         </div>
         <div>
