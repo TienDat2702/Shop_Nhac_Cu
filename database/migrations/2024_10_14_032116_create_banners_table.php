@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('description')->nullable(); 
             $table->timestamp('start_date')->nullable(); // thời gian bắt đầu
             $table->timestamp('start_end')->nullable(); // thời gian kết thúc
-            $table->timestamp('delete_at')->nullable();
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

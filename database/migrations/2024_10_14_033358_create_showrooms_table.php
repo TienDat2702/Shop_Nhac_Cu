@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('phone', 30)->nullable();
             $table->string('image', 125)->nullable();
             $table->tinyInteger('publish')->default(1);
-            $table->timestamp('delete_at')->nullable();
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

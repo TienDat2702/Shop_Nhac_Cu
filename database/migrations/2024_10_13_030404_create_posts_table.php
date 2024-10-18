@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('content')->nullable();
             $table->string('image', 225)->nullable();
             $table->text('description')->nullable();
-            $table->timestamp('delete_at')->nullable();
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
             
             $table->unsignedBigInteger('post_category_id');

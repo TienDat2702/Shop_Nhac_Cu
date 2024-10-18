@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('logo', 225)->nullable();
             $table->tinyInteger('publish')->default(1); 
             $table->text('description')->nullable(); 
-            $table->timestamp('delete_at')->nullable(); 
+            $table->timestamp('deleted_at')->nullable(); 
             $table->timestamps(); 
         });
     }
