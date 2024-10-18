@@ -2,14 +2,11 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\PostCategory;
 use Faker\Factory as Faker;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
-class postCategories extends Seeder
+class PostCategoriesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -18,8 +15,7 @@ class postCategories extends Seeder
     {
         $faker = Faker::create();
 
-       
-        for ($i = 0; $i < 100 ; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             PostCategory::create([
                 'name' => $faker->name(),
                 'image' => 'hinh' . $i . '.jpg',

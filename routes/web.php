@@ -17,7 +17,11 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
 Route::get('/shop/{product_slug}',[ProductController::class,'product_details'])->name('shop.product.details');
+
+
+// user
 Route::get('/login', [UserController::class, 'login'])->name('user.login');
+Route::post('/do-login', [UserController::class, 'dologin'])->name('user.dologin');
 Route::get('/register', [UserController::class, 'register'])->name('user.register');
 
 Route::get('/cart', [OrderController::class, 'index'])->name('cart.index');
