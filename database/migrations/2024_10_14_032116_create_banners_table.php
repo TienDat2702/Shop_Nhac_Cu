@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('banners', function (Blueprint $table) {
             $table->id('id'); 
-            $table->string('path', 225); // url ảnh banner
+            $table->string('image', 225); // url ảnh banner
             $table->tinyInteger('order')->nullable(); // thứ tự banner
             $table->tinyInteger('position')->nullable(); // vị trí trang xuất hiện
             $table->tinyInteger('publish')->default(1); 

@@ -22,14 +22,15 @@ class PostCategoryCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|max:225',
+            'name' => 'required|unique:post_categories|max:225',
         ];
     }
     public function messages()
     {
         return [
             'name.required' => 'Bạn chưa nhập tiêu đề',
-            'name.max' => 'Tên ngôn ngứ không được vượt quá 225 từ',
+            'name.max' => 'Tiêu đề không được vượt quá 225 từ',
+            'name.unique' => 'Tiêu đề danh mục đã được xử dụng',
         ];
     }
 }
