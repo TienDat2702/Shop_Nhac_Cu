@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('summary')->nullable(); // tóm tắt danh mục sản phẩm
             $table->tinyInteger('publish')->default(1); 
             $table->integer('parent_id'); 
+            $table->tinyInteger('level')->details(1);
             $table->text('description')->nullable(); 
             $table->timestamp('deleted_at')->nullable(); 
             $table->timestamps();

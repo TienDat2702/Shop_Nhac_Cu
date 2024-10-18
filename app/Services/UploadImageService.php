@@ -10,13 +10,13 @@ use App\Services\Interfaces\IUploadImageService;
  */
 class UploadImageService
 {
-    public function uploadImage($request, $model){
+    public function uploadImage($request, $model, $uploadPath){
         if($request->hasFile('image')){
             $file = $request->file('image');
             
             $fileName = time() . '.' . $file->getClientOriginalExtension();
 
-            $uploadPath = public_path('uploads/posts/post_categories');
+            // $uploadPath = public_path('uploads/posts/post_categories');
 
             $file->move($uploadPath, $fileName);
 
@@ -28,7 +28,7 @@ class UploadImageService
             //     return $model->image;
             // }
             $fileName = time() . '.jpg'; // Tạo tên file duy nhất
-            $uploadPath = public_path('uploads/posts/post_categories');
+            // $uploadPath = public_path('uploads/posts/post_categories');
             
             // Tách base64 và chuyển đổi thành file ảnh
             //: Chuỗi base64 có dạng data:image/jpeg;base64,<mã-base64>
@@ -40,7 +40,6 @@ class UploadImageService
             file_put_contents($uploadPath . '/' . $fileName, $imageData);
             $model->image = $fileName;
         }
-
-        return $model->image;
+        return $model->save();
     }
 }

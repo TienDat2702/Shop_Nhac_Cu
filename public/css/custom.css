@@ -68,11 +68,11 @@ body {
     min-width: 1200px;
 }
 
-.table-striped th:nth-child(2),
+/* .table-striped th:nth-child(2),
 .table-striped td:nth-child(2) {
     width: 250px;
     padding-bottom: 18px;
-}
+} */
 
 .pname {
     display: flex;
@@ -146,11 +146,11 @@ body {
     min-width: 1200px;
 }
 
-.table-striped th:nth-child(2),
+/* .table-striped th:nth-child(2),
 .table-striped td:nth-child(2) {
     width: 250px;
     padding-bottom: 18px;
-}
+} */
 
 .pname {
     display: flex;
@@ -166,7 +166,6 @@ body {
 /* nút toggle switch */
 
 .toggle {
-    margin: 0 0 0 2rem;
     position: relative;
     display: inline-block;
     width: 5rem; /* Tăng kích thước chiều rộng */
@@ -320,4 +319,56 @@ input:checked + .roundbutton:before {
 .swal2-icon.swal2-warning.swal2-icon-show {
     width: 7em;
     height: 7em;
+}
+
+.fill-deleted {
+    margin: 0px 0px 20px 5px;
+    font-size: 14px;
+}
+.fill-deleted a{
+    color: #2271b1;
+}
+.fill-deleted a:hover{
+    color: #000000;
+}
+.fill-deleted a:active{
+    color: #000000;
+}
+.fill-deleted a span{
+    color: #50575e;
+}
+.wg-filter-postc {
+    width: 700px;
+}
+
+
+/*-------------------------- ck editor ------------------------*/
+.form-content .ck-editor__editable_inline{
+    height: 600px;
+  }
+  .form-description .ck-editor__editable_inline{
+    height: 150px;
+  }
+
+form.post.tf-section-2.form-add-product {
+    grid-template-columns: 70% 30%;
+}
+
+
+
+/* -----------------slug ------------------- */
+.input-group-text{
+    font-size: 14px;
+}
+.form-control:focus{
+    box-shadow: none;
+    border-color: #ced4da;
+    /* border-left: none; */
+    padding-left: 10px !important;
+}
+.form-control{
+    padding-left: 10px !important;
+    /* border-left: none;
+    border-color: #ced4da; */
+
 }

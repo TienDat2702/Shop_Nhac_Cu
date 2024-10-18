@@ -1,6 +1,6 @@
 @extends('admin.layout.layout')
-@section('crumb_parent', 'Danh mục bài viết')
-@section('title', 'Thêm danh mục bài viết')
+@section('crumb_parent', 'bài viết')
+@section('title', 'Thêm bài viết')
 @section('main')
     <div class="main-content-inner">
         <!-- main-content-wrap -->
@@ -40,20 +40,43 @@
                         </ul>
                     </div>
                 @endif
-                <form class="tf-section-2 form-add-product" method="post" enctype="multipart/form-data"
-                    action="{{ route('postCatagory.store') }}">
+                <form class="post tf-section-2 form-add-product" method="post" enctype="multipart/form-data"
+                    action="{{ route('post.update', $post->id) }}">
                     @csrf
                     <div class="wg-box">
                         <fieldset class="name">
                             <div class="body-title mb-10">Tiêu đề <span class="tf-color-1">*</span>
                             </div>
-                            <input class="mb-10" type="text" placeholder="Nhập tiêu đề danh mục" name="name"
-                            value="{{ old('name' ?? '' ) }}">
+                            <input class="mb-10" type="text" placeholder="Nhập tiêu đề danh mục" name="title"
+                                value="{{ old('title', $post->title ?? '') }}">
                         </fieldset>
-
                         <fieldset class="description">
-                            <div class="body-title mb-10">Mô tả</div>
-                            <textarea class="mb-10" placeholder="Nhập mô tả" name="description" tabindex="0" aria-required="true">{{ old( 'description') ?? ''  }}</textarea>
+                            <div class="form-description mt-3">
+                                <div class="body-title mb-10">Mô tả ngắn
+                                </div>
+                                <textarea type="text" name="description" class="form-control ck-editor" autocomplete="off" id="description">
+                                {{ old('description', $post->description ?? '') }}
+                            </textarea>
+                            </div>
+                        </fieldset>
+                        <fieldset class="content">
+                            <div class="form-content mt-3">
+                                <div class="body-title mb-10">Nội dung
+                                </div>
+                                <textarea type="text" name="content" class="form-control ck-editor" autocomplete="off" id="content">
+                                {{ old('content', $post->content ?? '') }}
+                            </textarea>
+                            </div>
+                        </fieldset>
+                        <fieldset class="slug">
+                            <div class="mb-3">
+                                <div class="body-title mb-10">Đường dẫn <span class="tf-color-1">*</span>
+                                </div>
+                                <div class="input-group">
+                                  <span class="input-group-text" id="basic-addon3">{{ config('app.url') }}</span>
+                                  <input type="text" class="form-control" name="slug" value=" {{ old('slug', $post->slug ?? '') }} " id="basic-url" autocomplete="off" placeholder="duong-dan-url">
+                                </div>
+                              </div>
                         </fieldset>
                     </div>
                     <div class="wg-box">
@@ -62,12 +85,12 @@
                                 <div class="body-title mb-10">Danh mục
                                 </div>
                                 <div class="select">
-                                    <select class="" name="parent_id">
-                                        <option value="0">--Root--</option>
+                                    <select class="" name="post_category_id">
+                                        <option value="">--- Chọn ---</option>
                                         @foreach ($postCategories as $val)
                                             <option 
-                                            @if ($val->id == old('parent_id', 
-                                            isset($postCategory->parent_id) ? $postCategory->parent_id : '')) selected
+                                            @if ($val->id == old('post_category_id', 
+                                            isset($post->post_category_id) ? $post->post_category_id : '')) selected
                                             @endif
                                             value="{{ $val->id }}">
                                                 @php
@@ -85,22 +108,24 @@
                             </fieldset>
                         </div>
                         <fieldset>
-                            <div class="body-title">Upload images
+                            <div class="body-title">Tải ảnh lên
                             </div>
                             <div class="upload-image flex-grow">
-                                <div class="item" id="imgpreview" style="{{ old('oldImage') ? 'display:block' : 'display:none' }}">
-                                    <img class="imgpreview" src="{{ old('oldImage') }}" class="effect8"
-                                        alt="">
+                                <div class="item" id="imgpreview"
+                                    style="{{ old('oldImage' , $post->image) ? 'display:block' : 'display:none' }}">
+                                    <img style="height: auto !important" class="imgpreview" src="{{ old('oldImage') ?? asset('uploads/posts/posts/' . $post->image) }}" class="effect8" alt="">
                                 </div>
                                 <div id="upload-file" class="item up-load">
                                     <label class="uploadfile" for="myFile">
                                         <span class="icon">
                                             <i class="icon-upload-cloud"></i>
                                         </span>
-                                        <span class="body-text">Thả hình ảnh của bạn vào đây hoặc chọn <span class="tf-color">Bấn để duyệt</span></span>
+                                        <span class="body-text">Thả hình ảnh của bạn vào đây hoặc chọn <span
+                                                class="tf-color">Bấn để duyệt</span></span>
                                         <input class="image" type="file" id="myFile" name="image" accept="image/*">
                                         {{-- thêm input hidden để lưu ảnh cũ --}}
-                                        <input type="hidden" id="oldImage" name="oldImage" value="{{ old('oldImage', $postCategory->image ?? '') }}">
+                                        <input type="hidden" id="oldImage" name="oldImage"
+                                            value="{{ old('oldImage', $post->image ?? '') }}">
                                     </label>
                                 </div>
                             </div>
@@ -116,7 +141,13 @@
         </div>
     @endsection
 
-@section('script'){
-    <script src="{{ asset('librarys/upload.js') }}"></script>
-}
-@endsection
+
+    @section('css')
+        <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+    @endsection
+    @section('script')
+        <script src="{{ asset('librarys/upload.js') }}"></script>
+        <script>
+            var uploadUrl = "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}";
+        </script>
+    @endsection
