@@ -340,7 +340,9 @@ input:checked + .roundbutton:before {
 .wg-filter-postc {
     width: 700px;
 }
-
+.wg-filter-post{
+    width: 920px;
+}
 
 /*-------------------------- ck editor ------------------------*/
 .form-content .ck-editor__editable_inline{

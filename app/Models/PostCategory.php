@@ -35,7 +35,7 @@ class PostCategory extends Model
         if(isset($request['keyword'])){
             $query->where('name', 'LIKE', '%' . $request['keyword'] . '%');
         }
-        if($request['publish'] > 0){
+        if(isset($request['publish']) && $request['publish'] > 0){
             $query->where('publish', $request['publish']);
         }
         return $query->orderBy('id', 'DESC')->paginate(10);

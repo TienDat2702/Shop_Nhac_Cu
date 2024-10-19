@@ -9,8 +9,8 @@
             <tr>
                 <th class="text-center">STT</th>
                 <th width="100px !important">Ảnh</th>
-                <th>Danh mục</th>
                 <th>Tiêu đề</th>
+                <th>Danh mục</th>
                 <th>Ngày tạo</th>
                 <th>Người tạo</th>
                 <th>Trạng thái</th>
@@ -26,13 +26,13 @@
                             <span><img class="img-fluid" src="{{ asset('uploads/posts/posts/' . $item->image ) }}" alt=""></span>
                         </td>
                         <td>
-                            <div class="">
-                                <a href="#" class="body-title-2">{{ $item->postCategory->name }}</a>
+                            <div class="name">
+                                <a href="#" class="body-title-2">{{ $item->title }}</a>
                             </div>
                         </td>
                         <td>
-                            <div class="name">
-                                <a href="#" class="body-title-2">{{ $item->title }}</a>
+                            <div class="">
+                                <a href="#" class="body-title-2">{{ $item->postCategory->name ?? 'Không' }}</a>
                             </div>
                         </td>
                         <td>
@@ -62,7 +62,8 @@
                                     <form class="form-delete" action="{{ route('post.forceDelete', $item->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-delete item text-danger delete" title="Xóa" 
+                                        <button type="submit" class="btn btn-delete item text-danger delete" title="Xóa"
+                                        data-text2="" 
                                         data-text="Bạn không thể khôi phục dữ liệu sau khi xóa!">
                                             <i class="icon-trash-2"></i>
                                         </button>
@@ -77,6 +78,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-delete item text-danger delete" title="Xóa"
+                                        data-text2=""
                                         data-text="Bạn có thể khôi phục dữ liệu lại sau khi xóa.">
                                             <i class="icon-trash-2"></i>
                                         </button>
@@ -96,3 +98,8 @@
         </div>
     @endif
 </div>
+<nav aria-label="Page navigation example">
+    <ul class="pagination d-flex justify-content-center my-3">
+        {{ $posts->appends(request()->all())->links() }}
+    </ul>
+</nav>

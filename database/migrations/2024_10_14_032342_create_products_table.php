@@ -24,6 +24,7 @@ return new class extends Migration
             $table->tinyInteger('publish')->default(1);
             $table->text('summary')->nullable();
             $table->timestamp('deleted_at')->nullable();
+            $table->string('slug', 225)->nullable()->unique();
             $table->timestamps();
 
             $table->foreign('category_id')->references('id')->on('product_categories')->onDelete('cascade');

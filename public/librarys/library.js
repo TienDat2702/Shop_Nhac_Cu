@@ -84,28 +84,31 @@
     }
   
 
-    // xử lý đường dẫn duong-dan-url
-    
-    HT.processString = () =>{
+   // Cập nhật hàm keyUpInput
+   HT.keyUpInput = () => {
+       $('input[name = slug]').on('keyup', function(){
+            let input = $(this);
+            input.val(HT.processString(input.val()));
+       })
 
-        $('input[name = slug]').on('keyup', function(){
-            var input = $(this);
-            var value = input.val();
+    };
 
-            // Hàm bỏ dấu
-            const removeDiacritics = (str) => {
-                return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-            };
 
-            // Bỏ dấu cho chuỗi
-            let normalizedStr = removeDiacritics(value).toLowerCase();  
-            // Thay thế ký tự "đ" thành "d"
-            normalizedStr = normalizedStr.replace(/đ/g, 'd');
-            // Thay thế khoảng trắng bằng dấu "-"
-            let result = normalizedStr.replace(/\s+/g, '-');
+    HT.processString = (value) =>{
 
-            return input.val(result);
-        })
+        // Hàm bỏ dấu
+        const removeDiacritics = (str) => {
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        };
+
+        // Bỏ dấu cho chuỗi
+        let normalizedStr = removeDiacritics(value).toLowerCase();  
+        // Thay thế ký tự "đ" thành "d"
+        normalizedStr = normalizedStr.replace(/đ/g, 'd');
+        // Thay thế khoảng trắng bằng dấu "-"
+        let result = normalizedStr.replace(/\s+/g, '-');
+
+        return result;
 
     }
 
@@ -120,7 +123,7 @@
         HT.changeStatus();
         HT.sweetalert2();
         HT.setupCkeditor();
-        HT.processString();
+        HT.keyUpInput();
         HT.trash();
     });
 })(jQuery);

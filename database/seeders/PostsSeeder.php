@@ -28,7 +28,7 @@ class PostsSeeder extends Seeder
                 'deleted_at' => null, // Hoặc có thể sử dụng $faker->dateTime() để tạo ngày giờ xóa
                 'created_at' => now(),
                 'updated_at' => now(),
-                'post_category_id' => $faker->numberBetween(3, 6), // Giả sử có từ 1 đến 10 bản ghi trong bảng post_categories
+                'post_category_id' => $faker->numberBetween(9,10), // Giả sử có từ 1 đến 10 bản ghi trong bảng post_categories
                 'user_id' => $faker->numberBetween(1, 10),
             ]);
         }

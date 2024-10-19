@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('product_categories', function (Blueprint $table) {
             $table->id('id'); 
+            $table->string('name', 125); 
             $table->string('image', 225)->nullable(); // URL ảnh danh mục
             $table->text('summary')->nullable(); // tóm tắt danh mục sản phẩm
             $table->tinyInteger('publish')->default(1); 
@@ -21,6 +22,7 @@ return new class extends Migration
 
             $table->integer('parent_id')->nullable(); 
             $table->text('description')->nullable(); 
+            $table->string('slug', 225)->nullable()->unique();
             $table->timestamp('deleted_at')->nullable(); 
             $table->timestamps();
         });

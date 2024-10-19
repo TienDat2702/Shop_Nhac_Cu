@@ -1,4 +1,7 @@
-<form action="{{ route('postCatagory.search', ['config' => $config == 'index' ? 'index' : 'deleted']) }}">
+<form action="{{ route('postCatagory.index') }}">
+    @if ($config == 'deleted')
+        <input type="hidden" name="deleted" value="daxoa">
+    @endif
     <div class="fill-deleted">
         <a class="all" href="{{ route('postCatagory.index') }}"> Tất cả</a> |
         {{-- <a class="trash" href="{{ route('postCatagory.deleted') }}">Thùng rác <span>({{ count($countDeleted)}})</span></a> --}}
@@ -11,7 +14,7 @@
                     tabindex="2" value="{{ request('keyword') ?: old('keyword') }}" aria-required="true">
                     {{-- <i class="fa-solid fa-magnifying-glass"></i> --}}
             </fieldset>
-            @if ($config == 'index')
+            {{-- @if ($config == 'index') --}}
                 <fieldset class="publish" style="width: 40%">
                     <div class="select">
                         @php
@@ -24,13 +27,13 @@
                         </select>
                     </div>
                 </fieldset>
-            @endif
+            {{-- @endif --}}
            
             <div class="button-submit">
                 <button class="btn-filter " type="submit"><span>Tìm kiếm</span></button>
             </div>
            
         </div>
-        <a class="tf-button style-1 w208" href="{{ route('postCatagory.create') }}"><i class="icon-plus"></i>Add new</a>
+        <a class="tf-button style-1 w208" href="{{ route('postCatagory.create') }}"><i class="icon-plus"></i>Thêm mới</a>
     </div>
 </form>

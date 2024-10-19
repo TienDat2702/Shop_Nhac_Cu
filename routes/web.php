@@ -34,7 +34,6 @@ Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'cha
 
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 
-
     // POST CATEGORY
     Route::prefix('post')->group(function () {
         

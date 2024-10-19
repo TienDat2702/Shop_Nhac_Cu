@@ -29,11 +29,11 @@
                 @include('admin.posts.post.component.table')
                 {{-- end table --}}
             </div>
-            <nav aria-label="Page navigation example">
+            {{-- <nav aria-label="Page navigation example">
                 <ul class="pagination d-flex justify-content-center my-3">
                     {{ $posts->appends(request()->all())->links() }}
                 </ul>
-            </nav>
+            </nav> --}}
         </div>
     </div>
     </div>
