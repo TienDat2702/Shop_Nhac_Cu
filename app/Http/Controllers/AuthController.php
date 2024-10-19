@@ -11,7 +11,11 @@ class AuthController extends Controller
 {
     public function login()
     {
+        if(Auth::id() > 0){
+            return redirect() -> route('????');
+       
 
+        }
         return view('login');
     }
     public function dologin(AuthRequest $request)
