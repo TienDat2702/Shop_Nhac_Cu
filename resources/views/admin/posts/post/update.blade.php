@@ -111,21 +111,19 @@
                             <div class="body-title">Tải ảnh lên
                             </div>
                             <div class="upload-image flex-grow">
-                                <div class="item" id="imgpreview"
-                                    style="{{ old('oldImage' , $post->image) ? 'display:block' : 'display:none' }}">
-                                    <img style="height: auto !important" class="imgpreview" src="{{ old('oldImage') ?? asset('uploads/posts/posts/' . $post->image) }}" class="effect8" alt="">
+                                <div class="item" id="imgpreview" style="{{ old('image',$post->image) ? 'display:block' : 'display:none' }}">
+                                    <img style="height: auto !important" class="imgpreview" src="{{ old('oldImage') ?? asset('uploads/posts/posts/' . $post->image) }}" class="effect8"
+                                        alt="">
                                 </div>
                                 <div id="upload-file" class="item up-load">
                                     <label class="uploadfile" for="myFile">
                                         <span class="icon">
                                             <i class="icon-upload-cloud"></i>
                                         </span>
-                                        <span class="body-text">Thả hình ảnh của bạn vào đây hoặc chọn <span
-                                                class="tf-color">Bấn để duyệt</span></span>
-                                        <input class="image" type="file" id="myFile" name="image" accept="image/*">
+                                        <span class="body-text">Thả hình ảnh của bạn vào đây hoặc chọn <span class="tf-color">Bấm vào để duyệt</span></span>
+                                        <input class="image" type="file" id="myFile" name="image" accept="image/*" value="{{ $post->image }}">
                                         {{-- thêm input hidden để lưu ảnh cũ --}}
-                                        <input type="hidden" id="oldImage" name="oldImage"
-                                            value="{{ old('oldImage', $post->image ?? '') }}">
+                                        <input type="hidden" id="oldImage" name="oldImage" value="{{ old('oldImage','') }}">
                                     </label>
                                 </div>
                             </div>

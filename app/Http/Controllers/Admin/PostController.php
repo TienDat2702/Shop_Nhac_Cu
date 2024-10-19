@@ -9,43 +9,52 @@ use App\Models\Post;
 use App\Models\PostCategory;
 use Illuminate\Http\Request;
 use App\Services\UploadImageService;
+use App\Services\LibraryService;
 
 class PostController extends Controller
 {
     protected $uploadImageService;
+    protected $libraryService; 
 
     public function __construct(
-        UploadImageService $uploadImageService
+        UploadImageService $uploadImageService,
+        LibraryService $libraryService
     ) {
         $this->uploadImageService = $uploadImageService;
+        $this->libraryService = $libraryService;
     }
 
     //--------------------------------- Hiện bài viết----------------------------------------
     
     public function index(Request $request)
     {
-        $config ='index';
+        $date = Post::Date();
         $countDeleted = Post::onlyTrashed()->get();
+        $postCategories = $this->getRecursive();
+
         if ($request['deleted'] == 'daxoa') {
             $config = 'deleted';
-            $getDeleted = Post::onlyTrashed()->paginate(10);
-            return view('admin.posts.post.deleted', compact('config', 'countDeleted','getDeleted'));
-        }
-        $posts = Post::GetPostAll()->paginate(10);
-        return view('admin.posts.post.index', compact('posts','countDeleted', 'config'));
-    }
-
-    public function search(Request $request, $config){
-        $countDeleted = Post::onlyTrashed()->get();
-        if($config == 'index'){
-            $posts = Post::Search($request->all());
-            return view('admin.posts.post.index', compact('posts','countDeleted', 'config'));
+            $getDeleted = Post::onlyTrashed()->Search($request->all());
+            return view('admin.posts.post.index', compact('config', 'countDeleted','getDeleted', 'postCategories', 'date'));
         }
         else{
-            $getDeleted = Post::onlyTrashed()->Search($request->all());
-            return view('admin.posts.post.deleted', compact('getDeleted', 'config','countDeleted'));
+            $config ='index';
+            $posts = Post::GetPostAll()->Search($request->all());
+            return view('admin.posts.post.index', compact('posts','countDeleted', 'config', 'postCategories','date'));
         }
     }
+
+    // public function search(Request $request, $config){
+    //     $countDeleted = Post::onlyTrashed()->get();
+    //     if($config == 'index'){
+    //         $posts = Post::Search($request->all());
+    //         return view('admin.posts.post.index', compact('posts','countDeleted', 'config'));
+    //     }
+    //     else{
+    //         $getDeleted = Post::onlyTrashed()->Search($request->all());
+    //         return view('admin.posts.post.deleted', compact('getDeleted', 'config','countDeleted'));
+    //     }
+    // }
 
     //--------------------------------- Hiện thêm bài viết----------------------------------------
 
@@ -70,12 +79,19 @@ class PostController extends Controller
     public function store(PostCreateRequest $request)
     {
 
+        $slug = $request->input('slug');
+
+        if($slug == ''){
+            $slug = $this->libraryService->generateUniqueSlug($request->input('title'));
+            
+        }
+
         $post = Post::create([
             'user_id' => 1,
             'title' => $request->input('title'),
             'content' => $request->input('content'),
             'description' => $request->input('description'),
-            'slug' => $request->input('slug'),
+            'slug' => $slug,
             'post_category_id' => $request->input('post_category_id'),
         ]);
 
@@ -110,19 +126,64 @@ class PostController extends Controller
        $post = Post::find($id);
 
        $data = [
+            'user' => 1,
             'title' => $request->input('title'),
             'content' => $request->input('content'),
-            'title' => $request->input('title'),
-            'title' => $request->input('title'),
-            'title' => $request->input('title'),
+            'description' => $request->input('description'),
+            'slug' => $request->input('slug'),
+            'post_category_id' => $request->input('post_category_id'),
        ];
+
+       // kiểm tra nếu tồn tại ảnh cũ hay không
+        if($request->hasFile('image')){
+            if($post && $post->image){
+                $image_path = 'uploads/posts/posts/' . $post->image;
+                if (file_exists($image_path)) { // tìm vào đường dẫn ảnh
+                    unlink($image_path); // xóa đường dẩn chứ ảnh cũ
+                }
+            }
+        }
+        // hàm lưu ảnh
+        $uploadPath = public_path('uploads/posts/posts');
+        $this->uploadImageService->uploadImage($request, $post, $uploadPath);
+
+        if($post && $post->update($data)){
+            if($post->wasChanged()){
+                toastr()->success('Cập nhật thành công!');
+            }
+            else{
+                toastr()->success('Không có gì thay đổi!');
+            }
+            return redirect()->route('post.index');
+        }else{
+            toastr()->error('Cập nhật không thành công!');
+        }
+
+        
     }
     
     //--------------------------------- Xử lý xóa mềm bài viết----------------------------------------
 
     public function destroy(string $id)
     {
-      
+        $post = Post::GetPostAll()->find($id);
+
+        if($post && $post->image){
+            $image_path = 'uploads/posts/posts/' . $post->image;
+            if (file_exists($image_path)) { // tìm vào đường dẫn ảnh
+                unlink($image_path); // xóa đường dẩn chứ ảnh cũ
+            }
+        }
+        $post->publish = 1;
+        $post->save();
+        
+        if ($post->delete()) {
+            toastr()->success('Xóa thành công!');
+        }
+        else{
+            toastr()->error('Xóa không thành công!');
+        }
+        return redirect()->back();
     }
 
 

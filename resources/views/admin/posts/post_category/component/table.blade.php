@@ -103,3 +103,9 @@
         </div>
     @endif
 </div>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination d-flex justify-content-center my-3">
+        {{ $categories->appends(request()->all())->links() }}
+    </ul>
+</nav>

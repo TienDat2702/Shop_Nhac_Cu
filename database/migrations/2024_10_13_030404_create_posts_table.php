@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
             
-            $table->unsignedBigInteger('post_category_id');
+            $table->unsignedBigInteger('post_category_id')->nullable();
             $table->unsignedBigInteger('user_id');
             
             $table->foreign('post_category_id')->references('id')->on('post_categories')->onDelete('cascade');

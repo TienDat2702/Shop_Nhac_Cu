@@ -22,7 +22,7 @@ class PostUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|unique:posts,title,'.$this->id.'|max:125',
+            'title' => 'required|max:125',
             'slug' => 'required|unique:posts,slug,'.$this->id.'|max:125',
         ];
     }
@@ -31,7 +31,7 @@ class PostUpdateRequest extends FormRequest
         return [
             'title.required' => 'Bạn chưa nhập tiêu đề',
             'title.max' => 'Tiêu đề không được vượt quá 125 từ',
-            'title.unique' => 'Tiêu đề danh mục đã được xử dụng',
+            // 'title.unique' => 'Tiêu đề danh mục đã được xử dụng',
             'slug.required' => 'Bạn chưa nhập đường đãn',
             'slug.max' => 'Đường dẫn không được vượt quá 125 từ',
             'slug.unique' => 'Đường dẫn danh mục đã được xử dụng',
