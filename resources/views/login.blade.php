@@ -18,7 +18,7 @@
                             @csrf
                             <div class="form-floating mb-3">
                                 <input class="form-control form-control_gray " name="email" value=""
-                                    autocomplete="email" autofocus="">
+                                    autocomplete="email" autofocus="" type="text">
                                 <label for="email">Email address *</label>
                                 @if ($errors->any())
                                     <span class="error-message"> *
@@ -38,7 +38,7 @@
                                 @if ($errors->any())
                                 <span class="error-message"> *
                                     {{
-                                        $errors->first('email')
+                                        $errors->first('password')
                                     }}
                                 </span>
                             @endif
