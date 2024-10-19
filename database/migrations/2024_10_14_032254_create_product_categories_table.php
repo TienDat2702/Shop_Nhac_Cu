@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string('image', 225)->nullable(); // URL ảnh danh mục
             $table->text('summary')->nullable(); // tóm tắt danh mục sản phẩm
             $table->tinyInteger('publish')->default(1); 
+            $table->integer('parent_id'); 
+            $table->tinyInteger('level')->details(1);
+
             $table->integer('parent_id')->nullable(); 
             $table->text('description')->nullable(); 
             $table->timestamp('deleted_at')->nullable(); 

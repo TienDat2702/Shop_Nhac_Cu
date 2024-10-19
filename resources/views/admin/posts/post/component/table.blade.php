@@ -1,54 +1,50 @@
 <div class="wg-table table-all-user">
-    
     @php
-        $categories = ($config == 'index') ? $postCategories : $getDeleted
+        $posts = ($config == 'index') ? $posts : $getDeleted
     @endphp
 
-    @if ($categories->isNotEmpty())
+    @if ($posts->isNotEmpty())
     <table style="table-layout: auto;" class="table table-striped table-bordered">
         <thead>
             <tr>
                 <th class="text-center">STT</th>
-                <th>Danh mục Cha</th>
+                <th width="100px !important">Ảnh</th>
+                <th>Danh mục</th>
                 <th>Tiêu đề</th>
-                <th width="100px">Ảnh</th>
-                <th>Mô tả</th>
+                <th>Ngày tạo</th>
+                <th>Người tạo</th>
                 <th>Trạng thái</th>
                 <th>Thao tác</th>
             </tr>
         </thead>
         <tbody>
-                @foreach ($categories as $index => $item)
+                @foreach ($posts as $index => $item)
                     <tr>
-                        <td class="text-center">{{ $categories->currentPage() * $categories->perPage() - $categories->perPage() + $index + 1 }}
+                        <td class="text-center">{{ $posts->currentPage() * $posts->perPage() - $posts->perPage() + $index + 1 }}
+                        </td>
+                        <td width="100px !important">
+                            <span><img class="img-fluid" src="{{ asset('uploads/posts/posts/' . $item->image ) }}" alt=""></span>
                         </td>
                         <td>
-                            <div class="parent_id">
-                                <a href="#" class="body-title-2">{{ ($item->parent) ? $item->parent->name : 'Không' }}</a>
+                            <div class="">
+                                <a href="#" class="body-title-2">{{ $item->postCategory->name }}</a>
                             </div>
                         </td>
                         <td>
                             <div class="name">
-                                {{-- @php
-                                    $str = '';
-                                    for($i = 0 ; $i < $item->level ; $i++){
-                                    echo $str;
-                                    $str .= '-- ';    
-                                }
-                                @endphp --}}
-                                <a href="#" class="body-title-2">{{ $item->name }}</a>
+                                <a href="#" class="body-title-2">{{ $item->title }}</a>
                             </div>
                         </td>
                         <td>
-                            <span><img class="img-fluid" src="{{ asset('uploads/posts/post_categories/' . $item->image ) }}" alt=""></span>
+                            {{ date('d/m/Y', strtotime($item->created_at)) }}
                         </td>
                         <td>
-                            {{ $item->description }}
+                            {{ $item->users->name }}
                         </td>
                         <td class="text-center">
                             <label class="toggle">
                                 <input id="toggleswitch" class="toggleswitch" name="publish" type="checkbox"
-                                    value="{{ $item->publish }}" data-id="{{ $item->id }}" data-model="PostCategory"
+                                    value="{{ $item->publish }}" data-id="{{ $item->id }}" data-model="Post"
                                     {{ $item->publish == 2 ? 'checked' : '' }}
                                     {{ $config == 'deleted' ? 'disabled' : '' }}
                                     >
@@ -58,33 +54,30 @@
                         <td>
                             <div class="list-icon-function">
                                 @if ($config == 'deleted')
-                                    <a href="{{ route('postCatagory.restore', $item->id)}}" title="Khôi phục">
+                                    <a href="{{ route('post.restore', $item->id)}}" title="Khôi phục">
                                         <div class="item edit">
                                             <i class="fa-solid fa-retweet"></i>
                                         </div>
                                     </a>
-                                    <form class="form-delete" action="{{ route('postCatagory.forceDelete', $item->id) }}" method="POST">
+                                    <form class="form-delete" action="{{ route('post.forceDelete', $item->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-delete item text-danger delete" title="Xóa" 
-                                        data-text="Bạn không thể khôi phục dữ liệu sau khi xóa!"
-                                        data-text2=""
-                                        >
+                                        data-text="Bạn không thể khôi phục dữ liệu sau khi xóa!">
                                             <i class="icon-trash-2"></i>
                                         </button>
                                     </form>
                                 @else
-                                    <a href="{{ route('postCatagory.edit', $item->id)}}" title="Chỉnh sửa">
+                                    <a href="{{ route('post.edit', $item->id)}}" title="Chỉnh sửa">
                                         <div class="item edit">
                                             <i class="icon-edit-3"></i>
                                         </div>  
                                     </a>
-                                    <form class="form-delete" action="{{ route('postCatagory.destroy', $item->id) }}" method="POST">
+                                    <form class="form-delete" action="{{ route('post.destroy', $item->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-delete item text-danger delete" title="Xóa"
-                                        data-text="Bạn có thể khôi phục dữ liệu lại sau khi xóa."
-                                        data-text2="{{ ($item->parent_id == 0) ? 'Bạn Có thể xóa tất cả danh mục liên quan đế danh mục hiện tại!' : '' }}">
+                                        data-text="Bạn có thể khôi phục dữ liệu lại sau khi xóa.">
                                             <i class="icon-trash-2"></i>
                                         </button>
                                     </form>
