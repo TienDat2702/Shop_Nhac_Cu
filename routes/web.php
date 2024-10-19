@@ -8,6 +8,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
@@ -24,6 +25,9 @@ Route::get('/shop/{product_slug}',[ProductController::class,'product_details'])-
 Route::get('/login', [AuthController::class, 'login'])->name('user.login');
 Route::post('/do-login', [AuthController::class, 'dologin'])->name('user.dologin');
 Route::get('/register', [UserController::class, 'register'])->name('user.register');
+Route::get('/profile', [ProfileController::class, 'show'])->name('user.profile');
+Route::post('/logout', [AuthController::class, 'logout'])->name('user.logout');
+
 
 Route::get('/cart', [OrderController::class, 'index'])->name('cart.index');
 

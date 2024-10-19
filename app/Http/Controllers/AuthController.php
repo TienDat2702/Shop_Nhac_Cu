@@ -12,7 +12,7 @@ class AuthController extends Controller
     public function login()
     {
         if(Auth::id() > 0){
-            return redirect() -> route('????');
+            return redirect() -> route('user.profile');
        
 
         }
@@ -38,4 +38,17 @@ class AuthController extends Controller
 
         return view('register');
     }
+    public function logout(Request $request)
+    {
+        Auth::logout();
+ 
+        $request->session()->invalidate();
+     
+        $request->session()->regenerateToken();
+     
+        return redirect()->route('user.login');
+
+    }
+
+
 }
