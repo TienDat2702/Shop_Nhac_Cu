@@ -18,19 +18,17 @@ class BrandController extends Controller
         $this->uploadImageService = $uploadImageService;
     }
 
-    //---------------------------------- Trang index-------------------------------------------
 
     public function index(Request $request)
     {
-        $countDeleted = Brand::onlyTrashed()->count(); // Đếm số phần tử đã bị xóa
-        // Kiểm tra nếu là trang đã xóa
+        $countDeleted = Brand::onlyTrashed()->count(); 
         if ($request->input('deleted') == 'daxoa') {
             $config = 'deleted';
-            $getDeleted = Brand::onlyTrashed()->search($request->all()); // Sử dụng scopeSearch từ model
+            $getDeleted = Brand::onlyTrashed()->search($request->all());
             return view('admin.brands.index', compact('config', 'countDeleted', 'getDeleted'));
         } else {
             $config = 'index';
-            $brands = Brand::search($request->all()); // Sử dụng scopeSearch từ model
+            $brands = Brand::search($request->all());
             return view('admin.brands.index', compact('brands', 'countDeleted', 'config'));
         }
     }
@@ -107,10 +105,8 @@ class BrandController extends Controller
             return redirect()->back()->withErrors(['Thương hiệu không tồn tại!']);
         }
     
-        // Cập nhật trạng thái trước khi xóa
         $brand->update(['publish' => 0]);
     
-        // Xóa thương hiệu
         $brand->delete();
         toastr()->success('Xóa thành công!');
         return redirect()->back();
@@ -125,7 +121,6 @@ class BrandController extends Controller
         }
         $brand->restore();
     
-        // Cập nhật trạng thái sau khi khôi phục
         $brand->update(['publish' => 2]);
     
         toastr()->success('Khôi phục thành công!');

@@ -18,19 +18,17 @@ class ProductCategoryController extends Controller
         $this->uploadImageService = $uploadImageService;
     }
 
-    //---------------------------------- Trang index-------------------------------------------
 
     public function index(Request $request)
     {
-        $countDeleted = ProductCategory::onlyTrashed()->count();// đếm số phần tử đã bị xóa
-        // Kiểm tra nếu là trang đã xóa
+        $countDeleted = ProductCategory::onlyTrashed()->count();
         if ($request->input('deleted') == 'daxoa') {
             $config = 'deleted';
-            $getDeleted = ProductCategory::onlyTrashed()->Search($request->all());// Sử dụng scopeSearch từ model
+            $getDeleted = ProductCategory::onlyTrashed()->Search($request->all());
             return view('admin.products.product_category.index', compact('config', 'countDeleted', 'getDeleted'));
         } else {
             $config = 'index';
-            $productCategories = ProductCategory::GetWithParent()->Search($request->all());// Sử dụng scopeSearch từ model
+            $productCategories = ProductCategory::GetWithParent()->Search($request->all());
             return view('admin.products.product_category.index', compact('productCategories', 'countDeleted', 'config'));
         }
     }

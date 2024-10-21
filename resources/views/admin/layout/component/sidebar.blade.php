@@ -52,8 +52,8 @@
                             </a>
                         </li>
                         <li class="sub-menu-item">
-                            <a href="products.html" class="">
-                                <div class="text">Danh sách sản phẩm</div>
+                            <a href="{{ route('product.index')}}" class="">
+                                <div class="text">Sản phẩm</div>
                             </a>
                         </li>
                     </ul>
