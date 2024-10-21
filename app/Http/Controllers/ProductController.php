@@ -18,8 +18,13 @@ class ProductController extends Controller
         return view('shop', compact('categories', 'brands', 'products'));
     }
 
-    public function product_details()
+    public function product_details($id)
     {
-        return view('details');
+        $product = Product::find($id);
+        $product->view += 1;
+        $product->save();
+        $brand = Brand::find($product->brand_id);
+        $product_related = Product::where('category_id', $product->category_id)->where('id', '!=', $id)->get();
+        return view('details', compact('product', 'brand', 'product_related'));
     }
 }
