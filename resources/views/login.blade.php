@@ -48,7 +48,7 @@
 
                             <div class="customer-option mt-4 text-center">
                                 <span class="text-secondary">No account yet?</span>
-                                <a href="register.html" class="btn-text js-show-register">Create Account</a> | <a
+                                <a href="{{route('user.register')}}" class="btn-text js-show-register">Create Account</a> | <a
                                     href="my-account.html" class="btn-text js-show-register">My Account</a>
                             </div>
                         </form>

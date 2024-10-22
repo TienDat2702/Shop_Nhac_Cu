@@ -12,6 +12,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
+
 // Route::get('/', function () {
 //     return view('welcome');
 // });
@@ -24,7 +25,8 @@ Route::get('/shop/{product_slug}',[ProductController::class,'product_details'])-
 // user
 Route::get('/login', [AuthController::class, 'login'])->name('user.login');
 Route::post('/do-login', [AuthController::class, 'dologin'])->name('user.dologin');
-Route::get('/register', [UserController::class, 'register'])->name('user.register');
+Route::get('/register', [AuthController::class, 'register'])->name('user.register');
+Route::post('/register', [AuthController::class, 'postRegister'])->name('user.postRegister');
 Route::get('/profile', [ProfileController::class, 'show'])->name('user.profile');
 Route::post('/logout', [AuthController::class, 'logout'])->name('user.logout');
 
