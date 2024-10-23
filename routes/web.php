@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PostCategoryController;
 use App\Http\Controllers\Admin\ShowroomController;
+use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Ajax\AjaxDashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
@@ -33,13 +34,18 @@ Route::prefix('admin')->group(function () {
         Route::get('create', [ShowroomController::class, 'create'])->name('showroom.create'); // Route mới
         Route::post('store', [ShowroomController::class, 'store'])->name('showroom.store'); // Route mới
         Route::get('category', [ShowroomController::class,'index'])->name('showroomcategory.index');
+        Route::get('category/deleted', [ShowroomController::class, 'deleted'])->name('showroomcategory.deleted');
         Route::get('edit/{id}', [ShowroomController::class, 'edit'])->name('showroom.edit'); // Route để sửa
         Route::put('{id}', [ShowroomController::class, 'update'])->name('showroom.update'); // Route để cập nhật
-        Route::put('toggle-publish/{id}', [ShowroomController::class, 'togglePublish'])->name('showroom.togglePublish'); // Route mới
+        Route::post('toggle-publish/{id}', [ShowroomController::class, 'togglePublish'])->name('showroom.togglePublish');
+        Route::post('showroom/{id}/restore', [ShowroomController::class, 'restore'])->name('showroom.restore');
+Route::delete('showroom/{id}/force-delete', [ShowroomController::class, 'forceDelete'])->name('showroom.forceDelete');
+Route::delete('showroom/{id}', [ShowroomController::class, 'destroy'])->name('showroom.destroy');
+
     });
     //Banner
     Route::prefix('banner')->group(function () {
-        Route::get('/', [BannerController::class, 'create'])->name('showroom.create'); // Route mới
+        Route::get('/', [BannerController::class, 'create'])->name('banner.create'); // Route mới
         
     });
     // POST CATEGORY

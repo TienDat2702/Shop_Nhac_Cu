@@ -12,7 +12,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($dsshowroom as $index => $item)
+            @foreach ($getDeleted as $index => $item)
             <tr>
                 <td>{{ $index + 1 }}</td>
                 <td>
