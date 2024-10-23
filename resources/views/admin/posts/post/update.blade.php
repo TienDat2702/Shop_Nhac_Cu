@@ -41,7 +41,8 @@
                     </div>
                 @endif
                 <form class="post tf-section-2 form-add-product" method="post" enctype="multipart/form-data"
-                    action="{{ route('post.update', $post->id) }}">
+                    action="{{ route('post.update', $post->slug) }}">
+                    
                     @csrf
                     <div class="wg-box">
                         <fieldset class="name">
@@ -68,6 +69,39 @@
                             </textarea>
                             </div>
                         </fieldset>
+
+                        <fieldset>
+                            <div class="body-title mb-10">Album ảnh</div>
+                            <div class="upload-image mb-16 upload-album">
+                                <div id="galUpload" class="item up-load">
+                                    <label class="uploadfile" for="gFile">
+                                        <span class="icon">
+                                            <i class="icon-upload-cloud"></i>
+                                        </span>
+                                        <span class="text-tiny">Drop your images here or select <span class="tf-color">click to browse</span></span>
+                                        <input class="album-image" type="file" id="gFile" name="images[]" value="" accept="image/*" multiple="">
+                                        <input type="hidden" id="albums" name="albums" value="{{ old('albums', json_encode($albums->toArray())) }}">
+                                    </label>
+                                </div>
+
+                                @if (old('albums') )
+                                    @foreach (json_decode(old('albums')) as $item)
+                                        <div class="item old item-parent"> 
+                                            <img class="albumPreview" src="{{ $item }}" alt="">
+                                            <i class="fa-regular fa-circle-xmark delete-img"></i>
+                                        </div>
+                                    @endforeach
+                                @else 
+                                    @foreach ($albums->toArray() as $item)
+                                        <div class="item item-parent"> 
+                                            <img class="albumPreview" src="{{ $item }}" alt="">
+                                            <i class="fa-regular fa-circle-xmark delete-img"></i>
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </div>
+                        </fieldset>
+
                         <fieldset class="slug">
                             <div class="mb-3">
                                 <div class="body-title mb-10">Đường dẫn <span class="tf-color-1">*</span>
@@ -129,7 +163,7 @@
                             </div>
                         </fieldset>
                         <div class="cols gap10">
-                            <button class="tf-button w-full" type="submit">Thêm</button>
+                            <button class="tf-button w-full" type="submit">Lưu</button>
                         </div>
                     </div>
                 </form>

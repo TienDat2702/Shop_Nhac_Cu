@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('image', 225)->nullable();
             $table->datetime('deleted_at')->nullable();
             $table->tinyInteger('level')->details(1);
-            $table->string('slug', 225)->unique();
+            $table->string('slug', 255)->unique();
             $table->timestamps();
         });
     }

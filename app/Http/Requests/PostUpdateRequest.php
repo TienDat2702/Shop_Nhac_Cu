@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Post;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PostUpdateRequest extends FormRequest
@@ -21,9 +22,10 @@ class PostUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
+        $post = Post::where('slug', $this->route('slug'))->first();
         return [
             'title' => 'required|max:125',
-            'slug' => 'required|unique:posts,slug,'.$this->id.'|max:125',
+            'slug' => 'required|unique:posts,slug,'.$post->id.'|max:125',
         ];
     }
     public function messages()
@@ -31,10 +33,9 @@ class PostUpdateRequest extends FormRequest
         return [
             'title.required' => 'Bạn chưa nhập tiêu đề',
             'title.max' => 'Tiêu đề không được vượt quá 125 từ',
-            // 'title.unique' => 'Tiêu đề danh mục đã được xử dụng',
             'slug.required' => 'Bạn chưa nhập đường đãn',
             'slug.max' => 'Đường dẫn không được vượt quá 125 từ',
-            'slug.unique' => 'Đường dẫn danh mục đã được xử dụng',
+            'slug.unique' => 'Đường dẫn đã được xử dụng',
         ];
     }
 }

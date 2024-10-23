@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostCreateRequest;
 use App\Http\Requests\PostUpdateRequest;
+use App\Models\AlbumPost;
 use App\Models\Post;
 use App\Models\PostCategory;
 use Illuminate\Http\Request;
@@ -43,18 +44,23 @@ class PostController extends Controller
             return view('admin.posts.post.index', compact('posts','countDeleted', 'config', 'postCategories','date'));
         }
     }
+    public function test(Request $request)
+    {
+        $date = Post::Date();
+        $countDeleted = Post::onlyTrashed()->get();
+        $postCategories = $this->getRecursive();
 
-    // public function search(Request $request, $config){
-    //     $countDeleted = Post::onlyTrashed()->get();
-    //     if($config == 'index'){
-    //         $posts = Post::Search($request->all());
-    //         return view('admin.posts.post.index', compact('posts','countDeleted', 'config'));
-    //     }
-    //     else{
-    //         $getDeleted = Post::onlyTrashed()->Search($request->all());
-    //         return view('admin.posts.post.deleted', compact('getDeleted', 'config','countDeleted'));
-    //     }
-    // }
+        if ($request['deleted'] == 'daxoa') {
+            $config = 'deleted';
+            $getDeleted = Post::onlyTrashed()->Search($request->all());
+            return view('admin.posts.post.index', compact('config', 'countDeleted','getDeleted', 'postCategories', 'date'));
+        }
+        else{
+            $config ='index';
+            $posts = Post::GetPostAll()->Search($request->all());
+            return view('admin.posts.post.test', compact('posts','countDeleted', 'config', 'postCategories','date'));
+        }
+    }
 
     //--------------------------------- Hiện thêm bài viết----------------------------------------
 
@@ -82,7 +88,7 @@ class PostController extends Controller
         $slug = $request->input('slug');
 
         if($slug == ''){
-            $slug = $this->libraryService->generateUniqueSlug($request->input('title'));
+            $slug = Post::GenerateUniqueSlug($request->input('title'));
             
         }
 
@@ -99,6 +105,9 @@ class PostController extends Controller
         $uploadPath = public_path('uploads/posts/posts');
         $this->uploadImageService->uploadImage($request, $post, $uploadPath);
         
+        // xử lý album
+        $path = 'uploads/posts/albums';
+        $this->uploadImageService->uploadAlbum($request, $post, $path);
 
         if($post){
             // $post->save();
@@ -112,19 +121,20 @@ class PostController extends Controller
 
     //--------------------------------- Hiện sửa bài viết----------------------------------------
     
-    public function edit(string $id)
+    public function edit(string $slug)
     {
         $postCategories = $this->getRecursive();
-        $post = Post::GetPostAll()->find($id);
-        return view('admin.posts.post.update', compact('postCategories', 'post'));
+        $post = Post::GetPostAll()->where('slug',$slug)->first();
+        $albums = $post->albums->pluck('path');
+        return view('admin.posts.post.update', compact('postCategories', 'post', 'albums'));
     }
 
     //--------------------------------- Xử lý sửa bài viết----------------------------------------
 
-    public function update(PostUpdateRequest $request, string $id)
+    public function update(PostUpdateRequest $request, string $slug)
     {
-       $post = Post::find($id);
-
+        
+       $post = Post::GetPostAll()->where('slug',$slug)->first();
        $data = [
             'user' => 1,
             'title' => $request->input('title'),
@@ -143,17 +153,22 @@ class PostController extends Controller
                 }
             }
         }
+
         // hàm lưu ảnh
         $uploadPath = public_path('uploads/posts/posts');
         $this->uploadImageService->uploadImage($request, $post, $uploadPath);
+
+        //xử lý album
+        $path = 'uploads/posts/albums';
+        $this->uploadImageService->uploadAlbum($request, $post, $path);
 
         if($post && $post->update($data)){
             if($post->wasChanged()){
                 toastr()->success('Cập nhật thành công!');
             }
-            else{
-                toastr()->success('Không có gì thay đổi!');
-            }
+            // else{
+            //     toastr()->success('Không có gì thay đổi!');
+            // }
             return redirect()->route('post.index');
         }else{
             toastr()->error('Cập nhật không thành công!');
@@ -166,7 +181,7 @@ class PostController extends Controller
 
     public function destroy(string $id)
     {
-        $post = Post::GetPostAll()->find($id);
+        $post = Post::GetPostAll()->findOrFail($id);
 
         if($post && $post->image){
             $image_path = 'uploads/posts/posts/' . $post->image;
@@ -198,14 +213,59 @@ class PostController extends Controller
 
     public function restore(string $id)
     {
-       
+        $post = Post::onlyTrashed()->findOrFail($id);
+        
+        // Tạo slug mới nếu slug bị trùng
+        $post->slug = Post::generateUniqueSlug($post->title);
+        $post->save();
+
+        if (!$post) {
+            return redirect()->back()->withErrors(['Bài viết không tồn tại!']);
+        }else{
+            $post->publish = 2;
+            $post->save();
+            $post->restore();
+            toastr()->success('Khôi phục thành công!');
+            return redirect()->back();  
+        }
         
     }
 
     //--------------------------------- Xử lý xóa bài viết----------------------------------------
 
     public function forceDelete(string $id){
-    
+        $post = Post::onlyTrashed()->findOrFail($id);
+
+        // Lấy tất cả các hình ảnh album liên quan đến bài viết
+        $albumImages = $post->albums->pluck('path')->toArray();
+
+        // Xóa các bản ghi album khỏi cơ sở dữ liệu
+        foreach ($albumImages as $imagePath) {
+            // Xóa ảnh khỏi cơ sở dữ liệu
+            $post->albums()->where('path', $imagePath)->delete();
+
+            // Xóa file khỏi hệ thống
+            $filePath = str_replace(url('/'), public_path(), $imagePath);
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+        }
         
+        if (!$post) {
+            // echo 123; die();
+            toastr()->error('Dữ liệu không tồn tại!');
+            return redirect()->back();
+        }
+        else{
+            if($post && $post->image){
+                $image_path = 'uploads/posts/posts/' . $post->image;
+                if (file_exists($image_path)) { // tìm vào đường dẫn ảnh
+                    unlink($image_path); // xóa đường dẩn chứ ảnh cũ
+                }
+            }
+            $post->forceDelete();
+            toastr()->success('Xóa thành công!');
+            return redirect()->back();
+        }
     }
 }

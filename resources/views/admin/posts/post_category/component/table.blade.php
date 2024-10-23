@@ -74,7 +74,7 @@
                                         </button>
                                     </form>
                                 @else
-                                    <a href="{{ route('postCatagory.edit', $item->id)}}" title="Chỉnh sửa">
+                                    <a href="{{ route('postCatagory.edit', $item->slug)}}" title="Chỉnh sửa">
                                         <div class="item edit">
                                             <i class="icon-edit-3"></i>
                                         </div>  
