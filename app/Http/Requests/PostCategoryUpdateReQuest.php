@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\PostCategory;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PostCategoryUpdateReQuest extends FormRequest
@@ -21,8 +22,9 @@ class PostCategoryUpdateReQuest extends FormRequest
      */
     public function rules(): array
     {
+        $postCategory = PostCategory::where('slug', $this->route('slug'))->whereNull('deleted_at')->first();
         return [
-            'name' => 'required|unique:post_categories,name,'.$this->id.' |max:225', // xét unique bỏ qua id hiện tại
+            'name' => 'required|unique:post_categories,name,'.$postCategory->id.' |max:225', // xét unique bỏ qua id hiện tại
             // 'parent_id' => 'unique:languages,canonical,'.$this->id.'',
         ];
     }

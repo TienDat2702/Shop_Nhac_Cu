@@ -1,3 +1,4 @@
+
 (function ($) {
     "use strict";
     var HT = {};
@@ -74,11 +75,16 @@
                     .create(document.querySelector('#' + elementId), {
                         ckfinder: {
                             uploadUrl: uploadUrl,
-                        }
+                        },
+                        mediaEmbed: {
+                            previewsInData: true // Bật chế độ xem trước trong dữ liệu đầu ra
+                        },
+                        
                     })
                     .catch(error => {
                         console.error(error);
                     });
+                
             });
         }
     }

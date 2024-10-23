@@ -37,10 +37,26 @@ class Post extends Model
         if(isset($request['post_category_id'])){
             $query->where('post_category_id', $request['post_category_id']);
         }
-        // if(isset($request['publish']) && $request['publish'] > 0){
-        //     $query->where('publish', $request['publish']);
-        // }
+        if(isset($request['created_at']) && $request['created_at'] > 0){
+            // Tách giá trị month-year thành tháng và năm
+            [$month, $year] = explode('-', $request['created_at']);
+
+            // Tìm theo tháng và năm
+            $query->whereMonth('created_at', '=', $month)
+                ->whereYear('created_at', '=', $year);
+        }
         return $query->orderBy('id', 'DESC')->paginate(10);
+    }
+
+    public function scopeGenerateUniqueSlug($query, $str){
+        // Tạo slug 
+        $slug = Str::slug($str);
+
+        // tìm xem slug có tồn tại hay chưa
+        $count = $query->withTrashed()->where('slug', 'LIKE', "{$slug}%")->count();
+
+        // Nếu có trùng lặp, thêm hậu tố
+        return $count ? "{$slug}-{$count}" : $slug;
     }
 
     public function scopeDate($query){
@@ -62,8 +78,9 @@ class Post extends Model
         return $this->belongsTo(PostCategory::class, 'post_category_id', 'id');
     }
 
-    public function scopeFindBySlugLike($query, $slug)
-    {
-        return $query->where('slug', 'LIKE', "{$slug}%");
+      // quan hệ posts 1-N
+    public function albums() {
+        return $this->hasMany(AlbumPost::class, 'post_id', 'id');
     }
+
 }
