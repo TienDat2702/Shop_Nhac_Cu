@@ -34,7 +34,7 @@
                             </a>
                         </li>
                         <li class="sub-menu-item">
-                            <a href="products.html" class="">
+                            <a href="{{ route('post.index') }}" class="">
                                 <div class="text">Bài viêt</div>
                             </a>
                         </li>
