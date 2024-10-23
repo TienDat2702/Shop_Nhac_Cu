@@ -38,8 +38,8 @@ Route::prefix('admin')->group(function () {
         Route::get('category/search/{config}', [PostCategoryController::class,'search'])->name('postCatagory.search');
         Route::get('category/create', [PostCategoryController::class,'create'])->name('postCatagory.create');
         Route::post('category/store', [PostCategoryController::class,'store'])->name('postCatagory.store');
-        Route::get('category/edit/{id}', [PostCategoryController::class,'edit'])->name('postCatagory.edit');
-        Route::post('category/update/{id}', [PostCategoryController::class,'update'])->name('postCatagory.update');
+        Route::get('category/edit/{slug}', [PostCategoryController::class,'edit'])->name('postCatagory.edit');
+        Route::post('category/update/{slug}', [PostCategoryController::class,'update'])->name('postCatagory.update');
         Route::delete('category/destroy/{id}', [PostCategoryController::class,'destroy'])->name('postCatagory.destroy');
         Route::get('category/restore/{id}', [PostCategoryController::class,'restore'])->name('postCatagory.restore');
         Route::delete('category/forceDelete/{id}', [PostCategoryController::class,'forceDelete'])->name('postCatagory.forceDelete');
@@ -48,12 +48,13 @@ Route::prefix('admin')->group(function () {
     Route::prefix('post')->group(function () {
         
         Route::get('/', [PostController::class,'index'])->name('post.index');
+        Route::get('/test', [PostController::class,'test'])->name('post.test');
         Route::get('deleted', [PostController::class,'deleted'])->name('post.deleted');
         Route::get('search/{config}', [PostController::class,'search'])->name('post.search');
         Route::get('create', [PostController::class,'create'])->name('post.create');
         Route::post('store', [PostController::class,'store'])->name('post.store');
-        Route::get('edit/{id}', [PostController::class,'edit'])->name('post.edit');
-        Route::post('update/{id}', [PostController::class,'update'])->name('post.update');
+        Route::get('edit/{slug}', [PostController::class,'edit'])->name('post.edit');
+        Route::post('update/{slug}', [PostController::class,'update'])->name('post.update');
         Route::delete('destroy/{id}', [PostController::class,'destroy'])->name('post.destroy');
         Route::get('restore/{id}', [PostController::class,'restore'])->name('post.restore');
         Route::delete('forceDelete/{id}', [PostController::class,'forceDelete'])->name('post.forceDelete');

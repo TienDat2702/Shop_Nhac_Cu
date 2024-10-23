@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\PostCategory;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class PostCategoryCreateRequest extends FormRequest
 {
@@ -22,7 +24,18 @@ class PostCategoryCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:post_categories|max:225',
+            'name' => ['required',
+                      Rule::unique('post_categories')->where(function ($query) {
+                        return $query->whereNull('deleted_at');
+                        }),
+                      'max:225',
+            ],
+            'slug' => [
+                    'max:225',
+                    Rule::unique('post_categories')->where(function ($query) {
+                        return $query->whereNull('deleted_at');
+                    }),
+            ],
         ];
     }
     public function messages()

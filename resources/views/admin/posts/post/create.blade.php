@@ -68,6 +68,32 @@
                             </textarea>
                             </div>
                         </fieldset>
+
+                        <fieldset>
+                            <div class="body-title mb-10">Album ảnh</div>
+                            <div class="upload-image mb-16 upload-album">
+                                <div id="galUpload" class="item up-load">
+                                    <label class="uploadfile" for="gFile">
+                                        <span class="icon">
+                                            <i class="icon-upload-cloud"></i>
+                                        </span>
+                                        <span class="text-tiny">Drop your images here or select <span class="tf-color">click to browse</span></span>
+                                        <input class="album-image" type="file" id="gFile" name="images[]" accept="image/*" multiple="">
+                                        <input type="hidden" id="albums" name="albums" value="{{ old('albums', $post->image ?? '') }}">
+                                    </label>
+                                </div>
+
+                                @if (old('albums'))
+                                @foreach (json_decode(old('albums')) as $item)
+                                <div class="item item-parent"> 
+                                    <img class="albumPreview" src="{{$item}}" alt="">
+                                    <i class="fa-regular fa-circle-xmark delete-img"></i>
+                                </div>
+                                @endforeach
+                            @endif
+                            </div>
+                        </fieldset>
+
                         <fieldset class="slug">
                             <div class="mb-3">
                                 <div class="body-title mb-10">Đường dẫn <span class="tf-color-1">*</span>
