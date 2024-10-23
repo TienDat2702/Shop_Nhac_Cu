@@ -1,4 +1,9 @@
 <div class="wg-table table-all-user">
+@php
+$showrooms = ($config == 'index') ? $dsshowroom : $getDeleted;
+@endphp
+
+@if ($showrooms->isNotEmpty())
     <table style="table-layout: auto;" class="table table-striped table-bordered">
         <thead>
             <tr>
@@ -85,4 +90,13 @@
 
         </tbody>
     </table>
+    @else
+        <div class="not-search text-center">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <h3>Không tìm thấy {{ request('keyword') ? '"'.request('keyword').'"' : '' }}</h3>
+        </div>
+    @endif
+</div>
+
+
 </div>

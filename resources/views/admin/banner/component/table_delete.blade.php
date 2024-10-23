@@ -1,11 +1,6 @@
 <div class="wg-table table-all-user">
-@php
-$showrooms = ($config == 'index') ? $dsbanner : $getDeleted;
-@endphp
-
-@if ($showrooms->isNotEmpty())
     <table style="table-layout: auto;" class="table table-striped table-bordered">
-        <thead>
+    <thead>
             <tr>
                 <th>STT</th>
                 <th>Ảnh</th>
@@ -16,8 +11,8 @@ $showrooms = ($config == 'index') ? $dsbanner : $getDeleted;
             </tr>
         </thead>
         <tbody>
-        @foreach ($dsbanner as $index => $item)
-<tr>
+            @foreach ($getDeleted as $index => $item)
+            <tr>
     <td>{{ $index + 1 }}</td>
 
     <td>
@@ -76,19 +71,9 @@ $showrooms = ($config == 'index') ? $dsbanner : $getDeleted;
     </div>
 </td>
 </tr>
-@endforeach
+            @endforeach
 
-            
 
         </tbody>
     </table>
-    @else
-        <div class="not-search text-center">
-            <i class="fa-solid fa-circle-exclamation"></i>
-            <h3>Không tìm thấy {{ request('keyword') ? '"'.request('keyword').'"' : '' }}</h3>
-        </div>
-    @endif
-</div>
-
-
 </div>

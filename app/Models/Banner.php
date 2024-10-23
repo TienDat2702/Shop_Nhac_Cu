@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
-class Showroom extends Model
+use Illuminate\Database\Eloquent\SoftDeletes;
+class Banner extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $fillable = [
         'image',
         'order',
@@ -15,4 +15,8 @@ class Showroom extends Model
         'publish',
         'description',
     ];
+    public function scopeGetWithParent($query)
+    {
+        return $query->orderBy('id', 'DESC');
+    }
 }

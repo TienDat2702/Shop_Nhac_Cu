@@ -59,7 +59,7 @@
                     </ul>
                 </li>
                 <li class="menu-item has-children">
-                    <a href="javascript:void(0);" class="menu-item-button">
+                    <a href="{{route('banner.index')}}" class="menu-item-button">
                         <div class="icon"><i class="icon-file"></i></div>
                         <div class="text">Banner</div>
                     </a>
