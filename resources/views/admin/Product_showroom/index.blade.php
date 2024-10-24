@@ -1,10 +1,10 @@
 @extends('admin.layout.layout')
-@section('title', 'Danh sách showroom')
+@section('title', 'Danh Sách Sản Phẩm Showroom')
 @section('main')
     <div class="main-content-inner">
         <div class="main-content-wrap">
             <div class="flex items-center flex-wrap justify-between gap20 mb-27">
-                <h3>Categories</h3>
+                <h3>Danh Sách Sản Phẩm Showroom</h3>
                 <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
                     <li>
                         <a href="{{ route('dashboard.index') }}">
