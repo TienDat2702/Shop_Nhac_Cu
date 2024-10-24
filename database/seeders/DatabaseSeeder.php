@@ -13,6 +13,9 @@ class DatabaseSeeder extends Seeder
             ProductCategorySeeder::class,
             ShowroomSeeder::class,
             ProductSeeder::class,
+            LoyaltyLevelSeeder::class,
+            CustomerSeeder::class,
+            OrderSeeder::class,
         ]);
     }
 }

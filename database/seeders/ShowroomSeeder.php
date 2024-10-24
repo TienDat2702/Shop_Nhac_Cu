@@ -27,13 +27,15 @@ class ShowroomSeeder extends Seeder
         $showrooms = Showroom::all();
         $products = Product::all();
 
-        foreach ($showrooms as $showroom) {
-            $randomProducts = $products->random(rand(10, 30));
-            foreach ($randomProducts as $product) {
-                if (!$showroom->products->contains($product->id)) {
-                    $showroom->products()->attach($product->id, ['stock' => $faker->numberBetween(0, 100)]);
+        if ($products->isNotEmpty()) {
+            foreach ($showrooms as $showroom) {
+                $randomProducts = $products->random(min($products->count(), rand(5, 15)));
+                foreach ($randomProducts as $product) {
+                    $showroom->products()->attach($product->id, ['stock' => $faker->numberBetween(1, 100)]);
                 }
             }
+        } else {
+            $this->command->info('Không tìm thấy sản phẩm. Bỏ qua việc thêm sản phẩm vào showroom.');
         }
     }
 }

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('discount_id')->nullable(); 
             $table->string('name', 125); 
             $table->string('email', 125); 
-            $table->string('status', 225); 
+            $table->enum('status', ['chờ duyệt', 'đang giao', 'đã giao', 'bị lỗi', 'trả hàng', 'đang xử lý trả hàng', 'đã hoàn tiền', 'đã hủy'])->default('chờ duyệt');
             $table->text('customer_note')->nullable(); 
             $table->text('user_note')->nullable(); 
             $table->string('address', 125); 

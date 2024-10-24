@@ -34,7 +34,9 @@
                             </a>
                         </li>
                         <li class="sub-menu-item">
-                            <a href="{{ route('post.index') }}" class="">
+                            <a href="#
+                            {{-- {{ route('post.index') }} --}}
+                             " class="">
                                 <div class="text">Bài viêt</div>
                             </a>
                         </li>
@@ -48,12 +50,12 @@
                     </a>
                     <ul class="sub-menu">
                         <li class="sub-menu-item">
-                            <a href="#" class="">
+                            <a href="{{ route('order.index') }}" class="">
                                 <div class="text">Tất cả đơn hàng</div>
                             </a>
                         </li>
                         <li class="sub-menu-item">
-                            <a href="products.html" class="">
+                            <a href="{{ route('order.pending') }}" class="">
                                 <div class="text">Đơn hàng chưa duyệt</div>
                             </a>
                         </li>

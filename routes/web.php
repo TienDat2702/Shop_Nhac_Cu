@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminOrderController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PostCategoryController;
 use App\Http\Controllers\Ajax\AjaxDashboardController;
@@ -28,6 +29,11 @@ Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'cha
 Route::prefix('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 
+    Route::prefix('order')->group(function () {
+        Route::get('/', [AdminOrderController::class, 'index'])->name('order.index');
+        Route::get('/pending', [AdminOrderController::class, 'OrderPending'])->name('order.pending');
+        Route::get('/detail/{id}', [AdminOrderController::class, 'OrderDetail'])->name('order.detail');
+    });
 
     // POST CATEGORY
     Route::prefix('post')->group(function () {

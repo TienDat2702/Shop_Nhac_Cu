@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('description')->nullable(); 
             $table->timestamp('deleted_at')->nullable(); 
             $table->timestamps(); 
+            $table->string('logo')->nullable();
         });
     }
 
