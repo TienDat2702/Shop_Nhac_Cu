@@ -44,37 +44,39 @@ $showrooms = ($config == 'index') ? $dsbanner : $getDeleted;
     </form>
 </td>
 <td>
-    <div class="list-icon-function">
-        @if ($config == 'deleted')
-            <form class="form-restore" action="{{ route('banner.restore', $item->id) }}" method="POST">
-                @csrf
-                <button type="submit" class="btn btn-restore" title="Khôi phục">
-                    <i class="fa-solid fa-retweet"></i>
-                </button>
-            </form>
-            <form class="form-delete" action="{{ route('banner.forceDelete', $item->id) }}" method="POST">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-delete text-danger" title="Xóa">
-                    <i class="icon-trash-2"></i>
-                </button>
-            </form>
-        @else
-            <a href="{{ route('banner.edit', $item->id) }}" title="Chỉnh sửa">
-                <div class="item edit">
-                    <i class="icon-edit-3"></i>
-                </div>  
-            </a>
-            <form class="form-delete" action="{{ route('banner.destroy', $item->id) }}" method="POST">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-delete text-danger" title="Xóa">
-                    <i class="icon-trash-2"></i>
-                </button>
-            </form>
-        @endif
-    </div>
-</td>
+                        <div class="list-icon-function">
+                            @if ($config == 'deleted')
+                                <a href="{{ route('banner.restore', $item->id) }}" title="Khôi phục">
+                                    <div class="item edit">
+                                        <i class="fa-solid fa-retweet"></i>
+                                    </div>
+                                </a>
+                                <form class="form-delete" action="{{ route('banner.forceDelete', $item->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-delete item text-danger delete" title="Xóa" 
+                                    data-text="Bạn không thể khôi phục dữ liệu sau khi xóa!">
+                                        <i class="icon-trash-2"></i>
+                                    </button>
+                                </form>
+                            @else
+                                <a href="{{ route('banner.edit', $item->id) }}" title="Chỉnh sửa">
+                                    <div class="item edit">
+                                        <i class="icon-edit-3"></i>
+                                    </div>  
+                                </a>
+                                <form class="form-delete" action="{{ route('banner.destroy', $item->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-delete item text-danger delete" title="Xóa"
+                                    data-text="Bạn có thể khôi phục dữ liệu lại sau khi xóa."
+                                    data-text2="{{ ($item->parent_id == 0) ? 'Bạn có thể xóa tất cả danh mục liên quan đến danh mục hiện tại!' : '' }}">
+                                        <i class="icon-trash-2"></i>
+                                    </button>
+                                </form>
+                            @endif
+                        </div>
+                    </td>
 </tr>
 @endforeach
 

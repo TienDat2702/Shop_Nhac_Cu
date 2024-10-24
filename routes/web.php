@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\UploadCKImageController;
 use App\Http\Controllers\Ajax\AjaxDashboardController;
 use App\Http\Controllers\Admin\ShowroomController;
 use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\Admin\ProductShowroomController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
@@ -32,6 +33,7 @@ Route::get('/cart', [OrderController::class, 'index'])->name('cart.index');
 // AJAX
 Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
 
+ Route::prefix('admin')->group(function(){
 
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 
@@ -80,6 +82,14 @@ Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'cha
         Route::post('showroom/{id}/restore', [ShowroomController::class, 'restore'])->name('showroom.restore');
         Route::delete('showroom/{id}/force-delete', [ShowroomController::class, 'forceDelete'])->name('showroom.forceDelete');
         Route::delete('showroom/{id}', [ShowroomController::class, 'destroy'])->name('showroom.destroy');
+        Route::get('/showrooms/{showroomId}/add-product', [ShowroomController::class, 'showAddProductForm'])->name('showroom.showAddProductForm');
+        Route::post('/showrooms/products', [ShowroomController::class, 'addProductToShowroom'])->name('showroom.addProduct');
+    });
+    Route::prefix('Product_showroom')->group(function(){
+        Route::get('category/{showroomId}/products', [ProductShowroomController::class, 'index'])->name('Productshowroom.index');
+        Route::post('/update-product', [ProductShowroomController::class, 'updateProductInShowroom'])->name('Productshowroom.update');
+        Route::post('/remove-product', [ProductShowroomController::class, 'removeProductFromShowroom'])->name('Productshowroom.remove');
+
     });
     Route::prefix('banner')->group(function () {
         Route::get('category', [BannerController::class, 'index'])->name('banner.index'); // Route mới
@@ -128,4 +138,4 @@ Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'cha
         Route::get('restore/{id}', [BrandController::class, 'restore'])->name('brand.restore');
         Route::delete('forceDelete/{id}', [BrandController::class, 'forceDelete'])->name('brand.forceDelete');
     });
-
+});

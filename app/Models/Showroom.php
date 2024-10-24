@@ -15,6 +15,11 @@ class Showroom extends Model
         'image',
         'publish',
     ];
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'showroom_products')
+                    ->withPivot('stock'); // Thêm cột 'stock' từ bảng pivot
+    }
     public function scopeGetWithParent($query)
     {
         return $query->orderBy('id', 'DESC');
@@ -34,4 +39,5 @@ class Showroom extends Model
         }
         return $query->orderBy('id', 'DESC')->paginate(10);
     }
+
 }

@@ -52,14 +52,14 @@
                             </a>
                         </li>
                         <li class="sub-menu-item">
-                            <a href="products.html" class="">
+                            <a href="#" class="">
                                 <div class="text">Thống Kê Showrooms</div>
                             </a>
                         </li>
                     </ul>
                 </li>
                 <li class="menu-item has-children">
-                    <a href="{{route('banner.index')}}" class="menu-item-button">
+                    <a href="{{route('banner.index')}}" class="">
                         <div class="icon"><i class="icon-file"></i></div>
                         <div class="text">Banner</div>
                     </a>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Showroom;
+use App\Models\Product;
 use Illuminate\Http\Request;
 class ShowroomController extends Controller
 {
@@ -15,8 +16,9 @@ class ShowroomController extends Controller
             return view('admin.showroom.showroom_category.delete', compact('config', 'countDeleted', 'getDeleted'));
         } else {
             $config = 'index';
+            $products = Product::all();
             $dsshowroom = Showroom::GetWithParent()->Search($request->all());
-        return view('admin.showroom.showroom_category.index', compact('dsshowroom',  'countDeleted', 'config'));
+        return view('admin.showroom.showroom_category.index', compact('dsshowroom',  'countDeleted', 'config', 'products'));
     }
     }
     public function create()
@@ -174,7 +176,37 @@ public function destroy(string $id)
     toastr()->success('Xóa showroom thành công!');
     return redirect()->back();
 }
+public function showAddProductForm($showroomId)
+{
+    $showroom = Showroom::findOrFail($showroomId); // Tìm showroom
+    $products = Product::all(); // Lấy tất cả sản phẩm từ database
 
+    // Trả về view và truyền dữ liệu products vào form
+    return view('admin.showroom.showroom_add.add_product', compact('showroom', 'products'));
+}
 
+public function addProductToShowroom(Request $request)
+{
+    // Validate yêu cầu, bao gồm kiểm tra product_id, showroom_id và stock
+    $request->validate([
+        'product_id' => 'required|exists:products,id',
+        'showroom_id' => 'required|exists:showrooms,id', // Xác thực showroom_id
+        'stock' => 'required|integer|min:1', // Xác thực stock phải là số nguyên >= 1
+    ]);
 
+    // Tìm showroom theo showroom_id
+    $showroom = Showroom::findOrFail($request->showroom_id);
+
+    // Kiểm tra nếu sản phẩm đã tồn tại trong showroom
+    if (!$showroom->products()->where('product_id', $request->product_id)->exists()) {
+        // Nếu chưa có, thêm sản phẩm vào showroom với số lượng (stock)
+        $showroom->products()->attach($request->product_id, ['stock' => $request->stock]);
+        toastr()->success('Sản phẩm đã được thêm vào showroom với số lượng ' . $request->stock . '!');
+    } else {
+        toastr()->warning('Sản phẩm đã tồn tại trong showroom này.');
+    }
+
+    // Quay trở lại trang trước đó
+    return redirect()->back();
+}
 }

@@ -47,4 +47,9 @@ class Product extends Model
     {
         return $this->belongsTo(Brand::class);
     }
+    public function showrooms()
+    {
+        return $this->belongsToMany(Showroom::class, 'showroom_products')
+                    ->withPivot('stock'); // Thêm cột 'stock' từ bảng pivot
+    }
 }
