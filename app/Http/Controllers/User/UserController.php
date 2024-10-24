@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
-
+namespace App\Http\Controllers\User;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
     public function login(){
-        return view('login');
+        return view('user.login');
     }
     public function register(){
-        return view('register');
+        return view('user.register');
     }
 }

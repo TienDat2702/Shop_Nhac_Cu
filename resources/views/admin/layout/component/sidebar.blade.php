@@ -58,7 +58,7 @@
                         </li>
                         <li class="sub-menu-item">
                             <a href="{{ route('brand.index')}}" class="">
-                                <div class="text">Sản phẩm</div>
+                                <div class="text">Thương hiệu</div>
                             </a>
                         </li>
                     </ul>
