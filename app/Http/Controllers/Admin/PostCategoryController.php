@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PostCategoryCreateRequest;
 use App\Http\Requests\PostCategoryUpdateRequest;
 use App\Services\UploadImageService;
+// use App\Services\LibraryService;
 use App\Models\PostCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
@@ -14,28 +15,33 @@ class PostCategoryController extends Controller
 {
 
     protected $uploadImageService;
+    // protected $libraryService;
 
     public function __construct(
-        UploadImageService $uploadImageService
+        UploadImageService $uploadImageService, 
+        // LibraryService $libraryService
     ) {
         $this->uploadImageService = $uploadImageService;
+        // $this->libraryService = $libraryService;
     }
 
     //---------------------------------- Trang index-------------------------------------------
 
     public function index(Request $request)
     {
-        $config = 'index'; // phân biệt giữa trang index và trang deleted
-        $countDeleted = PostCategory::onlyTrashed()->get(); // đếm số phần tử đã bị xóa
-        if ($request['deleted'] == 'daxoa') {
-            $config = 'deleted';
-            $getDeleted = PostCategory::onlyTrashed()->paginate(10);
-            return view('admin.posts.post_category.deleted', compact('config', 'countDeleted','getDeleted'));
-        }
-        $postCategories = PostCategory::GetWithParent()->paginate(10); // lấy danh sách danh mục với quan hệ parent
 
-        
-        return view('admin.posts.post_category.index', compact('postCategories','countDeleted', 'config'));
+        $countDeleted = PostCategory::onlyTrashed()->get(); // đếm số phần tử đã bị xóa
+        // Kiểm tra nếu là trang đã xóa
+        if ($request->input('deleted') == 'daxoa') {
+            $config = 'deleted';
+            $getDeleted = PostCategory::onlyTrashed()->Search($request->all()); // Sử dụng scopeSearch từ model
+            return view('admin.posts.post_category.index', compact('config', 'countDeleted', 'getDeleted'));
+        }else{
+            $config = 'index'; // phân biệt giữa trang index và trang deleted
+            $postCategories = PostCategory::GetWithParent()->Search($request->all()); // Sử dụng scopeSearch từ model
+            return view('admin.posts.post_category.index', compact('postCategories', 'countDeleted', 'config'));
+        }
+
     }
 
     public function search(Request $request, $config){
@@ -74,17 +80,17 @@ class PostCategoryController extends Controller
         // Thiết lập level dựa trên level của danh mục cha
         $parentCategory = PostCategory::find($request->input('parent_id'));
         $level = $parentCategory ? $parentCategory->level + 1 : 1;
-        if($parentCategory){
-            $postCategory = PostCategory::create([
-                'name' => $request->input('name'),
-                'description' => $request->input('description'),
-                'parent_id' => $request->input('parent_id'),
-                'level' => $level,
-            ]);
-        }else{
-            return redirect()->back()->withErrors(['Danh mục không tồn tại!']);
-        }
-
+        
+        $slug = PostCategory::GenerateUniqueSlug($request->input('name'));
+        
+        $postCategory = PostCategory::create([
+            'name' => $request->input('name'),
+            'description' => $request->input('description'),
+            'parent_id' => $request->input('parent_id'),
+            'level' => $level,
+            'slug' => $slug,
+        ]);
+        
         // hàm xử lý ảnh
         $uploadPath = public_path('uploads/posts/post_categories');
         $this->uploadImageService->uploadImage($request, $postCategory, $uploadPath);
@@ -95,24 +101,23 @@ class PostCategoryController extends Controller
         else{
             toastr()->error('Thêm mới không thành công.');
         }
-        return redirect()->route('postCatagory.index');
+        return redirect()->route('postCategory.index');
     }
 
     //----------------------------------- Hiện form cập nhật ---------------------------------------
 
-    public function edit(string $id)
+    public function edit(string $slug)
     {
-
         $postCategories = $this->getRecursive();
-        $postCategory = PostCategory::GetWithParent()->find($id);
+        $postCategory = PostCategory::GetWithParent()->where('slug',$slug)->first();
         return view('admin.posts.post_category.update', compact('postCategories', 'postCategory'));
     }
 
     //------------------------------------- xử lý cập nhật------------------------------------------
 
-    public function update(PostCategoryUpdateRequest $request, string $id)
+    public function update(PostCategoryUpdateRequest $request, string $slug)
     {
-        $postCategory = PostCategory::GetWithParent()->find($id);
+        $postCategory = PostCategory::GetWithParent()->where('slug',$slug)->first();
         // kiểm tra xem id có tồn tại hay không
         if (!$postCategory) {
             return redirect()->back()->withErrors(['Danh mục không tồn tại!']);
@@ -124,7 +129,7 @@ class PostCategoryController extends Controller
         }
 
         // Thiết lập level dựa trên level của danh mục cha
-        $parentCategory = PostCategory::find($postCategory->parent_id);
+        $parentCategory = PostCategory::findOrFail($postCategory->parent_id);
         $level = $parentCategory ? $parentCategory->level + 1 : 1;
 
         $data = [
@@ -143,6 +148,8 @@ class PostCategoryController extends Controller
                 }
             }
         }
+
+        
         // hàm lưu ảnh
         $uploadPath = public_path('uploads/posts/post_categories');
         $this->uploadImageService->uploadImage($request, $postCategory, $uploadPath);
@@ -156,7 +163,7 @@ class PostCategoryController extends Controller
         else{
             toastr()->success('Không có gì thay đổi!');
         }
-        return redirect()->route('postCatagory.index');
+        return redirect()->route('postCategory.index');
     }
 
     //------------------------------------- xử lý kiểm tra danh mục cha con--------------------------------------
@@ -186,7 +193,7 @@ class PostCategoryController extends Controller
 
     public function destroy(string $id)
     {
-        $postCategory = PostCategory::GetWithParent()->find($id);
+        $postCategory = PostCategory::GetWithParent()->findOrFail($id);
 
         if (!$postCategory) {
             return redirect()->back()->withErrors(['Danh mục không tồn tại!']);
@@ -227,22 +234,28 @@ class PostCategoryController extends Controller
 
     //-------------------------------------- xử lý thùng rác--------------------------------------------------
 
-    public function deleted(){
-        $config = 'deleted'; // phân biệt giữa trang index và trang deleted
-        $countDeleted = PostCategory::onlyTrashed()->get(); // đếm số phần từ
-        $getDeleted = PostCategory::onlyTrashed()->paginate(10); // lấy danh sách các phần tử bị xóa
-        return view('admin.posts.post_category.deleted', compact('getDeleted','config', 'countDeleted'));
-    }
+    // public function deleted(){
+    //     $config = 'deleted'; // phân biệt giữa trang index và trang deleted
+    //     $countDeleted = PostCategory::onlyTrashed()->get(); // đếm số phần từ
+    //     $getDeleted = PostCategory::onlyTrashed()->paginate(10); // lấy danh sách các phần tử bị xóa
+    //     return view('admin.posts.post_category.deleted', compact('getDeleted','config', 'countDeleted'));
+    // }
 
     //--------------------------------------- xử lý khôi phục-----------------------------------------------
 
     public function restore(string $id)
     {
-        $postCategory = PostCategory::onlyTrashed()->find($id);
+        $postCategory = PostCategory::onlyTrashed()->findOrFail($id);
+        
+        // Tạo slug mới nếu slug bị trùng
+        $postCategory->slug = PostCategory::generateUniqueSlug($postCategory->name);
+        $postCategory->save();
 
         if (!$postCategory) {
             return redirect()->back()->withErrors(['Danh mục không tồn tại!']);
         }else{
+            $postCategory->publish = 2;
+            $postCategory->save();
             $postCategory->restore();
             toastr()->success('Khôi phục thành công!');
             return redirect()->back();  
@@ -252,7 +265,7 @@ class PostCategoryController extends Controller
     //----------------------------------------- xử lý xóa cứng --------------------------------------------------
 
     public function forceDelete(string $id){
-        $postCategory = PostCategory::onlyTrashed()->find($id);
+        $postCategory = PostCategory::onlyTrashed()->findOrFail($id);
 
         if (!$postCategory) {
             // echo 123; die();

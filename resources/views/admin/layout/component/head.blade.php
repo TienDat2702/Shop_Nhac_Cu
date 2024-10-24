@@ -18,5 +18,6 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}">
     
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.3/dist/sweetalert2.min.css" rel="stylesheet">
+    {{-- <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script> --}}
     @yield('css')
 </head>

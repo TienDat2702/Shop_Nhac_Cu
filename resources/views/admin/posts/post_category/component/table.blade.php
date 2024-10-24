@@ -58,12 +58,12 @@
                         <td>
                             <div class="list-icon-function">
                                 @if ($config == 'deleted')
-                                    <a href="{{ route('postCatagory.restore', $item->id)}}" title="Khôi phục">
+                                    <a href="{{ route('postCategory.restore', $item->id)}}" title="Khôi phục">
                                         <div class="item edit">
                                             <i class="fa-solid fa-retweet"></i>
                                         </div>
                                     </a>
-                                    <form class="form-delete" action="{{ route('postCatagory.forceDelete', $item->id) }}" method="POST">
+                                    <form class="form-delete" action="{{ route('postCategory.forceDelete', $item->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-delete item text-danger delete" title="Xóa" 
@@ -74,12 +74,12 @@
                                         </button>
                                     </form>
                                 @else
-                                    <a href="{{ route('postCatagory.edit', $item->id)}}" title="Chỉnh sửa">
+                                    <a href="{{ route('postCategory.edit', $item->slug)}}" title="Chỉnh sửa">
                                         <div class="item edit">
                                             <i class="icon-edit-3"></i>
                                         </div>  
                                     </a>
-                                    <form class="form-delete" action="{{ route('postCatagory.destroy', $item->id) }}" method="POST">
+                                    <form class="form-delete" action="{{ route('postCategory.destroy', $item->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-delete item text-danger delete" title="Xóa"
@@ -103,3 +103,9 @@
         </div>
     @endif
 </div>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination d-flex justify-content-center my-3">
+        {{ $categories->appends(request()->all())->links() }}
+    </ul>
+</nav>

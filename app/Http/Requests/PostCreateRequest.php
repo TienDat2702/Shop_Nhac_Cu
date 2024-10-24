@@ -22,8 +22,8 @@ class PostCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|unique:posts|max:225',
-            'slug' => 'required|unique:posts|max:225',
+            'title' => 'required|max:225',
+            'slug' => 'unique:posts|max:225',
         ];
     }
     public function messages()
@@ -31,8 +31,6 @@ class PostCreateRequest extends FormRequest
         return [
             'title.required' => 'Bạn chưa nhập tiêu đề',
             'title.max' => 'Tiêu đề không được vượt quá 225 từ',
-            'title.unique' => 'Tiêu đề danh mục đã được xử dụng',
-            'slug.required' => 'Bạn chưa nhập đường đãn',
             'slug.max' => 'Đường dẫn không được vượt quá 225 từ',
             'slug.unique' => 'Đường dẫn danh mục đã được xử dụng',
         ];
