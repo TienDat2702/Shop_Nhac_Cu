@@ -42,7 +42,7 @@
                 <div class="select">
                     @php
                     $post_category_id = request('post_category_id') ?: old('post_category_id');
-                @endphp
+                    @endphp
                     <select class="input-filter" name="post_category_id">
                         <option value="">Danh mục</option>
                         @foreach ($postCategories as $val)

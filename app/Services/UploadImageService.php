@@ -40,9 +40,9 @@ class UploadImageService
         return $model->save();
     }
 
-    public function uploadAlbum($request, $model, $path){
+    public function uploadAlbum($request, $model, $path, $relation){
         // Lấy tất cả các ảnh hiện tại từ cơ sở dữ liệu
-        $currentImages = $model->albums->pluck('path')->toArray();
+        $currentImages = $model->$relation->pluck('path')->toArray();
     
         // Danh sách ảnh mới từ request
         $newImages = json_decode($request->input('albums'), true) ?? [];
@@ -51,7 +51,7 @@ class UploadImageService
         $imagesToDelete = array_diff($currentImages, $newImages); // so sánh mảng mới từ request với CSDL
         foreach ($imagesToDelete as $imageToDelete) {
             // Xóa ảnh khỏi cơ sở dữ liệu
-            $model->albums()->where('path', $imageToDelete)->delete();
+            $model->$relation()->where('path', $imageToDelete)->delete();
     
             // Xóa file khỏi hệ thống
             $filePath = str_replace(url('/'), public_path(), $imageToDelete);
@@ -82,7 +82,7 @@ class UploadImageService
                 $relativePath = asset($path . '/' . $fileName);
     
                 // Lưu đường dẫn ảnh vào CSDL
-                $model->albums()->create([
+                $model->$relation()->create([
                     'path' => $relativePath
                 ]);
             }
