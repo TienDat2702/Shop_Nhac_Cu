@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id(); 
             $table->string('name', 125); 
             $table->string('image', 225)->nullable();
-            $table->tinyInteger('publish')->default(1); 
+            $table->tinyInteger('publish')->default(2); 
             $table->text('description')->nullable(); 
             $table->timestamp('deleted_at')->nullable(); 
+            $table->string('slug', 225)->nullable()->unique();
             $table->timestamps(); 
         });
     }

@@ -78,11 +78,11 @@ class PostCategoryController extends Controller
     public function store(PostCategoryCreateRequest $request)
     {
         // Thiết lập level dựa trên level của danh mục cha
-        $parentCategory = PostCategory::findOrFail($request->input('parent_id'));
+        $parentCategory = PostCategory::find($request->input('parent_id'));
         $level = $parentCategory ? $parentCategory->level + 1 : 1;
         
         $slug = PostCategory::GenerateUniqueSlug($request->input('name'));
-
+        
         $postCategory = PostCategory::create([
             'name' => $request->input('name'),
             'description' => $request->input('description'),
@@ -101,7 +101,7 @@ class PostCategoryController extends Controller
         else{
             toastr()->error('Thêm mới không thành công.');
         }
-        return redirect()->route('postCatagory.index');
+        return redirect()->route('postCategory.index');
     }
 
     //----------------------------------- Hiện form cập nhật ---------------------------------------
@@ -163,7 +163,7 @@ class PostCategoryController extends Controller
         else{
             toastr()->success('Không có gì thay đổi!');
         }
-        return redirect()->route('postCatagory.index');
+        return redirect()->route('postCategory.index');
     }
 
     //------------------------------------- xử lý kiểm tra danh mục cha con--------------------------------------

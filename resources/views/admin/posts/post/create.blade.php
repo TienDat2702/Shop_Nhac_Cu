@@ -17,7 +17,7 @@
                         <i class="icon-chevron-right"></i>
                     </li>
                     <li>
-                        <a href="{{ route('postCatagory.index') }}">
+                        <a href="{{ route('postCategory.index') }}">
                             <div class="text-tiny">@yield('crumb_parent')</div>
                         </a>
                     </li>
@@ -52,8 +52,7 @@
                         </fieldset>
                         <fieldset class="description">
                             <div class="form-description mt-3">
-                                <div class="body-title mb-10">Mô tả ngắn
-                                </div>
+                                <div class="body-title mb-10">Mô tả ngắn</div>
                                 <textarea type="text" name="description" class="form-control ck-editor" autocomplete="off" id="description">
                                 {{ old('description' ?? '') }}
                             </textarea>

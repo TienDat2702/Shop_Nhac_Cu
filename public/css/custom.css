@@ -347,12 +347,15 @@ input:checked + .roundbutton:before {
 /*-------------------------- ck editor ------------------------*/
 .form-content .ck-editor__editable_inline{
     height: 600px;
-  }
-  .form-description .ck-editor__editable_inline{
+}
+.form-description .ck-editor__editable_inline{
     height: 150px;
-  }
+}
+.product .form-description .ck-editor__editable_inline{
+    height: 450px;
+}
 
-form.post.tf-section-2.form-add-product {
+form.post.tf-section-2.form-add-product , form.product.tf-section-2.form-add-product{
     grid-template-columns: 70% 30%;
 }
 
@@ -392,4 +395,7 @@ form.post.tf-section-2.form-add-product {
 }
 .upload-image .item .fa-circle-xmark:hover{
     font-weight: 900;
+}
+select{
+    border-color: #7e7e7e;
 }
