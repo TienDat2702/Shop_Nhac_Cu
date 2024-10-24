@@ -18,7 +18,6 @@ return new class extends Migration
             $table->tinyInteger('publish')->default(2); 
             $table->integer('parent_id'); 
             $table->tinyInteger('level')->details(1);
-
             $table->integer('parent_id')->nullable(); 
             $table->text('description')->nullable(); 
             $table->string('slug', 225)->nullable()->unique();

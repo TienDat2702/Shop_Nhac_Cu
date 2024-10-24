@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminOrderController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -15,6 +16,8 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
+
+
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
 Route::get('/shop/{product_slug}',[ProductController::class,'product_details'])->name('shop.product.details');
@@ -23,12 +26,17 @@ Route::get('/register', [UserController::class, 'register'])->name('user.registe
 
 Route::get('/cart', [OrderController::class, 'index'])->name('cart.index');
 
+Route::prefix('order')->group(function () {
+    Route::get('/', [AdminOrderController::class, 'index'])->name('order.index');
+    Route::get('/pending', [AdminOrderController::class, 'OrderPending'])->name('order.pending');
+    Route::get('/detail/{id}', [AdminOrderController::class, 'OrderDetail'])->name('order.detail');
+});
+
 // AJAX
 Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
 
 Route::prefix('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
-
     // POST CATEGORY
     Route::prefix('post')->group(function () {
         
@@ -96,3 +104,5 @@ Route::prefix('admin')->group(function () {
         Route::delete('forceDelete/{id}', [BrandController::class, 'forceDelete'])->name('brand.forceDelete');
     });
 });
+
+

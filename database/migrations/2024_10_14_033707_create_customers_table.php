@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name', 125); 
             $table->string('email', 125)->unique(); // địa chỉ email, NOT NULL, UNIQUE
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password', 225); 
+            $table->string('password');
             $table->rememberToken();
             $table->string('image', 225)->nullable(); 
             $table->string('phone', 20);

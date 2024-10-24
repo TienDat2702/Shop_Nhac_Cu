@@ -20,6 +20,7 @@ return new class extends Migration
             $table->timestamp('deleted_at')->nullable(); 
             $table->string('slug', 225)->nullable()->unique();
             $table->timestamps(); 
+            $table->string('logo')->nullable();
         });
     }
 

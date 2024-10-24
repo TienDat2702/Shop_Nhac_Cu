@@ -29,9 +29,11 @@ class Brand extends Model
         }
         return $query->orderBy('id', 'DESC')->paginate(10);
     }
+
     public function scopeGetBrandAll($query){
         return $query->orderBy('id', 'DESC');
     }
+    
     public function scopeGenerateUniqueSlug($query, $str)
     {
         // Tạo slug 
@@ -43,4 +45,5 @@ class Brand extends Model
         // Nếu có trùng lặp, thêm hậu tố
         return $count ? "{$slug}-{$count}" : $slug;
     }
+
 }
