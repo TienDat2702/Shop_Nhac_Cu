@@ -64,6 +64,30 @@
                         <div class="text">Banner</div>
                     </a>
                 </li>
+                <li class="menu-item has-children">
+                    <a href="javascript:void(0);" class="menu-item-button">
+                        <div class="icon"><i class="icon-shopping-cart"></i></div>
+                        <div class="text">Sản phẩm</div>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="sub-menu-item">
+                            <a href="{{ route('productCategory.index')}}" class="">
+                                <div class="text">Danh mục sản phẩm</div>
+                            </a>
+                        </li>
+                        <li class="sub-menu-item">
+                            <a href="{{ route('product.index')}}" class="">
+                                <div class="text">Sản phẩm</div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="menu-item ">
+                    <a href="{{ route('brand.index')}}" class="menu-item-button">
+                        <div class="icon"><i class="icon-layers"></i></div>
+                        <div class="text">Thương hiệu</div>
+                    </a>
+                </li>
                 <li class="menu-item">
                     <a href="settings.html" class="">
                         <div class="icon"><i class="icon-settings"></i></div>

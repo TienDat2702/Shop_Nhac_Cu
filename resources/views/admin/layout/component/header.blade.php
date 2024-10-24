@@ -5,7 +5,6 @@
                 <img class="" id="logo_header_mobile" alt="" src="images/logo/logo.png"
                     data-light="images/logo/logo.png" data-dark="images/logo/logo.png" data-width="154px"
                     data-height="52px" data-retina="images/logo/logo.png">
-
             </a>
             <div class="button-show-hide">
                 <i class="icon-menu-left"></i>
