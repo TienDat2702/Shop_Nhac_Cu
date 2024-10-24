@@ -47,6 +47,11 @@
                     </a>
                     <ul class="sub-menu">
                         <li class="sub-menu-item">
+                            <a href="{{ route('brand.index')}}" class="">
+                                <div class="text">Thương hiệu</div>
+                            </a>
+                        </li>
+                        <li class="sub-menu-item">
                             <a href="{{ route('productCategory.index')}}" class="">
                                 <div class="text">Danh mục sản phẩm</div>
                             </a>
@@ -58,12 +63,12 @@
                         </li>
                     </ul>
                 </li>
-                <li class="menu-item ">
+                {{-- <li class="menu-item ">
                     <a href="{{ route('brand.index')}}" class="menu-item-button">
                         <div class="icon"><i class="icon-layers"></i></div>
                         <div class="text">Thương hiệu</div>
                     </a>
-                </li>
+                </li> --}}
 
 
                 <li class="menu-item">

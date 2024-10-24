@@ -13,7 +13,7 @@
                 <input type="text" name="keyword" placeholder="Tìm kiếm sản phẩm..." class="input-filter"
                     tabindex="2" value="{{ request('keyword') ?: old('keyword') }}" aria-required="true">
             </fieldset>
-            <fieldset class="publish" style="width: 40%">
+            <fieldset class="publish" style="width: 50%">
                 <div class="select">
                     @php
                         $publish = request('publish') ?: old('publish');
@@ -53,7 +53,7 @@
                     </select>
                 </div>
             </fieldset>
-            <fieldset class="brand" style="width: 40%">
+            <fieldset class="brand" style="width: 50%">
                 @php
                     $brand_id = request('brand_id') ?: old('brand_id');
                 @endphp
