@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Order extends Model
 {
@@ -19,6 +20,13 @@ class Order extends Model
         'user_note',
         'address',
         'phone'
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'delivered_at' => 'datetime',
+        'canceled_at' => 'datetime'
     ];
 
     public function customer()

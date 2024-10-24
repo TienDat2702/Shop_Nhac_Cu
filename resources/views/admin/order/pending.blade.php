@@ -46,18 +46,16 @@
                                 <td class="text-center">#{{ $order->id }}</td>
                                 <td class="text-center">{{ $order->customer->name }}</td>
                                 <td class="text-center">{{ $order->customer->phone }}</td>
-                                <td class="text-center">{{ number_format($order->subtotal, 2) }} đ</td>
+                                <td class="text-center">{{ number_format($order->total) }} VND</td>
                                 <td class="text-center">{{ $order->discount ? $order->discount->code : 'N/A' }}</td>
-                                <td class="text-center">{{ $order->discount ? number_format($order->discount->discount_rate, 2) : 0 }} đ</td>
-                                <td class="text-center">{{ number_format($order->total, 2) }} đ</td>
-                                <td class="text-center">{{ $order->status }}</td>
+                                <td class="text-center">{{ $order->discount ? number_format($order->discount->discount_rate) : 0 }} VND</td>
+                                <td class="text-center">{{ $order->discount ? number_format($order->total - $order->discount->discount_rate) : number_format($order->total) }} VND</td>
+                                <td class="text-center text-uppercase">{{ $order->status }}</td>
                                 <td class="text-center">{{ $order->created_at->format('Y-m-d H:i:s') }}</td>
                                 <td class="text-center">{{ $order->orderDetails->sum('quantity') }}</td>
-                                <td class="text-center">{{ $order->delivered_at ? $order->delivered_at->format('Y-m-d H:i:s') : '' }}</td>
+                                <td class="text-center">{{ $order->delivered_at ? $order->delivered_at->format('Y-m-d H:i:s') : 'Đang giao' }}</td>
                                 <td class="text-center">
-                                    <a href="
-                                    {{-- {{ route('orders.show', $order->id) }} --}}
-                                     #">
+                                    <a href="{{ route('order.show', $order->id) }}">
                                         <div class="list-icon-function view-icon">
                                             <div class="item eye">
                                                 <i class="icon-eye"></i>

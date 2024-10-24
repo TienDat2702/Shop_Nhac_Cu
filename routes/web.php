@@ -32,7 +32,8 @@ Route::prefix('admin')->group(function () {
     Route::prefix('order')->group(function () {
         Route::get('/', [AdminOrderController::class, 'index'])->name('order.index');
         Route::get('/pending', [AdminOrderController::class, 'OrderPending'])->name('order.pending');
-        Route::get('/detail/{id}', [AdminOrderController::class, 'OrderDetail'])->name('order.detail');
+        Route::get('/detail/{id}', [AdminOrderController::class, 'show'])->name('order.show');
+        Route::put('/{id}/update-status', [AdminOrderController::class, 'updateStatus'])->name('order.updateStatus');
     });
 
     // POST CATEGORY
