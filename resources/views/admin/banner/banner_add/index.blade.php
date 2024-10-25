@@ -13,34 +13,46 @@
         </ul>
     </div>
     @endif
-    <form class="tf-section-2 form-add-product" method="POST" enctype="multipart/form-data"
-      action="{{ route('banner.store') }}">
-     @csrf <!-- Sử dụng csrf_field() để tự động sinh ra token -->
+    <form class="tf-section-2 form-add-product" method="POST" enctype="multipart/form-data" action="{{ route('banner.store') }}">
+    @csrf <!-- Sử dụng csrf_field() để tự động sinh ra token -->
     <div class="wg-box">
-    <fieldset>
-    <div class="body-title">Upload images <span class="tf-color-1">*</span></div>
-    <div class="upload-image flex-grow">
-        <div class="item" id="imgpreview" style="display:none">
-            <img src="{{ asset('storage/images/showrooms/upload-1.png') }}" class="effect8" alt="">
-        </div>
-        <div id="upload-file" class="item up-load">
-            <label class="uploadfile" for="myFile">
-                <span class="icon">
-                    <i class="icon-upload-cloud"></i>
-                </span>
-                <span class="body-text">Drop your images here or select <span class="tf-color">click to browse</span></span>
-                <input type="file" id="myFile" name="image" accept="image/*" required> <!-- Thêm 'required' nếu cần -->
-            </label>
-        </div>
-    </div>
-</fieldset>
+        <fieldset>
+            <div class="body-title">Upload images <span class="tf-color-1">*</span></div>
+            <div class="upload-image flex-grow">
+                <div class="item" id="imgpreview" style="display:none">
+                    <img src="{{ asset('storage/images/showrooms/upload-1.png') }}" class="effect8" alt="">
+                </div>
+                <div id="upload-file" class="item up-load">
+                    <label class="uploadfile" for="myFile">
+                        <span class="icon">
+                            <i class="icon-upload-cloud"></i>
+                        </span>
+                        <span class="body-text">Drop your images here or select <span class="tf-color">click to browse</span></span>
+                        <input type="file" id="myFile" name="image" accept="image/*" required> <!-- Thêm 'required' nếu cần -->
+                    </label>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <div class="body-title">Order <span class="tf-color-1">*</span></div>
+            <div class="cols">
+                <input type="number" name="order" min="0" required placeholder="Enter order"> <!-- Thêm trường input cho position -->
+            </div>
+        </fieldset>
+        <!-- Thêm trường position -->
+        <fieldset>
+            <div class="body-title">Position <span class="tf-color-1">*</span></div>
+            <div class="cols">
+                <input type="number" name="position" min="0" required placeholder="Enter position"> <!-- Thêm trường input cho position -->
+            </div>
+        </fieldset>
 
-        
         <div class="cols gap10">
             <button class="tf-button w-full" type="submit">Add product</button>
         </div>
     </div>
 </form>
+
 
 <script>
     document.getElementById("myFile").addEventListener("change", function(event) {

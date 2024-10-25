@@ -28,10 +28,12 @@ public function store(Request $request)
 {
     // Xác thực dữ liệu đầu vào
     $request->validate([
-        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Kiểm tra định dạng hình ảnh
+        'image' => 'nullable|image|max:2048',
+        'position' => 'required|integer|min:0',
+        'order' => 'required|integer|min:0', // Kiểm tra position
     ]);
 
-    // Tạo một showroom mới
+    // Tạo một banner mới
     $banner = new Banner();
 
     // Xử lý upload hình ảnh
@@ -43,11 +45,14 @@ public function store(Request $request)
         $banner->image = 'uploads/banner/' . $imageName; // Lưu đường dẫn vào cơ sở dữ liệu
     }
 
-    $banner->publish = 2; // Mặc định là 1 (hoạt động)
+    $banner->position = $request->input('position');
+    $banner->order = $request->input('order'); // Lưu giá trị position từ request
+    $banner->publish = 2; // Mặc định là 2 (không hoạt động)
     $banner->save(); // Lưu banner vào cơ sở dữ liệu
-
-    return redirect()->route('banner.index')->with('success', 'banner added successfully.');
+    toastr()->success('Thêm Banner Thành Công!');
+    return redirect()->route('banner.index');
 }
+
     public function togglePublish($id, Request $request)
 {
     $banner = Banner::findOrFail($id); // Tìm banner theo ID
@@ -61,41 +66,59 @@ public function store(Request $request)
 public function edit($id)
 {
     $banner = Banner::findOrFail($id);
+
     return view('admin.banner.banner_edit.index', compact('banner'));
 }
 
 public function update(Request $request, $id)
 {
-    // Validate dữ liệu từ request
-    $request->validate([
-        'image' => 'nullable|image|max:2048', // Kiểm tra ảnh nếu có
-    ]);
+    try {
+        // Validate dữ liệu từ request
+        $request->validate([
+            'image' => 'nullable|image|max:2048',
+            'position' => 'required|integer|min:0',
+            'order' => 'required|integer|min:0', // Kiểm tra position
+        ]);
 
-    // Tìm showroom theo id
-    $banner = banner::findOrFail($id);
+        // Tìm banner theo id
+        $banner = Banner::findOrFail($id);
 
-    // Nếu có upload hình ảnh mới
-    if ($request->hasFile('image')) {
-        // Kiểm tra xem showroom có hình ảnh cũ hay không và xóa nếu cần
-        if ($banner->image) {
-            $oldImagePath = public_path($banner->image);
-            if (file_exists($oldImagePath)) {
-                unlink($oldImagePath); // Xóa hình ảnh cũ
+        // Nếu có upload hình ảnh mới
+        if ($request->hasFile('image')) {
+            // Kiểm tra xem banner có hình ảnh cũ hay không và xóa nếu cần
+            if ($banner->image) {
+                $oldImagePath = public_path($banner->image);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath); // Xóa hình ảnh cũ
+                }
             }
+
+            // Upload hình ảnh mới và lưu vào đúng thư mục
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName(); // Đặt tên file
+            $image->move(public_path('uploads/banner'), $imageName); // Di chuyển file đến thư mục public/uploads/banner
+            $banner->image = 'uploads/banner/' . $imageName; // Lưu đường dẫn tương đối của ảnh
         }
-        // Upload hình ảnh mới và lưu vào đúng thư mục
-        $image = $request->file('image');
-        $imageName = time() . '_' . $image->getClientOriginalName(); // Đặt tên file
-        $image->move(public_path('uploads/banner'), $imageName); // Di chuyển file đến thư mục public/uploads/banner
-        $banner->image = 'uploads/banner/' . $imageName; // Lưu đường dẫn tương đối của ảnh
+
+        // Cập nhật giá trị position
+        $banner->position = $request->input('position'); // Lưu giá trị position từ request
+        $banner->order = $request->input('order'); 
+        // Lưu banner
+        $banner->save();
+
+        toastr()->success('Cập nhật Banner Thành Công');
+        
+        // Redirect về trang danh sách banner
+        return redirect()->route('banner.index');
+    } catch (\Exception $e) {
+        // Nếu có lỗi xảy ra
+        toastr()->error('Đã xảy ra lỗi: ' . $e->getMessage());
+        
+        // Redirect về trang danh sách banner
+        return redirect()->route('banner.index')->withInput();
     }
-
-    // Lưu banner
-    $banner->save();
-
-    // Redirect về trang danh sách showroom và hiển thị thông báo thành công
-    return redirect()->route('banner.index')->with('success', 'Showroom cập nhật thành công.');
 }
+
 public function restore(string $id)
 {
     $banner = Banner::onlyTrashed()->find($id);
