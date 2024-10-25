@@ -44,9 +44,6 @@ class ProductController extends Controller
     }
     
     
-    
-    
->>>>>>> 863f258468c681793dcb0da33437fd7a5a2ebf89
 
     public function product_details($id)
     {
