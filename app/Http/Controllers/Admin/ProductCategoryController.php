@@ -75,13 +75,13 @@ class ProductCategoryController extends Controller
     public function edit(string $id)
     {
         $productCategories = $this->getRecursive();
-        $productCategory = ProductCategory::GetWithParent()->findOrFail($id);
+        $productCategory = ProductCategory::GetWithParent()->find($id);
         return view('admin.products.product_category.update', compact('productCategories', 'productCategory'));
     }
 
     public function update(ProductCategoryUpdateRequest $request, string $id)
     {
-        $productCategory = ProductCategory::GetWithParent()->findOrFail($id);
+        $productCategory = ProductCategory::GetWithParent()->find($id);
         if (!$productCategory) {
             return redirect()->back()->withErrors(['Danh mục không tồn tại!']);
         }
@@ -90,7 +90,7 @@ class ProductCategoryController extends Controller
             return redirect()->back()->withErrors(['Danh mục cha không hợp lệ!!!']);
         }
 
-        $parentCategory = ProductCategory::findOrFail($productCategory->parent_id);
+        $parentCategory = ProductCategory::find($productCategory->parent_id);
         $level = $parentCategory ? $parentCategory->level + 1 : 1;
 
         $data = [
@@ -124,7 +124,7 @@ class ProductCategoryController extends Controller
 
     public function destroy(string $id)
     {
-        $productCategory = ProductCategory::GetWithParent()->findOrFail($id);
+        $productCategory = ProductCategory::GetWithParent()->find($id);
 
         if (!$productCategory) {
             return redirect()->back()->withErrors(['Danh mục không tồn tại!']);
@@ -171,7 +171,7 @@ class ProductCategoryController extends Controller
 
     public function restore(string $id)
     {
-        $productCategory = ProductCategory::onlyTrashed()->findOrFail($id);
+        $productCategory = ProductCategory::onlyTrashed()->find($id);
 
         if (!$productCategory) {
             return redirect()->back()->withErrors(['Danh mục không tồn tại!']);
@@ -186,7 +186,7 @@ class ProductCategoryController extends Controller
 
     public function forceDelete(string $id)
     {
-        $productCategory = ProductCategory::onlyTrashed()->findOrFail($id);
+        $productCategory = ProductCategory::onlyTrashed()->find($id);
 
         if (!$productCategory) {
             toastr()->error('Dữ liệu không tồn tại!');

@@ -34,16 +34,16 @@
             </div>
         </fieldset>
         <fieldset>
-            <div class="body-title">Order <span class="tf-color-1">*</span></div>
+            <div class="body-title">Vị Trí Xuất Hiện <span class="tf-color-1">*</span></div>
             <div class="cols">
-                <input type="number" name="order" min="0" required placeholder="Enter order"> <!-- Thêm trường input cho position -->
+                <input type="number" name="order" min="0" required placeholder="VD:1 là slide banner1, 2 là slide banner2,"> <!-- Thêm trường input cho position -->
             </div>
         </fieldset>
         <!-- Thêm trường position -->
         <fieldset>
-            <div class="body-title">Position <span class="tf-color-1">*</span></div>
+            <div class="body-title">Trang Xuất Hiện <span class="tf-color-1">*</span></div>
             <div class="cols">
-                <input type="number" name="position" min="0" required placeholder="Enter position"> <!-- Thêm trường input cho position -->
+                <input type="number" name="position" min="0" required placeholder="VD: 1 xuất hiện ở trang chủ"> <!-- Thêm trường input cho position -->
             </div>
         </fieldset>
 

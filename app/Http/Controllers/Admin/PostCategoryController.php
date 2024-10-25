@@ -129,7 +129,7 @@ class PostCategoryController extends Controller
         }
 
         // Thiết lập level dựa trên level của danh mục cha
-        $parentCategory = PostCategory::findOrFail($postCategory->parent_id);
+        $parentCategory = PostCategory::find($postCategory->parent_id);
         $level = $parentCategory ? $parentCategory->level + 1 : 1;
 
         $data = [
@@ -193,7 +193,7 @@ class PostCategoryController extends Controller
 
     public function destroy(string $id)
     {
-        $postCategory = PostCategory::GetWithParent()->findOrFail($id);
+        $postCategory = PostCategory::GetWithParent()->find($id);
 
         if (!$postCategory) {
             return redirect()->back()->withErrors(['Danh mục không tồn tại!']);
@@ -245,7 +245,7 @@ class PostCategoryController extends Controller
 
     public function restore(string $id)
     {
-        $postCategory = PostCategory::onlyTrashed()->findOrFail($id);
+        $postCategory = PostCategory::onlyTrashed()->find($id);
         
         // Tạo slug mới nếu slug bị trùng
         $postCategory->slug = PostCategory::generateUniqueSlug($postCategory->name);
@@ -265,7 +265,7 @@ class PostCategoryController extends Controller
     //----------------------------------------- xử lý xóa cứng --------------------------------------------------
 
     public function forceDelete(string $id){
-        $postCategory = PostCategory::onlyTrashed()->findOrFail($id);
+        $postCategory = PostCategory::onlyTrashed()->find($id);
 
         if (!$postCategory) {
             // echo 123; die();
