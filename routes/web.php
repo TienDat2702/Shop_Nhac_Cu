@@ -50,7 +50,6 @@ Route::get('/cart', [OrderController::class,'index'])->name('cart.index');
 //     Route::get('/pending', [AdminOrderController::class, 'OrderPending'])->name('order.pending');
 //     Route::get('/detail/{id}', [AdminOrderController::class, 'OrderDetail'])->name('order.detail');
 // });
->>>>>>> 33f8a6245c5d65b1cb61b1dfc01464c46f3bea2d
 
 // AJAX
 Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
