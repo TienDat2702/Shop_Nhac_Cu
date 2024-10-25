@@ -26,7 +26,6 @@ Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
 Route::get('/shop/{product_slug}',[ProductController::class,'product_details'])->name('shop.product.details');
 Route::get('/login', [UserController::class, 'login'])->name('user.login');
 Route::get('/register', [UserController::class, 'register'])->name('user.register');
-Route::get('/products/filter', [App\Http\Controllers\User\ProductController::class, 'filter'])->name('products.filter');
 Route::get('/cart', [OrderController::class, 'index'])->name('cart.index');
 
 
@@ -80,7 +79,7 @@ Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'cha
         Route::get('edit/{id}', [ShowroomController::class, 'edit'])->name('showroom.edit'); // Route để sửa
         Route::put('{id}', [ShowroomController::class, 'update'])->name('showroom.update'); // Route để cập nhật
         Route::post('toggle-publish/{id}', [ShowroomController::class, 'togglePublish'])->name('showroom.togglePublish');
-        Route::post('showroom/{id}/restore', [ShowroomController::class, 'restore'])->name('showroom.restore');
+        Route::get('showroom/{id}/restore', [ShowroomController::class, 'restore'])->name('showroom.restore');
         Route::delete('showroom/{id}/force-delete', [ShowroomController::class, 'forceDelete'])->name('showroom.forceDelete');
         Route::delete('showroom/{id}', [ShowroomController::class, 'destroy'])->name('showroom.destroy');
         Route::get('/showrooms/{showroomId}/add-product', [ShowroomController::class, 'showAddProductForm'])->name('showroom.showAddProductForm');
@@ -96,7 +95,7 @@ Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'cha
         Route::post('toggle-publish/{id}', [BannerController::class, 'togglePublish'])->name('banner.togglePublish');
         Route::get('edit/{id}', [BannerController::class, 'edit'])->name('banner.edit'); // Route để sửa
         Route::put('{id}', [BannerController::class, 'update'])->name('banner.update'); // Route để cập nhật
-        Route::post('banner/{id}/restore', [BannerController::class, 'restore'])->name('banner.restore');
+        Route::get('banner/{id}/restore', [BannerController::class, 'restore'])->name('banner.restore');
         Route::delete('banner/{id}/force-delete', [BannerController::class, 'forceDelete'])->name('banner.forceDelete');
         Route::delete('banner/{id}', [BannerController::class, 'destroy'])->name('banner.destroy');
         Route::get('create', [BannerController::class, 'create'])->name('banner.create'); // Route mới
