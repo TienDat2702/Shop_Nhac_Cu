@@ -13,9 +13,9 @@ class HomeController extends Controller
 {
     public function index(){
         $brands = Brand::all();
-        $banner = Banner::where('order', 1)->where('position', 1)->first();
-        $banner2 = Banner::where('order', 2)->where('position', 1)->first();
-        $banner3 = Banner::where('order', 3)->where('position', 1)->first();
+        $banner = Banner::where('order', 1)->where('position', 1)->where('publish', 2)->first();
+        $banner2 = Banner::where('order', 2)->where('position', 1)->where('publish', 2)->first();
+        $banner3 = Banner::where('order', 3)->where('position', 1)->where('publish', 2)->first();
         $product_views = Product::orderBy('view', 'desc')->take(2)->get();
         $product_price = Product::orderBy('price_sale', 'asc')->take(8)->get();
         $products = Product::orderBy('updated_at', 'desc')->paginate(8);
