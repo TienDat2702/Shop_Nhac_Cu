@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Product;
 use App\Models\ProductCategory;
@@ -14,6 +15,6 @@ class HomeController extends Controller
         $product_views = Product::orderBy('view', 'desc')->take(2)->get();
         $product_price = Product::orderBy('price_sale', 'asc')->take(8)->get();
         $products = Product::orderBy('updated_at', 'desc')->paginate(8);
-        return view('index', compact('brands', 'product_views', 'product_price', 'products'));
+        return view('user.index', compact('brands', 'product_views', 'product_price', 'products'));
     }
 }

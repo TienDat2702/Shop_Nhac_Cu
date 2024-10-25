@@ -19,29 +19,46 @@ class OrderSeeder extends Seeder
 
         for ($i = 0; $i < 50; $i++) {
             $customer = $customers->random();
+            $status = $faker->randomElement(['chờ duyệt', 'đang giao', 'đã giao']);
+            $deliveredAt = null;
+            if ($status === 'đã giao') {
+                $deliveredAt = $faker->dateTimeBetween('-1 month', 'now');
+            }
+
             $order = Order::create([
                 'customer_id' => $customer->id,
                 'discount_id' => null,
                 'name' => $customer->name,
                 'email' => $customer->email,
-                'status' => $faker->randomElement(['chờ duyệt', 'đang giao', 'đã giao']),
+                'status' => $status,
                 'customer_note' => $faker->optional()->sentence,
                 'user_note' => $faker->optional()->sentence,
                 'address' => $faker->address,
                 'phone' => $customer->phone,
+                'delivered_at' => $deliveredAt,
+                'canceled_at' => null,
+                'total' => 0, // Khởi tạo tổng tiền là 0
             ]);
 
             $numberOfProducts = $faker->numberBetween(1, 5);
             $orderProducts = $products->random($numberOfProducts);
+            $total = 0;
 
             foreach ($orderProducts as $product) {
+                $quantity = $faker->numberBetween(1, 5);
+                $price = $product->price;
+                $subtotal = $quantity * $price;
+                $total += $subtotal;
+
                 OrderDetail::create([
                     'order_id' => $order->id,
                     'product_id' => $product->id,
-                    'quantity' => $faker->numberBetween(1, 5),
-                    'price' => $product->price,
+                    'quantity' => $quantity,
+                    'price' => $price,
                 ]);
             }
+
+            $order->update(['total' => $total]);
         }
     }
 }
