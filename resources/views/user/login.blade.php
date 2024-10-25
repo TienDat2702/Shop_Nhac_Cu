@@ -12,7 +12,7 @@
         <div class="tab-content pt-2" id="login_register_tab_content">
             <div class="tab-pane fade show active" id="tab-item-login" role="tabpanel" aria-labelledby="login-tab">
                 <div class="login-form">
-                    <form method="POST" action="#" name="login-form" class="needs-validation" novalidate="">
+                    <form method="POST" action="" name="login-form" class="needs-validation" novalidate="">
                         <div class="form-floating mb-3">
                             <input class="form-control form-control_gray " name="email" value="" required=""
                                 autocomplete="email" autofocus="">
