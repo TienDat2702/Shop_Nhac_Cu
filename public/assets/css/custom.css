@@ -17,3 +17,9 @@
 .form-floating>.form-select {
     height: 48px;
 }
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+    font-style: italic;
+}

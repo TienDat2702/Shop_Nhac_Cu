@@ -47,7 +47,7 @@
 
                     <div class="search-popup js-hidden-content">
                         <form action="#" method="GET" class="search-field container">
-                            <p class="text-uppercase text-secondary fw-medium mb-4">What are you looking for?</p>
+                            <p class="text-uppercase text-secondary fw-medium mb-4">Bạn muốn tìm gì?</p>
                             <div class="position-relative">
                                 <input class="search-field__input search-popup__input w-100 fw-medium"
                                     type="text" name="search-keyword" placeholder="Search products" />
@@ -86,7 +86,8 @@
                 </div>
 
                 
-                    <div class="header-tools__item hover-container">
+                @if (!Auth::guard('customer')->check())
+                <div class="header-tools__item hover-container">
                         <a href="{{ route('user.login') }}" class="header-tools__item">
                             <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -94,7 +95,16 @@
                             </svg>
                         </a>
                     </div>
-                
+                @else
+                    <div class="header-tools__item hover-container">
+                        <a href="{{ route('user.profile') }}" class="header-tools__item">
+                            {{-- <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                xmlns="http://www.w3.org/2000/svg"> --}}
+                                <i class="fa fa-user" style="font-size: 25px;" aria-hidden="true"></i>
+                            {{-- </svg> --}}
+                        </a>
+                    </div>
+                @endif
 
 
 
@@ -121,6 +131,9 @@
                             class="cart-amount d-block position-absolute js-cart-items-count">{{ Cart::instance('cart')->content()->count() }}</span>
                     @endif
                 </a> --}}
+                @if (Auth::guard('customer')->check())
+                <a href="{{ route('user.logout') }}" class="header-tools__item"><i class="fa fa-sign-out" style="font-size: 25px;" aria-hidden="true"></i></a>
+                @endif
             </div>
         </div>
     </div>

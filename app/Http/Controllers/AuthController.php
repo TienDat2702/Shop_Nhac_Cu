@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\User;
-use App\Http\Controllers\Controller;
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
-use App\Models\Order;
-use Illuminate\Http\Request;
-use App\Models\Customer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use App\Models\User;
 
-class UserController extends Controller
+class AuthController extends Controller
 {
     public function login()
     {
-        if (Auth::guard('customer')->check()) {
-            return redirect()->route('home.index');
+        if (Auth::id() > 0) {
+            return redirect()->route('user.profile');
         }
         return view('user.login');
     }
@@ -23,17 +23,22 @@ class UserController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
-        if (Auth::guard('customer')->attempt($credentials)) {
-            return redirect()->route('home.index')->with('success', 'Đăng nhập thành công');
+        if (Auth::attempt($credentials)) {
+            return redirect()->route('user.shop.index')->with('success', 'Đăng nhập thành công');
         }
 
         return redirect()->route('user.login')->with('error', 'Email hoặc Mật khẩu không chính xác');
     }
-
+   
+    public function register()
+    {
+        return view('user.register');
+    }
     public function postRegister(RegisterRequest $request)
     {
         try {
-            Customer::create([
+            // Tạo người dùng mới với dữ liệu đã xác thực từ RegisterRequest
+            User::create([
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
                 'phone' => $request->input('phone'),
@@ -48,7 +53,7 @@ class UserController extends Controller
 
     public function logout(Request $request)
     {
-        Auth::guard('customer')->logout();
+        Auth::logout();
 
         $request->session()->invalidate();
 
@@ -56,15 +61,4 @@ class UserController extends Controller
 
         return redirect()->route('user.login');
     }
-
-    public function profile(){
-        return view('user.profile');
-    }
-
-    public function userOrder(){
-        $orders = Order::where('customer_id', Auth::guard('customer')->user()->id)->get();
-        return view('user.userOrder', compact('orders'));
-    }
-
-    //
 }
