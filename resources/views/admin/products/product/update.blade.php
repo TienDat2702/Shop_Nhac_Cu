@@ -40,7 +40,7 @@
                         </ul>
                     </div>
                 @endif
-                <form class="tf-section-2 form-add-product" method="post" enctype="multipart/form-data"
+                <form class="product tf-section-2 form-add-product" method="post" enctype="multipart/form-data"
                     action="{{ route('product.update', $product->id) }}">
                     @csrf
                     <div class="wg-box">
@@ -50,31 +50,66 @@
                             value="{{ old('name', $product->name) }}">
                         </fieldset>
 
-                        <fieldset class="price">
-                            <div class="body-title mb-10">Giá <span class="tf-color-1">*</span></div>
-                            <input class="mb-10" type="number" step="10000" min="0" placeholder="Nhập giá sản phẩm" name="price"
-                            value="{{ old('price', intval($product->price)) }}">
-                        </fieldset>
-                        
-                        <fieldset class="price_sale">
-                            <div class="body-title mb-10">Giá khuyến mãi</div>
-                            <input class="mb-10" type="number" step="10000" min="0" placeholder="Nhập giá khuyến mãi" name="price_sale"
-                            value="{{ old('price_sale', intval($product->price_sale)) }}">
-                        </fieldset>
-                        
-                        
+                        <div class="cols gap22">
+                            <fieldset class="price">
+                                <div class="body-title mb-10">Giá <span class="tf-color-1">*</span></div>
+                                <input class="mb-10" type="number" min="0" placeholder="Nhập giá sản phẩm" name="price"
+                                value="{{ old('price', intval($product->price)) }}">
+                            </fieldset>
+                            
+                            <fieldset class="price_sale">
+                                <div class="body-title mb-10">Giá khuyến mãi</div>
+                                <input class="mb-10" type="number" min="0" placeholder="Nhập giá khuyến mãi" name="price_sale"
+                                value="{{ old('price_sale', intval($product->price_sale)) }}">
+                            </fieldset>    
+                        </div>
+                                      
                         <fieldset class="description">
-                            <div class="body-title mb-10">Mô tả</div>
-                            <textarea class="mb-10" placeholder="Nhập mô tả" name="description">{{ old('description', $product->description) }}</textarea>
+                            <div class="form-description mt-3">
+                                <div class="body-title mb-10">Mô tả</div>
+                                <textarea type="text" name="description" class="form-control ck-editor" autocomplete="off" id="description">{{ old('description', $product->description) }}</textarea>
+                            </div>
+                        </fieldset>
+
+                        <fieldset>
+                            <div class="body-title mb-10">Album ảnh</div>
+                            <div class="upload-image mb-16 upload-album">
+                                <div id="galUpload" class="item up-load">
+                                    <label class="uploadfile" for="gFile">
+                                        <span class="icon">
+                                            <i class="icon-upload-cloud"></i>
+                                        </span>
+                                        <span class="text-tiny">Drop your images here or select <span class="tf-color">click to browse</span></span>
+                                        <input class="album-image" type="file" id="gFile" name="images[]" value="" accept="image/*" multiple="">
+                                        <input type="hidden" id="albums" name="albums" value="{{ old('albums', json_encode($thumbnails->toArray())) }}">
+                                    </label>
+                                </div>
+
+                                @if (old('albums') )
+                                    @foreach (json_decode(old('albums')) as $item)
+                                        <div class="item old item-parent"> 
+                                            <img class="albumPreview" src="{{ $item }}" alt="">
+                                            <i class="fa-regular fa-circle-xmark delete-img"></i>
+                                        </div>
+                                    @endforeach
+                                @else 
+                                    @foreach ($thumbnails->toArray() as $item)
+                                        <div class="item item-parent"> 
+                                            <img class="albumPreview" src="{{ $item }}" alt="">
+                                            <i class="fa-regular fa-circle-xmark delete-img"></i>
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </div>
                         </fieldset>
                     </div>
                     <div class="wg-box">
-                        <div class="gap22 cols">
+                        <div class="">
                             <fieldset class="category">
                                 <div class="body-title mb-10">Danh mục</div>
                                 <div class="select">
                                     <select name="category_id">
-                                        <option value="0">--Chọn danh mục--</option>
+                                        <option value="">--Chọn danh mục--</option>
                                         @foreach ($categories as $val)
                                             <option 
                                             @if ($val->id == old('category_id', $product->category_id)) selected
@@ -91,7 +126,7 @@
                                 <div class="body-title mb-10">Thương hiệu</div>
                                 <div class="select">
                                     <select name="brand_id">
-                                        <option value="0">--Chọn thương hiệu--</option>
+                                        <option value="">--Chọn thương hiệu--</option>
                                         @foreach ($brands as $val)
                                             <option 
                                             @if ($val->id == old('brand_id', $product->brand_id)) selected
@@ -133,6 +168,12 @@
         </div>
     @endsection
 
+@section('css')
+    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+@endsection
 @section('script')
     <script src="{{ asset('librarys/upload.js') }}"></script>
+    <script>
+        var uploadUrl = "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}";
+    </script>
 @endsection

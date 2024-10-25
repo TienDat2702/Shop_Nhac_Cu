@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class ProductCategory extends Model
 {
@@ -55,6 +56,17 @@ class ProductCategory extends Model
             }
         }
     }
+    public function scopeGenerateUniqueSlug($query, $str)
+    {
+        // Tạo slug 
+        $slug = Str::slug($str);
+
+        // tìm xem slug có tồn tại hay chưa
+        $count = $query->withTrashed()->where('slug', 'LIKE', "{$slug}%")->count();
+
+        // Nếu có trùng lặp, thêm hậu tố
+        return $count ? "{$slug}-{$count}" : $slug;
+    }
 
     public function scopeGetProductCategoryByParentId($query, $parent_id)
     {
@@ -65,9 +77,9 @@ class ProductCategory extends Model
     {
         return $this->belongsTo(ProductCategory::class, 'parent_id');
     }
-
     public function products()
     {
         return $this->hasMany(Product::class, 'category_id', 'id');
-    }
+    }  
+       
 }

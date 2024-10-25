@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminOrderController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -8,44 +9,43 @@ use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\Admin\UploadCKImageController;
 use App\Http\Controllers\Ajax\AjaxDashboardController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\User\HomeController;
+use App\Http\Controllers\User\OrderController;
+use App\Http\Controllers\User\ProductController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
 Route::get('/shop/{product_slug}',[ProductController::class,'product_details'])->name('shop.product.details');
 Route::get('/login', [UserController::class, 'login'])->name('user.login');
 Route::get('/register', [UserController::class, 'register'])->name('user.register');
-
+Route::get('/products/filter', [App\Http\Controllers\User\ProductController::class, 'filter'])->name('products.filter');
 Route::get('/cart', [OrderController::class, 'index'])->name('cart.index');
+
+
 
 // AJAX
 Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
 
 Route::prefix('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
-
     // POST CATEGORY
     Route::prefix('post')->group(function () {
         
-        Route::get('category', [PostCategoryController::class,'index'])->name('postCatagory.index');
-        Route::get('category/deleted', [PostCategoryController::class,'deleted'])->name('postCatagory.deleted');
-        Route::get('category/search/{config}', [PostCategoryController::class,'search'])->name('postCatagory.search');
-        Route::get('category/create', [PostCategoryController::class,'create'])->name('postCatagory.create');
-        Route::post('category/store', [PostCategoryController::class,'store'])->name('postCatagory.store');
-        Route::get('category/edit/{slug}', [PostCategoryController::class,'edit'])->name('postCatagory.edit');
-        Route::post('category/update/{slug}', [PostCategoryController::class,'update'])->name('postCatagory.update');
-        Route::delete('category/destroy/{id}', [PostCategoryController::class,'destroy'])->name('postCatagory.destroy');
-        Route::get('category/restore/{id}', [PostCategoryController::class,'restore'])->name('postCatagory.restore');
-        Route::delete('category/forceDelete/{id}', [PostCategoryController::class,'forceDelete'])->name('postCatagory.forceDelete');
+        Route::get('category', [PostCategoryController::class,'index'])->name('postCategory.index');
+        Route::get('category/deleted', [PostCategoryController::class,'deleted'])->name('postCategory.deleted');
+        Route::get('category/search/{config}', [PostCategoryController::class,'search'])->name('postCategory.search');
+        Route::get('category/create', [PostCategoryController::class,'create'])->name('postCategory.create');
+        Route::post('category/store', [PostCategoryController::class,'store'])->name('postCategory.store');
+        Route::get('category/edit/{slug}', [PostCategoryController::class,'edit'])->name('postCategory.edit');
+        Route::post('category/update/{slug}', [PostCategoryController::class,'update'])->name('postCategory.update');
+        Route::delete('category/destroy/{id}', [PostCategoryController::class,'destroy'])->name('postCategory.destroy');
+        Route::get('category/restore/{id}', [PostCategoryController::class,'restore'])->name('postCategory.restore');
+        Route::delete('category/forceDelete/{id}', [PostCategoryController::class,'forceDelete'])->name('postCategory.forceDelete');
     });
     // POST
     Route::prefix('post')->group(function () {
@@ -62,9 +62,9 @@ Route::prefix('admin')->group(function () {
         Route::get('restore/{id}', [PostController::class,'restore'])->name('post.restore');
         Route::delete('forceDelete/{id}', [PostController::class,'forceDelete'])->name('post.forceDelete');
     });
-    Route::post('uploadImage', [UploadCKImageController::class, 'upload'])->name('ckeditor.upload');
+    Route::post('/admin/upload-ck-image', [UploadCKImageController::class, 'upload'])->name('ckeditor.upload');
       // PRODUCT CATEGORY
-      Route::prefix('product')->group(function () {
+    Route::prefix('product')->group(function () {
         Route::get('category', [ProductCategoryController::class, 'index'])->name('productCategory.index');
         Route::get('category/deleted', [ProductCategoryController::class, 'deleted'])->name('productCategory.deleted');
         Route::get('category/create', [ProductCategoryController::class, 'create'])->name('productCategory.create');
@@ -99,4 +99,13 @@ Route::prefix('admin')->group(function () {
         Route::get('restore/{id}', [BrandController::class, 'restore'])->name('brand.restore');
         Route::delete('forceDelete/{id}', [BrandController::class, 'forceDelete'])->name('brand.forceDelete');
     });
+    // ORDER
+    Route::prefix('order')->group(function () {
+        Route::get('/', [AdminOrderController::class, 'index'])->name('order.index');
+        Route::get('/pending', [AdminOrderController::class, 'OrderPending'])->name('order.pending');
+        Route::get('/detail/{id}', [AdminOrderController::class, 'OrderDetail'])->name('order.detail');
+    });
 });
+
+
+

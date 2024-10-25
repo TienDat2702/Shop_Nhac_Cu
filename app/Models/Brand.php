@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Brand extends Model
 {
@@ -15,6 +16,7 @@ class Brand extends Model
         'image',
         'publish',
         'description',
+        'slug',
     ];
 
     public function scopeSearch($query, array $request = [])
@@ -27,4 +29,21 @@ class Brand extends Model
         }
         return $query->orderBy('id', 'DESC')->paginate(10);
     }
+
+    public function scopeGetBrandAll($query){
+        return $query->orderBy('id', 'DESC');
+    }
+    
+    public function scopeGenerateUniqueSlug($query, $str)
+    {
+        // Tạo slug 
+        $slug = Str::slug($str);
+
+        // tìm xem slug có tồn tại hay chưa
+        $count = $query->withTrashed()->where('slug', 'LIKE', "{$slug}%")->count();
+
+        // Nếu có trùng lặp, thêm hậu tố
+        return $count ? "{$slug}-{$count}" : $slug;
+    }
+
 }

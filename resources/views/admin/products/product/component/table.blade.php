@@ -14,7 +14,7 @@
                 <th width="100px">Ảnh</th>
                 <th>Giá</th>
                 <th>Giá khuyến mãi</th>
-                <th>Mô tả</th>
+                {{-- <th>Mô tả</th> --}}
                 <th>Trạng thái</th>
                 <th>Thao tác</th>
             </tr>
@@ -47,9 +47,9 @@
                     <td>
                         {{ number_format($item->price_sale, 0, ',', '.') }} VNĐ
                     </td>
-                    <td>
+                    {{-- <td>
                         {{ $item->description }}
-                    </td>
+                    </td> --}}
                     <td class="text-center">
                         <label class="toggle">
                             <input id="toggleswitch" class="toggleswitch" name="publish" type="checkbox"
@@ -71,6 +71,7 @@
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-delete item text-danger delete" title="Xóa"
+                                    data-text2=""
                                     data-text="Bạn không thể khôi phục dữ liệu sau khi xóa!">
                                         <i class="icon-trash-2"></i>
                                     </button>
