@@ -17,5 +17,10 @@ class DatabaseSeeder extends Seeder
             CustomerSeeder::class,
             OrderSeeder::class,
         ]);
+        // Seed bảng roles trước
+        $this->call(RoleSeeder::class);
+
+        // Sau đó seed bảng users
+        $this->call(UserSeeder::class);
     }
 }

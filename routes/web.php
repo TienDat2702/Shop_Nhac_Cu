@@ -13,16 +13,28 @@ use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\User\ProductController;
 use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
-
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
 Route::get('/shop/{product_slug}',[ProductController::class,'product_details'])->name('shop.product.details');
-Route::get('/login', [UserController::class, 'login'])->name('user.login');
-Route::get('/register', [UserController::class, 'register'])->name('user.register');
+
+
+// user
+Route::get('/login', [AuthController::class, 'login'])->name('user.login');
+Route::post('/do-login', [AuthController::class, 'dologin'])->name('user.dologin');
+Route::get('/register', [AuthController::class, 'register'])->name('user.register');
+Route::post('/register', [AuthController::class, 'postRegister'])->name('user.postRegister');
+Route::get('/profile', [ProfileController::class, 'show'])->name('user.profile');
+Route::post('/logout', [AuthController::class, 'logout'])->name('user.logout');
+
 
 Route::get('/cart', [OrderController::class, 'index'])->name('cart.index');
 
