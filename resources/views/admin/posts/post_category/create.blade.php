@@ -17,7 +17,7 @@
                         <i class="icon-chevron-right"></i>
                     </li>
                     <li>
-                        <a href="{{ route('postCatagory.index') }}">
+                        <a href="{{ route('postCategory.index') }}">
                             <div class="text-tiny">@yield('crumb_parent')</div>
                         </a>
                     </li>

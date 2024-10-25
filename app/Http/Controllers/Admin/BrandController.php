@@ -40,9 +40,13 @@ class BrandController extends Controller
 
     public function store(BrandCreateRequest $request)
     {
+
+        $slug = Brand::GenerateUniqueSlug($request->input('name'));
+        
         $brand = Brand::create([
             'name' => $request->input('name'),
             'description' => $request->input('description'),
+            'slug' => $slug,
         ]);
 
         $uploadPath = public_path('uploads/brands');
@@ -58,19 +62,19 @@ class BrandController extends Controller
 
     public function edit(string $id)
     {
-        $brand = Brand::find($id);
-        if (!$brand) {
-            return redirect()->back()->withErrors(['Thương hiệu không tồn tại!']);
-        }
+        $brand = Brand::findOrFail($id);
+        // if (!$brand) {
+        //     return redirect()->back()->withErrors(['Thương hiệu không tồn tại!']);
+        // }
         return view('admin.brands.update', compact('brand'));
     }
 
     public function update(BrandUpdateRequest $request, string $id)
     {
-        $brand = Brand::find($id);
-        if (!$brand) {
-            return redirect()->back()->withErrors(['Thương hiệu không tồn tại!']);
-        }
+        $brand = Brand::findOrFail($id);
+        // if (!$brand) {
+        //     return redirect()->back()->withErrors(['Thương hiệu không tồn tại!']);
+        // }
 
         $data = [
             'name' => $request->input('name'),
@@ -100,7 +104,7 @@ class BrandController extends Controller
 
     public function destroy(string $id)
     {
-        $brand = Brand::find($id);
+        $brand = Brand::findOrFail($id);
         if (!$brand) {
             return redirect()->back()->withErrors(['Thương hiệu không tồn tại!']);
         }
@@ -115,7 +119,7 @@ class BrandController extends Controller
 
     public function restore(string $id)
     {
-        $brand = Brand::onlyTrashed()->find($id);
+        $brand = Brand::onlyTrashed()->findOrFail($id);
         if (!$brand) {
             return redirect()->back()->withErrors(['Thương hiệu không tồn tại!']);
         }
@@ -129,7 +133,7 @@ class BrandController extends Controller
 
     public function forceDelete(string $id)
     {
-        $brand = Brand::onlyTrashed()->find($id);
+        $brand = Brand::onlyTrashed()->findOrFail($id);
         if (!$brand) {
             toastr()->error('Dữ liệu không tồn tại!');
             return redirect()->back();

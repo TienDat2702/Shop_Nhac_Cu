@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
+
 class Order extends Model
 {
     use HasFactory;
@@ -28,7 +29,6 @@ class Order extends Model
         'delivered_at' => 'datetime',
         'canceled_at' => 'datetime'
     ];
-
     public function customer()
     {
         return $this->belongsTo(Customer::class);
@@ -44,3 +44,4 @@ class Order extends Model
         return $this->hasMany(OrderDetail::class);
     }
 }
+

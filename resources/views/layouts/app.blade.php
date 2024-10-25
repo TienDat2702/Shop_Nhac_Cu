@@ -274,7 +274,7 @@
 
             <div class="logo">
                 <a href="{{ route('home.index') }}">
-                    <img src="{{ asset('assets/images/logo.png') }}" alt="Uomo" class="logo__image d-block" />
+                    <img src="{{ asset('assets/images/logo.jpg') }}" alt="Uomo" class="logo__image d-block" />
                 </a>
             </div>
 
@@ -399,7 +399,7 @@
             <div class="header-desk header-desk_type_1">
                 <div class="logo">
                     <a href="{{ route('home.index') }}">
-                        <img src="{{ asset('assets/images/logo.png') }}" alt="Uomo"
+                        <img src="{{ asset('assets/images/logo.jpg') }}" alt="TuneNest"
                             class="logo__image d-block" />
                     </a>
                 </div>
@@ -531,7 +531,7 @@
                 <div class="footer-column footer-store-info col-12 mb-4 mb-lg-0">
                     <div class="logo">
                         <a href="{{ route('home.index') }}">
-                            <img src="{{ asset('assets/images/logo.png') }}" alt="SurfsideMedia"
+                            <img src="{{ asset('assets/images/logo.jpg') }}" alt="SurfsideMedia"
                                 class="logo__image d-block" />
                         </a>
                     </div>

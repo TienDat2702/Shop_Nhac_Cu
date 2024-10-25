@@ -107,7 +107,8 @@ class PostController extends Controller
         
         // xử lý album
         $path = 'uploads/posts/albums';
-        $this->uploadImageService->uploadAlbum($request, $post, $path);
+        $relation = 'albums';
+        $this->uploadImageService->uploadAlbum($request, $post, $path, $relation);
 
         if($post){
             // $post->save();
@@ -135,6 +136,7 @@ class PostController extends Controller
     {
         
        $post = Post::GetPostAll()->where('slug',$slug)->first();
+       
        $data = [
             'user' => 1,
             'title' => $request->input('title'),
@@ -160,7 +162,8 @@ class PostController extends Controller
 
         //xử lý album
         $path = 'uploads/posts/albums';
-        $this->uploadImageService->uploadAlbum($request, $post, $path);
+        $relation = 'albums';
+        $this->uploadImageService->uploadAlbum($request, $post, $path, $relation);
 
         if($post && $post->update($data)){
             if($post->wasChanged()){

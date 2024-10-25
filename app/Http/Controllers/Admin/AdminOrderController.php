@@ -18,7 +18,6 @@ class AdminOrderController extends Controller
         $orders = Order::with(['customer', 'orderDetails'])->where('status', 'chờ duyệt')->orderBy('created_at', 'desc')->paginate(10);
         return view('admin.order.pending', compact('orders'));
     }
-
     public function show($id)
     {
         $order = Order::with(['orderDetails.product.brand', 'orderDetails.product.productCategory1', 'customer', 'discount'])->findOrFail($id);
@@ -40,5 +39,11 @@ class AdminOrderController extends Controller
         $order->save();
 
         return redirect()->route('order.show', $id)->with('success', 'Trạng thái đơn hàng đã được cập nhật thành công');
+    }
+}
+    public function OrderDetail($id)
+    {
+        $order = Order::with(['customer', 'orderDetails'])->find($id);
+        return view('admin.order.detail', compact('order'));
     }
 }

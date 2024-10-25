@@ -40,4 +40,5 @@ class Showroom extends Model
         return $query->orderBy('id', 'DESC')->paginate(10);
     }
 
+
 }
