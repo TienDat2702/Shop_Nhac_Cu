@@ -125,7 +125,6 @@
     }
 
 
-
     HT.checkFilters = () => {
         let selectedCategories = [];
         let selectedBrands = [];
@@ -150,8 +149,8 @@
             filterProducts();
         });
     
-        // Lắng nghe sự kiện thay đổi giá trị của slider
-        $('.price-range-slider').on('change', function() {
+        // Lắng nghe sự kiện slideStop của slider khi người dùng dừng kéo
+        $('.price-range-slider').on('slideStop', function() {
             priceRange = $(this).val().split(',').map(value => parseInt(value));
             priceChanged = true; // Đánh dấu là giá đã thay đổi
             filterProducts(); // Gọi hàm lọc sản phẩm
@@ -176,9 +175,11 @@
                 }
             });
         }
+    
         // Gọi hàm lọc sản phẩm lần đầu khi trang được tải
         filterProducts(); // Lọc sản phẩm ban đầu với giá trị mặc định
     }
+    
     
     $(document).ready(function () {
         HT.changeStatus();
