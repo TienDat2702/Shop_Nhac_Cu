@@ -20,5 +20,11 @@ class DatabaseSeeder extends Seeder
 
         // Gọi ShowroomSeeder
         $this->call(ShowroomSeeder::class);
+
+        // Seed bảng roles trước
+        $this->call(RoleSeeder::class);
+
+        // Sau đó seed bảng users
+        $this->call(UserSeeder::class);
     }
 }

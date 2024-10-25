@@ -16,19 +16,41 @@ use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\User\ProductController;
 use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
-
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
 Route::get('/shop/{product_slug}',[ProductController::class,'product_details'])->name('shop.product.details');
-Route::get('/login', [UserController::class, 'login'])->name('user.login');
-Route::get('/register', [UserController::class, 'register'])->name('user.register');
-Route::get('/products/filter', [App\Http\Controllers\User\ProductController::class, 'filter'])->name('products.filter');
-Route::get('/cart', [OrderController::class, 'index'])->name('cart.index');
 
+
+// user
+// Route::get('/login', [AuthController::class, 'login'])->name('user.login');
+// Route::post('/do-login', [AuthController::class, 'dologin'])->name('user.dologin');
+// Route::get('/register', [AuthController::class, 'register'])->name('user.register');
+// Route::post('/register', [AuthController::class, 'postRegister'])->name('user.postRegister');
+// Route::get('/profile', [ProfileController::class, 'show'])->name('user.profile');
+// Route::post('/logout', [AuthController::class, 'logout'])->name('user.logout');
+Route::get('/login', [UserController::class, 'login'])->name('user.login');
+Route::post('/do-login', [UserController::class, 'dologin'])->name('user.dologin');
+Route::get('/logout', [UserController::class, 'logout'])->name('user.logout');
+Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
+Route::get('/orders', [UserController::class, 'userOrder'])->name('user.orders');
+
+Route::get('/cart', [OrderController::class,'index'])->name('cart.index');
+
+// Route::prefix('order')->group(function () {
+//     Route::get('/', [AdminOrderController::class, 'index'])->name('order.index');
+//     Route::get('/pending', [AdminOrderController::class, 'OrderPending'])->name('order.pending');
+//     Route::get('/detail/{id}', [AdminOrderController::class, 'OrderDetail'])->name('order.detail');
+// });
+>>>>>>> 33f8a6245c5d65b1cb61b1dfc01464c46f3bea2d
 
 // AJAX
 Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
