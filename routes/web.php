@@ -28,21 +28,25 @@ Route::get('/shop/{product_slug}',[ProductController::class,'product_details'])-
 
 
 // user
-Route::get('/login', [AuthController::class, 'login'])->name('user.login');
-Route::post('/do-login', [AuthController::class, 'dologin'])->name('user.dologin');
-Route::get('/register', [AuthController::class, 'register'])->name('user.register');
-Route::post('/register', [AuthController::class, 'postRegister'])->name('user.postRegister');
-Route::get('/profile', [ProfileController::class, 'show'])->name('user.profile');
-Route::post('/logout', [AuthController::class, 'logout'])->name('user.logout');
+// Route::get('/login', [AuthController::class, 'login'])->name('user.login');
+// Route::post('/do-login', [AuthController::class, 'dologin'])->name('user.dologin');
+// Route::get('/register', [AuthController::class, 'register'])->name('user.register');
+// Route::post('/register', [AuthController::class, 'postRegister'])->name('user.postRegister');
+// Route::get('/profile', [ProfileController::class, 'show'])->name('user.profile');
+// Route::post('/logout', [AuthController::class, 'logout'])->name('user.logout');
+Route::get('/login', [UserController::class, 'login'])->name('user.login');
+Route::post('/do-login', [UserController::class, 'dologin'])->name('user.dologin');
+Route::get('/logout', [UserController::class, 'logout'])->name('user.logout');
+Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
+Route::get('/orders', [UserController::class, 'userOrder'])->name('user.orders');
 
+Route::get('/cart', [OrderController::class,'index'])->name('cart.index');
 
-Route::get('/cart', [OrderController::class, 'index'])->name('cart.index');
-
-Route::prefix('order')->group(function () {
-    Route::get('/', [AdminOrderController::class, 'index'])->name('order.index');
-    Route::get('/pending', [AdminOrderController::class, 'OrderPending'])->name('order.pending');
-    Route::get('/detail/{id}', [AdminOrderController::class, 'OrderDetail'])->name('order.detail');
-});
+// Route::prefix('order')->group(function () {
+//     Route::get('/', [AdminOrderController::class, 'index'])->name('order.index');
+//     Route::get('/pending', [AdminOrderController::class, 'OrderPending'])->name('order.pending');
+//     Route::get('/detail/{id}', [AdminOrderController::class, 'OrderDetail'])->name('order.detail');
+// });
 
 // AJAX
 Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');

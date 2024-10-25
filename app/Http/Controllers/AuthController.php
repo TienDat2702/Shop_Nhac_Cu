@@ -17,21 +17,22 @@ class AuthController extends Controller
         if (Auth::id() > 0) {
             return redirect()->route('user.profile');
         }
-        return view('login');
+        return view('user.login');
     }
     public function dologin(LoginRequest $request)
     {
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            return redirect()->route('shop.index')->with('success', 'Đăng nhập thành công');
+            return redirect()->route('user.shop.index')->with('success', 'Đăng nhập thành công');
         }
 
         return redirect()->route('user.login')->with('error', 'Email hoặc Mật khẩu không chính xác');
     }
+   
     public function register()
     {
-        return view('register');
+        return view('user.register');
     }
     public function postRegister(RegisterRequest $request)
     {

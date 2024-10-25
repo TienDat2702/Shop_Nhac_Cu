@@ -16,6 +16,7 @@
                         <form method="POST" action="{{ route('user.dologin') }}" name="login-form" class="needs-validation"
                             novalidate="">
                             @csrf
+                            @method('POST')
                             <div class="form-floating mb-3">
                                 <input class="form-control form-control_gray " name="email" value=""
                                     autocomplete="email" autofocus="" type="text">
@@ -48,8 +49,8 @@
 
                             <div class="customer-option mt-4 text-center">
                                 <span class="text-secondary">No account yet?</span>
-                                <a href="{{route('user.register')}}" class="btn-text js-show-register">Create Account</a> | <a
-                                    href="my-account.html" class="btn-text js-show-register">My Account</a>
+                                {{-- <a href="{{route('user.register')}}" class="btn-text js-show-register">Create Account</a> | <a
+                                    href="my-account.html" class="btn-text js-show-register">My Account</a> --}}
                             </div>
                         </form>
                     </div>
