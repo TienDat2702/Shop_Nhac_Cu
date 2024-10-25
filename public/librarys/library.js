@@ -125,11 +125,53 @@
         })
     }
 
+    HT.checkBrand = () => {
+     
+        const $checkboxes = $('.chk-brand');
+        const $productItems = $('.product-item');
+
+        $checkboxes.on('change', function() {
+            const selectedBrands = $checkboxes.filter(':checked').map(function() {
+                return this.value;
+            }).get(); // Lấy danh sách ID của các brand được chọn
+
+            // Hiện hoặc ẩn sản phẩm dựa trên brand id
+            $productItems.each(function() {
+                const brandId = $(this).data('brand-id');
+                if (selectedBrands.length === 0 || selectedBrands.includes(brandId.toString())) {
+                    $(this).show(); // Hiện sản phẩm
+                } else {
+                    $(this).hide(); // Ẩn sản phẩm
+                }
+            });
+        });
+    
+    }
+
+    HT.changeQuantity = () =>{
+            var quantity = $('.qty-control__number').val();
+            var productId = $('.qty-control__number').attr('data-product-id')
+            $.ajax({
+                url: "/cart/update", // Route cập nhật giỏ hàng
+                method: "POST",
+                data: {
+                    product_id: productId,
+                    quantity: quantity,
+                    _token: _token
+                },
+                success: function(response) {
+                    $('#subtotal-' + productId).text(response.subtotal);
+                }
+            });
+    }
+
     $(document).ready(function () {
         HT.changeStatus();
         HT.sweetalert2();
         HT.setupCkeditor();
         HT.keyUpInput();
         HT.trash();
+        // HT.checkBrand();
+        // HT.changeQuantity();
     });
 })(jQuery);

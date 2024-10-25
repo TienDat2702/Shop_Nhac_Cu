@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\Admin\UploadCKImageController;
 use App\Http\Controllers\Ajax\AjaxDashboardController;
+use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\User\ProductController;
@@ -20,17 +21,16 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
-Route::get('/shop/{product_slug}',[ProductController::class,'product_details'])->name('shop.product.details');
+Route::get('/product/{product_slug}',[ProductController::class,'product_details'])->name('product.detail');
 Route::get('/login', [UserController::class, 'login'])->name('user.login');
 Route::get('/register', [UserController::class, 'register'])->name('user.register');
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
+Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
 
-Route::get('/cart', [OrderController::class, 'index'])->name('cart.index');
 
-Route::prefix('order')->group(function () {
-    Route::get('/', [AdminOrderController::class, 'index'])->name('order.index');
-    Route::get('/pending', [AdminOrderController::class, 'OrderPending'])->name('order.pending');
-    Route::get('/detail/{id}', [AdminOrderController::class, 'OrderDetail'])->name('order.detail');
-});
+
 
 // AJAX
 Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
@@ -102,6 +102,11 @@ Route::prefix('admin')->group(function () {
         Route::delete('destroy/{id}', [BrandController::class, 'destroy'])->name('brand.destroy');
         Route::get('restore/{id}', [BrandController::class, 'restore'])->name('brand.restore');
         Route::delete('forceDelete/{id}', [BrandController::class, 'forceDelete'])->name('brand.forceDelete');
+    });
+    Route::prefix('order')->group(function () {
+        Route::get('/', [AdminOrderController::class, 'index'])->name('order.index');
+        Route::get('/pending', [AdminOrderController::class, 'OrderPending'])->name('order.pending');
+        Route::get('/detail/{id}', [AdminOrderController::class, 'OrderDetail'])->name('order.detail');
     });
 });
 

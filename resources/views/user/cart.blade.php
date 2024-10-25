@@ -1,78 +1,87 @@
 @extends('user.layouts.app')
+@section('title', 'Giỏ Hàng')
 @section('content')
     <main class="pt-90">
         <div class="mb-4 pb-4"></div>
         <section class="shop-checkout container">
-            <h2 class="page-title">Cart</h2>
+            <h2 class="page-title">@yield('title')</h2>
             <div class="checkout-steps">
                 <a href="cart.html" class="checkout-steps__item active">
                     <span class="checkout-steps__item-number">01</span>
                     <span class="checkout-steps__item-title">
-                        <span>Shopping Bag</span>
-                        <em>Manage Your Items List</em>
+                        <span>GIỏ hàng</span>
+                        <em>Quản lý danh sách mặt hàng của bạn</em>
                     </span>
                 </a>
                 <a href="checkout.html" class="checkout-steps__item">
                     <span class="checkout-steps__item-number">02</span>
                     <span class="checkout-steps__item-title">
-                        <span>Shipping and Checkout</span>
-                        <em>Checkout Your Items List</em>
+                        <span> Vận chuyển và thanh toán</span>
+                        <em>Kiểm tra danh sách mặt hàng của bạn</em>
                     </span>
                 </a>
                 <a href="order-confirmation.html" class="checkout-steps__item">
                     <span class="checkout-steps__item-number">03</span>
                     <span class="checkout-steps__item-title">
-                        <span>Confirmation</span>
-                        <em>Review And Submit Your Order</em>
+                        <span>Xác nhận</span>
+                        <em>Xem xét và gửi đơn đặt hàng của bạn</em>
                     </span>
                 </a>
             </div>
             <div class="shopping-cart">
+                @if (session('carts') && count(session('carts')) > 0)
                 <div class="cart-table__wrapper">
                     <table class="cart-table">
                         <thead>
                             <tr>
-                                <th>Product</th>
+                                <th>Sản phẩm</th>
                                 <th></th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Subtotal</th>
+                                <th>giá</th>
+                                <th>Số lượng</th>
+                                <th>Tổng Tiền</th>
                                 <th></th>
                             </tr>
                         </thead>
+                        <form action="{{ route('cart.update') }}" method="POST">
+                        @csrf
                         <tbody>
+                            @foreach ($carts as $item)
                             <tr>
                                 <td>
                                     <div class="shopping-cart__product-item">
-                                        <img loading="lazy" src="assets/images/cart-item-1.jpg" width="120"
+                                        <img loading="lazy" src="{{ asset('uploads/products/product/' . $item['image']) }}" width="120"
                                             height="120" alt="" />
                                     </div>
                                 </td>
                                 <td>
                                     <div class="shopping-cart__product-item__detail">
-                                        <h4>Zessi Dresses</h4>
-                                        <ul class="shopping-cart__product-item__options">
+                                        <h4>{{ $item['name'] }}</h4>
+                                        {{-- <ul class="shopping-cart__product-item__options">
                                             <li>Color: Yellow</li>
                                             <li>Size: L</li>
-                                        </ul>
+                                        </ul> --}}
                                     </div>
                                 </td>
                                 <td>
-                                    <span class="shopping-cart__product-price">$99</span>
+                                    <span class="shopping-cart__product-price">
+                                        {{ number_format($item['price'], 0, '.', ',') . ' VNĐ'}}
+                                    </span>
                                 </td>
                                 <td>
                                     <div class="qty-control position-relative">
-                                        <input type="number" name="quantity" value="3" min="1"
+                                        <input type="number" name="quantity[{{ $item['id'] }}]" value="{{ $item['quantity'] }}" min="1"
                                             class="qty-control__number text-center">
                                         <div class="qty-control__reduce">-</div>
                                         <div class="qty-control__increase">+</div>
                                     </div>
                                 </td>
                                 <td>
-                                    <span class="shopping-cart__subtotal">$297</span>
+                                    <span id="subtotal" class="shopping-cart__subtotal">{{ $item['subtotal'] }}</span>
                                 </td>
                                 <td>
-                                    <a href="#" class="remove-cart">
+                                    
+                                    <button type="submit" class="remove-cart" formaction="{{ route('cart.remove', $item['id']) }}" formmethod="POST">
+                                        @csrf
                                         <svg width="10" height="10" viewBox="0 0 10 10" fill="#767676"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -80,103 +89,22 @@
                                             <path
                                                 d="M0.885506 0.0889838L9.74057 8.94404L8.85506 9.82955L0 0.97449L0.885506 0.0889838Z" />
                                         </svg>
-                                    </a>
+                                    </button>
+                                    
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <div class="shopping-cart__product-item">
-                                        <img loading="lazy" src="assets/images/cart-item-2.jpg" width="120"
-                                            height="120" alt="" />
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="shopping-cart__product-item__detail">
-                                        <h4>Kirby T-Shirt</h4>
-                                        <ul class="shopping-cart__product-item__options">
-                                            <li>Color: Yellow</li>
-                                            <li>Size: L</li>
-                                        </ul>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="shopping-cart__product-price">$99</span>
-                                </td>
-                                <td>
-                                    <div class="qty-control position-relative">
-                                        <input type="number" name="quantity" value="3" min="1"
-                                            class="qty-control__number text-center">
-                                        <div class="qty-control__reduce">-</div>
-                                        <div class="qty-control__increase">+</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="shopping-cart__subtotal">$297</span>
-                                </td>
-                                <td>
-                                    <a href="#" class="remove-cart">
-                                        <svg width="10" height="10" viewBox="0 0 10 10" fill="#767676"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M0.259435 8.85506L9.11449 0L10 0.885506L1.14494 9.74056L0.259435 8.85506Z" />
-                                            <path
-                                                d="M0.885506 0.0889838L9.74057 8.94404L8.85506 9.82955L0 0.97449L0.885506 0.0889838Z" />
-                                        </svg>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="shopping-cart__product-item">
-                                        <img loading="lazy" src="assets/images/cart-item-3.jpg" width="120"
-                                            height="120" alt="" />
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="shopping-cart__product-item__detail">
-                                        <h4>Cobleknit Shawl</h4>
-                                        <ul class="shopping-cart__product-item__options">
-                                            <li>Color: Yellow</li>
-                                            <li>Size: L</li>
-                                        </ul>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="shopping-cart__product-price">$99</span>
-                                </td>
-                                <td>
-                                    <div class="qty-control position-relative">
-                                        <input type="number" name="quantity" value="3" min="1"
-                                            class="qty-control__number text-center">
-                                        <div class="qty-control__reduce">-</div>
-                                        <div class="qty-control__increase">+</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="shopping-cart__subtotal">$297</span>
-                                </td>
-                                <td>
-                                    <a href="#" class="remove-cart">
-                                        <svg width="10" height="10" viewBox="0 0 10 10" fill="#767676"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M0.259435 8.85506L9.11449 0L10 0.885506L1.14494 9.74056L0.259435 8.85506Z" />
-                                            <path
-                                                d="M0.885506 0.0889838L9.74057 8.94404L8.85506 9.82955L0 0.97449L0.885506 0.0889838Z" />
-                                        </svg>
-                                    </a>
-                                </td>
-                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                     <div class="cart-table-footer">
-                        <form action="#" class="position-relative bg-body">
-                            <input class="form-control" type="text" name="coupon_code" placeholder="Coupon Code">
-                            <input class="btn-link fw-medium position-absolute top-0 end-0 h-100 px-4" type="submit"
-                                value="APPLY COUPON">
-                        </form>
-                        <button class="btn btn-light">UPDATE CART</button>
+                        {{-- <form action="#" class="position-relative bg-body"> --}}
+                            <input class="form-control" type="text" name="coupon_code" placeholder="Mã Giảm giá">
+                            {{-- <input class="btn-link fw-medium position-absolute top-0 end-0 h-100 px-4" type="submit"
+                                value="APPLY COUPON"> --}}
+                        {{-- </form> --}}
+                        <button type="submit" class="btn btn-light btn-update-cart">CẬP NHẬT</button>
                     </div>
+                    </form>
                 </div>
                 <div class="shopping-cart__totals-wrapper">
                     <div class="sticky-content">
@@ -185,8 +113,8 @@
                             <table class="cart-totals">
                                 <tbody>
                                     <tr>
-                                        <th>Subtotal</th>
-                                        <td>$1300</td>
+                                        <th>Tổng phụ</th>
+                                        <td>{{ number_format($total, 0, '.', ',') . ' VNĐ'}}</td>
                                     </tr>
                                     <tr>
                                         <th>Shipping</th>
@@ -199,8 +127,8 @@
                                             <div class="form-check">
                                                 <input class="form-check-input form-check-input_fill" type="checkbox"
                                                     value="" id="flat_rate">
-                                                <label class="form-check-label" for="flat_rate">Flat rate: $49</label>
-                                            </div>
+                                                    <label class="form-check-label" for="flat_rate">Flat rate: $49</label>
+                                                </div>
                                             <div class="form-check">
                                                 <input class="form-check-input form-check-input_fill" type="checkbox"
                                                     value="" id="local_pickup">
@@ -218,8 +146,8 @@
                                         <td>$19</td>
                                     </tr>
                                     <tr>
-                                        <th>Total</th>
-                                        <td>$1319</td>
+                                        <th>Tổng thanh toán</th>
+                                        <td> {{ number_format($total, 0, '.', ',') . ' VNĐ'}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -231,6 +159,12 @@
                         </div>
                     </div>
                 </div>
+                @else
+                    <div class="cart-null">
+                        <img src="{{ asset('images/carts-null.png') }}" alt="">
+                        {{-- <a class="btn-comeback" href="{{ route('home.index') }}"> Mua ngay </a> --}}
+                    </div>
+                @endif
             </div>
         </section>
     </main>

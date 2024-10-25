@@ -131,7 +131,7 @@
             <div class="swiper-wrapper">
               @foreach ($brands as $brand)
               <div class="swiper-slide">
-                <img loading="lazy" class="w-100 h-auto mb-3" src="{{asset('assets/uploads/brands/'.$brand->image)}}" width="124"
+                <img loading="lazy" class="w-100 h-auto mb-3" src="{{asset('uploads/brands/'.$brand->image)}}" width="124"
                   height="124" alt="{{ $brand->name }}" />
                 <div class="text-center">
                   <a href="#" class="menu-link fw-medium">{{ $brand->name }}</a>
@@ -230,7 +230,7 @@
                   @foreach ($product_price as $product)
                   <div class="swiper-slide product-card product-card_style3">
                     <div class="pc__img-wrapper">
-                      <a href="details.html">
+                      <a href="{{ route('product.detail', $product->slug)}}">
                         <img loading="lazy" src="{{asset('assets/images/home/demo3/product-0-1.jpg')}}" width="258" height="313"
                           alt="{{ $product->name }}" class="pc__img">
                         <img loading="lazy" src="{{asset('assets/images/home/demo3/product-0-2.jpg')}}" width="258" height="313"
@@ -241,27 +241,39 @@
                     <div class="pc__info position-relative">
                       <h6 class="pc__title"><a href="details.html">{{ $product->name }}</a></h6>
                       <div class="product-card__price d-flex">
-                        <span class="money price text-secondary">{{ number_format($product->price_sale) }} VNĐ</span>
+                       
+                        @if ($product->price_sale > 0)
+                        <span class="money price me-2"> 
+                          {{ number_format($product->price_sale)}} VNĐ
+                        </span>
+                        <span class="money price text-secondary"><del>{{ number_format($product->price) }} VNĐ</del>
+                        @else
+                          {{ number_format($product->price)}} VNĐ
+                        @endif
+                        <span class="money price me-2"> 
+                         
+                        </span>
+                        </span>
                       </div>
 
                       <div
                         class="anim_appear-bottom position-absolute bottom-0 start-0 d-none d-sm-flex align-items-center bg-body">
-                        <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-add-cart js-open-aside"
-                          data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
-                        <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-quick-view"
-                          data-bs-toggle="modal" data-bs-target="#quickView" title="Quick view">
-                          <span class="d-none d-xxl-block">Quick View</span>
-                          <span class="d-block d-xxl-none"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"
+                        <form action="{{ route('cart.add',$product->id) }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                            <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium"
+                            data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
+                          </form>
+                          <a href="{{ route('product.detail', $product->slug) }}" class="btn-link btn-link_lg me-4 text-uppercase fw-medium" title="Quick view">
+                            <span class="">Quick View</span>
+                          </a>
+                          <button class="pc__btn-wl bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
+                            <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
                               xmlns="http://www.w3.org/2000/svg">
-                              <use href="#icon_view" />
-                            </svg></span>
-                        </button>
-                        <button class="pc__btn-wl bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                          <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <use href="#icon_heart" />
-                          </svg>
-                        </button>
+                              <use href="#icon_heart" />
+                            </svg>
+                          </button>
+                        
                       </div>
                     </div>
                   </div>

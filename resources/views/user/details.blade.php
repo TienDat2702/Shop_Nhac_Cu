@@ -121,16 +121,18 @@
             <span class="current-price">{{ number_format($product->price) }} VNĐ</span>
           </div>
           <div class="product-single__short-desc">
-            <p>{{ $product->summary }}</p>
+            {{-- <p>{{ $product->description }}</p> --}}
           </div>
-          <form name="addtocart-form" method="post">
+          <form action="{{ route('cart.add',$product->id) }}" method="POST">
+            @csrf
             <div class="product-single__addtocart">
               <div class="qty-control position-relative">
                 <input type="number" name="quantity" value="1" min="1" class="qty-control__number text-center">
                 <div class="qty-control__reduce">-</div>
                 <div class="qty-control__increase">+</div>
               </div><!-- .qty-control -->
-              <button type="submit" class="btn btn-primary btn-addtocart js-open-aside" data-aside="cartDrawer">Thêm vào giỏ hàng</button>
+              <input type="hidden" name="product_id" value="{{ $product->id }}">
+              <button type="submit" class="btn btn-primary btn-addtocart" data-aside="cartDrawer">Thêm vào giỏ hàng</button>
             </div>
           </form>
           <div class="product-single__addtolinks">
@@ -177,11 +179,11 @@
             </div>
             <div class="meta-item">
               <label>Danh mục</label>
-              <span>{{ $product->productCategory->image }}</span>
+              <span>{{ $product->productCategory ? $product->productCategory->image : '' }}</span>
             </div>
             <div class="meta-item">
               <label>Thương hiệu:</label>
-              <span>{{ $brand->name }}</span>
+              <span>{{ $brand ? $brand->name : '' }}</span>
             </div>
           </div>
         </div>
@@ -193,11 +195,6 @@
               href="#tab-description" role="tab" aria-controls="tab-description" aria-selected="true">Mô tả</a>
           </li>
           <li class="nav-item" role="presentation">
-            <a class="nav-link nav-link_underscore" id="tab-additional-info-tab" data-bs-toggle="tab"
-              href="#tab-additional-info" role="tab" aria-controls="tab-additional-info"
-              aria-selected="false">Thông tin bổ sung</a>
-          </li>
-          <li class="nav-item" role="presentation">
             <a class="nav-link nav-link_underscore" id="tab-reviews-tab" data-bs-toggle="tab" href="#tab-reviews"
               role="tab" aria-controls="tab-reviews" aria-selected="false">Reviews (2)</a>
           </li>
@@ -205,35 +202,12 @@
         <div class="tab-content">
           <div class="tab-pane fade show active" id="tab-description" role="tabpanel"
             aria-labelledby="tab-description-tab">
-            {{ $product->description }}
-            </div>
-          </div>
-          <div class="tab-pane fade" id="tab-additional-info" role="tabpanel" aria-labelledby="tab-additional-info-tab">
-            <div class="product-single__addtional-info">
-              <div class="item">
-                <label class="h6">Weight</label>
-                <span>1.25 kg</span>
-              </div>
-              <div class="item">
-                <label class="h6">Dimensions</label>
-                <span>90 x 60 x 90 cm</span>
-              </div>
-              <div class="item">
-                <label class="h6">Size</label>
-                <span>XS, S, M, L, XL</span>
-              </div>
-              <div class="item">
-                <label class="h6">Color</label>
-                <span>Black, Orange, White</span>
-              </div>
-              <div class="item">
-                <label class="h6">Storage</label>
-                <span>Relaxed fit shirt-style dress with a rugged</span>
-              </div>
+            <div class="product-single__description">
+              {!! $product->description !!}
             </div>
           </div>
           <div class="tab-pane fade" id="tab-reviews" role="tabpanel" aria-labelledby="tab-reviews-tab">
-            <h2 class="product-single__reviews-title">Reviews</h2>
+            <h2 class="product-single__reviews-title">Đánh giá</h2>
             <div class="product-single__reviews-list">
               <div class="product-single__reviews-item">
                 <div class="customer-avatar">
@@ -403,19 +377,24 @@
             @foreach ($product_related as $product)
             <div class="swiper-slide product-card">
               <div class="pc__img-wrapper">
-                <a href="details.html">
+                <a href="{{ route('product.detail', $product->slug) }}">
                   <img loading="lazy" src="{{ asset('assets/images/products') }}/product_3.jpg" width="330" height="400"
                     alt="{{ $product->name }}" class="pc__img">
                   <img loading="lazy" src="{{ asset('assets/images/products') }}/product_3-1.jpg" width="330" height="400"
                     alt="{{ $product->name }}" class="pc__img pc__img-second">
                 </a>
+                
+                <form action="{{ route('cart.add',$product->id) }}" method="POST">
+                  @csrf
+                  <input type="hidden" name="product_id" value="{{ $product->id }}">
                 <button
-                  class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside"
+                  class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium"
                   data-aside="cartDrawer" title="Add To Cart">Thêm vào giỏ hàng</button>
+                </form>
               </div>
 
               <div class="pc__info position-relative">
-                <p class="pc__category">{{ $product->productCategory->name }}</p>
+                {{ $product->productCategory ? $product->productCategory->name : '' }}
                 <h6 class="pc__title"><a href="details.html">{{ $product->name }}</a></h6>
                 <div class="product-card__price d-flex">
                   <span class="money price">{{ number_format($product->price) }} VNĐ</span>
@@ -440,13 +419,13 @@
                   </div>
                   <span class="reviews-note text-lowercase text-secondary ms-1">{{ $product->view }} lượt xem</span>
                 </div>
-
-                <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist"
-                  title="Add To Wishlist">
-                  <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <use href="#icon_heart" />
-                  </svg>
-                </button>
+                  <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist"
+                    title="Add To Wishlist">
+                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <use href="#icon_heart" />
+                    </svg>
+                  </button>
+                
               </div>
             </div>
             @endforeach

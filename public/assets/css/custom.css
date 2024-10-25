@@ -17,3 +17,41 @@
 .form-floating>.form-select {
     height: 48px;
 }
+button.remove-cart {
+    border: none;
+    background-color: white;
+}
+
+.cart-null {
+    width: 700px;
+    margin: 0 auto;
+    text-align: center;
+}
+.cart-null img{
+    width: 100%;
+    height: auto;
+}
+
+.btn-comeback {
+    display: inline-block;
+    padding: 10px 20px;
+    color: #fff; /* Màu chữ */
+    background-color: #b9a16b; /* Màu nền */
+    border: none;
+    border-radius: 5px; /* Bo góc */
+    text-align: center;
+    text-decoration: none; /* Không gạch chân */
+    transition: background-color 0.3s, transform 0.3s; /* Hiệu ứng chuyển đổi */
+}
+
+.btn-comeback:hover {
+    color: #fff; /* Màu chữ */
+    background-color: #826f44; /* Màu nền khi hover */
+}
+
+section.shop-checkout.container {
+    margin-top: 50px;
+}
+.logo {
+    width: 250px;
+}

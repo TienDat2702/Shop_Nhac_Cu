@@ -63,8 +63,8 @@
                   @foreach ($brands as $brand)
                       <li class="list-item">
                           <span class="menu-link py-1">
-                              <input type="checkbox" name="brands" value="{{ $brand->id }}"
-                                  class="chk-brand">
+                              <input type="checkbox" name="brands[]" value="{{ $brand->id }}"
+                                  class="chk-brand" data-brand-id="{{ $brand->id }}">
                               {{ $brand->name }}
                           </span>
                           {{-- <span class="text-right float-end">
@@ -244,7 +244,7 @@
 
         <div class="products-grid row row-cols-2 row-cols-md-3" id="products-grid">
           @foreach ($products as $product)
-          <div class="product-card-wrapper">
+          <div class="product-card-wrapper" data-brand-id="{{ $product->brand_id }}">
             <div class="product-card mb-3 mb-md-4 mb-xxl-5">
               <div class="pc__img-wrapper">
                 <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
@@ -273,7 +273,7 @@
               </div>
 
               <div class="pc__info position-relative">
-                <p class="pc__category">{{ $product->productCategory->name }}</p>
+                {{-- <p class="pc__category">{{ $product->productCategory->name }}</p> --}}
                 <h6 class="pc__title"><a href="details.html">{{ $product->name }}</a></h6>
                 <div class="product-card__price d-flex">
                   <span class="money price">{{ number_format($product->price) }} VNĐ</span>
