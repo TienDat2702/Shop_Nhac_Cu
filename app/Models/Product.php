@@ -61,11 +61,10 @@ class Product extends Model
     }
 
     // Định nghĩa mối quan hệ với Brand
-    public function brand()
+    public function brand1()
     {
         return $this->belongsTo(Brand::class);
     }
-
 
     // quan hệ thumbnail 1-N
     public function thumbnails() {
@@ -80,4 +79,12 @@ class Product extends Model
     {
         return $this->belongsTo(ProductCategory::class, 'category_id');
     }
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class, 'brand_id');
+    }
+    public function productCategory1()
+{
+    return $this->belongsTo(ProductCategory::class);
+}
 }

@@ -53,8 +53,8 @@ public function store(Request $request)
 
     $showroom->publish = 2; // Mặc định là 1 (hoạt động)
     $showroom->save(); // Lưu showroom vào cơ sở dữ liệu
-
-    return redirect()->route('showroomcategory.index')->with('success', 'Showroom added successfully.');
+    toastr()->success('Thêm danh mục thành công!');
+    return redirect()->route('showroomcategory.index');
 }
 
 
@@ -98,9 +98,9 @@ public function update(Request $request, $id)
 
     // Lưu showroom
     $showroom->save();
-
+    toastr()->success('Hoàn tất thay đổi!');
     // Redirect về trang danh sách showroom và hiển thị thông báo thành công
-    return redirect()->route('showroomcategory.index')->with('success', 'Showroom cập nhật thành công.');
+    return redirect()->route('showroomcategory.index');
 }
 
 public function togglePublish($id, Request $request)
