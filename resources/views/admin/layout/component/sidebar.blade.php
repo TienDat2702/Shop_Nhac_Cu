@@ -58,9 +58,9 @@
                         </li>
                     </ul>
                 </li>
-                <li class="menu-item has-children">
-                    <a href="{{route('banner.index')}}" class="">
-                        <div class="icon"><i class="icon-file"></i></div>
+                <li class="menu-item ">
+                    <a href="{{ route('banner.index')}}" class="menu-item-button">
+                        <div class="icon"><i class="icon-layers"></i></div>
                         <div class="text">Banner</div>
                     </a>
                 </li>
@@ -78,11 +78,6 @@
                         <li class="sub-menu-item">
                             <a href="{{ route('product.index')}}" class="">
                                 <div class="text">Sản phẩm</div>
-                            </a>
-                        </li>
-                        <li class="sub-menu-item">
-                            <a href="{{ route('brand.index')}}" class="">
-                                <div class="text">Thương hiệu</div>
                             </a>
                         </li>
                     </ul>

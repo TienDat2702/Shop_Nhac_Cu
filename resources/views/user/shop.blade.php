@@ -241,7 +241,7 @@
             </div>
           </div>
         </div>
-
+        <div id="product-list">
         <div class="products-grid row row-cols-2 row-cols-md-3" id="products-grid">
           @foreach ($products as $product)
           <div class="product-card-wrapper">
@@ -310,6 +310,8 @@
           </div>
           @endforeach
         </div>
+        </div>
+                          </div>
 
         <div class="divider"></div>
                 <div class="flex items-center justify-between flex-wrap gap-10 wgp-pagination">
