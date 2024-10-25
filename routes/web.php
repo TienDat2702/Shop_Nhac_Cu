@@ -26,14 +26,9 @@ Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
 Route::get('/shop/{product_slug}',[ProductController::class,'product_details'])->name('shop.product.details');
 Route::get('/login', [UserController::class, 'login'])->name('user.login');
 Route::get('/register', [UserController::class, 'register'])->name('user.register');
-
+Route::get('/products/filter', [App\Http\Controllers\User\ProductController::class, 'filter'])->name('products.filter');
 Route::get('/cart', [OrderController::class, 'index'])->name('cart.index');
 
-Route::prefix('order')->group(function () {
-    Route::get('/', [AdminOrderController::class, 'index'])->name('order.index');
-    Route::get('/pending', [AdminOrderController::class, 'OrderPending'])->name('order.pending');
-    Route::get('/detail/{id}', [AdminOrderController::class, 'OrderDetail'])->name('order.detail');
-});
 
 // AJAX
 Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
@@ -144,4 +139,4 @@ Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'cha
         Route::get('restore/{id}', [BrandController::class, 'restore'])->name('brand.restore');
         Route::delete('forceDelete/{id}', [BrandController::class, 'forceDelete'])->name('brand.forceDelete');
     });
-});
+

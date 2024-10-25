@@ -25,6 +25,7 @@ class OrderSeeder extends Seeder
                 $deliveredAt = $faker->dateTimeBetween('-1 month', 'now');
             }
 
+
             $order = Order::create([
                 'customer_id' => $customer->id,
                 'discount_id' => null,
