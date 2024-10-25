@@ -4,7 +4,7 @@
         <div class="header-desk header-desk_type_1">
             <div class="logo">
                 <a href="{{ route('home.index') }}">
-                    <img src="{{ asset('assets/images/logo.jpg') }}" alt="TuneNest"
+                    <img src="{{ asset('images/logo/logo.jpg') }}" alt="TuneNest"
                         class="logo__image d-block" />
                 </a>
             </div>
