@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('product_categories', function (Blueprint $table) {
+<<<<<<< Updated upstream
             $table->id('id'); 
             $table->string('image', 225)->nullable(); // URL ảnh danh mục
             $table->text('summary')->nullable(); // tóm tắt danh mục sản phẩm
@@ -19,6 +20,17 @@ return new class extends Migration
             $table->integer('parent_id')->nullable(); 
             $table->text('description')->nullable(); 
             $table->timestamp('deleted_at')->nullable(); 
+=======
+            $table->id();
+            $table->string('name');
+            $table->string('image')->nullable();
+            $table->integer('publish')->default(2);
+            $table->integer('parent_id'); // Chỉ cần một dòng này
+            $table->integer('level');
+            // $table->integer('parent_id'); // Dòng này cần phải xóa
+            $table->text('description')->nullable();
+            $table->string('slug')->nullable();
+>>>>>>> Stashed changes
             $table->timestamps();
         });
     }
