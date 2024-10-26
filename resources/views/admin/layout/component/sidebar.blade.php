@@ -34,8 +34,32 @@
                             </a>
                         </li>
                         <li class="sub-menu-item">
+<<<<<<< Updated upstream
                             <a href="products.html" class="">
                                 <div class="text">Bài viêt</div>
+=======
+                            <a href="{{ route('post.index') }}" class="">
+                                <div class="text">Bài viết</div>
+>>>>>>> Stashed changes
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="menu-item has-children">
+                    <a href="javascript:void(0);" class="menu-item-button">
+                        <div class="icon"><i class="icon-tag"></i></div>
+                        <div class="text">Mã Giảm Giá</div>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="sub-menu-item">
+                            <a href="{{ route('admin.discounts.index') }}" class="">
+                                <div class="text">Danh sách mã giảm giá</div>
+                            </a>
+                        </li>
+                        <li class="sub-menu-item">
+                            <a href="{{ route('admin.discounts.create') }}" class="">
+                                <div class="text">Thêm mã giảm giá</div>
                             </a>
                         </li>
                     </ul>
