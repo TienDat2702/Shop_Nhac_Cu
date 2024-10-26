@@ -19,6 +19,7 @@ class ProductUpdateRequest extends FormRequest
             // 'brand_id' => 'exists:brands,id',
             'price' => 'required|numeric|min:0',
             'price_sale' => 'nullable|numeric|min:0|lt:price',
+            'image' => 'nullable|mimes:jpg,jpeg,png,gif,webp|max:2048',
         ];
     }
 
@@ -33,6 +34,8 @@ class ProductUpdateRequest extends FormRequest
             'price.min' => 'Giá sản phẩm phải lớn hơn hoặc bằng 0',
             'price_sale.min' => 'Giá khuyến mãi phải lớn hơn hoặc bằng 0',
             'price_sale.lt' => 'Giá khuyến mãi phải nhỏ hơn giá gốc',
+            'image.mimes' => 'Hình ảnh phải có định dạng jpg, jpeg, png, gif hoặc webp.',
+            'image.max' => 'Kích thước hình ảnh không được vượt quá 2 MB.',
         ];
     }
 }

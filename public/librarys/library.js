@@ -34,35 +34,59 @@
     }
 
     HT.sweetalert2 = () => {
-        $('.btn-delete').on('click', function(e){
-            let _this = $(this)
-            let text = 
-
-            e.preventDefault(); //ngăn chặn hành vi mặc định
-            let form = $(this).closest('form'); // lấy form gần nhất với button
-            Swal.fire({
-                title: "Bạn có chắc chắn?",
-                html: '<span style="color: red">' + _this.attr('data-text2') + '</span>' + "<br>" + _this.attr('data-text'),
+        $('.btn-delete').on('click', function (e) {
+            e.preventDefault(); // Ngăn chặn hành vi mặc định
+            let _this = $(this);
+            let form = $(this).closest('form'); // Lấy form gần nhất với button
+            
+            // Khai báo biến cho các nút
+            let cancelButtonText = _this.attr('data-text3') ? "OK" : "Hủy"; // Kiểm tra data-text3
+            let cancelButtonColor = _this.attr('data-text3') ? "#7066E0" : "#d33"; // Kiểm tra data-text3
+            let title = _this.attr('data-text3') ? "Bạn không thể xóa danh mục" : "Bạn có chắc chắn?"; // Kiểm tra data-text3
+            
+            // Khai báo tùy chọn Swal
+            let swalOptions = {
+                title:title ,
+                html: '<span style="color: red">' + _this.attr('data-text3') + '</span>' + "<br>" + _this.attr('data-text'),
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Có, Xóa nó!",
-                cancelButtonText: "Hủy"
-            }).then((result) => {
+                showConfirmButton: !_this.attr('data-text3'), // Ẩn confirm button nếu data-text3 tồn tại
+                cancelButtonColor: cancelButtonColor,
+                cancelButtonText: cancelButtonText // Sử dụng biến cancelButtonText
+            };
+    
+            Swal.fire(swalOptions).then((result) => {
                 if (result.isConfirmed) {
-                Swal.fire({
-                    title: "Xóa!",
-                    text: "Dữ liệu của bạn đã được xóa.",
-                    icon: "success"
-                }).then(() => {
-                    form.submit(); // Gửi form với id cụ thể
-                });
+                    $.ajax({
+                        url: form.attr('action'), // Đường dẫn đến action của form
+                        type: 'DELETE',
+                        data: form.serialize(), // Gửi dữ liệu của form
+                        success: function (response) {
+                            // Nếu xóa thành công
+                            Swal.fire({
+                                title: "Xóa!",
+                                text: "Dữ liệu của bạn đã được xóa.",
+                                icon: "success"
+                            }).then(() => {
+                                location.reload(); // Tải lại trang
+                            });
+                        },
+                        error: function (xhr) {
+                            // Nếu có lỗi, hiển thị thông báo từ response
+                            Swal.fire({
+                                title: "Lỗi!",
+                                text: xhr.responseJSON.message, // Hiển thị thông báo lỗi từ server
+                                icon: "error"
+                            });
+                        }
+                    });
                 }
             });
-        })
-    }
-
+        });
+    };
+    
+    
+    
 
     HT.setupCkeditor = () => {
         if ($('.ck-editor')) {
@@ -168,6 +192,15 @@
                     max_price: priceChanged ? priceRange[1] : null  // Chỉ gửi giá nếu đã thay đổi
                 },
                 success: function(response) {
+                    // Cập nhật giá hiển thị
+                    const minPrice = priceRange[0].toLocaleString('vi-VN') + '₫';
+                    const maxPrice = priceRange[1].toLocaleString('vi-VN') + '₫';
+                    
+                    // Cập nhật giá hiển thị trong giao diện
+                    $('.price-range__min').text(minPrice);
+                    $('.price-range__max').text(maxPrice);
+                    
+                    // Cập nhật danh sách sản phẩm
                     $('#products-grid').html($(response).find('#products-grid').html());
                 },
                 error: function(xhr, status, error) {
@@ -179,6 +212,7 @@
         // Gọi hàm lọc sản phẩm lần đầu khi trang được tải
         filterProducts(); // Lọc sản phẩm ban đầu với giá trị mặc định
     }
+    
     
     
     $(document).ready(function () {

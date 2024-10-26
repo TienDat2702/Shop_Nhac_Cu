@@ -52,7 +52,7 @@ class ProductCategoryController extends Controller
         $level = $parentCategory ? $parentCategory->level + 1 : 1;
 
         $slug = ProductCategory::GenerateUniqueSlug($request->input('name'));
-        
+
         $productCategory = ProductCategory::create([
             'name' => $request->input('name'),
             'description' => $request->input('description'),
@@ -121,23 +121,31 @@ class ProductCategoryController extends Controller
         }
         return redirect()->route('productCategory.index');
     }
-
+    
     public function destroy(string $id)
     {
         $productCategory = ProductCategory::GetWithParent()->find($id);
-
+    
         if (!$productCategory) {
             return redirect()->back()->withErrors(['Danh mục không tồn tại!']);
         }
-
-        $productCategory->publish = 1;
+    
+        // Kiểm tra xem danh mục có sản phẩm hay không
+        $productCount = $productCategory->products()->count(); // Giả sử có quan hệ 'products'
+    
+        if ($productCount > 0) {
+            return redirect()->back()->success(['Không thể xóa danh mục vì nó có ' . $productCount . ' sản phẩm liên quan.']);
+        }
+    
+        $productCategory->publish = 1; // Đánh dấu danh mục là không công khai
         $productCategory->save();
-
-        self::deleteRecursive($productCategory);
-
+    
+        self::deleteRecursive($productCategory); // Gọi phương thức xóa đệ quy
+    
         toastr()->success('Xóa thành công!');
         return redirect()->back();
     }
+    
 
     public static function deleteRecursive($parentCategory)
     {
