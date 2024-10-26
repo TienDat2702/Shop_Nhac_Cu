@@ -1,0 +1,136 @@
+
+    [
+        "category_id": 1,
+        "name"=> "KAWAI ND-21",
+        "image"=> "kawai-nd-21-dep-sang-trong-viet-thuong-music-450x471.jpg",
+        "price"=> 99900000,
+        "price_sale"=> 93000000,
+        "short_description"=> "Đàn piano Kawai ND-21 mang đến chất lượng âm thanh trong, mạnh và một sự ổn định tuyệt đối về kết cấu bề mặt bởi kỹ thuật bộ máy được sản xuất theo tiêu chuẩn của hãng Ka"
+    ],[
+        "category_id": 1,
+        "name"=> "KAWAI K-15E",
+        "image"=> "piano-kawai-k15e-450x471.jpg",
+        "price"=> 91400000,
+        "price_sale"=> 82000000,
+        "short_description"=> "Đàn piano Kawai K-15E là sản phẩm tuyệt hảo để đưa khách hàng vào dòng sản phẩm K-Series cao cấp của KAWAI PIANO"
+    ],[
+        "category_id": 1,
+        "name"=> "KAWAI K-300",
+        "image"=> "dan-piano-kawai-k300-mau-den-sang-trong-450x471.jpg",
+        "price"=> 194700000,
+        "price_sale"=> 182000000,
+        "short_description"=> "Piano Kawai K-300 được thiết kế dựa trên những thành công của K3 – cây đàn piano từng đạt giải thưởng Piano Acoustic của năm do MMR bình chọn trong 4 năm liên"
+    ],[
+        "category_id": 1,
+        "name"=> "KAWAI K-800",
+        "image"=> "piano-kawai-k800-sang-trong-450x471.jpg",
+        "price"=> 305600000,
+        "price_sale"=> 285000000,
+        "short_description"=> "Đàn piano Kawai K800 được biết đến là cây đàn cao cấp trong dòng K series của hãng Kawai, có thiết kế kiểu dáng thanh lịch, âm điệu chuẩn piano acoustic đáp ứng đầy đủ ch"
+    ],[
+        "category_id": 1,
+        "name"=> "KAWAI GL-10",
+        "image"=> "GL10-Polished-Ebony-450x471.jpg",
+        "price"=> 314800000,
+        "price_sale"=> 295000000,
+        "short_description"=> "Đàn Piano Kawai GL-10 là sản phẩm đàn piano mới trong đại gia đình piano Kawai. Piano Kawai GL-10 thuộc dòng \"baby grand\" được sản xuất và"
+    ],[
+        "category_id": 1,
+        "name"=> "KAWAI GL-30",
+        "image"=> "dan-piano-kawai-gl30-mau-den-450x471.jpg",
+        "price"=> 425900000,
+        "price_sale"=> 409000000,
+        "short_description"=> "Sự hoạt động ổn định trong khoảng thời gian dài của độ cảm ứng phím chỉ có thể đạt được bằng việc đạt đến một thiết kế thông minh cùng những phương pháp và vật liệu tiên"
+    ],[
+        "category_id": 1,
+        "name"=> "KAWAI GL-50",
+        "image"=> "dan-piano-kawai-gl50-sang-trong-450x471.jpg",
+        "price"=> 492900000,
+        "price_sale"=> 469000000,
+        "short_description"=> "Đàn Piano Kawai GL-50 sự lựa chọn tốt nhất cho lớp học nhạc và phòng thu. Piano Kawai GL-50 là sản phẩm piano mới trong dòng sản phẩm mới của piano Kawai. Piano Kawa"
+    ],[
+        "category_id": 1,
+        "name"=> "ROLAND RP-30",
+        "image"=> "bannerT9-RO30-2048-450x471.png",
+        "price"=> 21760000,
+        "price_sale"=> 16500000,
+        "short_description"=> "Phím đàn với độ nhạy và độ chính xác cao giúp cải thiện kĩ năng của trẻ. Được trang bị ba bàn đạp để chơi những giai điệu cổ"
+    ],[
+        "category_id": 1,
+        "name"=> "KAWAI GX-3",
+        "image"=> "kawai-gx-3-1-450x471.jpg",
+        "price"=> 0,
+        "price_sale"=> 577800000,
+        "short_description"=> "GX-3 gây ấn tượng với một vẻ ngoài sang trọng và trang nghiêm, cùng với đó là giai điệu khác biệt gợi lên những phẩm chất của một cây đại dương cầm và còn hơn thế nữa. Vớ"
+   ],[
+    "category_id": 1,        
+    "name"=> "",
+            "image"=> "thayday-guitar-vietthuong.jpg",
+            "price"=> 0,
+            "price_sale"=> 0,
+            "short_description"=> ""
+       ],[
+        "category_id": 1,    
+        "name"=> "CORDOBA C1M 02685",
+            "image"=> "cordoba-c1m-02685-450x471.jpg",
+            "price"=> 4310000,
+            "price_sale"=> 3520000,
+            "short_description"=> "Córdoba C1M là cây đàn guitar dây nylon hoàn hảo cho học sinh ở mọi trình độ và hoàn toàn có thể sử dụng trong lớp"
+       ],[
+        "category_id": 1,    
+        "name"=> "CORDOBA C1M-CE",
+            "image"=> "cordoba-C1M-CE-01-450x471.jpg",
+            "price"=> 7790000,
+            "price_sale"=> 6750000,
+            "short_description"=> "Đàn guitar Cordoba C1M-CE là dòng Classical có thiết kế dáng khuyết cùng với âm thanh trầm ấm tốt đúng chuẩn cổ điển, và có màu sắc tươi sáng. "
+       ],[
+        "category_id": 1,    
+        "name"=> "FENDER CD-60S",
+            "image"=> "fender-cd-60s-450x471.jpg",
+            "price"=> 6350000,
+            "price_sale"=> 5650000,
+            "short_description"=> "Guitar Fender CD-60S nổi bật với thiết kế đẹp mắt. Đàn có dáng Dreadnought, thùng đàn lớn cho tiếng đàn to, ấm và đầy hơn, phù hợp cho các bạn chơi đệm và dùng pick. Cây đàn là một trong những mẫu"
+       ],[
+        "category_id": 1,    
+        "name"=> "TANGLEWOOD TWBB SDE",
+            "image"=> "tanglewoodguitars-twbbsde-01-450x471.jpg",
+            "price"=> 0,
+            "price_sale"=> 6030000,
+            "short_description"=> "Dáng đàn => slpoe shoulder dreadnought Mặt trên => hand selected mahogany Hông lưng => mahogany Cầu [cuối dây đàn] => techwood Mặt phím => techwood Bộ đ"
+       ],[
+        "category_id": 1,    
+        "name"=> "TANGLEWOOD TWCR DCE CROSSROADS DREADNOUGHT ACOUSTIC",
+            "image"=> "tanglewood-twcrdce-450x471.jpg",
+            "price"=> 4140000,
+            "price_sale"=> 3540000,
+            "short_description"=> "Guitars Dreadnought thuộc dòng TWCR DCE Highlights Kiểu electro-acoustic Mặt trước => Hand Selected Genuine Mahogany Mặt sau và bên hông=> "
+       ],[
+        "category_id": 1,    
+        "name"=> "KAPOK D-118AC",
+            "image"=> "Kapok-D-118AC-1-400x400-450x471.jpg",
+            "price"=> 2720000,
+            "price_sale"=> 2100000,
+            "short_description"=> "Kapok D-118AC được thiết kế thon gọn với nhiều tính năng mới, phù hợp cho người mới bắt đầu chơi Guitar "
+       ],[
+        "category_id": 1,    
+        "name"=> "KAPOK LD-14",
+            "image"=> "kapok-ld-14-1-400x400-450x471.jpg",
+            "price"=> 0,
+            "price_sale"=> 2190000,
+            "short_description"=> "Kapok LD-14 nằm trong phân khúc guitar phổ thông với giá bán thấp. Sản phẩm nổi bật về thiết kế so với các guitar cùng phân khúc nhờ lớp sơn bóng đẹp, cần đàn làm bằng gỗ mahogany (gỗ gụ)"
+       ],[
+        "category_id": 1,    
+        "name"=> "SUZUKI SDG-6NL",
+            "image"=> "Suzuki-SDG-6NL-1-270x270-450x471.jpg",
+            "price"=> 3426000,
+            "price_sale"=> 2650000,
+            "short_description"=> "Đàn guitar Suzuki SDG 6NL là đàn guitar suzuki có mức giá thấp,với mức giá này, với kiểu dáng đẹp và âm thanh hay, đây chính là cây đàn guitar sinh viên. Lên dây Gỗ cây Vân Sam"
+       ],[
+        "category_id": 1,    
+        "name"=> "GUITAR CLASSIC CORDOBA FUSION 5 KÈM BAG GUCLCOR-05407",
+            "image"=> "guitar-classic-cordoba-fusion-5-kem-bag-guclcor-05407-450x471.jpg",
+            "price"=> 0,
+            "price_sale"=> 13100000,
+            "short_description"=> "Đàn Guitar Classic Cordoba FUSION 5 được thiết kế dáng Cutaway giúp người chơi dễ dàng bấm ở các ngăn cao, hợp âm cuối một cách dễ dàng, vừa tăng thêm tính thẩm mỹ cho câ"
+       ]
+    

@@ -4,22 +4,39 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Showroom;
 use App\Models\Product;
-use Faker\Factory as Faker;
+use Illuminate\Support\Facades\DB;
 
 class ShowroomSeeder extends Seeder
 {
     public function run()
     {
-        $faker = Faker::create();
+        // Dữ liệu showroom thực tế
+        $showroomsData = [
+            [
+                'name' => 'Showroom Hồ Chí Minh',
+                'address' => '123 Đường ABC, Quận 1, TP.HCM',
+                'phone' => '0123456789',
+                'image' => 'https://example.com/image1.jpg',
+                'publish' => 1,
+            ],
+            [
+                'name' => 'Showroom Đà Nẵng',
+                'address' => '456 Đường DEF, Quận Hòa Vang, TP.Đà Nẵng',
+                'phone' => '0987654321',
+                'image' => 'https://example.com/image2.jpg',
+                'publish' => 1,
+            ], [
+                'name' => 'Showroom Hà Nội',
+                'address' => '456 Đường DEF, Quận Hoàn Kiếm, TP.Hà Nội',
+                'phone' => '0987654321',
+                'image' => 'https://example.com/image2.jpg',
+                'publish' => 1,
+            ]
+        ];
 
-        for ($i = 0; $i < 10; $i++) {
-            Showroom::create([
-                'name' => $faker->company,
-                'address' => $faker->address,
-                'phone' => $faker->phoneNumber,
-                'image' => $faker->imageUrl(640, 480, 'business', true),
-                'publish' => $faker->boolean(90),
-            ]);
+        // Chèn dữ liệu showroom vào bảng
+        foreach ($showroomsData as $showroomData) {
+            Showroom::create($showroomData);
         }
 
         // Thêm sản phẩm vào showroom nếu chưa có
@@ -30,7 +47,10 @@ class ShowroomSeeder extends Seeder
             foreach ($showrooms as $showroom) {
                 $randomProducts = $products->random(min($products->count(), rand(5, 15)));
                 foreach ($randomProducts as $product) {
-                    $showroom->products()->attach($product->id, ['stock' => $faker->numberBetween(1, 100)]);
+                    DB::table('showroom_products')->updateOrInsert(
+                        ['product_id' => $product->id, 'showroom_id' => $showroom->id],
+                        ['stock' => rand(1, 100)] // Sử dụng số ngẫu nhiên cho stock
+                    );
                 }
             }
         } else {
