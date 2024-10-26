@@ -17,9 +17,10 @@ return new class extends Migration
             $table->unsignedBigInteger('brand_id')->nullable(); 
             $table->string('name', 125);
             $table->string('image', 125)->nullable();
-            $table->decimal('price', 10, 2);
-            $table->decimal('price_sale', 10, 2)->nullable();
+            $table->decimal('price', 12, 2);
+            $table->decimal('price_sale', 12, 2)->nullable();
             $table->integer('view')->default(0);
+            $table->text('short_description')->nullable();
             $table->text('description')->nullable();
             $table->tinyInteger('publish')->default(2);
             $table->timestamp('deleted_at')->nullable();

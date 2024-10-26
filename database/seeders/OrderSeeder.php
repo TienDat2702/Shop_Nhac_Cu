@@ -19,12 +19,15 @@ class OrderSeeder extends Seeder
 
         for ($i = 0; $i < 50; $i++) {
             $customer = $customers->random();
-            $status = $faker->randomElement(['chờ duyệt', 'đang giao', 'đã giao']);
+            $status = $faker->randomElement(['chờ duyệt', 'đang giao', 'đã giao', 'đã hủy']);
             $deliveredAt = null;
+            $canceledAt = null;
+
             if ($status === 'đã giao') {
                 $deliveredAt = $faker->dateTimeBetween('-1 month', 'now');
+            } elseif ($status === 'đã hủy') {
+                $canceledAt = $faker->dateTimeBetween('-1 month', 'now');
             }
-
 
             $order = Order::create([
                 'customer_id' => $customer->id,
@@ -37,7 +40,7 @@ class OrderSeeder extends Seeder
                 'address' => $faker->address,
                 'phone' => $customer->phone,
                 'delivered_at' => $deliveredAt,
-                'canceled_at' => null,
+                'canceled_at' => $canceledAt,
                 'total' => 0, // Khởi tạo tổng tiền là 0
             ]);
 

@@ -26,7 +26,7 @@ return new class extends Migration
             $table->timestamps();
             $table->timestamp('delivered_at')->nullable();
             $table->timestamp('canceled_at')->nullable();
-            $table->decimal('total', 10, 2)->default(0);
+            $table->decimal('total', 12, 2)->default(0);
 
             // Khóa ngoại
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
