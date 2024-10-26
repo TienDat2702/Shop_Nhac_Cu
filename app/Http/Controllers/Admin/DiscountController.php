@@ -26,12 +26,11 @@ class DiscountController extends Controller
             'discount_rate' => 'required|numeric',
             'max_value' => 'required|numeric',
             'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
+            'end_date' => 'required|date',
         ]);
 
         Discount::create($request->all());
-
-        return redirect()->route('admin.discounts.index')->with('success', 'Discount created successfully.');
+        return redirect()->route('admin.discounts.index')->with('success', 'Mã giảm giá đã được tạo thành công!');
     }
 
     public function edit(Discount $discount)
@@ -46,18 +45,16 @@ class DiscountController extends Controller
             'discount_rate' => 'required|numeric',
             'max_value' => 'required|numeric',
             'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
+            'end_date' => 'required|date',
         ]);
 
         $discount->update($request->all());
-
-        return redirect()->route('admin.discounts.index')->with('success', 'Discount updated successfully.');
+        return redirect()->route('admin.discounts.index')->with('success', 'Mã giảm giá đã được cập nhật thành công!');
     }
 
     public function destroy(Discount $discount)
     {
         $discount->delete();
-
-        return redirect()->route('admin.discounts.index')->with('success', 'Discount deleted successfully.');
+        return redirect()->route('admin.discounts.index')->with('success', 'Mã giảm giá đã được xóa thành công!');
     }
 }
