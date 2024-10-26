@@ -21,22 +21,13 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
 Route::get('/shop/{product_slug}',[ProductController::class,'product_details'])->name('shop.product.details');
 
 
-// user
-// Route::get('/login', [AuthController::class, 'login'])->name('user.login');
-// Route::post('/do-login', [AuthController::class, 'dologin'])->name('user.dologin');
-// Route::get('/register', [AuthController::class, 'register'])->name('user.register');
-// Route::post('/register', [AuthController::class, 'postRegister'])->name('user.postRegister');
-// Route::get('/profile', [ProfileController::class, 'show'])->name('user.profile');
-// Route::post('/logout', [AuthController::class, 'logout'])->name('user.logout');
 Route::get('/login', [UserController::class, 'login'])->name('user.login');
 Route::post('/do-login', [UserController::class, 'dologin'])->name('user.dologin');
 Route::get('/logout', [UserController::class, 'logout'])->name('user.logout');
@@ -45,13 +36,7 @@ Route::get('/orders', [UserController::class, 'userOrder'])->name('user.orders')
 
 Route::get('/cart', [OrderController::class,'index'])->name('cart.index');
 
-// Route::prefix('order')->group(function () {
-//     Route::get('/', [AdminOrderController::class, 'index'])->name('order.index');
-//     Route::get('/pending', [AdminOrderController::class, 'OrderPending'])->name('order.pending');
-//     Route::get('/detail/{id}', [AdminOrderController::class, 'OrderDetail'])->name('order.detail');
-// });
 
-// AJAX
 Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
  Route::prefix('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
@@ -106,6 +91,7 @@ Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'cha
         Route::delete('showroom/{id}', [ShowroomController::class, 'destroy'])->name('showroom.destroy');
         Route::get('/showrooms/{showroomId}/add-product', [ShowroomController::class, 'showAddProductForm'])->name('showroom.showAddProductForm');
         Route::post('/showrooms/products', [ShowroomController::class, 'addProductToShowroom'])->name('showroom.addProduct');
+        Route::get('/api/showrooms', [ShowroomController::class, 'searchShowrooms'])->name('Search.showroom');
     });
     Route::prefix('Product_showroom')->group(function(){
         Route::get('category/{showroomId}/products', [ProductShowroomController::class, 'index'])->name('Productshowroom.index');

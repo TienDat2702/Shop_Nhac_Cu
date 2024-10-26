@@ -1,24 +1,4 @@
-<style>
-    .modal-dialog {
-        max-width: 500px;
-        margin: 19.75rem auto;
-    }
-    h5, .h5 {
-    font-size: 30px;
-    line-height: 28px;
-}
-.form-select {
-    font-size: 16px;
-}
-.form-label {
-    font-size: 17px;
-    margin-bottom: .5rem;
-}
-.modal-footer .btn {
-    font-size: 1.5rem; /* Điều chỉnh kích thước chữ (ví dụ: 1.5rem) */
-}
 
-</style>
 <div class="wg-table table-all-user">
     @php
     $showrooms = ($config == 'index') ? $dsshowroom : $getDeleted;
@@ -92,10 +72,6 @@
                                 <i class="icon-edit-3"></i>
                             </div>
                         </a>
-                        <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#addProductModal"
-                            data-showroom-id="{{ $item->id }}">
-                            <i class="fa-solid fa-download"></i>
-                        </button>
 
 
                         <a href="{{route('Productshowroom.index', $item->id)}}" title="Add Product_Showroom">
@@ -119,42 +95,6 @@
 
 
             </tr>
-            <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true" data-bs-backdrop="false">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form id="addProductForm" action="{{ route('showroom.addProduct') }}" method="POST">
-                @csrf
-                <input type="hidden" name="showroom_id" id="showroom_id" value="">
-                
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addProductModalLabel">Thêm Sản Phẩm</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="product_id" class="form-label">Chọn Sản Phẩm</label>
-                        <select id="product_id" name="product_id" class="form-select">
-                            @foreach ($products as $product)
-                                <option value="{{ $product->id }}">{{ $product->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="stock" class="form-label">Số lượng (Stock)</label>
-                        <input type="number" id="stock" name="stock" class="form-control" min="1" placeholder="Nhập số lượng sản phẩm" required>
-                    </div>
-                </div>
-                
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <button type="submit" class="btn btn-primary">Thêm Sản Phẩm</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
             @endforeach
 
@@ -171,17 +111,3 @@
 
 
 </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var addProductModal = document.getElementById('addProductModal');
-        addProductModal.addEventListener('show.bs.modal', function (event) {
-            var button = event.relatedTarget; // Nút đã được nhấn để mở modal
-            var showroomId = button.getAttribute('data-showroom-id'); // Lấy showroom_id
-
-            // Cập nhật giá trị showroom_id vào trường ẩn
-            var hiddenInput = document.getElementById('showroom_id');
-            hiddenInput.value = showroomId;
-        });
-    });
-</script>

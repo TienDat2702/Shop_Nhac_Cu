@@ -201,12 +201,12 @@ public function addProductToShowroom(Request $request)
     if (!$showroom->products()->where('product_id', $request->product_id)->exists()) {
         // Nếu chưa có, thêm sản phẩm vào showroom với số lượng (stock)
         $showroom->products()->attach($request->product_id, ['stock' => $request->stock]);
-        toastr()->success('Sản phẩm đã được thêm vào showroom với số lượng ' . $request->stock . '!');
+        
+        // Trả về phản hồi thành công
+        return response()->json(['success' => true, 'message' => 'Sản phẩm đã được thêm vào showroom với số lượng ' . $request->stock . '!']);
     } else {
-        toastr()->warning('Sản phẩm đã tồn tại trong showroom này.');
+        // Trả về phản hồi không thành công
+        return response()->json(['success' => false, 'message' => 'Sản phẩm đã tồn tại trong showroom này.']);
     }
-
-    // Quay trở lại trang trước đó
-    return redirect()->back();
 }
 }

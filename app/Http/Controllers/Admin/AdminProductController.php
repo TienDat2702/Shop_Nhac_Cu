@@ -8,6 +8,7 @@ use App\Http\Requests\ProductUpdateRequest;
 use App\Models\Brand;
 use App\Services\UploadImageService;
 use App\Models\Product;
+use App\Models\Showroom;
 use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 
@@ -32,7 +33,8 @@ class AdminProductController extends Controller
         } else {
             $config = 'index';
             $products = Product::search($request->all()); 
-            return view('admin.products.product.index', compact('products', 'countDeleted', 'config', 'productCategories', 'brand'));
+            $showrooms = Showroom::all();
+            return view('admin.products.product.index', compact('products', 'countDeleted', 'config', 'productCategories', 'brand', 'showrooms'));
         }
     }
 
@@ -202,4 +204,6 @@ class AdminProductController extends Controller
         toastr()->success('Xóa thành công!');
         return redirect()->back();
     }
+
+
 }
