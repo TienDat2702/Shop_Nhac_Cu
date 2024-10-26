@@ -108,6 +108,11 @@
     </div>
     @endif
 </div>
+<nav aria-label="Page navigation example">
+    <ul class="pagination d-flex justify-content-center my-3">
+        {{ $dsshowroom->appends(request()->all())->links() }} <!-- Thêm links phân trang -->
+    </ul>
+</nav>
 
 
 </div>

@@ -1,24 +1,4 @@
-<style>
-    .modal-dialog {
-        max-width: 500px;
-        margin: 19.75rem auto;
-    }
-    h5, .h5 {
-    font-size: 30px;
-    line-height: 28px;
-}
-.form-select {
-    font-size: 16px;
-}
-.form-label {
-    font-size: 17px;
-    margin-bottom: .5rem;
-}
-.modal-footer .btn {
-    font-size: 1.5rem; /* Điều chỉnh kích thước chữ (ví dụ: 1.5rem) */
-}
 
-</style>
 <div class="wg-table table-all-product">
     <table style="table-layout: auto;" class="table table-striped table-bordered">
         <thead>
@@ -71,17 +51,17 @@
                     </td>
                     <td>
                         <div class="list-icon-function">
-                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateStockModal"
+                            <div class="item edit"type="button" data-bs-toggle="modal" data-bs-target="#updateStockModal"
                                 data-showroom-id="{{ $item->showroom->id }}" data-product-id="{{ $item->product->id }}"
                                 data-current-stock="{{ $item->stock }}">
-                                Cập Nhật Số Lượng
-                            </button>
+                                <i class="icon-edit-3"></i>
+                            </div>
                         
                             <form action="{{ route('Productshowroom.remove') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="showroom_id" value="{{ $item->showroom->id }}">
                                 <input type="hidden" name="product_id" value="{{ $item->product->id }}">
-                                <button type="submit" class="btn btn-danger">Xóa sản phẩm</button>
+                                <button type="submit" class="btn btn-delete item text-danger delete"><i class="icon-trash-2"></i></button>
                             </form>
                         
                         </div>

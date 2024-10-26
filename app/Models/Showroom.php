@@ -37,7 +37,7 @@ class Showroom extends Model
         if (isset($request['publish']) && $request['publish'] > 0) {
             $query->where('publish', $request['publish']);
         }
-        return $query->orderBy('id', 'DESC')->paginate(10);
+        return $query->orderBy('id', 'DESC')->paginate(9);
     }
 
 
