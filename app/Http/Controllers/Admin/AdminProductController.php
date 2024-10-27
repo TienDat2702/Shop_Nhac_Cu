@@ -131,12 +131,18 @@ class AdminProductController extends Controller
 
         $product->update($data);
 
-        if ($product->wasChanged()) {
-            toastr()->success('Cập nhật thành công!');
-        } else {
-            toastr()->success('Không có gì thay đổi!');
+        if($product && $product->update($data)){
+            if($product->wasChanged()){
+                toastr()->success('Cập nhật thành công!');
+            }
+            // else{
+            //     toastr()->success('Không có gì thay đổi!');
+            // }
+            return redirect()->route('product.index');
+        }else{
+            toastr()->error('Cập nhật không thành công!');
         }
-        return redirect()->route('product.index');
+
     }
 
     public function destroy(string $id)

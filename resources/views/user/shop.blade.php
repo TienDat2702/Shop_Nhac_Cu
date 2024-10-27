@@ -101,7 +101,7 @@
                           <div id="accordion-filter-price" class="accordion-collapse collapse show border-0"
                               aria-labelledby="accordion-heading-price" data-bs-parent="#price-filters">
                               <input class="price-range-slider" type="text" name="price_range" value=""
-                                  data-slider-min="10000" data-slider-max="15000000" data-slider-step="1000"
+                                  data-slider-min="0" data-slider-max="15000000" data-slider-step="1000"
                                   data-slider-value="[250000,4500000]" data-currency="₫" />
                               <div class="price-range__info d-flex align-items-center mt-2">
                                   <div class="me-auto">

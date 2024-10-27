@@ -27,7 +27,6 @@ Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
 Route::get('/shop/{product_slug}',[ProductController::class,'product_details'])->name('shop.product.details');
 
-
 Route::get('/login', [UserController::class, 'login'])->name('user.login');
 Route::post('/do-login', [UserController::class, 'dologin'])->name('user.dologin');
 Route::get('/logout', [UserController::class, 'logout'])->name('user.logout');
