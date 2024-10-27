@@ -46,7 +46,7 @@
             
             // Khai báo tùy chọn Swal
             let swalOptions = {
-                title:title ,
+                title: title,
                 html: '<span style="color: red">' + _this.attr('data-text3') + '</span>' + "<br>" + _this.attr('data-text'),
                 icon: "warning",
                 showCancelButton: true,
@@ -59,8 +59,8 @@
                 if (result.isConfirmed) {
                     $.ajax({
                         url: form.attr('action'), // Đường dẫn đến action của form
-                        type: 'DELETE',
-                        data: form.serialize(), // Gửi dữ liệu của form
+                        type: 'POST', // Thay vì DELETE, sử dụng POST
+                        data: form.serialize() + '&_method=DELETE', // Thêm _method=DELETE vào dữ liệu form
                         success: function (response) {
                             // Nếu xóa thành công
                             Swal.fire({
@@ -70,15 +70,8 @@
                             }).then(() => {
                                 location.reload(); // Tải lại trang
                             });
-                        },
-                        error: function (xhr) {
-                            // Nếu có lỗi, hiển thị thông báo từ response
-                            Swal.fire({
-                                title: "Lỗi!",
-                                text: xhr.responseJSON.message, // Hiển thị thông báo lỗi từ server
-                                icon: "error"
-                            });
                         }
+                        // Đã loại bỏ phần xử lý lỗi
                     });
                 }
             });
