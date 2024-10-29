@@ -22,7 +22,7 @@
             </tr>
             @endforeach
             <tr>
-                <th colspan="3" style="border: 1px solid #ccc; padding: 10px; font-weight: bold; background-color: #f9f9f9;">Tổng thành tiền</th>
+                <th colspan="4" style="border: 1px solid #ccc; padding: 10px; font-weight: bold; background-color: #f9f9f9;">Tổng thành tiền</th>
                 <td style="border: 1px solid #ccc; padding: 10px;">{{ number_format($order->total, 0, '.', ',') }} VNĐ</td>
             </tr>
         </table>

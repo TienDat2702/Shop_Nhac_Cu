@@ -1,8 +1,8 @@
 <div class="section-menu-left">
     <div class="box-logo">
         <a href="index.html" id="site-logo-inner">
-            <img class="" id="logo_header" alt="" src="{{ asset('images/logo/logo.png') }}"
-                data-light="images/logo/logo.png" data-dark="images/logo/logo.png">
+            <img class="" id="logo_header" alt="" src="{{ asset('images/logo/logo.jpg') }}"
+                data-light="{{ asset('images/logo/logo.jpg') }}" data-dark="{{ asset('images/logo/logo.jpg') }}">
         </a>
         <div class="button-show-hide">
             <i class="icon-menu-left"></i>
@@ -39,6 +39,30 @@
                             </a>
                         </li>
                     </ul>
+                </li>
+                <li class="menu-item has-children">
+                    <a href="javascript:void(0);" class="menu-item-button">
+                        <div class="icon"><i class="icon-file"></i></div>
+                        <div class="text">Showrooms</div>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="sub-menu-item">
+                            <a href="{{ route('showroomcategory.index') }}" class="">
+                                <div class="text">Danh Sách Showrooms</div>
+                            </a>
+                        </li>
+                        <li class="sub-menu-item">
+                            <a href="#" class="">
+                                <div class="text">Thống Kê Showrooms</div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="menu-item ">
+                    <a href="{{ route('banner.index')}}" class="menu-item-button">
+                        <div class="icon"><i class="icon-layers"></i></div>
+                        <div class="text">Banner</div>
+                    </a>
                 </li>
                 <li class="menu-item has-children">
                     <a href="javascript:void(0);" class="menu-item-button">
@@ -83,7 +107,6 @@
                         </li>
                     </ul>
                 </li>
-
                 <li class="menu-item">
                     <a href="settings.html" class="">
                         <div class="icon"><i class="icon-settings"></i></div>

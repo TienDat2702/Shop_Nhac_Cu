@@ -27,6 +27,7 @@ use Faker\Generator as Faker;
 $factory->define(ProductCategory::class, function (Faker $faker) {
     return [
         'image' => $faker->imageUrl(640, 480, 'products'), // URL ảnh giả
+        'name' => $faker->paragraph,
         'summary' => $faker->sentence,
         'publish' => 1,
         'parent_id' => null, // Chúng ta sẽ tạo parent và child riêng

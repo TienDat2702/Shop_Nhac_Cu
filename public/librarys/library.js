@@ -1,4 +1,3 @@
-
 (function ($) {
     "use strict";
     var HT = {};
@@ -125,6 +124,61 @@
         })
     }
 
+    HT.checkFilters = () => {
+        let selectedCategories = [];
+        let selectedBrands = [];
+        let priceRange = [0, Infinity]; // Mặc định là không có giới hạn giá
+        let priceChanged = false; // Biến kiểm tra xem giá đã thay đổi chưa
+    
+        // Lắng nghe sự kiện change trên các danh mục
+        $('.chk-category').on('change', function() {
+            selectedCategories = [];
+            $('.chk-category:checked').each(function() {
+                selectedCategories.push($(this).val());
+            });
+            filterProducts();
+        });
+    
+        // Lắng nghe sự kiện change trên các thương hiệu
+        $('.chk-brand').on('change', function() {
+            selectedBrands = [];
+            $('.chk-brand:checked').each(function() {
+                selectedBrands.push($(this).val());
+            });
+            filterProducts();
+        });
+    
+        // Lắng nghe sự kiện slideStop của slider khi người dùng dừng kéo
+        $('.price-range-slider').on('slideStop', function() {
+            priceRange = $(this).val().split(',').map(value => parseInt(value));
+            priceChanged = true; // Đánh dấu là giá đã thay đổi
+            filterProducts(); // Gọi hàm lọc sản phẩm
+        });
+    
+        // Hàm lọc sản phẩm
+        function filterProducts() {
+            $.ajax({
+                url: '/shop',
+                method: 'GET',
+                data: {
+                    brands: selectedBrands,
+                    categories: selectedCategories,
+                    min_price: priceChanged ? priceRange[0] : null, // Chỉ gửi giá nếu đã thay đổi
+                    max_price: priceChanged ? priceRange[1] : null  // Chỉ gửi giá nếu đã thay đổi
+                },
+                success: function(response) {
+                    $('#products-grid').html($(response).find('#products-grid').html());
+                },
+                error: function(xhr, status, error) {
+                    console.error("Lỗi: " + error);
+                }
+            });
+        }
+    
+        // Gọi hàm lọc sản phẩm lần đầu khi trang được tải
+        filterProducts(); // Lọc sản phẩm ban đầu với giá trị mặc định
+    }
+    
 
     $(document).ready(function () {
         HT.changeStatus();
@@ -132,6 +186,8 @@
         HT.setupCkeditor();
         HT.keyUpInput();
         HT.trash();
+        HT.checkFilters(); // Khởi tạo chức năng lọc
+        HT.checkBrand();
     });
 
 })(jQuery);

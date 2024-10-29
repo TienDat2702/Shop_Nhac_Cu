@@ -184,7 +184,7 @@ class PostController extends Controller
 
     public function destroy(string $id)
     {
-        $post = Post::GetPostAll()->findOrFail($id);
+        $post = Post::GetPostAll()->find($id);
 
         if($post && $post->image){
             $image_path = 'uploads/posts/posts/' . $post->image;
@@ -216,7 +216,7 @@ class PostController extends Controller
 
     public function restore(string $id)
     {
-        $post = Post::onlyTrashed()->findOrFail($id);
+        $post = Post::onlyTrashed()->find($id);
         
         // Tạo slug mới nếu slug bị trùng
         $post->slug = Post::generateUniqueSlug($post->title);
@@ -237,7 +237,7 @@ class PostController extends Controller
     //--------------------------------- Xử lý xóa bài viết----------------------------------------
 
     public function forceDelete(string $id){
-        $post = Post::onlyTrashed()->findOrFail($id);
+        $post = Post::onlyTrashed()->find($id);
 
         // Lấy tất cả các hình ảnh album liên quan đến bài viết
         $albumImages = $post->albums->pluck('path')->toArray();

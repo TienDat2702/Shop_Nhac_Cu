@@ -40,5 +40,12 @@ class AdminOrderController extends Controller
         $order->save();
 
         return redirect()->route('order.show', $id)->with('success', 'Trạng thái đơn hàng đã được cập nhật thành công');
+
+    
+}
+public function OrderDetail($id)
+    {
+        $order = Order::with(['customer', 'orderDetails'])->find($id);
+        return view('admin.order.detail', compact('order'));
     }
 }

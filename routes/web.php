@@ -10,6 +10,9 @@ use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\Admin\UploadCKImageController;
 use App\Http\Controllers\Ajax\AjaxDashboardController;
 use App\Http\Controllers\User\CartController;
+use App\Http\Controllers\Admin\ShowroomController;
+use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\Admin\ProductShowroomController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\User\ProductController;
@@ -20,9 +23,7 @@ use App\Http\Controllers\User\CheckoutController;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
@@ -34,7 +35,6 @@ Route::prefix('cart')->group(function () {
     Route::post('/update/quantity/{id}', [CartController::class, 'updateQuantity'])->name('cart.update.quantity');
     Route::post('/discount', [CartController::class, 'discount'])->name('cart.discount');
     Route::post('/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
-
 });
 Route::prefix('checkout')->group(function () {
     Route::get('/', [CheckoutController::class, 'checkout'])->name('checkout');
@@ -50,25 +50,16 @@ Route::get('/logout', [CustomerController::class, 'logout'])->name('customer.log
 Route::get('/profile', [CustomerController::class, 'profile'])->name('customer.profile');
 Route::get('/orders', [CustomerController::class, 'customerOrder'])->name('customer.orders');
 
-// Route::prefix('order')->group(function () {
-//     Route::get('/', [AdminOrderController::class, 'index'])->name('order.index');
-//     Route::get('/pending', [AdminOrderController::class, 'OrderPending'])->name('order.pending');
-//     Route::get('/detail/{id}', [AdminOrderController::class, 'OrderDetail'])->name('order.detail');
-// });
 
-// AJAX
 Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
-
-Route::prefix('admin')->group(function () {
+ Route::prefix('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
-
     Route::prefix('order')->group(function () {
         Route::get('/', [AdminOrderController::class, 'index'])->name('order.index');
         Route::get('/pending', [AdminOrderController::class, 'OrderPending'])->name('order.pending');
         Route::get('/detail/{id}', [AdminOrderController::class, 'show'])->name('order.show');
         Route::put('/{id}/update-status', [AdminOrderController::class, 'updateStatus'])->name('order.updateStatus');
     });
-
     // POST CATEGORY
     Route::prefix('post')->group(function () {
         
@@ -83,6 +74,7 @@ Route::prefix('admin')->group(function () {
         Route::get('category/restore/{id}', [PostCategoryController::class,'restore'])->name('postCategory.restore');
         Route::delete('category/forceDelete/{id}', [PostCategoryController::class,'forceDelete'])->name('postCategory.forceDelete');
     });
+
     // POST
     Route::prefix('post')->group(function () {
         
@@ -97,6 +89,39 @@ Route::prefix('admin')->group(function () {
         Route::delete('destroy/{id}', [PostController::class,'destroy'])->name('post.destroy');
         Route::get('restore/{id}', [PostController::class,'restore'])->name('post.restore');
         Route::delete('forceDelete/{id}', [PostController::class,'forceDelete'])->name('post.forceDelete');
+    });
+    Route::post('uploadImage', [UploadCKImageController::class, 'upload'])->name('ckeditor.upload');
+    //Showroom
+    Route::prefix('showroom')->group(function () {
+        Route::get('create', [ShowroomController::class, 'create'])->name('showroom.create'); // Route mới
+        Route::post('store', [ShowroomController::class, 'store'])->name('showroom.store'); // Route mới
+        Route::get('category', [ShowroomController::class,'index'])->name('showroomcategory.index');
+        Route::get('category/deleted', [ShowroomController::class, 'deleted'])->name('showroomcategory.deleted');
+        Route::get('edit/{id}', [ShowroomController::class, 'edit'])->name('showroom.edit'); // Route để sửa
+        Route::put('{id}', [ShowroomController::class, 'update'])->name('showroom.update'); // Route để cập nhật
+        Route::post('toggle-publish/{id}', [ShowroomController::class, 'togglePublish'])->name('showroom.togglePublish');
+        Route::get('showroom/{id}/restore', [ShowroomController::class, 'restore'])->name('showroom.restore');
+        Route::delete('showroom/{id}/force-delete', [ShowroomController::class, 'forceDelete'])->name('showroom.forceDelete');
+        Route::delete('showroom/{id}', [ShowroomController::class, 'destroy'])->name('showroom.destroy');
+        Route::get('/showrooms/{showroomId}/add-product', [ShowroomController::class, 'showAddProductForm'])->name('showroom.showAddProductForm');
+        Route::post('/showrooms/products', [ShowroomController::class, 'addProductToShowroom'])->name('showroom.addProduct');
+        Route::get('/api/showrooms', [ShowroomController::class, 'searchShowrooms'])->name('Search.showroom');
+    });
+    Route::prefix('Product_showroom')->group(function(){
+        Route::get('category/{showroomId}/products', [ProductShowroomController::class, 'index'])->name('Productshowroom.index');
+        Route::post('/update-product', [ProductShowroomController::class, 'updateProductInShowroom'])->name('Productshowroom.update');
+        Route::post('/remove-product', [ProductShowroomController::class, 'removeProductFromShowroom'])->name('Productshowroom.remove');
+    });
+    Route::prefix('banner')->group(function () {
+        Route::get('category', [BannerController::class, 'index'])->name('banner.index'); // Route mới
+        Route::post('toggle-publish/{id}', [BannerController::class, 'togglePublish'])->name('banner.togglePublish');
+        Route::get('edit/{id}', [BannerController::class, 'edit'])->name('banner.edit'); // Route để sửa
+        Route::put('{id}', [BannerController::class, 'update'])->name('banner.update'); // Route để cập nhật
+        Route::get('banner/{id}/restore', [BannerController::class, 'restore'])->name('banner.restore');
+        Route::delete('banner/{id}/force-delete', [BannerController::class, 'forceDelete'])->name('banner.forceDelete');
+        Route::delete('banner/{id}', [BannerController::class, 'destroy'])->name('banner.destroy');
+        Route::get('create', [BannerController::class, 'create'])->name('banner.create'); // Route mới
+        Route::post('store', [BannerController::class, 'store'])->name('banner.store');
     });
     Route::post('/admin/upload-ck-image', [UploadCKImageController::class, 'upload'])->name('ckeditor.upload');
       // PRODUCT CATEGORY
@@ -135,9 +160,5 @@ Route::prefix('admin')->group(function () {
         Route::get('restore/{id}', [BrandController::class, 'restore'])->name('brand.restore');
         Route::delete('forceDelete/{id}', [BrandController::class, 'forceDelete'])->name('brand.forceDelete');
     });
-    Route::prefix('order')->group(function () {
-        Route::get('/', [AdminOrderController::class, 'index'])->name('order.index');
-        Route::get('/pending', [AdminOrderController::class, 'OrderPending'])->name('order.pending');
-        Route::get('/detail/{id}', [AdminOrderController::class, 'OrderDetail'])->name('order.detail');
-    });
-});
+ });
+

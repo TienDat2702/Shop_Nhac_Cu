@@ -11,12 +11,16 @@ class DatabaseSeeder extends Seeder
         $this->call([
             BrandSeeder::class,
             ProductCategorySeeder::class,
-            ShowroomSeeder::class,
             ProductSeeder::class,
+            ShowroomSeeder::class,
             LoyaltyLevelSeeder::class,
             CustomerSeeder::class,
             OrderSeeder::class,
         ]);
+
+        // Gọi ShowroomSeeder
+        $this->call(ShowroomSeeder::class);
+
         // Seed bảng roles trước
         $this->call(RoleSeeder::class);
 
