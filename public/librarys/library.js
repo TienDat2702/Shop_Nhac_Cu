@@ -47,7 +47,7 @@
             // Khai báo tùy chọn Swal
             let swalOptions = {
                 title: title,
-                html: '<span style="color: red">' + _this.attr('data-text3') + '</span>' + "<br>" + _this.attr('data-text'),
+                html: '<span style="color: red">' + _this.attr('data-text3') + '</span>'  +'<br>' + '<span style="color: red">' + _this.attr('data-text2') + '</span>' + "<br>" + _this.attr('data-text'),
                 icon: "warning",
                 showCancelButton: true,
                 showConfirmButton: !_this.attr('data-text3'), // Ẩn confirm button nếu data-text3 tồn tại
