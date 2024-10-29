@@ -41,6 +41,11 @@ class Product extends Model
         return $query->orderBy('id', 'DESC')->paginate(10);
     }
 
+
+    public function scopeGetProductPublish($query) {
+        return $query->where('publish', 2);
+    }
+
     public function scopeGenerateUniqueSlug($query, $str)
     {
         // Tạo slug 
@@ -76,7 +81,7 @@ class Product extends Model
     }
     public function productCategory()
     {
-        return $this->belongsTo(ProductCategory::class, 'category_id');
+        return $this->belongsTo(ProductCategory::class, 'category_id', 'id');
     }
     public function brand()
     {

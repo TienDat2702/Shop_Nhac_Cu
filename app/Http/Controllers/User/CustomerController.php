@@ -10,7 +10,7 @@ use App\Models\Customer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class UserController extends Controller
+class CustomerController extends Controller
 {
     public function login()
     {
@@ -27,7 +27,7 @@ class UserController extends Controller
             return redirect()->route('home.index')->with('success', 'Đăng nhập thành công');
         }
 
-        return redirect()->route('user.login')->with('error', 'Email hoặc Mật khẩu không chính xác');
+        return redirect()->route('customer.login')->with('error', 'Email hoặc Mật khẩu không chính xác');
     }
 
     public function postRegister(RegisterRequest $request)
@@ -40,7 +40,7 @@ class UserController extends Controller
                 'password' => Hash::make($request->input('password')),
             ]);
 
-            return redirect()->route('user.login')->with('success', 'Đăng ký thành công. Bạn có thể đăng nhập ngay bây giờ.');
+            return redirect()->route('customer.login')->with('success', 'Đăng ký thành công. Bạn có thể đăng nhập ngay bây giờ.');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Có lỗi xảy ra. Vui lòng thử lại sau.');
         }
@@ -54,14 +54,14 @@ class UserController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect()->route('user.login');
+        return redirect()->route('customer.login');
     }
 
     public function profile(){
         return view('user.profile');
     }
 
-    public function userOrder(){
+    public function customerOrder(){
         $orders = Order::where('customer_id', Auth::guard('customer')->user()->id)->get();
         return view('user.userOrder', compact('orders'));
     }

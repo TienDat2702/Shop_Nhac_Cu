@@ -12,8 +12,7 @@
             <div class="tab-content pt-2" id="login_register_tab_content">
                 <div class="tab-pane fade show active" id="tab-item-login" role="tabpanel" aria-labelledby="login-tab">
                     <div class="login-form">
-
-                        <form method="POST" action="{{ route('user.dologin') }}" name="login-form" class="needs-validation"
+                        <form method="POST" action="{{ route('customer.dologin') }}" name="login-form" class="needs-validation"
                             novalidate="">
                             @csrf
                             @method('POST')

@@ -86,9 +86,10 @@
                 </div>
 
                 
+
                 @if (!Auth::guard('customer')->check())
                 <div class="header-tools__item hover-container">
-                        <a href="{{ route('user.login') }}" class="header-tools__item">
+                        <a href="{{ route('customer.login') }}" class="header-tools__item">
                             <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <use href="#icon_user" />
@@ -97,7 +98,7 @@
                     </div>
                 @else
                     <div class="header-tools__item hover-container">
-                        <a href="{{ route('user.profile') }}" class="header-tools__item">
+                        <a href="{{ route('customer.profile') }}" class="header-tools__item">
                             {{-- <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
                                 xmlns="http://www.w3.org/2000/svg"> --}}
                                 <i class="fa fa-user" style="font-size: 25px;" aria-hidden="true"></i>
@@ -105,9 +106,6 @@
                         </a>
                     </div>
                 @endif
-
-
-
                 <a href="
                 {{-- {{ route('wishlist.index') }} --}}
                  " class="header-tools__item header-tools__cart">
@@ -121,18 +119,19 @@
 
                 </a>
 
-                {{-- <a href="{{ route('cart.index') }}" class="header-tools__item header-tools__cart">
-                    <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <use href="#icon_cart" />
+                @php
+                     $carts = session()->get('carts', [])
+                @endphp
+
+                <a href="{{ route('cart.index') }}" class="header-tools__item header-tools__cart">
+                    <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <use href="#icon_cart"></use>
                     </svg>
-                    @if (Cart::instance('cart')->content()->count() > 0)
-                        <span
-                            class="cart-amount d-block position-absolute js-cart-items-count">{{ Cart::instance('cart')->content()->count() }}</span>
-                    @endif
-                </a> --}}
+                    <span class="cart-amount d-block position-absolute js-cart-items-count">{{ count($carts) }}</span>
+                  </a>
+
                 @if (Auth::guard('customer')->check())
-                <a href="{{ route('user.logout') }}" class="header-tools__item"><i class="fa fa-sign-out" style="font-size: 25px;" aria-hidden="true"></i></a>
+                <a href="{{ route('customer.logout') }}" class="header-tools__item"><i class="fa fa-sign-out" style="font-size: 25px;" aria-hidden="true"></i></a>
                 @endif
             </div>
         </div>

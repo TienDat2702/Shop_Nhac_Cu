@@ -183,7 +183,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="swiper-slide">
                             <div class="slide-split h-100 d-block d-md-flex overflow-hidden">
                                 <div class="slide-split_text position-relative d-flex align-items-center"

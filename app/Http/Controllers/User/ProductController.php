@@ -11,6 +11,8 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
+
+        $products = Product::GetProductPublish()->paginate(9);
         $brands = $request->input('brands');
         $categories = $request->input('categories');
         $minPrice = $request->input('min_price');
@@ -31,8 +33,7 @@ class ProductController extends Controller
         if (!is_null($minPrice) && !is_null($maxPrice)) {
             $query->whereBetween('price', [$minPrice, $maxPrice]);
         }
-    
-        $products = $query->paginate(9);
+        
         $allCategories = ProductCategory::where('parent_id', 0)->get();
         $allBrands = Brand::all();
     
@@ -45,13 +46,19 @@ class ProductController extends Controller
     
     
 
-    public function product_details($id)
+    public function product_details($slug)
     {
-        $product = Product::find($id);
-        $product->view += 1;
-        $product->save();
+        $product = Product::GetProductPublish()->where('slug',$slug)->first();
+        if ($product) {
+            $product->view += 1000;
+            $product->save();
+        }else{
+            toastr()->success('Sản phẩm không tồn tại');
+            return redirect()->back();
+        }
+        
         $brand = Brand::find($product->brand_id);
-        $product_related = Product::where('category_id', $product->category_id)->where('id', '!=', $id)->get();
+        $product_related = Product::where('category_id', $product->category_id)->where('slug', '!=', $slug)->get();
         return view('user.details', compact('product', 'brand', 'product_related'));
     }
 }
