@@ -12,7 +12,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         
-        $products = Product::paginate(9);
+        $products = Product::GetProductPublish()->paginate(9);
         $categories = ProductCategory::where('parent_id', 0)->get();
         $brands = Brand::all();
         return view('user.shop', compact('categories', 'brands', 'products'));
@@ -20,9 +20,15 @@ class ProductController extends Controller
 
     public function product_details($slug)
     {
-        $product = Product::where('slug',$slug)->first();
-        $product->view += 1000;
-        $product->save();
+        $product = Product::GetProductPublish()->where('slug',$slug)->first();
+        if ($product) {
+            $product->view += 1000;
+            $product->save();
+        }else{
+            toastr()->success('Sản phẩm không tồn tại');
+            return redirect()->back();
+        }
+        
         $brand = Brand::find($product->brand_id);
         $product_related = Product::where('category_id', $product->category_id)->where('slug', '!=', $slug)->get();
         return view('user.details', compact('product', 'brand', 'product_related'));

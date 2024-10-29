@@ -29,7 +29,7 @@ class CustomerSeeder extends Seeder
                 'name' => $faker->name,
                 'email' => $faker->unique()->safeEmail,
                 'email_verified_at' => now(),
-                'password' => Hash::make('123456'),
+                'password' => Hash::make('123456789'),
                 'image' => $faker->imageUrl(225, 225, 'people'),
                 'phone' => $faker->phoneNumber,
                 'address' => $faker->address,

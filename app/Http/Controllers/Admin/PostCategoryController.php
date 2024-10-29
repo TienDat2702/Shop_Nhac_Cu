@@ -129,7 +129,7 @@ class PostCategoryController extends Controller
         }
 
         // Thiết lập level dựa trên level của danh mục cha
-        $parentCategory = PostCategory::findOrFail($postCategory->parent_id);
+        $parentCategory = PostCategory::find($postCategory->parent_id);
         $level = $parentCategory ? $parentCategory->level + 1 : 1;
 
         $data = [

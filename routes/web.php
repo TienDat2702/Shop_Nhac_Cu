@@ -13,30 +13,62 @@ use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\User\ProductController;
-use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\User\CustomerController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\User\CheckoutController;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
-
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
 Route::get('/product/{product_slug}',[ProductController::class,'product_details'])->name('product.detail');
-Route::get('/login', [UserController::class, 'login'])->name('user.login');
-Route::get('/register', [UserController::class, 'register'])->name('user.register');
-Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
-Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
-Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
 
+Route::prefix('cart')->group(function () {
+    Route::get('/', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/add/{id}', [CartController::class, 'add'])->name('cart.add');
+    Route::post('/update/quantity/{id}', [CartController::class, 'updateQuantity'])->name('cart.update.quantity');
+    Route::post('/discount', [CartController::class, 'discount'])->name('cart.discount');
+    Route::post('/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
 
+});
+Route::prefix('checkout')->group(function () {
+    Route::get('/', [CheckoutController::class, 'checkout'])->name('checkout');
+    Route::post('/online', [CheckoutController::class, 'onlineCheckout'])->name('checkout.online');
+    Route::get('vnpay-return', [CheckoutController::class, 'vnpay_return'])->name('vnpay.return');
+    Route::get('/completed', [CheckoutController::class, 'order_completed'])->name('checkout.completed');
+    Route::get('/verify/{token}', [CheckoutController::class, 'verify'])->name('checkout.verify');
+});
+// user;
+Route::get('/login', [CustomerController::class, 'login'])->name('customer.login');
+Route::post('/do-login', [CustomerController::class, 'dologin'])->name('customer.dologin');
+Route::get('/logout', [CustomerController::class, 'logout'])->name('customer.logout');
+Route::get('/profile', [CustomerController::class, 'profile'])->name('customer.profile');
+Route::get('/orders', [CustomerController::class, 'customerOrder'])->name('customer.orders');
 
+// Route::prefix('order')->group(function () {
+//     Route::get('/', [AdminOrderController::class, 'index'])->name('order.index');
+//     Route::get('/pending', [AdminOrderController::class, 'OrderPending'])->name('order.pending');
+//     Route::get('/detail/{id}', [AdminOrderController::class, 'OrderDetail'])->name('order.detail');
+// });
 
 // AJAX
 Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
 
 Route::prefix('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
+
+    Route::prefix('order')->group(function () {
+        Route::get('/', [AdminOrderController::class, 'index'])->name('order.index');
+        Route::get('/pending', [AdminOrderController::class, 'OrderPending'])->name('order.pending');
+        Route::get('/detail/{id}', [AdminOrderController::class, 'show'])->name('order.show');
+        Route::put('/{id}/update-status', [AdminOrderController::class, 'updateStatus'])->name('order.updateStatus');
+    });
+
     // POST CATEGORY
     Route::prefix('post')->group(function () {
         
@@ -109,5 +141,3 @@ Route::prefix('admin')->group(function () {
         Route::get('/detail/{id}', [AdminOrderController::class, 'OrderDetail'])->name('order.detail');
     });
 });
-
-

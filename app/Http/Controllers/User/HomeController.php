@@ -12,9 +12,9 @@ class HomeController extends Controller
 {
     public function index(){
         $brands = Brand::all();
-        $product_views = Product::orderBy('view', 'desc')->take(2)->get();
-        $product_price = Product::orderBy('price_sale', 'asc')->take(8)->get();
-        $products = Product::orderBy('updated_at', 'desc')->paginate(8);
+        $product_views = Product::GetProductPublish()->orderBy('view', 'desc')->take(2)->get();
+        $product_price = Product::GetProductPublish()->orderBy('price_sale', 'asc')->take(8)->get();
+        $products = Product::GetProductPublish()->paginate(8);
         return view('user.index', compact('brands', 'product_views', 'product_price', 'products'));
     }
 }

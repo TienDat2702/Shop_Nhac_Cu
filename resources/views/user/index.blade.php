@@ -250,20 +250,20 @@
                         @else
                           {{ number_format($product->price)}} VNĐ
                         @endif
-                        <span class="money price me-2"> 
-                         
-                        </span>
                         </span>
                       </div>
 
                       <div
                         class="anim_appear-bottom position-absolute bottom-0 start-0 d-none d-sm-flex align-items-center bg-body">
-                        <form action="{{ route('cart.add',$product->id) }}" method="POST">
+                        {{-- <form action="{{ route('cart.add',$product->id) }}" method="POST">
                             @csrf
                             <input type="hidden" name="product_id" value="{{ $product->id }}">
                             <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium"
                             data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
-                          </form>
+                          </form> --}}
+                          <a href="#" data-url="{{ route('cart.add', $product->id )}}" class="btn-link btn-link_lg me-4 text-uppercase fw-medium add-to-cart"
+                          data-aside="cartDrawer" title="Add To Cart">Add To Cart</a>
+
                           <a href="{{ route('product.detail', $product->slug) }}" class="btn-link btn-link_lg me-4 text-uppercase fw-medium" title="Quick view">
                             <span class="">Quick View</span>
                           </a>

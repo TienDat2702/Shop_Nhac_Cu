@@ -123,18 +123,15 @@
           <div class="product-single__short-desc">
             {{-- <p>{{ $product->description }}</p> --}}
           </div>
-          <form action="{{ route('cart.add',$product->id) }}" method="POST">
-            @csrf
             <div class="product-single__addtocart">
+              {{-- quantity --}}
               <div class="qty-control position-relative">
-                <input type="number" name="quantity" value="1" min="1" class="qty-control__number text-center">
+                <input id="quantity"  type="number" name="quantity" value="1" min="1" class="qty-control__number text-center">
                 <div class="qty-control__reduce">-</div>
                 <div class="qty-control__increase">+</div>
               </div><!-- .qty-control -->
-              <input type="hidden" name="product_id" value="{{ $product->id }}">
-              <button type="submit" class="btn btn-primary btn-addtocart" data-aside="cartDrawer">Thêm vào giỏ hàng</button>
+              <button data-url="{{ route('cart.add', $product->id) }}" type="submit" class="btn btn-primary btn-addtocart add-to-cart" data-aside="cartDrawer">Thêm vào giỏ hàng</button>
             </div>
-          </form>
           <div class="product-single__addtolinks">
             <a href="#" class="menu-link menu-link_us-s add-to-wishlist"><svg width="16" height="16" viewBox="0 0 20 20"
                 fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -383,14 +380,12 @@
                   <img loading="lazy" src="{{ asset('assets/images/products') }}/product_3-1.jpg" width="330" height="400"
                     alt="{{ $product->name }}" class="pc__img pc__img-second">
                 </a>
-                
-                <form action="{{ route('cart.add',$product->id) }}" method="POST">
-                  @csrf
                   <input type="hidden" name="product_id" value="{{ $product->id }}">
                 <button
-                  class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium"
-                  data-aside="cartDrawer" title="Add To Cart">Thêm vào giỏ hàng</button>
-                </form>
+                  class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium add-to-cart"
+                  data-aside="cartDrawer" title="Add To Cart"
+                  data-url="{{ route('cart.add', $product->id) }}"
+                  >Thêm vào giỏ hàng</button>
               </div>
 
               <div class="pc__info position-relative">

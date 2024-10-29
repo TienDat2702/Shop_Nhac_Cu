@@ -252,24 +252,6 @@ input:checked + .roundbutton:before {
     font-size: 14px;
 }
 
-#toast-container, .toast-success{
-    font-size: 16px !important;
-}
-#toast-container>div {
-    padding: 20px 40px 20px 70px !important;
-    width: 350px !important;
-    font-size: 18px !important;
-}
-.toast-title {
-    font-size: 20px !important;
-}
-.upload-image .uploadfile .icon-img{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    flex-direction: column;
-}
 
 .preview-img{
     padding: 18px;
@@ -413,8 +395,8 @@ img.w-100.h-auto.mb-3 {
     height: 123px !important;
     border-radius: 50%;
 }
-
+/* 
 .btn-update-cart{
     padding-left: 20px !important;
     padding-right: 20px !important;
-  }
+  } */

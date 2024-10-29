@@ -30,7 +30,6 @@ class ProductSeeder extends Seeder
                 'view' => $faker->numberBetween(0, 1000),
                 'description' => $faker->paragraph(),
                 'publish' => $faker->boolean(80),
-                'summary' => $faker->sentence(),
             ]);
 
             // Thêm sản phẩm vào các showroom ngẫu nhiên
