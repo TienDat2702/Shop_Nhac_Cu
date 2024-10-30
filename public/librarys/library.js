@@ -147,9 +147,13 @@
     HT.checkFilters = () => {
         let selectedCategories = [];
         let selectedBrands = [];
-        let priceRange = [0, Infinity]; // Mặc định là không có giới hạn giá
+        // Sử dụng giá trị tối thiểu và tối đa từ cơ sở dữ liệu
+        let priceRange = [
+            parseInt($('.price-range-slider').data('slider-min')), 
+            parseInt($('.price-range-slider').data('slider-max'))
+        ];
         let priceChanged = false; // Biến kiểm tra xem giá đã thay đổi chưa
-
+    
         // Lắng nghe sự kiện change trên các danh mục
         $('.chk-category').on('change', function () {
             selectedCategories = [];
@@ -158,7 +162,7 @@
             });
             filterProducts();
         });
-
+    
         // Lắng nghe sự kiện change trên các thương hiệu
         $('.chk-brand').on('change', function () {
             selectedBrands = [];
@@ -167,14 +171,14 @@
             });
             filterProducts();
         });
-
+    
         // Lắng nghe sự kiện slideStop của slider khi người dùng dừng kéo
         $('.price-range-slider').on('slideStop', function () {
             priceRange = $(this).val().split(',').map(value => parseInt(value));
             priceChanged = true; // Đánh dấu là giá đã thay đổi
             filterProducts(); // Gọi hàm lọc sản phẩm
         });
-
+    
         // Hàm lọc sản phẩm
         function filterProducts() {
             $.ajax({
@@ -190,11 +194,11 @@
                     // Cập nhật giá hiển thị
                     const minPrice = priceRange[0].toLocaleString('vi-VN') + '₫';
                     const maxPrice = priceRange[1].toLocaleString('vi-VN') + '₫';
-
+    
                     // Cập nhật giá hiển thị trong giao diện
                     $('.price-range__min').text(minPrice);
                     $('.price-range__max').text(maxPrice);
-
+    
                     // Cập nhật danh sách sản phẩm
                     $('#products-grid').html($(response).find('#products-grid').html());
                 },
@@ -203,10 +207,11 @@
                 }
             });
         }
-
+    
         // Gọi hàm lọc sản phẩm lần đầu khi trang được tải
         filterProducts(); // Lọc sản phẩm ban đầu với giá trị mặc định
     }
+    
     $(document).ready(function () {
         HT.changeStatus();
         HT.sweetalert2();
