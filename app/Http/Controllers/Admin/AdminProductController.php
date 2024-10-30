@@ -9,6 +9,7 @@ use App\Models\Brand;
 use App\Services\UploadImageService;
 use App\Models\Product;
 use App\Models\Showroom;
+use App\Models\ShowroomProduct;
 use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 
@@ -54,34 +55,54 @@ class AdminProductController extends Controller
     }
 
     public function store(ProductCreateRequest $request)
-    {
+{
+    // Tạo slug cho sản phẩm
+    $slug = Product::GenerateUniqueSlug($request->input('name'));
 
-        $slug = Product::GenerateUniqueSlug($request->input('name'));
-        $product = Product::create([
-            'category_id' => $request->input('category_id'),
-            'brand_id' => $request->input('brand_id'),
-            'name' => $request->input('name'),
-            'description' => $request->input('description'),
-            'price' => $request->input('price'),
-            'price_sale' => $request->input('price_sale'),
-            'slug' => $slug,
-        ]);
+    // Tạo sản phẩm mới
+    $product = Product::create([
+        'category_id' => $request->input('category_id'),
+        'brand_id' => $request->input('brand_id'),
+        'name' => $request->input('name'),
+        'description' => $request->input('description'),
+        'price' => $request->input('price'),
+        'price_sale' => $request->input('price_sale'),
+        'slug' => $slug,
+    ]);
 
-        $uploadPath = public_path('uploads/products/product');
-        $this->uploadImageService->uploadImage($request, $product, $uploadPath);
+    // Đường dẫn lưu hình ảnh
+    $uploadPath = public_path('uploads/products/product');
+    $this->uploadImageService->uploadImage($request, $product, $uploadPath);
 
-        // xử lý album
-        $path = 'uploads/products/thumbnails';
-        $relation = 'thumbnails';
-        $this->uploadImageService->uploadAlbum($request, $product, $path, $relation);
+    // Xử lý album
+    $path = 'uploads/products/thumbnails';
+    $relation = 'thumbnails';
+    $this->uploadImageService->uploadAlbum($request, $product, $path, $relation);
 
-        if ($product) {
-            toastr()->success('Thêm mới thành công!');
-        } else {
-            toastr()->error('Thêm mới không thành công.');
-        }
-        return redirect()->route('product.index');
+    // Lưu stock vào bảng showroom_product
+    $stock = $request->input('stock');
+
+    // Lấy tất cả showroom có publish = 4
+    $showrooms = Showroom::where('publish', 4)->get();
+
+    // Lưu stock vào bảng showroom_product cho từng showroom
+    foreach ($showrooms as $showroom) {
+        $showroomProduct = new ShowroomProduct();
+        $showroomProduct->product_id = $product->id;
+        $showroomProduct->showroom_id = $showroom->id;
+        $showroomProduct->stock = $stock; // Lưu số lượng
+        $showroomProduct->save();
     }
+
+    if ($product) {
+        toastr()->success('Thêm mới thành công!');
+    } else {
+        toastr()->error('Thêm mới không thành công.');
+    }
+
+    return redirect()->route('product.index');
+}
+
 
     public function edit(string $id)
     {
