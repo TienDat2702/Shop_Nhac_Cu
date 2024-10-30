@@ -1,4 +1,3 @@
-
 <div class="wg-table table-all-product">
     <table style="table-layout: auto;" class="table table-striped table-bordered">
         <thead>
@@ -16,46 +15,49 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($product as $index => $item)
-                <tr>
-                    <td class="text-center">{{$index + 1 }}</td>
-                    <td>
-                        <div class="name">
-                            <a href="#" class="body-title-2">{{ $item->product->name }}</a>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="category">
-                            <a href="#" class="body-title-2">{{ ($item->product->category) ? $item->product->category->name : 'Không có' }}</a>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="brand">
-                            <a href="#" class="body-title-2">{{ ($item->product->brand) ? $item->product->brand->name : 'Không có' }}</a>
-                        </div>
-                    </td>
-                    <td>
-                        <span><img class="img-fluid" src="{{ asset('uploads/products/product/' . $item->product->image) }}" alt=""></span>
-                    </td>
-                    <td>
-                        {{ number_format($item->product->price, 0, ',', '.') }} VNĐ
-                    </td>
-                    <td>
-                        {{ number_format($item->product->price_sale, 0, ',', '.') }} VNĐ
-                    </td>
-                    <td>
-                        {{ $item->product->description }}
-                    </td>
-                    <td class="text-center">
-                        {{$item->stock}}
-                    </td>
-                    <td>
-                        <div class="list-icon-function">
-                            <div class="item edit"type="button" data-bs-toggle="modal" data-bs-target="#updateStockModal"
-                                data-showroom-id="{{ $item->showroom->id }}" data-product-id="{{ $item->product->id }}"
-                                data-current-stock="{{ $item->stock }}">
-                                <i class="icon-edit-3"></i>
+            @if ($product->isNotEmpty())  <!-- Kiểm tra xem có sản phẩm nào không -->
+                @foreach ($product as $index => $item)
+                    <tr>
+                        <td class="text-center">{{ $index + 1 }}</td>
+                        <td>
+                            <div class="name">
+                                <a href="#" class="body-title-2">{{ $item->product->name }}</a>
                             </div>
+                        </td>
+                        <td>
+                            <div class="category">
+                                <a href="#" class="body-title-2">{{ ($item->product->category) ? $item->product->category->name : 'Không có' }}</a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="brand">
+                                <a href="#" class="body-title-2">{{ ($item->product->brand) ? $item->product->brand->name : 'Không có' }}</a>
+                            </div>
+                        </td>
+                        <td>
+                            <span><img class="img-fluid" src="{{ asset('uploads/products/product/' . $item->product->image) }}" alt=""></span>
+                        </td>
+                        <td>
+                            {{ number_format($item->product->price, 0, ',', '.') }} VNĐ
+                        </td>
+                        <td>
+                            {{ number_format($item->product->price_sale, 0, ',', '.') }} VNĐ
+                        </td>
+                        <td>
+                            {{ $item->product->description }}
+                        </td>
+                        <td class="text-center">
+                            {{ $item->stock }}
+                        </td>
+                        <td>
+                        <div class="list-icon-function">
+                        <div class="item edit" type="button" data-bs-toggle="modal" data-bs-target="#updateStockModal"
+     data-showroom-id="{{ $item->showroom->id }}" 
+     data-product-id="{{ $item->product->id }}" 
+     data-current-stock="{{ $item->stock }}" 
+     onclick="setModalData(this)">
+    <i class="icon-edit-3"></i>
+</div>
                         
                             <form action="{{ route('Productshowroom.remove') }}" method="POST">
                                 @csrf
@@ -65,16 +67,33 @@
                             </form>
                         
                         </div>
-                    </td>
+                        </td>
+                    </tr>
+                @endforeach
+            @else
+                <tr>
+                    <td colspan="10" class="text-center">Không tìm thấy sản phẩm nào.</td>
                 </tr>
-                <!-- Form Cập Nhật Số Lượng trong Modal -->
+            @endif
+        </tbody>
+    </table>
+</div>
+
+<!-- Form để chuyển tất cả sản phẩm -->
+<form class="form-transfer-all" action="{{ route('showroom.transferAll', $showroom->id) }}" method="POST">
+    @csrf
+    <button type="submit" class="btn btn-transfer-all text-success" title="Chuyển tất cả sản phẩm">
+        Chuyển tất cả sản phẩm
+    </button>
+</form>
+<!-- Form Cập Nhật Số Lượng trong Modal -->
 <div class="modal fade" id="updateStockModal" tabindex="-1" aria-labelledby="updateStockModalLabel" aria-hidden="true" data-bs-backdrop="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <form action="{{ route('Productshowroom.update') }}" method="POST">
                 @csrf
-                <input type="hidden" name="showroom_id" value="{{ $item->showroom->id }}">
-                <input type="hidden" name="product_id" value="{{ $item->product->id }}">
+                <input type="hidden" name="showroom_id" id="modalShowroomId">
+                <input type="hidden" name="product_id" id="modalProductId">
                 
                 <div class="modal-header">
                     <h5 class="modal-title" id="updateStockModalLabel">Cập Nhật Số Lượng Sản Phẩm</h5>
@@ -83,7 +102,7 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="stock" class="form-label">Số Lượng</label>
-                        <input type="number" name="stock" id="stock" class="form-control" min="0" required>
+                        <input type="number" name="stock" id="modalStock" class="form-control" min="0" required>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -94,10 +113,16 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+function setModalData(element) {
+    const showroomId = element.getAttribute('data-showroom-id');
+    const productId = element.getAttribute('data-product-id');
+    const currentStock = element.getAttribute('data-current-stock');
 
-            @endforeach
-        </tbody>
-    </table>
-</div>
+    document.getElementById('modalShowroomId').value = showroomId;
+    document.getElementById('modalProductId').value = productId;
+    document.getElementById('modalStock').value = currentStock;
+}
 
-
+</script>

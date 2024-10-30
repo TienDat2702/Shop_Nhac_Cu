@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Showroom;
+use App\Models\ShowroomProduct;
 use App\Models\Product;
 use Illuminate\Http\Request;
 class ShowroomController extends Controller
@@ -36,6 +37,12 @@ public function store(Request $request)
         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Kiểm tra định dạng hình ảnh
     ]);
 
+    // Kiểm tra xem showroom với tên 'Kho' đã tồn tại chưa
+    if ($request->name === 'Kho' && Showroom::where('name', 'Kho')->exists()) {
+        toastr()->error('Không thể thêm vì Kho đã tồn tại trên hệ thống .'); 
+        return redirect()->route('showroomcategory.index');
+    }
+
     // Tạo một showroom mới
     $showroom = new Showroom();
     $showroom->name = $request->name;
@@ -51,11 +58,18 @@ public function store(Request $request)
         $showroom->image = 'uploads/showrooms/' . $imageName; // Lưu đường dẫn vào cơ sở dữ liệu
     }
 
-    $showroom->publish = 2; // Mặc định là 1 (hoạt động)
+    // Kiểm tra giá trị của name để xác định publish
+    if ($request->name === 'Kho') {
+        $showroom->publish = 4; // Nếu name là 'Kho', đặt publish thành 4
+    } else {
+        $showroom->publish = 2; // Mặc định là 2
+    }
+
     $showroom->save(); // Lưu showroom vào cơ sở dữ liệu
     toastr()->success('Thêm danh mục thành công!');
     return redirect()->route('showroomcategory.index');
 }
+
 
 
     public function edit($id)
@@ -158,17 +172,21 @@ public function destroy(string $id)
         return redirect()->back()->withErrors(['Showroom không tồn tại!']);
     }
 
+    // Ngăn không cho xóa nếu trạng thái publish là 4
+    if ($showroom->publish == 4) {
+        return redirect()->back()->withErrors(['Không thể xóa showroom này vì nó đang ở trạng thái không cho phép xóa!']);
+    }
+
+    // Kiểm tra xem showroom có sản phẩm liên kết thông qua bảng showroom_products không
+    $hasProducts = ShowroomProduct::where('showroom_id', $showroom->id)->exists();
+
+    if ($hasProducts) {
+        return redirect()->back()->withErrors(['Không thể xóa showroom vì còn sản phẩm liên kết!']);
+    }
+
     // Đặt trạng thái publish về 1 (không hoạt động)
     $showroom->publish = 1; // Hoặc bạn có thể đặt thành 0 tùy thuộc vào quy tắc của bạn
     $showroom->save();
-
-    // Nếu bạn cần xóa hình ảnh hoặc thực hiện các thao tác khác trước khi xóa
-    if ($showroom->image) {
-        $imagePath = public_path($showroom->image);
-        if (file_exists($imagePath)) {
-            unlink($imagePath); // Xóa hình ảnh
-        }
-    }
 
     // Đánh dấu showroom là đã xóa
     $showroom->delete(); // Gọi phương thức delete() để thực hiện soft delete
@@ -176,6 +194,9 @@ public function destroy(string $id)
     toastr()->success('Xóa showroom thành công!');
     return redirect()->back();
 }
+
+
+
 public function showAddProductForm($showroomId)
 {
     $showroom = Showroom::findOrFail($showroomId); // Tìm showroom
