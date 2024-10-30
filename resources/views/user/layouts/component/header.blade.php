@@ -12,23 +12,23 @@
             <nav class="navigation">
                 <ul class="navigation__list list-unstyled d-flex">
                     <li class="navigation__item">
-                        <a href="{{ route('home.index') }}" class="navigation__link">Home</a>
+                        <a href="{{ route('home.index') }}" class="navigation__link">Trang chủ</a>
                     </li>
                     <li class="navigation__item">
                         <a href="
                         {{ route('shop.index') }}
-                         " class="navigation__link">Shop</a>
+                         " class="navigation__link">Cửa hàng</a>
                     </li>
                     <li class="navigation__item">
                         <a href="
-                        {{-- {{ route('cart.index') }} --}}
-                         " class="navigation__link">Cart</a>
+                         {{ route('cart.index') }} 
+                         " class="navigation__link">Giỏ hàng</a>
                     </li>
                     <li class="navigation__item">
-                        <a href="about.html" class="navigation__link">About</a>
+                        <a href="about.html" class="navigation__link">Thông tin</a>
                     </li>
                     <li class="navigation__item">
-                        <a href="contact.html" class="navigation__link">Contact</a>
+                        <a href="contact.html" class="navigation__link">Liên hệ</a>
                     </li>
                 </ul>
             </nav>
@@ -62,13 +62,13 @@
 
                             <div class="search-popup__results">
                                 <div class="sub-menu search-suggestion">
-                                    <h6 class="sub-menu__title fs-base">Quicklinks</h6>
+                                    <h6 class="sub-menu__title fs-base">Liên kết nhanh</h6>
                                     <ul class="sub-menu__list list-unstyled">
                                         <li class="sub-menu__item"><a href="shop2.html"
-                                                class="menu-link menu-link_us-s">New Arrivals</a>
+                                                class="menu-link menu-link_us-s">Hàng mới về</a>
                                         </li>
                                         <li class="sub-menu__item"><a href="#"
-                                                class="menu-link menu-link_us-s">Dresses</a></li>
+                                                class="menu-link menu-link_us-s">Sản phẩm</a></li>
                                         <li class="sub-menu__item"><a href="shop3.html"
                                                 class="menu-link menu-link_us-s">Accessories</a>
                                         </li>
@@ -86,9 +86,10 @@
                 </div>
 
                 
+
                 @if (!Auth::guard('customer')->check())
                 <div class="header-tools__item hover-container">
-                        <a href="{{ route('user.login') }}" class="header-tools__item">
+                        <a href="{{ route('customer.login') }}" class="header-tools__item">
                             <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <use href="#icon_user" />
@@ -97,7 +98,7 @@
                     </div>
                 @else
                     <div class="header-tools__item hover-container">
-                        <a href="{{ route('user.profile') }}" class="header-tools__item">
+                        <a href="{{ route('customer.profile') }}" class="header-tools__item">
                             {{-- <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
                                 xmlns="http://www.w3.org/2000/svg"> --}}
                                 <i class="fa fa-user" style="font-size: 25px;" aria-hidden="true"></i>
@@ -105,9 +106,6 @@
                         </a>
                     </div>
                 @endif
-
-
-
                 <a href="
                 {{-- {{ route('wishlist.index') }} --}}
                  " class="header-tools__item header-tools__cart">
@@ -121,18 +119,19 @@
 
                 </a>
 
-                {{-- <a href="{{ route('cart.index') }}" class="header-tools__item header-tools__cart">
-                    <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <use href="#icon_cart" />
+                @php
+                     $carts = session()->get('carts', [])
+                @endphp
+
+                <a href="{{ route('cart.index') }}" class="header-tools__item header-tools__cart">
+                    <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <use href="#icon_cart"></use>
                     </svg>
-                    @if (Cart::instance('cart')->content()->count() > 0)
-                        <span
-                            class="cart-amount d-block position-absolute js-cart-items-count">{{ Cart::instance('cart')->content()->count() }}</span>
-                    @endif
-                </a> --}}
+                    <span class="cart-amount d-block position-absolute js-cart-items-count">{{ count($carts) }}</span>
+                  </a>
+
                 @if (Auth::guard('customer')->check())
-                <a href="{{ route('user.logout') }}" class="header-tools__item"><i class="fa fa-sign-out" style="font-size: 25px;" aria-hidden="true"></i></a>
+                <a href="{{ route('customer.logout') }}" class="header-tools__item"><i class="fa fa-sign-out" style="font-size: 25px;" aria-hidden="true"></i></a>
                 @endif
             </div>
         </div>

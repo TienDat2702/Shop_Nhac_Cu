@@ -211,9 +211,6 @@
         // Gọi hàm lọc sản phẩm lần đầu khi trang được tải
         filterProducts(); // Lọc sản phẩm ban đầu với giá trị mặc định
     }
-    
-    
-    
     $(document).ready(function () {
         HT.changeStatus();
         HT.sweetalert2();
@@ -221,6 +218,5 @@
         HT.keyUpInput();
         HT.trash();
         HT.checkFilters(); // Khởi tạo chức năng lọc
-        HT.checkBrand();
     });
 })(jQuery);
