@@ -22,16 +22,21 @@ class ProductCategoryCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:product_categories|max:225', // Đã cập nhật tên bảng
+            'name' => 'required|string|max:125',
+            'image' => 'nullable|mimes:jpg,jpeg,png,gif,webp|max:2048',
         ];
     }
 
-    public function messages()
+
+    public function messages(): array
     {
         return [
-            'name.required' => 'Bạn chưa nhập tiêu đề',
-            'name.max' => 'Tiêu đề không được vượt quá 225 ký tự', // Chỉnh sửa từ "từ" thành "ký tự"
-            'name.unique' => 'Tiêu đề danh mục đã được sử dụng', // Chỉnh sửa từ "xử dụng" thành "sử dụng"
+            'name.required' => 'Tên danh mục là bắt buộc.',
+            'name.string' => 'Tên danh mục phải là một chuỗi.',
+            'name.max' => 'Tên danh mục không được vượt quá 125 ký tự.',
+
+            'image.mimes' => 'Hình ảnh phải có định dạng jpg, jpeg, png, gif hoặc webp.',
+            'image.max' => 'Kích thước hình ảnh không được vượt quá 2 MB.',
         ];
     }
 }

@@ -131,12 +131,18 @@ class AdminProductController extends Controller
 
         $product->update($data);
 
-        if ($product->wasChanged()) {
-            toastr()->success('Cập nhật thành công!');
-        } else {
-            toastr()->success('Không có gì thay đổi!');
+        if($product && $product->update($data)){
+            if($product->wasChanged()){
+                toastr()->success('Cập nhật thành công!');
+            }
+            // else{
+            //     toastr()->success('Không có gì thay đổi!');
+            // }
+            return redirect()->route('product.index');
+        }else{
+            toastr()->error('Cập nhật không thành công!');
         }
-        return redirect()->route('product.index');
+
     }
 
     public function destroy(string $id)
@@ -144,18 +150,37 @@ class AdminProductController extends Controller
         $product = Product::findOrFail($id);
         if (!$product) {
             return redirect()->back()->withErrors(['Sản phẩm không tồn tại!']);
-        }
-        if($product && $product->image){
-            $image_path = 'uploads/products/thumbnails/' . $product->image;
-            if (file_exists($image_path)) { // tìm vào đường dẫn ảnh
-                unlink($image_path); // xóa đường dẩn chứ ảnh cũ
+        }else{
+            if($product && $product->image){
+                $image_path = 'uploads/products/thumbnails/' . $product->image;
+                if (file_exists($image_path)) { // tìm vào đường dẫn ảnh
+                    unlink($image_path); // xóa đường dẩn chứ ảnh cũ
+                }
+            }
+            $product->publish = 1;
+            $product->save();
+    
+            $product->delete();
+            toastr()->success('Xóa thành công!');
+            
+            // Kiểm tra và cập nhật giỏ hàng trong session
+            $cart = session()->get('carts', []);
+            // Nếu giỏ hàng có sản phẩm bị xóa
+            if (isset($cart[$id])) {
+
+                $removedCarts = session()->get('removed_carts', []);
+                $removedCarts[$id] = $cart[$id];
+                // Cập nhật lại session với sản phẩm đã xóa
+                session()->put('removed_carts', $removedCarts);
+
+                // Xóa sản phẩm đó khỏi giỏ hàng
+                unset($cart[$id]);
+
+                // Cập nhật lại session
+                session()->put('carts', $cart);
             }
         }
-        $product->publish = 1;
-        $product->save();
-
-        $product->delete();
-        toastr()->success('Xóa thành công!');
+        
         return redirect()->back();
     }
 
@@ -165,12 +190,33 @@ class AdminProductController extends Controller
         if (!$product) {
             return redirect()->back()->withErrors(['Sản phẩm không tồn tại!']);
         }
-        
-        $product->restore();
-        $product->publish = 2;
-        $product->save();
+        else{
+            $cart = session()->get('carts', []);
+            // Kiểm tra nếu trước đó sản phẩm đã bị xóa khỏi giỏ hàng
+            if (!isset($cart[$id])) {
+                // Lấy lại thông tin sản phẩm từ session removed_carts
+                $removedCarts = session()->get('removed_carts', []);
 
-        toastr()->success('Khôi phục thành công!');
+                if (isset($removedCarts[$id])) {
+                    // Trả lại sản phẩm vào giỏ hàng với số lượng cũ
+                    $cart[$id] = $removedCarts[$id];
+
+                    // Cập nhật lại session giỏ hàng
+                    session()->put('carts', $cart);
+
+                    // Xóa thông tin sản phẩm khỏi danh sách sản phẩm đã xóa
+                    unset($removedCarts[$id]);
+                    session()->put('removed_carts', $removedCarts);
+                }
+            }
+
+            $product->restore();
+            $product->publish = 2;
+            $product->save();
+
+            toastr()->success('Khôi phục thành công!');
+        }
+        
         return redirect()->back();
     }
 
