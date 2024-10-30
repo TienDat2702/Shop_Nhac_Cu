@@ -35,48 +35,54 @@
 
     HT.sweetalert2 = () => {
         $('.btn-delete').on('click', function (e) {
-            e.preventDefault(); // Ngăn chặn hành vi mặc định
+            e.preventDefault();
             let _this = $(this);
-            let form = $(this).closest('form'); // Lấy form gần nhất với button
+            let form = $(this).closest('form');
             
-            // Khai báo biến cho các nút
-            let cancelButtonText = _this.attr('data-text3') ? "OK" : "Hủy"; // Kiểm tra data-text3
-            let cancelButtonColor = _this.attr('data-text3') ? "#7066E0" : "#d33"; // Kiểm tra data-text3
-            let title = _this.attr('data-text3') ? "Bạn không thể xóa danh mục" : "Bạn có chắc chắn?"; // Kiểm tra data-text3
+            // Kiểm tra và hiển thị các thông báo khác nhau
+            let cancelButtonText = (_this.attr('data-text3') || _this.attr('data-text2')) ? "OK" : "Hủy";
+            let cancelButtonColor = (_this.attr('data-text3') || _this.attr('data-text2')) ? "#7066E0" : "#d33";
+            let title = (_this.attr('data-text3') || _this.attr('data-text2')) ? "Bạn không thể xóa danh mục" : "Bạn có chắc chắn?";
             
-            // Khai báo tùy chọn Swal
+            // Quyết định nội dung thông báo
+            let htmlContent = _this.attr('data-text3')
+                ? '<span style="color: red">' + _this.attr('data-text3') + '</span>'
+                : (_this.attr('data-text2')
+                    ? '<span style="color: red">' + _this.attr('data-text2') + '</span>'
+                    : '<span>' + _this.attr('data-text') + '</span>');
+    
+            // Tùy chọn Swal
             let swalOptions = {
                 title: title,
-                html: '<span style="color: red">' + _this.attr('data-text3') + '</span>' + "<br>" + _this.attr('data-text'),
+                html: htmlContent,
                 icon: "warning",
                 showCancelButton: true,
-                showConfirmButton: !_this.attr('data-text3'), // Ẩn confirm button nếu data-text3 tồn tại
+                showConfirmButton: !(_this.attr('data-text3') || _this.attr('data-text2')),
                 cancelButtonColor: cancelButtonColor,
-                cancelButtonText: cancelButtonText // Sử dụng biến cancelButtonText
+                cancelButtonText: cancelButtonText
             };
     
             Swal.fire(swalOptions).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: form.attr('action'), // Đường dẫn đến action của form
-                        type: 'POST', // Thay vì DELETE, sử dụng POST
-                        data: form.serialize() + '&_method=DELETE', // Thêm _method=DELETE vào dữ liệu form
+                        url: form.attr('action'),
+                        type: 'POST',
+                        data: form.serialize() + '&_method=DELETE',
                         success: function (response) {
-                            // Nếu xóa thành công
                             Swal.fire({
                                 title: "Xóa!",
                                 text: "Dữ liệu của bạn đã được xóa.",
                                 icon: "success"
                             }).then(() => {
-                                location.reload(); // Tải lại trang
+                                location.reload();
                             });
                         }
-                        // Đã loại bỏ phần xử lý lỗi
                     });
-                }
+                 }
             });
         });
     };
+    
     
     
     
