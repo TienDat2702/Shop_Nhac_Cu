@@ -30,6 +30,7 @@
                         <input class="mb-10" type="text" name="code" id="code" required>
                     </fieldset>
                     <fieldset class="name">
+<<<<<<< Updated upstream
                         <div class="body-title mb-10">Tỷ lệ triết khấu <span class="tf-color-1">*</span></div>
                         <input class="mb-10" type="number" name="discount_rate" id="discount_rate" required>
                     </fieldset>
@@ -38,6 +39,24 @@
                         <input class="mb-10" type="number" name="max_value" id="max_value" required>
                     </fieldset>
                     <fieldset class="name">
+=======
+                        <div class="body-title mb-10">Tỷ lệ giảm giá <span class="tf-color-1">*</span></div>
+                        <input class="mb-10" type="number" name="discount_rate" id="discount_rate" required>
+                    </fieldset>
+                    <fieldset class="name">
+                        <div class="body-title mb-10">Giá trị tối đa <span class="tf-color-1">*</span></div>
+                        <input class="mb-10" type="number" name="max_value" id="max_value" required>
+                    </fieldset>
+                    <fieldset class="name">
+                        <div class="body-title mb-10">Số lượng mã giảm giá <span class="tf-color-1">*</span></div>
+                        <input class="mb-10" type="number" name="use_limit" id="use_limit" required>
+                    </fieldset>
+                    <fieldset class="name">
+                        <div class="body-title mb-10">Giá tối thiểu để được giảm <span class="tf-color-1">*</span></div>
+                        <input class="mb-10" type="number" name="minimum_order_value" id="minimum_order_value" required>
+                    </fieldset>
+                    <fieldset class="name">
+>>>>>>> Stashed changes
                         <div class="body-title mb-10">Ngày bắt đầu <span class="tf-color-1">*</span></div>
                         <input class="mb-10" type="date" name="start_date" id="start_date" required>
                     </fieldset>
