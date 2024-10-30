@@ -78,7 +78,7 @@ class ProductSeeder extends Seeder
             [
                 "category_id"=> 5,
                 "name"=> "ROLAND RP-30",
-                "image"=> "bannerT9-RO30-2048-450x471.png",
+                "image"=> "dan-piano-dien-roland-rp30-chinh-hang-01",
                 "price"=> 21760000,
                 "price_sale"=> 16500000,
                 "short_description"=> "RP-30 được thiết kế với phím đàn nhạy bén, chính xác, phù hợp cho người mới tập chơi. Ba bàn đạp tiêu chuẩn giúp nâng cao kỹ năng và cảm nhận âm nhạc."
@@ -87,8 +87,8 @@ class ProductSeeder extends Seeder
                 "category_id"=> 6,
                 "name"=> "KAWAI GX-3",
                 "image"=> "kawai-gx-3-1-450x471.jpg",
-                "price"=> 0,
-                "price_sale"=> 577800000,
+                "price"=> 577800000,
+                "price_sale"=> null,
                 "short_description"=> "Kawai GX-3 với dáng vẻ sang trọng và âm thanh đặc trưng của đại dương cầm, lý tưởng cho biểu diễn chuyên nghiệp và không gian cao cấp."
             ],
             [
@@ -119,8 +119,8 @@ class ProductSeeder extends Seeder
                 "category_id"=> 3,
                 "name"=> "TANGLEWOOD TWBB SDE",
                 "image"=> "tanglewoodguitars-twbbsde-01-450x471.jpg",
-                "price"=> 0,
-                "price_sale"=> 6030000,
+                "price"=> 6030000,
+                "price_sale"=> null,
                 "short_description"=> "Tanglewood TWBB SDE, guitar acoustic với mặt gỗ chọn lọc, kiểu dáng đẹp, tiếng đàn ấm áp phù hợp với mọi trình độ chơi."
             ],
             [
@@ -143,8 +143,8 @@ class ProductSeeder extends Seeder
                 "category_id"=> 3,
                 "name"=> "KAPOK LD-14",
                 "image"=> "kapok-ld-14-1-400x400-450x471.jpg",
-                "price"=> 0,
-                "price_sale"=> 2190000,
+                "price"=> 2190000,
+                "price_sale"=> null,
                 "short_description"=> "Kapok LD-14 là cây guitar phổ thông, với lớp sơn bóng đẹp, cần đàn làm từ gỗ mahogany, mang lại vẻ ngoài và âm thanh nổi bật."
             ],
             [
@@ -159,11 +159,12 @@ class ProductSeeder extends Seeder
                 "category_id"=> 4,
                 "name"=> "GUITAR CLASSIC CORDOBA FUSION 5 KÈM BAG GUCLCOR-05407",
                 "image"=> "guitar-classic-cordoba-fusion-5-kem-bag-guclcor-05407-450x471.jpg",
-                "price"=> 0,
-                "price_sale"=> 13100000,
+                "price"=> 13100000,
+                "price_sale"=> null,
                 "short_description"=> "Cordoba Fusion 5, cây guitar classic thiết kế dáng cutaway hiện đại, dễ dàng tiếp cận các phím cao, đi kèm túi đựng chuyên nghiệp."
             ]
         ];
+        
 
         foreach ($productsData as $data) {
             Product::create([
@@ -176,11 +177,8 @@ class ProductSeeder extends Seeder
                 'view' => $faker->numberBetween(0, 1000),
                 'short_description' => $data['short_description'],
                 'description' => $faker->paragraph,
-                'publish' => $faker->boolean(80),
-<<<<<<< HEAD
-=======
+                'publish' => 2,
                 'slug' => $faker->slug,
->>>>>>> 915de4cb7876dd7790e9b2f50d13a06533ee552b
             ]);
         }
     }

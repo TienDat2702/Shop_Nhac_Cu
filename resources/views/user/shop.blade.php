@@ -152,7 +152,7 @@
                                 </div>
                                 <div class="slide-split_media position-relative">
                                     <div class="slideshow-bg" style="background-color: #f5e6e0;">
-                                        <img loading="lazy" src="assets/images/shop/shop_banner3.jpg" width="630"
+                                        <img loading="lazy" src="https://cdn.zenquiz.net/external/2020/04/10/05/3825ea10-7af0-11ea-bf44-050901070303-compressed.jpg" width="630"
                                             height="450" alt="Women's accessories"
                                             class="slideshow-bg__img object-fit-cover" />
                                     </div>
@@ -176,7 +176,7 @@
                                 </div>
                                 <div class="slide-split_media position-relative">
                                     <div class="slideshow-bg" style="background-color: #f5e6e0;">
-                                        <img loading="lazy" src="assets/images/shop/shop_banner3.jpg" width="630"
+                                        <img loading="lazy" src="http://designercomvn.s3.ap-southeast-1.amazonaws.com/wp-content/uploads/2017/07/26020200/thiet-ke-poster-su-kien-ca-nhac.jpg" width="630"
                                             height="450" alt="Women's accessories"
                                             class="slideshow-bg__img object-fit-cover" />
                                     </div>
@@ -272,27 +272,27 @@
                                     <div class="swiper-container background-img js-swiper-slider"
                                         data-settings='{"resizeObserver": true}'>
                                         <div class="swiper-wrapper">
-                                            <div class="swiper-slide">
-                                                <a href="details.html"><img loading="lazy"
-                                                        src="assets/images/products/product_1.jpg" width="330"
-                                                        height="400" alt="Cropped Faux leather Jacket"
+                                            <div class="swiper">
+                                                <a href="{{ route('product.detail', $product->slug) }}"><img loading="lazy"
+                                                        src="{{ asset('uploads/products/product/'.$product->image) }}" width="330"
+                                                        height="400" alt="{{ $product->name }}"
                                                         class="pc__img"></a>
                                             </div>
-                                            <div class="swiper-slide">
+                                            {{-- <div class="swiper-slide">
                                                 <a href="details.html"><img loading="lazy"
-                                                        src="assets/images/products/product_1-1.jpg" width="330"
+                                                        src="{{ asset('uploads/products/product/'.$product->image) }}" width="330"
                                                         height="400" alt="Cropped Faux leather Jacket"
                                                         class="pc__img"></a>
-                                            </div>
+                                            </div> --}}
                                         </div>
-                                        <span class="pc__img-prev"><svg width="7" height="11" viewBox="0 0 7 11"
+                                        {{-- <span class="pc__img-prev"><svg width="7" height="11" viewBox="0 0 7 11"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <use href="#icon_prev_sm" />
                                             </svg></span>
                                         <span class="pc__img-next"><svg width="7" height="11" viewBox="0 0 7 11"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <use href="#icon_next_sm" />
-                                            </svg></span>
+                                            </svg></span> --}}
                                     </div>
                                     <button
                                         class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside"
@@ -303,9 +303,14 @@
                                     <p class="pc__category">
                                         {{ $product->productCategory ? $product->productCategory->name : 'Không có danh mục' }}
                                     </p>
-                                    <h6 class="pc__title"><a href="details.html">{{ $product->name }}</a></h6>
+                                    <h6 class="pc__title"><a href="{{ route('product.detail', $product->slug) }}">{{ $product->name }}</a></h6>
                                     <div class="product-card__price d-flex">
-                                        <span class="money price">{{ number_format($product->price) }} VNĐ</span>
+                                        @if ($product->price_sale == null)
+                                            <span class="money price">{{ number_format($product->price) }} VNĐ</span>
+                                        @else
+                                            <span class="money price-old">{{ number_format($product->price) }} VNĐ</span>
+                                            <span class="money price">{{ number_format($product->price_sale) }} VNĐ</span>
+                                        @endif
                                     </div>
                                     <div class="product-card__review d-flex align-items-center">
                                         <div class="reviews-group d-flex">

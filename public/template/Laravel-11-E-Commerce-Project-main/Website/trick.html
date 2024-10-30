@@ -1,4 +1,5 @@
-<div class="col-md-4">
+<!-- Lấy dữ liệu trang chủ -->
+<!-- <div class="col-md-4">
     <div class="item">
         <div class="image"><a href="https://vietthuong.vn/dan-piano-kawai-nd-21.html"><img id="image_list_2357" src="https://vietthuong.vn/image/cache/catalog/kawai/Upright/kawai-nd-21-dep-sang-trong-viet-thuong-music-450x471.jpg" alt=" Kawai ND-21" title=" Kawai ND-21"></a>
 
@@ -31,4 +32,39 @@
         dsSP.push(obj);
     });
     console.log(dsSP);
-</script>   
+</script>    -->
+
+
+<!-- Lấy ảnh thumnail -->
+<li class="image-gallery_full">
+    <a href="image/catalog/kawai/Upright/dan-piano-kawai-nd21-chinh-hang.jpg" title=""><span class="fs-th5"><i>6</i></span><p>Xem thêm 6 ảnh</p></a>
+
+
+
+<a class="hidden" href="image/catalog/kawai/Upright/dan-piano-kawai-nd21-chinh-hang-01.jpg"><img src="https://vietthuong.vn/image/catalog/kawai/Upright/dan-piano-kawai-nd21-chinh-hang-01.jpg" alt=""></a>
+
+
+<a class="hidden" href="image/catalog/kawai/Upright/dan-piano-kawai-nd21-ben-trong-bo-may.jpg"><img src="https://vietthuong.vn/image/catalog/kawai/Upright/dan-piano-kawai-nd21-ben-trong-bo-may.jpg" alt=""></a>
+
+
+<a class="hidden" href="image/catalog/kawai/Upright/dan-piano-kawai-nd21-chinh-hang-02.jpg"><img src="https://vietthuong.vn/image/catalog/kawai/Upright/dan-piano-kawai-nd21-chinh-hang-02.jpg" alt=""></a>
+
+
+<a class="hidden" href="image/catalog/kawai/Upright/dan-piano-kawai-nd21-chinh-hang-03.jpg"><img src="https://vietthuong.vn/image/catalog/kawai/Upright/dan-piano-kawai-nd21-chinh-hang-03.jpg" alt=""></a>
+
+
+<a class="hidden" href="image/catalog/kawai/Upright/kich-thuoc-dan-piano-kawai-nd21.jpg"><img src="https://vietthuong.vn/image/catalog/kawai/Upright/kich-thuoc-dan-piano-kawai-nd21.jpg" alt=""></a>
+
+
+</li>
+
+<script>
+    var ds = document.querySelectorAll('.hidden');
+    var dsImg = []
+    ds.forEach(img => {
+        var image = img.querySelector('img').src.split('/').pop();
+        var obj = {image}
+        dsImg.push(obj);
+    });
+    console.log(dsImg);
+</script>

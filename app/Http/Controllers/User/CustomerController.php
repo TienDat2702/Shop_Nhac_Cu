@@ -65,6 +65,23 @@ class CustomerController extends Controller
         $orders = Order::where('customer_id', Auth::guard('customer')->user()->id)->get();
         return view('user.userOrder', compact('orders'));
     }
+    public function customerOrderDetail($id){
+        $order = Order::find($id);
+        return view('user.userOrderDetail', compact('order'));
+    }
+
+    public function customerOrderCancel(Request $request){
+        $order = Order::find($request->order_id);
+        $order->status = "đã hủy";
+        $order->save();
+        return redirect()->route('customer.orders')->with('success', 'Đơn hàng đã được hủy thành công');
+    }
+
+    public function customerOrderHistory(){
+        $orders = Order::where('customer_id', Auth::guard('customer')->user()->id)->paginate(10);
+
+        return view('user.userOrderHistory', compact('orders'));
+    }
 
     //
 }

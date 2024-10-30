@@ -232,15 +232,15 @@
                   <div class="swiper-slide product-card product-card_style3">
                     <div class="pc__img-wrapper">
                       <a href="{{ route('product.detail', $product->slug)}}">
-                        <img loading="lazy" src="{{asset('assets/images/home/demo3/product-0-1.jpg')}}" width="258" height="313"
+                        <img loading="lazy" src="{{asset('/uploads/products/product/'.$product->image)}}" width="258" height="313"
                           alt="{{ $product->name }}" class="pc__img">
-                        <img loading="lazy" src="{{asset('assets/images/home/demo3/product-0-2.jpg')}}" width="258" height="313"
+                        <img loading="lazy" src="{{asset('/uploads/products/product/'.$product->image)}}" width="258" height="313"
                           alt="{{ $product->name }}" class="pc__img pc__img-second">
                       </a>
                     </div>
 
                     <div class="pc__info position-relative">
-                      <h6 class="pc__title"><a href="details.html">{{ $product->name }}</a></h6>
+                      <h6 class="pc__title"><a href="{{ route('product.detail', $product->slug) }}">{{ $product->name }}</a></h6>
                       <div class="product-card__price d-flex">
                        
                         @if ($product->price_sale > 0)
@@ -294,8 +294,8 @@
           @foreach ($product_views as $product)
           <div class="col-md-6">
             <div class="category-banner__item border-radius-10 mb-5">
-              <img loading="lazy" class="h-auto" src="{{asset('assets/images/home/demo3/category_9.jpg')}}" width="690" height="665"
-                alt="" />
+              <img loading="lazy" class="h-auto" src="{{asset('uploads/products/product/'.$product->image)}}" width="690" height="665"
+                alt="{{ $product->name }}" />
               <div class="category-banner__item-mark">
                 {{ $product->view }} Lượt xem
               </div>
@@ -319,9 +319,9 @@
           <div class="col-6 col-md-4 col-lg-3">
             <div class="product-card product-card_style3 mb-3 mb-md-4 mb-xxl-5">
               <div class="pc__img-wrapper">
-                <a href="details.html">
-                  <img loading="lazy" src="{{asset('assets/images/home/demo3/product-11.jpg')}}" width="330" height="400"
-                    alt="Cropped Faux leather Jacket" class="pc__img">
+                <a href="{{ route('product.detail', $product->slug) }}">
+                  <img loading="lazy" src="{{asset('uploads/products/product/'.$product->image)}}" width="330" height="400"
+                    alt="{{ $product->name }}" class="pc__img">
                 </a>
               </div>
 
