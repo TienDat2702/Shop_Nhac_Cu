@@ -268,40 +268,6 @@ input:checked + .roundbutton:before {
 } */
 
 
-  /* Tăng kích thước popup */
-  .swal2-popup {
-    width: 600px; 
-    font-size: 1.5rem;
-  }
-
-  /* Tăng kích thước tiêu đề */
-  .swal2-title {
-    font-size: 3.5rem; 
-    padding: 0.3em 1em 0;
-  }
-
-  /* Tăng kích thước nội dung */
-  .swal2-html-container {
-    font-size: 1.3rem; 
-  }
-
-  /* Tăng kích thước và độ đậm của nút */
-  .swal2-confirm, .swal2-cancel {
-    font-size: 1.5rem; /* Tăng kích thước chữ của nút */
-    padding: 15px 30px; /* Tăng kích thước nút */
-    border-radius: 8px; /* Bo góc nút */
-    font-weight: bold; /* Đậm chữ */
-  }
-  
-  div:where(.swal2-container) .swal2-html-container {
-    padding: 0.3em 1.6em .3em !important;
-    font-size: 1.325em;
-}
-
-.swal2-icon.swal2-warning.swal2-icon-show {
-    width: 7em;
-    height: 7em;
-}
 
 .fill-deleted {
     margin: 0px 0px 20px 5px;
@@ -400,3 +366,31 @@ img.w-100.h-auto.mb-3 {
     padding-left: 20px !important;
     padding-right: 20px !important;
   } */
+
+.logo {
+    width: 170px !important;
+}
+
+.method-online {
+    display: flex;
+    align-items: center;
+}
+.method-online .logo-method {
+    width: 60px;
+}
+.method-online .logo-method img {
+    width: 100%;
+}
+.method-online .form-check-label{
+    margin-left: 10px !important;
+}
+a.btn-clear {
+    font-size: 18px;
+    color: #b9a16b;
+    text-decoration: underline !important;
+}
+a.btn-clear:hover {
+    font-size: 18px;
+    color: #826f44;
+    text-decoration: none !important;
+}

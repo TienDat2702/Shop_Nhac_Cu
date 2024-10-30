@@ -24,16 +24,16 @@ class AdminProductController extends Controller
     public function index(Request $request)
     {
         $brand = Brand::GetBrandAll()->get();
+        $showrooms = Showroom::all();
         $productCategories = $this->getRecursive();
         $countDeleted = Product::onlyTrashed()->count();
         if ($request->input('deleted') == 'daxoa') {
             $config = 'deleted';
             $getDeleted = Product::onlyTrashed()->search($request->all()); 
-            return view('admin.products.product.index', compact('config', 'countDeleted', 'getDeleted', 'productCategories', 'brand'));
+            return view('admin.products.product.index', compact('config', 'countDeleted', 'getDeleted', 'productCategories', 'brand', 'showrooms'));
         } else {
             $config = 'index';
             $products = Product::search($request->all()); 
-            $showrooms = Showroom::all();
             return view('admin.products.product.index', compact('products', 'countDeleted', 'config', 'productCategories', 'brand', 'showrooms'));
         }
     }

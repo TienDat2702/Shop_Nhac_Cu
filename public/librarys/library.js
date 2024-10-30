@@ -36,7 +36,6 @@
     HT.sweetalert2 = () => {
         $('.btn-delete').on('click', function(e){
             let _this = $(this)
-            let text = 
 
             e.preventDefault(); //ngăn chặn hành vi mặc định
             let form = $(this).closest('form'); // lấy form gần nhất với button

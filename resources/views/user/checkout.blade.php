@@ -110,7 +110,7 @@
                 <table class="checkout-totals">
                   <tbody>
                     <tr>
-                      <th>TỔNG PHỤ</th>
+                      <th>TẠM TÍNH</th>
                       <td align="right">{{ number_format($subtotal , 0, '.', ',') . ' VNĐ'}}</td>
                     </tr>
                     <tr>
@@ -119,13 +119,18 @@
                           {{ number_format($discountAmount, 0, '.', ',') . ' VNĐ' }}</td>
                     </tr>
                     <tr>
+                      <th>ƯU ĐÃI THÀNH VIÊN</th>
+                      <td id="discountAmount" align="right">
+                          {{ number_format($loyaltyAmount, 0, '.', ',') . ' VNĐ' }}</td>
+                    </tr>
+                    {{-- <tr>
                       <th>VAT</th>
                       <td align="right">$19</td>
-                    </tr>
+                    </tr> --}}
                     <tr>
                       <th>TỔNG THANH TOÁN</th>
                       <td id="totalAmount" align="right">
-                          {{ number_format($subtotal - $discountAmount, 0, '.', ',') . ' VNĐ' }}</td>
+                          {{ number_format($subtotal - $discountAmount - $loyaltyAmount, 0, '.', ',') . ' VNĐ' }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -133,23 +138,39 @@
                 <div class="checkout__payment-methods">
                   <div class="form-check">
                     <input class="form-check-input form-check-input_fill" type="radio" name="checkout_payment_method"
-                      id="checkout_payment_method_3" value="Thanh toán khi nhận hàng" checked>
-                    <label class="form-check-label" for="checkout_payment_method_3">
+                      id="checkout_payment_method_cod" value="Thanh toán khi nhận hàng" checked>
+                    <label class="form-check-label" for="checkout_payment_method_cod">
                       Thanh toán khi giao hàng
-                      <p class="option-detail">
+                      {{-- <p class="option-detail">
                         Thanh toán khi nhận hàng. Vui lòng kiểm tra hàng trước khi nhận
-                      </p>
+                      </p> --}}
                     </label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input form-check-input_fill" type="radio" name="checkout_payment_method"
-                      id="checkout_payment_method_1" value="Thanh toán VNPAY" >
-                    <label class="form-check-label" for="checkout_payment_method_1">
-                      Thanh toán VNPAY
-                      <p class="option-detail">
-                        
-                      </p>
-                    </label>
+                    <div class="method-online">
+                      <input class="form-check-input form-check-input_fill" type="radio" name="checkout_payment_method"
+                        id="checkout_payment_method_vnpay" value="Thanh toán VNPAY" >
+                      <label class="form-check-label" for="checkout_payment_method_vnpay">
+                        Thanh toán VNPAY
+                      </label>
+                        <div class="logo-method">
+                          <img src="{{ asset('images/vnpay.jpg') }}" alt="">
+                        </div>
+                    </div>
+                   
+                    
+                  </div>
+                  <div class="form-check">
+                    <div class="method-online">
+                      <input class="form-check-input form-check-input_fill" type="radio" name="checkout_payment_method"
+                        id="checkout_payment_method_momo" value="Thanh toán MoMo">
+                      <label class="form-check-label" for="checkout_payment_method_momo">
+                        Thanh toán MoMo
+                      </label>
+                      <div class="logo-method">
+                        <img src="{{ asset('images/momo.png') }}" alt="">
+                      </div>
+                    </div>
                   </div>
                   <div class="policy-text">
                     Dữ liệu cá nhân của bạn sẽ được sử dụng để xử lý đơn đặt hàng của bạn, hỗ trợ trải nghiệm của bạn trong suốt quá trình này
@@ -158,7 +179,10 @@
                   </div>
                 </div>
               
-              <button name="redirect" type="submit" class="btn btn-primary btn-checkout">ĐẶT HÀNG</button>
+              <button id="checkoutButton" type="submit" class="btn btn-primary btn-checkout">ĐẶT HÀNG</button>
+              <script>
+
+              </script>
             </div>
           </div>
         </div>

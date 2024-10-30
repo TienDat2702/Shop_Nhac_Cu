@@ -58,7 +58,9 @@ class CustomerController extends Controller
     }
 
     public function profile(){
-        return view('user.profile');
+        $customer = Auth::guard('customer')->user(); // Lấy thông tin người dùng hiện tại
+        $loyalty = $customer->loyaltyLevel;
+        return view('user.profile', compact('customer', 'loyalty'));
     }
 
     public function customerOrder(){

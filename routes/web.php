@@ -35,11 +35,13 @@ Route::prefix('cart')->group(function () {
     Route::post('/update/quantity/{id}', [CartController::class, 'updateQuantity'])->name('cart.update.quantity');
     Route::post('/discount', [CartController::class, 'discount'])->name('cart.discount');
     Route::post('/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+    Route::post('/clear', [CartController::class, 'clear'])->name('cart.clear');
 });
 Route::prefix('checkout')->group(function () {
     Route::get('/', [CheckoutController::class, 'checkout'])->name('checkout');
     Route::post('/online', [CheckoutController::class, 'onlineCheckout'])->name('checkout.online');
     Route::get('vnpay-return', [CheckoutController::class, 'vnpay_return'])->name('vnpay.return');
+    Route::get('momo-return', [CheckoutController::class, 'momo_return'])->name('momo.return');
     Route::get('/completed', [CheckoutController::class, 'order_completed'])->name('checkout.completed');
     Route::get('/verify/{token}', [CheckoutController::class, 'verify'])->name('checkout.verify');
 });

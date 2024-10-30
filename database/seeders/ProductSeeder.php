@@ -157,8 +157,8 @@ class ProductSeeder extends Seeder
             ],
             [
                 "category_id"=> 4,
-                "name"=> "GUITAR CLASSIC CORDOBA FUSION 5 KÈM BAG GUCLCOR-05407",
-                "image"=> "guitar-classic-cordoba-fusion-5-kem-bag-guclcor-05407-450x471.jpg",
+                "name"=> "GUITAR CLASSIC",
+                "image"=> "https://vietthuong.vn/image/cache/catalog/casio/Piano/dan-piano-casio-px-s7000hm-400x400.jpg",
                 "price"=> 0,
                 "price_sale"=> 13100000,
                 "short_description"=> "Cordoba Fusion 5, cây guitar classic thiết kế dáng cutaway hiện đại, dễ dàng tiếp cận các phím cao, đi kèm túi đựng chuyên nghiệp."
@@ -176,11 +176,8 @@ class ProductSeeder extends Seeder
                 'view' => $faker->numberBetween(0, 1000),
                 'short_description' => $data['short_description'],
                 'description' => $faker->paragraph,
-                'publish' => $faker->boolean(80),
-<<<<<<< HEAD
-=======
+                'publish' => 2,
                 'slug' => $faker->slug,
->>>>>>> 915de4cb7876dd7790e9b2f50d13a06533ee552b
             ]);
         }
     }

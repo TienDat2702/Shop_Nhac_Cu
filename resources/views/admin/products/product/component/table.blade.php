@@ -151,7 +151,7 @@
                 </tr>
                 <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true" data-bs-backdrop="false">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content modal-content-product">
             <form id="addProductForm" action="{{ route('showroom.addProduct') }}" method="POST">
                 @csrf
                 <input type="hidden" name="product_id" id="product_id" value="">

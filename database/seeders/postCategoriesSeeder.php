@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\PostCategory;
+use Illuminate\Support\Str;
 use Faker\Factory as Faker;
 
 class PostCategoriesSeeder extends Seeder
@@ -16,12 +17,16 @@ class PostCategoriesSeeder extends Seeder
         $faker = Faker::create();
 
         for ($i = 0; $i < 100; $i++) {
+            $name = $faker->name();
             PostCategory::create([
-                'name' => $faker->name(),
+                'name' => $name,
+                'slug' => Str::slug($name),
                 'image' => 'hinh' . $i . '.jpg',
                 'parent_id' => 0, 
-                'publish' => 0, 
+                'publish' => 2, 
+                'level' => 1, 
                 'description' => $faker->sentence()
+                
             ]);
         }
     }

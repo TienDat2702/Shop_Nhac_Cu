@@ -15,7 +15,7 @@ class BrandSeeder extends Seeder
     {
         $casio = Brand::create([
             'name' => 'casio',
-            'logo' => 'casio.jpg',
+            'image' => 'casio.jpg',
             'publish' => 1,
             'description' => 'Thương hiệu Casio',
             'created_at' => now(),
@@ -23,7 +23,7 @@ class BrandSeeder extends Seeder
         ]);
         $Roland = Brand::create([
             'name' => 'Roland',
-            'logo' => 'Roland.jpg',
+            'image' => 'Roland.jpg',
             'publish' => 1,
             'description' => 'Thương hiệu Roland',
             'created_at' => now(),
@@ -31,7 +31,7 @@ class BrandSeeder extends Seeder
         ]);
         $Suzuki = Brand::create([
             'name' => 'Suzuki',
-            'logo' => 'Suzuki.jpg',
+            'image' => 'Suzuki.jpg',
             'publish' => 1,
             'description' => 'Thương hiệu Suzuki',
             'created_at' => now(),
@@ -39,7 +39,7 @@ class BrandSeeder extends Seeder
         ]);
         $Yamaha = Brand::create([
             'name' => 'Yamaha',
-            'logo' => 'Yamaha.jpg',
+            'image' => 'Yamaha.jpg',
             'publish' => 1,
             'description' => 'Thương hiệu Yamaha',
             'created_at' => now(),
