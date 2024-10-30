@@ -106,8 +106,10 @@ Route::prefix('admin')->group(function () {
     });
     Route::prefix('Product_showroom')->group(function () {
         Route::get('category/{showroomId}/products', [ProductShowroomController::class, 'index'])->name('Productshowroom.index');
+        Route::get('kho/products', [ProductShowroomController::class, 'getProductsByPublishedShowroom'])->name('Kho.index');
         Route::post('/update-product', [ProductShowroomController::class, 'updateProductInShowroom'])->name('Productshowroom.update');
         Route::post('/remove-product', [ProductShowroomController::class, 'removeProductFromShowroom'])->name('Productshowroom.remove');
+        Route::post('/{id}/transfer-all', [ProductShowroomController::class, 'transferAllProductsFromShowroom'])->name('showroom.transferAll');
     });
     Route::prefix('banner')->group(function () {
         Route::get('category', [BannerController::class, 'index'])->name('banner.index'); // Route mới

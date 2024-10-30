@@ -83,6 +83,60 @@
         });
     };
 
+    HT.sweetalert3 = () => {
+        $('.btn-delete').on('click', function(e) {
+            let _this = $(this);
+            let publishStatus = _this.attr('data-publish');
+            let hasProducts = _this.attr('data-has-products');
+    
+            // Kiểm tra trạng thái publish
+            if (publishStatus == 4) {
+                Swal.fire({
+                    title: "Không thể xóa!",
+                    text: "Kho không được cho phép xóa.",
+                    icon: "error"
+                });
+                e.preventDefault(); // Ngăn chặn hành vi mặc định
+                return; // Dừng thực hiện tiếp
+            }
+    
+            // Kiểm tra xem showroom có sản phẩm liên kết không
+            if (hasProducts === 'true') {
+                Swal.fire({
+                    title: "Không thể xóa!",
+                    text: "Showroom này có sản phẩm liên kết. Không thể xóa.",
+                    icon: "error"
+                });
+                e.preventDefault(); // Ngăn chặn hành vi mặc định
+                return; // Dừng thực hiện tiếp
+            }
+    
+            // Nếu không có vấn đề gì, hiển thị hộp thoại xác nhận
+            e.preventDefault(); // Ngăn chặn hành vi mặc định
+            let form = $(this).closest('form'); // Lấy form gần nhất với button
+            Swal.fire({
+                title: "Bạn có chắc chắn?",
+                html: '<span style="color: red">' + _this.attr('data-text2') + '</span><br>' + _this.attr('data-text'),
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Có, Xóa nó!",
+                cancelButtonText: "Hủy"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Xóa!",
+                        text: "Dữ liệu của bạn đã được xóa.",
+                        icon: "success"
+                    }).then(() => {
+                        form.submit(); // Gửi form với id cụ thể
+                    });
+                }
+            });
+        });
+    }
+
     HT.setupCkeditor = () => {
         if ($('.ck-editor')) {
             $('.ck-editor').each(function () {
@@ -215,6 +269,7 @@
     $(document).ready(function () {
         HT.changeStatus();
         HT.sweetalert2();
+        HT.sweetalert3();
         HT.setupCkeditor();
         HT.keyUpInput();
         HT.trash();
