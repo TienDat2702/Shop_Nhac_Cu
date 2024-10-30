@@ -124,7 +124,6 @@
         })
     }
 
-
     HT.checkFilters = () => {
         let selectedCategories = [];
         let selectedBrands = [];
@@ -180,7 +179,7 @@
         filterProducts(); // Lọc sản phẩm ban đầu với giá trị mặc định
     }
     
-    
+
     $(document).ready(function () {
         HT.changeStatus();
         HT.sweetalert2();
@@ -190,4 +189,5 @@
         HT.checkFilters(); // Khởi tạo chức năng lọc
         HT.checkBrand();
     });
+
 })(jQuery);

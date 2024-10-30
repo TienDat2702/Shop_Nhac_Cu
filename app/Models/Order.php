@@ -20,7 +20,10 @@ class Order extends Model
         'customer_note',
         'user_note',
         'address',
-        'phone'
+        'phone',
+        'total',
+        'payment_method',
+        'token'
     ];
 
     protected $casts = [
