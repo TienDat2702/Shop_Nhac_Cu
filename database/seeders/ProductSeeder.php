@@ -177,10 +177,7 @@ class ProductSeeder extends Seeder
                 'short_description' => $data['short_description'],
                 'description' => $faker->paragraph,
                 'publish' => $faker->boolean(80),
-<<<<<<< HEAD
-=======
                 'slug' => $faker->slug,
->>>>>>> 915de4cb7876dd7790e9b2f50d13a06533ee552b
             ]);
         }
     }
