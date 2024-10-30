@@ -3,6 +3,12 @@
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PostCategoryController;
 use App\Http\Controllers\Admin\DiscountController;
+<<<<<<< Updated upstream
+=======
+use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\ProductCategoryController;
+use App\Http\Controllers\Admin\UploadCKImageController;
+>>>>>>> Stashed changes
 use App\Http\Controllers\Ajax\AjaxDashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
@@ -111,11 +117,14 @@ Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'cha
         Route::get('restore/{id}', [BrandController::class, 'restore'])->name('brand.restore');
         Route::delete('forceDelete/{id}', [BrandController::class, 'forceDelete'])->name('brand.forceDelete');
     });
+<<<<<<< Updated upstream
     Route::prefix('order')->group(function () {
         Route::get('/', [AdminOrderController::class, 'index'])->name('order.index');
         Route::get('/pending', [AdminOrderController::class, 'OrderPending'])->name('order.pending');
         Route::get('/detail/{id}', [AdminOrderController::class, 'OrderDetail'])->name('order.detail');
     });
+=======
+>>>>>>> Stashed changes
     Route::prefix('voucher')->group(function () {
         Route::get('/', [DiscountController::class, 'index'])->name('admin.discounts.index');
         Route::get('/create', [DiscountController::class, 'create'])->name('admin.discounts.create');
@@ -124,7 +133,11 @@ Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'cha
         Route::put('/{discount}', [DiscountController::class, 'update'])->name('admin.discounts.update');
         Route::delete('/{discount}', [DiscountController::class, 'destroy'])->name('admin.discounts.destroy');
     });
+<<<<<<< Updated upstream
 });
+=======
+ });
+>>>>>>> Stashed changes
 
 
 
