@@ -34,12 +34,13 @@ public function store(Request $request)
         'name' => 'required|string|max:125',
         'address' => 'nullable|string|max:225',
         'phone' => 'nullable|string|max:30',
-        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Kiểm tra định dạng hình ảnh
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
     ]);
 
-    // Kiểm tra xem showroom với tên 'Kho' đã tồn tại chưa
-    if ($request->name === 'Kho' && Showroom::where('name', 'Kho')->exists()) {
-        toastr()->error('Không thể thêm vì Kho đã tồn tại trên hệ thống .'); 
+    // Kiểm tra nếu name chứa từ "kho" (không phân biệt hoa thường) và showroom "Kho" đã tồn tại
+    $nameLower = Str::lower($request->name); // Chuyển name về dạng chữ thường để kiểm tra
+    if (Str::contains($nameLower, 'kho') && Showroom::whereRaw("LOWER(name) LIKE '%kho%'")->exists()) {
+        toastr()->error('Không thể thêm vì showroom liên quan đến "Kho" đã tồn tại trên hệ thống.');
         return redirect()->route('showroomcategory.index');
     }
 
@@ -51,19 +52,14 @@ public function store(Request $request)
 
     // Xử lý upload hình ảnh
     if ($request->hasFile('image')) {
-        // Lấy thông tin file hình ảnh
         $image = $request->file('image');
-        $imageName = time() . '_' . $image->getClientOriginalName(); // Đặt tên file
-        $image->move(public_path('uploads/showrooms'), $imageName); // Di chuyển file đến thư mục public/uploads/showrooms
-        $showroom->image = 'uploads/showrooms/' . $imageName; // Lưu đường dẫn vào cơ sở dữ liệu
+        $imageName = time() . '_' . $image->getClientOriginalName();
+        $image->move(public_path('uploads/showrooms'), $imageName);
+        $showroom->image = 'uploads/showrooms/' . $imageName;
     }
 
-    // Kiểm tra giá trị của name để xác định publish
-    if ($request->name === 'Kho') {
-        $showroom->publish = 4; // Nếu name là 'Kho', đặt publish thành 4
-    } else {
-        $showroom->publish = 2; // Mặc định là 2
-    }
+    // Đặt publish thành 4 nếu name chứa từ liên quan đến "kho", ngược lại đặt là 2
+    $showroom->publish = Str::contains($nameLower, 'kho') ? 4 : 2;
 
     $showroom->save(); // Lưu showroom vào cơ sở dữ liệu
     toastr()->success('Thêm danh mục thành công!');

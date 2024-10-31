@@ -57,7 +57,6 @@
      onclick="setModalData(this)">
     <i class="icon-edit-3"></i>
 </div>
-
                         
                             <form action="{{ route('Productshowroom.remove') }}" method="POST">
                                 @csrf
