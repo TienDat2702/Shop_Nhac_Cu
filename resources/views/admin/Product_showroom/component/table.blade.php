@@ -59,12 +59,12 @@
     <i class="icon-edit-3"></i>
 </div>
                         
-                            <form action="{{ route('Productshowroom.remove') }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="showroom_id" value="{{ $item->showroom->id }}">
-                                <input type="hidden" name="product_id" value="{{ $item->product->id }}">
-                                <button type="submit" class="btn btn-delete item text-danger delete"><i class="icon-trash-2"></i></button>
-                            </form>
+<form action="{{ route('Productshowroom.remove', ['showroomId' => $item->showroom->id]) }}" method="POST">
+    @csrf
+    <input type="hidden" name="product_id" value="{{ $item->product->id }}">
+    <button type="submit" class="btn btn-delete-showroom item text-danger delete"><i class="icon-trash-2"></i></button>
+</form>
+
                         
                         </div>
                         </td>

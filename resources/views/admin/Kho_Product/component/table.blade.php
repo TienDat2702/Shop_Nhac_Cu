@@ -1,7 +1,19 @@
 <div class="wg-table table-all-product">
+<div>
+    <label for="showroomSelect">Chọn showroom:</label>
+    <select id="showroomSelect">
+        <option value="">Chọn showroom</option>
+        @foreach ($showroomid as $showroom)
+            <option value="{{ $showroom->id }}">{{ $showroom->name }}</option>
+        @endforeach
+    </select>
+</div>
+
+<button id="transferBtn">Chuyển sản phẩm</button>
     <table style="table-layout: auto;" class="table table-striped table-bordered">
         <thead>
             <tr>
+                <th>Chọn</th>
                 <th class="text-center">STT</th>
                 <th>Tên Sản Phẩm</th>
                 <th>Danh mục</th>
@@ -17,6 +29,13 @@
         <tbody>
             @foreach ($product as $index => $item)
                 <tr>
+                <td>
+    <div style="display: flex; align-items: center;">
+        <input type="checkbox" class="product-checkbox" data-id="{{ $item->product->id }}" style="margin-right: 5px;">
+        <input type="number" class="quantity-input" data-id="{{ $item->product->id }}" value="1" min="1" max="{{$item->stock}}" style="width: 60px;">
+    </div>
+</td>
+
                     <td class="text-center">{{$index + 1 }}</td>
                     <td>
                         <div class="name">
@@ -50,21 +69,19 @@
                     </td>
                     <td>
                         <div class="list-icon-function">
-                        <div class="item edit" type="button" data-bs-toggle="modal" data-bs-target="#updateStockModal"
-     data-showroom-id="{{ $item->showroom->id }}" 
-     data-product-id="{{ $item->product->id }}" 
-     data-current-stock="{{ $item->stock }}" 
-     onclick="setModalData(this)">
-    <i class="icon-edit-3"></i>
-</div>
-                        
+                            <div class="item edit" type="button" data-bs-toggle="modal" data-bs-target="#updateStockModal"
+                                data-showroom-id="{{ $item->showroom->id }}" 
+                                data-product-id="{{ $item->product->id }}" 
+                                data-current-stock="{{ $item->stock }}" 
+                                onclick="setModalData(this)">
+                                <i class="icon-edit-3"></i>
+                            </div>
                             <form action="{{ route('Productshowroom.remove') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="showroom_id" value="{{ $item->showroom->id }}">
                                 <input type="hidden" name="product_id" value="{{ $item->product->id }}">
                                 <button type="submit" class="btn btn-delete item text-danger delete"><i class="icon-trash-2"></i></button>
                             </form>
-                        
                         </div>
                     </td>
                 </tr>
@@ -112,5 +129,52 @@ function setModalData(element) {
     document.getElementById('modalProductId').value = productId;
     document.getElementById('modalStock').value = currentStock;
 }
+$(document).ready(function() {
+    $('#transferBtn').on('click', function() {
+        const showroomId = $('#showroomSelect').val();
+        const products = [];
+
+        $('.product-checkbox:checked').each(function() {
+            const productId = $(this).data('id');
+            const quantity = $(this).closest('div').find('.quantity-input').val();
+            const currentShowroomId = $(this).closest('div').find('.current-showroom-id').val(); // Lấy current showroom id
+
+            // Thêm thông tin sản phẩm vào mảng
+            products.push({
+                id: productId,
+                quantity: quantity,
+                current_showroom_id: currentShowroomId // Thêm current showroom id vào sản phẩm
+            });
+        });
+
+        if (products.length === 0 || showroomId === '') {
+            alert('Vui lòng chọn ít nhất một sản phẩm và showroom.');
+            return;
+        }
+
+        // Gửi yêu cầu AJAX
+        $.ajax({
+            url: '{{ route('transfer.product') }}',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                showroom_id: showroomId,
+                products: products,
+            },
+            success: function(response) {
+                alert(response.message);
+                location.reload(); // Tải lại trang sau khi chuyển sản phẩm thành công
+            },
+            error: function(xhr) {
+                alert(xhr.responseJSON.message || 'Đã xảy ra lỗi, vui lòng thử lại.');
+            }
+        });
+    });
+});
+
+
+
+
+
 
 </script>

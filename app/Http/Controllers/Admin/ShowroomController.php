@@ -7,6 +7,7 @@ use App\Models\Showroom;
 use App\Models\ShowroomProduct;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 class ShowroomController extends Controller
 {
     public function index(Request $request){
@@ -36,6 +37,27 @@ public function store(Request $request)
         'phone' => 'nullable|string|max:30',
         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
     ]);
+
+    // Kiểm tra xem trường nào không được nhập và hiển thị toastr error
+    if (!$request->filled('name')) {
+        toastr()->error('Vui lòng nhập tên showroom.');
+        return redirect()->back()->withInput();
+    }
+
+    if (!$request->filled('address')) {
+        toastr()->error('Vui lòng nhập địa chỉ showroom.');
+        return redirect()->back()->withInput();
+    }
+
+    if (!$request->filled('phone')) {
+        toastr()->error('Vui lòng nhập số điện thoại.');
+        return redirect()->back()->withInput();
+    }
+
+    if (!$request->hasFile('image')) {
+        toastr()->error('Vui lòng chọn hình ảnh cho showroom.');
+        return redirect()->back()->withInput();
+    }
 
     // Kiểm tra nếu name chứa từ "kho" (không phân biệt hoa thường) và showroom "Kho" đã tồn tại
     $nameLower = Str::lower($request->name); // Chuyển name về dạng chữ thường để kiểm tra
@@ -112,32 +134,6 @@ public function update(Request $request, $id)
     // Redirect về trang danh sách showroom và hiển thị thông báo thành công
     return redirect()->route('showroomcategory.index');
 }
-
-public function togglePublish($id, Request $request)
-{
-    $showroom = Showroom::findOrFail($id); // Tìm showroom theo ID
-
-    // Lấy giá trị publish từ checkbox
-    $showroom->publish = $request->has('publish') ? 2 : 1; // Nếu checked thì publish = 2, ngược lại = 1
-    $showroom->save(); // Lưu thay đổi vào cơ sở dữ liệu
-
-    return redirect()->route('showroomcategory.index')->with('success', 'Trạng thái publish đã được cập nhật.');
-}
-public function restore(string $id)
-{
-    $showroom = Showroom::onlyTrashed()->find($id);
-
-    if (!$showroom) {
-        return redirect()->back()->withErrors(['Showroom không tồn tại!']);
-    } else {
-        $showroom->publish = 2; // Đặt trạng thái publish về 2 (hoạt động)
-        $showroom->save(); // Lưu thay đổi
-        $showroom->restore(); // Khôi phục showroom
-        toastr()->success('Khôi phục thành công!');
-        return redirect()->back();
-    }
-}
-
 
 public function forceDelete(string $id)
 {
