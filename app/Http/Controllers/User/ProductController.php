@@ -11,8 +11,6 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-
-        $products = Product::GetProductPublish()->paginate(9);
         $brands = $request->input('brands');
         $categories = $request->input('categories');
         $minPrice = $request->input('min_price');
@@ -33,32 +31,35 @@ class ProductController extends Controller
         if (!is_null($minPrice) && !is_null($maxPrice)) {
             $query->whereBetween('price', [$minPrice, $maxPrice]);
         }
+    
+        // Lấy sản phẩm để phân trang
+        $products = $query->paginate(9);
+        
+        // Lấy giá nhỏ nhất và lớn nhất từ bảng sản phẩm
+        $minPriceFromDb = Product::min('price');
+        $maxPriceFromDb = Product::max('price');
         
         $allCategories = ProductCategory::where('parent_id', 0)->get();
         $allBrands = Brand::all();
     
         if ($request->ajax()) {
-            return view('user.shop', compact('allCategories', 'allBrands', 'products'))->render();
+            return view('user.shop', compact('allCategories', 'allBrands', 'products', 'minPriceFromDb', 'maxPriceFromDb'))->render();
         }
     
-        return view('user.shop', compact('allCategories', 'allBrands', 'products'));
+        return view('user.shop', compact('allCategories', 'allBrands', 'products', 'minPriceFromDb', 'maxPriceFromDb'));
     }
     
     
+    
+    
 
-    public function product_details($slug)
+    public function product_details($id)
     {
-        $product = Product::GetProductPublish()->where('slug',$slug)->first();
-        if ($product) {
-            $product->view += 1000;
-            $product->save();
-        }else{
-            toastr()->success('Sản phẩm không tồn tại');
-            return redirect()->back();
-        }
-        
+        $product = Product::find($id);
+        $product->view += 1;
+        $product->save();
         $brand = Brand::find($product->brand_id);
-        $product_related = Product::where('category_id', $product->category_id)->where('slug', '!=', $slug)->get();
+        $product_related = Product::where('category_id', $product->category_id)->where('id', '!=', $id)->get();
         return view('user.details', compact('product', 'brand', 'product_related'));
     }
 }

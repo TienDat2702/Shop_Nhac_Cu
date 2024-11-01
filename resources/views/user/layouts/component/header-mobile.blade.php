@@ -29,7 +29,7 @@
             <form action="#" method="GET" class="search-field position-relative mt-4 mb-3">
                 <div class="position-relative">
                     <input class="search-field__input w-100 border rounded-1" type="text"
-                        name="search-keyword" placeholder="Search products" />
+                        name="search-keyword" placeholder="Tìm kiếm sản phẩm" />
                     <button class="btn-icon search-popup__submit pb-0 me-2" type="submit">
                         <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
@@ -49,23 +49,21 @@
             <div class="overflow-hidden">
                 <ul class="navigation__list list-unstyled position-relative">
                     <li class="navigation__item">
-                        <a href="{{ route('home.index') }}" class="navigation__link">Home</a>
+                        <a href="{{ route('home.index') }}" class="navigation__link">Trang chủ</a>
                     </li>
                     <li class="navigation__item">
-                        <a href="
-                        {{ route('shop.index') }}
-                         " class="navigation__link">Shop</a>
+                        <a href="{{ route('shop.index') }}" class="navigation__link">Cửa hàng</a>
                     </li>
                     <li class="navigation__item">
                         <a href="
                         {{-- {{ route('cart.index') }} --}}
-                         " class="navigation__link">Cart</a>
+                         " class="navigation__link">Giỏ hàng</a>
                     </li>
                     <li class="navigation__item">
-                        <a href="about.html" class="navigation__link">About</a>
+                        <a href="about.html" class="navigation__link">Giới thiệu</a>
                     </li>
                     <li class="navigation__item">
-                        <a href="contact.html" class="navigation__link">Contact</a>
+                        <a href="contact.html" class="navigation__link">Liên hệ</a>
                     </li>
                 </ul>
             </div>
@@ -77,7 +75,7 @@
                     fill="none" xmlns="http://www.w3.org/2000/svg">
                     <use href="#icon_user" />
                 </svg>
-                <span class="d-inline-block ms-2 text-uppercase align-middle fw-medium">My Account</span>
+                <span class="d-inline-block ms-2 text-uppercase align-middle fw-medium">Tài khoản của tôi</span>
             </div>
 
 

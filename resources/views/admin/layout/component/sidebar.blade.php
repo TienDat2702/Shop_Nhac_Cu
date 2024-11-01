@@ -1,6 +1,6 @@
 <div class="section-menu-left">
     <div class="box-logo">
-        <a href="index.html" id="site-logo-inner">
+        <a href="{{ route('dashboard.index')}}" id="site-logo-inner">
             <img class="" id="logo_header" alt="" src="{{ asset('images/logo/logo.jpg') }}"
                 data-light="{{ asset('images/logo/logo.jpg') }}" data-dark="{{ asset('images/logo/logo.jpg') }}">
         </a>

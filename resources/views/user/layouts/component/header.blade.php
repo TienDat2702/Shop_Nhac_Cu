@@ -12,23 +12,23 @@
             <nav class="navigation">
                 <ul class="navigation__list list-unstyled d-flex">
                     <li class="navigation__item">
-                        <a href="{{ route('home.index') }}" class="navigation__link">Home</a>
+                        <a href="{{ route('home.index') }}" class="navigation__link">Trang chủ</a>
                     </li>
                     <li class="navigation__item">
                         <a href="
                         {{ route('shop.index') }}
-                         " class="navigation__link">Shop</a>
+                         " class="navigation__link">Cửa hàng</a>
                     </li>
                     <li class="navigation__item">
                         <a href="
-                        {{-- {{ route('cart.index') }} --}}
-                         " class="navigation__link">Cart</a>
+                         {{ route('cart.index') }} 
+                         " class="navigation__link">Giỏ hàng</a>
                     </li>
                     <li class="navigation__item">
-                        <a href="about.html" class="navigation__link">About</a>
+                        <a href="about.html" class="navigation__link">Thông tin</a>
                     </li>
                     <li class="navigation__item">
-                        <a href="contact.html" class="navigation__link">Contact</a>
+                        <a href="contact.html" class="navigation__link">Liên hệ</a>
                     </li>
                 </ul>
             </nav>
@@ -62,13 +62,13 @@
 
                             <div class="search-popup__results">
                                 <div class="sub-menu search-suggestion">
-                                    <h6 class="sub-menu__title fs-base">Quicklinks</h6>
+                                    <h6 class="sub-menu__title fs-base">Liên kết nhanh</h6>
                                     <ul class="sub-menu__list list-unstyled">
                                         <li class="sub-menu__item"><a href="shop2.html"
-                                                class="menu-link menu-link_us-s">New Arrivals</a>
+                                                class="menu-link menu-link_us-s">Hàng mới về</a>
                                         </li>
                                         <li class="sub-menu__item"><a href="#"
-                                                class="menu-link menu-link_us-s">Dresses</a></li>
+                                                class="menu-link menu-link_us-s">Sản phẩm</a></li>
                                         <li class="sub-menu__item"><a href="shop3.html"
                                                 class="menu-link menu-link_us-s">Accessories</a>
                                         </li>
