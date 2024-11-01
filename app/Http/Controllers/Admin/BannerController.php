@@ -28,30 +28,59 @@ public function store(Request $request)
 {
     // Xác thực dữ liệu đầu vào
     $request->validate([
-        'image' => 'nullable|image|max:2048',
-        'position' => 'required|integer|min:0',
-        'order' => 'required|integer|min:0', // Kiểm tra position
+        'images.*' => 'image|max:2048', // Kiểm tra tất cả các hình ảnh
+        'order.*' => 'required|integer|min:0', // Kiểm tra order
+        'position.*' => 'required|integer|min:0', // Kiểm tra position
+        'title.*' => 'required|string|max:255', // Xác thực trường title
+        'strong_title.*' => 'required|string|max:255', // Xác thực trường strong_title
     ]);
 
-    // Tạo một banner mới
-    $banner = new Banner();
+    $uploadedImages = []; // Mảng lưu trữ đường dẫn hình ảnh
 
-    // Xử lý upload hình ảnh
-    if ($request->hasFile('image')) {
-        // Lấy thông tin file hình ảnh
-        $image = $request->file('image');
-        $imageName = time() . '_' . $image->getClientOriginalName(); // Đặt tên file
-        $image->move(public_path('uploads/banner'), $imageName); // Di chuyển file đến thư mục public/uploads/banner
-        $banner->image = 'uploads/banner/' . $imageName; // Lưu đường dẫn vào cơ sở dữ liệu
+    // Lặp qua tất cả hình ảnh và lưu trữ
+    foreach ($request->file('images') as $index => $image) {
+        $order = $request->input('order')[$index];
+        $position = $request->input('position')[$index];
+
+        // Kiểm tra xem có banner nào có cùng order và position không
+        $existingBanner = Banner::where('order', $order)
+                                ->where('position', $position)
+                                ->first();
+
+        if ($existingBanner) {
+            toastr()->error("Order $order và Position $position đã tồn tại. Vui lòng chọn giá trị khác.");
+            return redirect()->back()->withInput();
+        }
+
+        // Tạo một banner mới
+        $banner = new Banner();
+
+        // Xử lý upload hình ảnh
+        if ($image) {
+            $imageName = time() . '_' . $image->getClientOriginalName(); // Đặt tên file
+            $image->move(public_path('uploads/banner'), $imageName); // Di chuyển file đến thư mục public/uploads/banner
+            $banner->image = 'uploads/banner/' . $imageName; // Lưu đường dẫn vào cơ sở dữ liệu
+            $uploadedImages[] = $banner->image; // Thêm hình ảnh vào mảng
+        }
+
+        // Lưu giá trị từ request
+        $banner->position = $position; // Lưu giá trị position từ request
+        $banner->order = $order; // Lưu giá trị order từ request
+        $banner->title = $request->input('title')[$index]; // Lưu giá trị title từ request
+        $banner->strong_title = $request->input('strong_title')[$index]; // Lưu giá trị strong_title từ request
+        $banner->publish = 2; // Mặc định là 2 (không hoạt động)
+        $banner->save(); // Lưu banner vào cơ sở dữ liệu
     }
 
-    $banner->position = $request->input('position');
-    $banner->order = $request->input('order'); // Lưu giá trị position từ request
-    $banner->publish = 2; // Mặc định là 2 (không hoạt động)
-    $banner->save(); // Lưu banner vào cơ sở dữ liệu
     toastr()->success('Thêm Banner Thành Công!');
-    return redirect()->route('banner.index');
+    
+    // Chuyển hướng về trang chỉ định với đường dẫn hình ảnh đã tải lên
+    return redirect()->route('banner.index')->with('uploadedImages', $uploadedImages);
 }
+
+
+
+
 
     public function togglePublish($id, Request $request)
 {
@@ -75,13 +104,30 @@ public function update(Request $request, $id)
     try {
         // Validate dữ liệu từ request
         $request->validate([
+            'title' => 'required|string|max:255', // Thêm validation cho title
+            'strong_title' => 'nullable|string|max:255', // Thêm validation cho strong title
             'image' => 'nullable|image|max:2048',
             'position' => 'required|integer|min:0',
-            'order' => 'required|integer|min:0', // Kiểm tra position
+            'order' => 'required|integer|min:0',
         ]);
 
         // Tìm banner theo id
         $banner = Banner::findOrFail($id);
+
+        // Kiểm tra xem có banner nào khác có cùng giá trị order và position
+        $existingBanner = Banner::where('order', $request->input('order'))
+                                ->where('position', $request->input('position'))
+                                ->where('id', '!=', $id) // Loại trừ banner hiện tại
+                                ->first();
+
+        if ($existingBanner) {
+            toastr()->error('Đã tồn tại banner khác với order và position này. Vui lòng chọn giá trị khác.');
+            return redirect()->back()->withInput();
+        }
+
+        // Cập nhật title và strong_title từ request
+        $banner->title = $request->input('title'); // Lưu giá trị title từ request
+        $banner->strong_title = $request->input('strong_title'); // Lưu giá trị strong_title từ request
 
         // Nếu có upload hình ảnh mới
         if ($request->hasFile('image')) {
@@ -100,9 +146,10 @@ public function update(Request $request, $id)
             $banner->image = 'uploads/banner/' . $imageName; // Lưu đường dẫn tương đối của ảnh
         }
 
-        // Cập nhật giá trị position
-        $banner->position = $request->input('position'); // Lưu giá trị position từ request
-        $banner->order = $request->input('order'); 
+        // Cập nhật giá trị position và order
+        $banner->position = $request->input('position');
+        $banner->order = $request->input('order');
+
         // Lưu banner
         $banner->save();
 
@@ -114,10 +161,12 @@ public function update(Request $request, $id)
         // Nếu có lỗi xảy ra
         toastr()->error('Đã xảy ra lỗi: ' . $e->getMessage());
         
-        // Redirect về trang danh sách banner
+        // Redirect về trang danh sách banner với dữ liệu đã nhập
         return redirect()->route('banner.index')->withInput();
     }
 }
+
+
 
 public function restore(string $id)
 {

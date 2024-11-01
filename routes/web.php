@@ -48,6 +48,10 @@ Route::post('/do-login', [CustomerController::class, 'dologin'])->name('customer
 Route::get('/logout', [CustomerController::class, 'logout'])->name('customer.logout');
 Route::get('/profile', [CustomerController::class, 'profile'])->name('customer.profile');
 Route::get('/orders', [CustomerController::class, 'customerOrder'])->name('customer.orders');
+Route::get('/orders/history', [CustomerController::class, 'customerOrderHistory'])->name('customer.orders.history');
+Route::post('/orders/cancel', [CustomerController::class, 'customerOrderCancel'])->name('customer.orders.cancel');
+Route::get('/orders/{id}', [CustomerController::class, 'customerOrderDetail'])->name('customer.orders.detail');
+ 
 Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
 Route::prefix('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
@@ -96,7 +100,6 @@ Route::prefix('admin')->group(function () {
         Route::get('category/deleted', [ShowroomController::class, 'deleted'])->name('showroomcategory.deleted');
         Route::get('edit/{id}', [ShowroomController::class, 'edit'])->name('showroom.edit'); // Route để sửa
         Route::put('{id}', [ShowroomController::class, 'update'])->name('showroom.update'); // Route để cập nhật
-        Route::post('toggle-publish/{id}', [ShowroomController::class, 'togglePublish'])->name('showroom.togglePublish');
         Route::get('showroom/{id}/restore', [ShowroomController::class, 'restore'])->name('showroom.restore');
         Route::delete('showroom/{id}/force-delete', [ShowroomController::class, 'forceDelete'])->name('showroom.forceDelete');
         Route::delete('showroom/{id}', [ShowroomController::class, 'destroy'])->name('showroom.destroy');
@@ -106,8 +109,11 @@ Route::prefix('admin')->group(function () {
     });
     Route::prefix('Product_showroom')->group(function () {
         Route::get('category/{showroomId}/products', [ProductShowroomController::class, 'index'])->name('Productshowroom.index');
+        Route::get('kho/products', [ProductShowroomController::class, 'getProductsByPublishedShowroom'])->name('Kho.index');
         Route::post('/update-product', [ProductShowroomController::class, 'updateProductInShowroom'])->name('Productshowroom.update');
-        Route::post('/remove-product', [ProductShowroomController::class, 'removeProductFromShowroom'])->name('Productshowroom.remove');
+        Route::post('/admin/transfer-product/{showroomId}', [ProductShowroomController::class, 'transferProductFromShowroom'])->name('Productshowroom.remove');
+        Route::post('/{id}/transfer-all', [ProductShowroomController::class, 'transferAllProductsFromShowroom'])->name('showroom.transferAll');
+        Route::post('/transfer-product', [ProductShowroomController::class, 'transfer'])->name('transfer.product');
     });
     Route::prefix('banner')->group(function () {
         Route::get('category', [BannerController::class, 'index'])->name('banner.index'); // Route mới

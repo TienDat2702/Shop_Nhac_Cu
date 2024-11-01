@@ -14,6 +14,8 @@ class Banner extends Model
         'position',
         'publish',
         'description',
+        'title',
+        'strong_title',
     ];
     public function scopeGetWithParent($query)
     {

@@ -17,20 +17,20 @@ class ShowroomSeeder extends Seeder
                 'address' => '123 Đường ABC, Quận 1, TP.HCM',
                 'phone' => '0123456789',
                 'image' => 'https://example.com/image1.jpg',
-                'publish' => 1,
+                'publish' => 2,
             ],
             [
                 'name' => 'Showroom Đà Nẵng',
                 'address' => '456 Đường DEF, Quận Hòa Vang, TP.Đà Nẵng',
                 'phone' => '0987654321',
                 'image' => 'https://example.com/image2.jpg',
-                'publish' => 1,
+                'publish' => 2,
             ], [
                 'name' => 'Showroom Hà Nội',
                 'address' => '456 Đường DEF, Quận Hoàn Kiếm, TP.Hà Nội',
                 'phone' => '0987654321',
                 'image' => 'https://example.com/image2.jpg',
-                'publish' => 1,
+                'publish' => 2,
             ]
         ];
 
