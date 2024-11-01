@@ -24,9 +24,9 @@ class OrderSeeder extends Seeder
             $canceledAt = null;
 
             if ($status === 'đã giao') {
-                $deliveredAt = $faker->dateTimeBetween('-1 month', 'now');
+                $deliveredAt = $faker->dateTimeBetween('now', '+1 week');
             } elseif ($status === 'đã hủy') {
-                $canceledAt = $faker->dateTimeBetween('-1 month', 'now');
+                $canceledAt = $faker->dateTimeBetween('now', '+1 week');
             }
 
             $order = Order::create([
