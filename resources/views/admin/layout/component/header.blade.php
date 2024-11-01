@@ -102,7 +102,7 @@
                     </a>
                 </div>
                 
-                <style>
+                <!-- <style>
                     .dropdown {
                         display: flex;
                         align-items: center;
@@ -123,7 +123,7 @@
                     .body-title, .text-tiny {
                         text-align: center;
                     }
-                </style>
+                </style> -->
                 
             </div>
 

@@ -41,11 +41,33 @@ class ShowroomController extends Controller
 
 public function store(ShowroomRequest $request)
 {
+    // Lấy tên showroom từ input và chuẩn hóa về chữ thường
+    $inputName = strtolower($request->input('name'));
+
+    // Kiểm tra xem có showroom nào đã có tên chứa từ "kho" và đã publish là 4
+    $existingShowroom = Showroom::where('name', 'like', '%kho%')->where('publish', 4)->first();
+
+    // Nếu showroom đã tồn tại, trả về thông báo lỗi
+    if ($existingShowroom) {
+        toastr()->error('Chỉ có thể có một showroom với tên chứa từ "Kho" và trạng thái publish là 4.');
+        return redirect()->back()->withInput();
+    }
+
+    // Kiểm tra xem có showroom nào đã có publish là 4
+    $existingPublishedShowroom = Showroom::where('publish', 4)->first();
+
+    // Nếu showroom đã tồn tại với publish = 4, trả về thông báo lỗi
+    if ($existingPublishedShowroom) {
+        toastr()->error('Chỉ có thể có một showroom với trạng thái publish là 4.');
+        return redirect()->back()->withInput();
+    }
+
     // Tạo showroom mới
     $showroom = Showroom::create([
         'name' => $request->input('name'),
         'address' => $request->input('address'),
         'phone' => $request->input('phone'),
+        'publish' => 4, // Đặt publish thành 4 cho showroom này
     ]);
 
     // Kiểm tra và xử lý hình ảnh
@@ -67,6 +89,8 @@ public function store(ShowroomRequest $request)
     // Redirect về trang danh sách showroom
     return redirect()->route('showroomcategory.index');
 }
+
+
 
 
 
