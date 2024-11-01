@@ -304,7 +304,7 @@
                                     </p>
                                     <h6 class="pc__title"><a href="details.html">{{ $product->name }}</a></h6>
                                     <div class="product-card__price d-flex">
-                                        <span class="money price">{{ number_format($product->price) }} VNĐ</span>
+                                        <span class="money price">{{ number_format($product->price_sale) }} VNĐ</span>
                                     </div>
                                     <div class="product-card__review d-flex align-items-center">
                                         <div class="reviews-group d-flex">
