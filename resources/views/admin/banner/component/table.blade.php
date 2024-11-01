@@ -9,8 +9,8 @@ $showrooms = ($config == 'index') ? $dsbanner : $getDeleted;
             <tr>
                 <th>STT</th>
                 <th>Ảnh</th>
-                <th>Order</th>
-                <th>Position</th>
+                <th>Vị Trí</th>
+                <th>Trang</th>
                 <th>Tiêu đề</th> <!-- Cột mới -->
                 <th>Tiêu đề In Đậm</th> <!-- Cột mới -->
                 <th>Trạng thái</th>
@@ -25,11 +25,22 @@ $showrooms = ($config == 'index') ? $dsbanner : $getDeleted;
         <span><img src="{{ asset($item->image) }}" alt="" style="width: 100px; height: 70px;"></span> 
     </td>
     <td>
-        {{ $item->order }}
+    @switch($item->order)
+    @case(1)
+        banner 1
+        @break
+    @case(2)
+        banner 2
+        @break
+    @default
+        banner 3
+@endswitch
+
     </td>
     <td>
-        {{ $item->position }}
-    </td>
+    {{ $item->position == 1 ? 'Trang Chủ' : 'Cửa Hàng' }}
+</td>
+
     <td>
         {{ $item->title }} <!-- Hiển thị tiêu đề -->
     </td>
@@ -75,7 +86,7 @@ $showrooms = ($config == 'index') ? $dsbanner : $getDeleted;
                 <form class="form-delete" action="{{ route('banner.destroy', $item->id) }}" method="POST">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-delete item text-danger delete" title="Xóa"
+                    <button type="submit" class="btn btn-delete-banner item text-danger delete" title="Xóa" data-publish="{{$item->publish}}"
                     data-text="Bạn có thể khôi phục dữ liệu lại sau khi xóa."
                     data-text2="{{ ($item->parent_id == 0) ? 'Bạn có thể xóa tất cả danh mục liên quan đến danh mục hiện tại!' : '' }}">
                         <i class="icon-trash-2"></i>

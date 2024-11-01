@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\Brand;
+use App\Models\Banner;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -15,6 +16,9 @@ class ProductController extends Controller
         $categories = $request->input('categories');
         $minPrice = $request->input('min_price');
         $maxPrice = $request->input('max_price');
+        $banner = Banner::where('order', 1)->where('position', 2)->where('publish', 2)->first();
+        $banner2 = Banner::where('order', 2)->where('position', 2)->where('publish', 2)->first();
+        $banner3 = Banner::where('order', 3)->where('position', 2)->where('publish', 2)->first();
         $query = Product::query();
     
         // Lọc theo thương hiệu
@@ -46,7 +50,7 @@ class ProductController extends Controller
             return view('user.shop', compact('allCategories', 'allBrands', 'products', 'minPriceFromDb', 'maxPriceFromDb'))->render();
         }
     
-        return view('user.shop', compact('allCategories', 'allBrands', 'products', 'minPriceFromDb', 'maxPriceFromDb'));
+        return view('user.shop', compact('allCategories', 'allBrands', 'products', 'minPriceFromDb', 'maxPriceFromDb', 'banner', 'banner2', 'banner3'));
     }
     
     

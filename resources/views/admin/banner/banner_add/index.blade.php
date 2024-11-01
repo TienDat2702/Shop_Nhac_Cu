@@ -1,5 +1,5 @@
 @extends('admin.layout.layout')
-@section('title', 'Chỉnh Sửa Showroom')
+@section('title', 'Thêm Banner')
 @section('main')
 <style>
     .image-grid {
@@ -46,7 +46,7 @@
     }
 </style>
 <div class="container">
-    <h2>Thêm Showroom</h2>
+    <h4>Thêm Banner</h4>
 
     @if ($errors->any())
     <div class="alert alert-danger">
@@ -58,13 +58,14 @@
     </div>
     @endif
 
-    <form class="tf-section-2 form-add-product" method="POST" enctype="multipart/form-data" action="{{ route('banner.store') }}" style="width:200%">
+    <form class="tf-section-2 form-add-product" method="POST" enctype="multipart/form-data" action="{{ route('banner.store') }}" style="margin-inline-start:110px; width:150%;">
         @csrf <!-- Sử dụng csrf_field() để tự động sinh ra token -->
         <div class="wg-box" id="image-upload-section">
             <fieldset>
                 <div class="body-title">Upload images <span class="tf-color-1">*</span></div>
-                <div class="upload-image flex-grow">
-                    <div id="img-previews" class="image-grid"></div> <!-- Thêm class image-grid để hiển thị theo hàng ngang -->
+                <div class="row upload-image">
+                    <div id="img-previews" class="row image-grid">
+                    </div> <!-- Thêm class image-grid để hiển thị theo hàng ngang -->
                     <div class="item upload-container" id="upload-container">
                         <label class="uploadfile">
                             <span class="icon">
@@ -85,40 +86,50 @@
 
     <script>
         document.querySelector("input[type='file']").addEventListener("change", function(event) {
-            const files = event.target.files; // Lấy tất cả các tệp được chọn
-            const imgPreviewsContainer = document.getElementById("img-previews");
-            imgPreviewsContainer.innerHTML = ""; // Xóa nội dung cũ
+    const files = event.target.files;
+    const imgPreviewsContainer = document.getElementById("img-previews");
+    const uploadContainer = document.getElementById("upload-container");
 
-            if (files.length > 0) {
-                const uploadContainer = document.getElementById("upload-container");
-                uploadContainer.style.width = "150px"; // Đặt lại chiều rộng khi có ảnh
-                uploadContainer.style.height = "100px"; // Đặt lại chiều cao khi có ảnh
+    if (files.length > 0) {
+        // Chuyển upload-container vào img-previews nếu chưa có
+        if (!imgPreviewsContainer.contains(uploadContainer)) {
+            imgPreviewsContainer.appendChild(uploadContainer);
+        }
 
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const imgPreview = document.createElement("div");
-                        imgPreview.className = "img-preview-item";
-                        imgPreview.innerHTML = `
-                            <img src="${e.target.result}" class="effect8" alt="">
-                            <div class="additional-fields">
-                                <div class="body-title">Tiêu Đề <span class="tf-color-1">*</span></div>
-                                <input type="text" name="title[]" required placeholder="Nhập tiêu đề">
-                                <div class="body-title">Tiêu Đề Mạnh <span class="tf-color-1">*</span></div>
-                                <input type="text" name="strong_title[]" required placeholder="Nhập tiêu đề mạnh">
-                                <div class="body-title">Vị Trí Xuất Hiện <span class="tf-color-1">*</span></div>
-                                <input type="number" name="order[]" min="0" required placeholder="VD:1 là slide banner1, 2 là slide banner2,">
-                                <div class="body-title">Trang Xuất Hiện <span class="tf-color-1">*</span></div>
-                                <input type="number" name="position[]" min="0" required placeholder="VD: 1 xuất hiện ở trang chủ">
-                            </div>
-                        `;
-                        imgPreviewsContainer.appendChild(imgPreview); // Thêm hình ảnh và các trường dưới nó vào container
-                    };
-                    reader.readAsDataURL(file);
-                }
-            }
-        });
+        // Xóa các ảnh cũ để hiển thị ảnh mới
+        while (imgPreviewsContainer.firstChild && imgPreviewsContainer.firstChild !== uploadContainer) {
+            imgPreviewsContainer.removeChild(imgPreviewsContainer.firstChild);
+        }
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imgPreview = document.createElement("div");
+                imgPreview.className = "col-md-4 img-preview-item";
+                imgPreview.innerHTML = `
+                    <img src="${e.target.result}" class="effect8" alt="">
+                    <div class="additional-fields">
+                        <div class="body-title">Tiêu Đề <span class="tf-color-1">*</span></div>
+                        <input type="text" name="title[]" required placeholder="Nhập tiêu đề">
+                        <div class="body-title">Tiêu Đề Mạnh <span class="tf-color-1">*</span></div>
+                        <input type="text" name="strong_title[]" required placeholder="Nhập tiêu đề mạnh">
+                        <div class="body-title">Vị Trí Xuất Hiện <span class="tf-color-1">*</span></div>
+                        <input type="number" name="order[]" min="0" required placeholder="VD:1 là slide banner1, 2 là slide banner2,">
+                        <div class="body-title">Trang Xuất Hiện <span class="tf-color-1">*</span></div>
+                        <input type="number" name="position[]" min="0" required placeholder="VD: 1 xuất hiện ở trang chủ">
+                    </div>
+                `;
+                imgPreviewsContainer.insertBefore(imgPreview, uploadContainer);
+            };
+            reader.readAsDataURL(file);
+        }
+    } else {
+        // Nếu không có ảnh nào, đưa upload-container ra ngoài img-previews
+        document.querySelector(".upload-image").appendChild(img-previews);
+    }
+});
+
     </script>
 </div>
 @endsection

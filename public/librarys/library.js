@@ -165,6 +165,44 @@
             });
         });
     }
+    HT.sweetalertbanner = () => {
+        $('.btn-delete-banner').on('click', function(e) {
+            e.preventDefault(); // Ngăn chặn hành vi mặc định
+            let _this = $(this);
+            let form = _this.closest('form'); 
+            let publishStatus = _this.attr('data-publish');// Lấy form gần nhất với button
+            if (publishStatus == 2) {
+                Swal.fire({
+                    title: "Không thể xóa!",
+                    text: "Banner đang sử dụng không được phép xóa.",
+                    icon: "error"
+                });
+                e.preventDefault(); // Ngăn chặn hành vi mặc định
+                return; // Dừng thực hiện tiếp
+            }
+            // Hiển thị hộp thoại xác nhận xóa
+            Swal.fire({
+                title: "Bạn có chắc chắn?",
+                html: '<span style="color: red">' + _this.attr('data-text2') + '</span>',
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Có, Xóa nó!",
+                cancelButtonText: "Hủy"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Xóa!",
+                        text: "Dữ liệu của bạn đã được xóa.",
+                        icon: "success"
+                    }).then(() => {
+                        form.submit(); // Gửi form
+                    });
+                }
+            });
+        });
+    }
     
 
     HT.setupCkeditor = () => {
@@ -301,6 +339,7 @@
         HT.sweetalert2();
         HT.sweetalertshowroom();
         HT.sweetalertproduct();
+        HT.sweetalertbanner();
         HT.setupCkeditor();
         HT.keyUpInput();
         HT.trash();
