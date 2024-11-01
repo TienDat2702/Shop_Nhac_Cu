@@ -28,30 +28,45 @@ public function store(Request $request)
 {
     // Xác thực dữ liệu đầu vào
     $request->validate([
-        'image' => 'nullable|image|max:2048',
-        'position' => 'required|integer|min:0',
-        'order' => 'required|integer|min:0', // Kiểm tra position
+        'images.*' => 'image|max:2048', // Kiểm tra tất cả các hình ảnh
+        'order.*' => 'required|integer|min:0', // Kiểm tra order
+        'position.*' => 'required|integer|min:0', // Kiểm tra position
+        'title.*' => 'required|string|max:255', // Xác thực trường title
+        'strong_title.*' => 'required|string|max:255', // Xác thực trường strong_title
     ]);
 
-    // Tạo một banner mới
-    $banner = new Banner();
+    $uploadedImages = []; // Mảng lưu trữ đường dẫn hình ảnh
 
-    // Xử lý upload hình ảnh
-    if ($request->hasFile('image')) {
-        // Lấy thông tin file hình ảnh
-        $image = $request->file('image');
-        $imageName = time() . '_' . $image->getClientOriginalName(); // Đặt tên file
-        $image->move(public_path('uploads/banner'), $imageName); // Di chuyển file đến thư mục public/uploads/banner
-        $banner->image = 'uploads/banner/' . $imageName; // Lưu đường dẫn vào cơ sở dữ liệu
+    // Lặp qua tất cả hình ảnh và lưu trữ
+    foreach ($request->file('images') as $index => $image) {
+        // Tạo một banner mới
+        $banner = new Banner();
+
+        // Xử lý upload hình ảnh
+        if ($image) {
+            $imageName = time() . '_' . $image->getClientOriginalName(); // Đặt tên file
+            $image->move(public_path('uploads/banner'), $imageName); // Di chuyển file đến thư mục public/uploads/banner
+            $banner->image = 'uploads/banner/' . $imageName; // Lưu đường dẫn vào cơ sở dữ liệu
+            $uploadedImages[] = $banner->image; // Thêm hình ảnh vào mảng
+        }
+
+        // Lưu giá trị từ request
+        $banner->position = $request->input('position')[$index]; // Lưu giá trị position từ request
+        $banner->order = $request->input('order')[$index]; // Lưu giá trị order từ request
+        $banner->title = $request->input('title')[$index]; // Lưu giá trị title từ request
+        $banner->strong_title = $request->input('strong_title')[$index]; // Lưu giá trị strong_title từ request
+        $banner->publish = 2; // Mặc định là 2 (không hoạt động)
+        $banner->save(); // Lưu banner vào cơ sở dữ liệu
     }
 
-    $banner->position = $request->input('position');
-    $banner->order = $request->input('order'); // Lưu giá trị position từ request
-    $banner->publish = 2; // Mặc định là 2 (không hoạt động)
-    $banner->save(); // Lưu banner vào cơ sở dữ liệu
     toastr()->success('Thêm Banner Thành Công!');
-    return redirect()->route('banner.index');
+    
+    // Chuyển hướng về trang chỉ định với đường dẫn hình ảnh đã tải lên
+    return redirect()->route('banner.index')->with('uploadedImages', $uploadedImages);
 }
+
+
+
 
     public function togglePublish($id, Request $request)
 {
