@@ -32,7 +32,6 @@
                 <td>
     <div style="display: flex; align-items: center;">
         <input type="checkbox" class="product-checkbox" data-id="{{ $item->product->id }}" style="margin-right: 5px;">
-        <input type="number" class="quantity-input" data-id="{{ $item->product->id }}" value="1" min="1" max="{{$item->stock}}" style="width: 60px;">
     </div>
 </td>
 
@@ -75,13 +74,8 @@
                                 data-current-stock="{{ $item->stock }}" 
                                 onclick="setModalData(this)">
                                 <i class="icon-edit-3"></i>
-                            </div>
-                            <form action="{{ route('Productshowroom.remove') }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="showroom_id" value="{{ $item->showroom->id }}">
-                                <input type="hidden" name="product_id" value="{{ $item->product->id }}">
-                                <button type="submit" class="btn btn-delete item text-danger delete"><i class="icon-trash-2"></i></button>
-                            </form>
+                        </div>
+                        <input type="number" class="form-control quantity-input" data-id="{{ $item->product->id }}" value="1" min="1" max="{{$item->stock}}" style="width: 50px;">
                         </div>
                     </td>
                 </tr>
@@ -136,14 +130,13 @@ $(document).ready(function() {
 
         $('.product-checkbox:checked').each(function() {
             const productId = $(this).data('id');
-            const quantity = $(this).closest('div').find('.quantity-input').val();
-            const currentShowroomId = $(this).closest('div').find('.current-showroom-id').val(); // Lấy current showroom id
+            // Tìm .quantity-input trong cùng hàng <tr>
+            const quantity = $(this).closest('tr').find('.quantity-input').val();
 
             // Thêm thông tin sản phẩm vào mảng
             products.push({
                 id: productId,
-                quantity: quantity,
-                current_showroom_id: currentShowroomId // Thêm current showroom id vào sản phẩm
+                quantity: quantity, // Thêm current showroom id vào sản phẩm nếu cần
             });
         });
 
@@ -171,6 +164,7 @@ $(document).ready(function() {
         });
     });
 });
+
 
 
 

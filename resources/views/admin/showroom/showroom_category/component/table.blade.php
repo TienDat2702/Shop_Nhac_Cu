@@ -1,4 +1,14 @@
 
+<style>
+    .table-bordered>:not(caption)>*>* {
+    height: 100px;
+    border-width: inherit;
+    line-height: 32px;
+    font-size: 14px;
+    border: 1px solid #e1e1e1;
+    vertical-align: middle;
+}
+</style>
 <div class="wg-table table-all-user">
     @php
     $showrooms = ($config == 'index') ? $dsshowroom : $getDeleted;
@@ -80,7 +90,7 @@
     @method('DELETE')
     <button type="submit" class="btn btn-delete-showroom item text-danger delete" title="Xóa"
         data-text="Showroom Hiện Còn {{$item->products()->count()}} sản phẩm cần chuyển đến kho để xóa."
-        data-text2="Bạn có thể xóa tất cả danh mục liên quan đến danh mục hiện tại!"
+        data-text2="Tiếp tục xóa bạn có thể khôi phục trong thùng rác"
         data-has-products="{{ $item->products()->count() > 0 ? 'true' : 'false' }}"
         data-publish="{{ $item->publish }}">
         <i class="icon-trash-2"></i>

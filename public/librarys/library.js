@@ -83,7 +83,7 @@
         });
     };
 
-    HT.sweetalert3 = () => {
+    HT.sweetalertshowroom = () => {
         $('.btn-delete-showroom').on('click', function(e) {
             let _this = $(this);
             let publishStatus = _this.attr('data-publish');
@@ -136,6 +136,36 @@
             });
         });
     }
+    HT.sweetalertproduct = () => {
+        $('.btn-delete-product').on('click', function(e) {
+            e.preventDefault(); // Ngăn chặn hành vi mặc định
+            let _this = $(this);
+            let form = _this.closest('form'); // Lấy form gần nhất với button
+    
+            // Hiển thị hộp thoại xác nhận xóa
+            Swal.fire({
+                title: "Bạn có chắc chắn?",
+                html: '<span style="color: red">' + _this.attr('data-text2') + '</span>',
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Có, Xóa nó!",
+                cancelButtonText: "Hủy"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Xóa!",
+                        text: "Dữ liệu của bạn đã được xóa.",
+                        icon: "success"
+                    }).then(() => {
+                        form.submit(); // Gửi form
+                    });
+                }
+            });
+        });
+    }
+    
 
     HT.setupCkeditor = () => {
         if ($('.ck-editor')) {
@@ -269,7 +299,8 @@
     $(document).ready(function () {
         HT.changeStatus();
         HT.sweetalert2();
-        HT.sweetalert3();
+        HT.sweetalertshowroom();
+        HT.sweetalertproduct();
         HT.setupCkeditor();
         HT.keyUpInput();
         HT.trash();

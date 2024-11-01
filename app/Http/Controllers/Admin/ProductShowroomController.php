@@ -44,7 +44,7 @@ class ProductShowroomController extends Controller
             // Nếu showroom hiện tại không rỗng, giảm số lượng từ showroom hiện tại
             if ($currentShowroomId) {
                 ShowroomProduct::where('product_id', $productId)
-                    ->where('showroom_id', $currentShowroomId->showroom_id) // Lấy ID của showroom
+                    ->where('showroom_id', $currentShowroomId->id) // Lấy ID của showroom
                     ->decrement('stock', $quantity);
             }
         }
