@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterRequest extends FormRequest
+class UpdateProfileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,10 +23,11 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users',
+            'email' => 'required|email|max:255',
             'phone' => 'required|numeric|min:10',
-            'password' => 'required|string|min:8',
-            'confirm_password' => 'required|same:password',
+            'old_password' => 'required|string|min:8',
+            'new_password' => 'required|string|min:8',
+            'new_password_confirmation' => 'required_with:new_password',
         ];
     }
 
@@ -45,11 +46,12 @@ class RegisterRequest extends FormRequest
             'phone.required' => 'Bạn chưa nhập vào số điện thoại.',
             'phone.numeric' => 'Số điện thoại phải là số.',
             'phone.min' => 'Số điện thoại phải có ít nhất 10 chữ số.',
-            'password.required' => 'Bạn chưa nhập vào mật khẩu.',
-            'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự.',
+            'old_password.required' => 'Bạn chưa nhập vào mật khẩu.',
+            'old_password.min' => 'Mật khẩu phải có ít nhất 8 ký tự.',
+            'new_password.required' => 'Bạn chưa nhập vào mật khẩu.',
+            'new_password.min' => 'Mật khẩu phải có ít nhất 8 ký tự.',
           
-            'confirm_password.required' => 'Bạn chưa nhập vào mật khẩu.',
-            'confirm_password.same' => 'Mật khẩu xác nhận không khớp.',
+            'new_password_confirmation.required_with' => 'Bạn chưa nhập vào mật khẩu xác nhận.',
         ];
     }
 }

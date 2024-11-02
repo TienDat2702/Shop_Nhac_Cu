@@ -18,11 +18,12 @@ use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\User\ProductController;
 use App\Http\Controllers\User\CustomerController;
 use App\Http\Controllers\AuthController;
+use App\Http\Middleware\CustomerMiddleware;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\CheckoutController;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
-
+use App\Http\Middleware\CustomerAuth;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
@@ -45,13 +46,38 @@ Route::prefix('checkout')->group(function () {
 // user;
 Route::get('/login', [CustomerController::class, 'login'])->name('customer.login');
 Route::post('/do-login', [CustomerController::class, 'dologin'])->name('customer.dologin');
+Route::get('/verify-account/{email}', [CustomerController::class, 'verify'])->name('customer.verify');
+Route::get('/register', [CustomerController::class, 'register'])->name('customer.register');
+Route::post('/register', [CustomerController::class, 'check_register'])->name('customer.check_register');
+
+Route::middleware(CustomerAuth::class)->group(function () {
+    Route::get('/profile', [CustomerController::class, 'profile'])->name('customer.profile');
+    Route::post('/profile', [CustomerController::class, 'check_profile'])->name('customer.chek_profile');
+    Route::get('/change-password', [CustomerController::class, 'change_password'])->name('customer.change_password');
+    Route::post('/change-password', [CustomerController::class, 'check_change_password']);
+});
+
+
+Route::get('/forgot', [CustomerController::class, 'forgot'])->name('customer.forgot');
+Route::post('/forgot', [CustomerController::class, 'check_forgot'])->name('customer.check_forgot');
+Route::get('/reset-password/{token}', [CustomerController::class, 'reset_password'])->name('customer.reset_password');
+Route::post('/reset-password/{token}', [CustomerController::class, 'check_reset_password'])->name('customer.check_reset_password');
+
+
 Route::get('/logout', [CustomerController::class, 'logout'])->name('customer.logout');
-Route::get('/profile', [CustomerController::class, 'profile'])->name('customer.profile');
 Route::get('/orders', [CustomerController::class, 'customerOrder'])->name('customer.orders');
 Route::get('/orders/history', [CustomerController::class, 'customerOrderHistory'])->name('customer.orders.history');
 Route::post('/orders/cancel', [CustomerController::class, 'customerOrderCancel'])->name('customer.orders.cancel');
 Route::get('/orders/{id}', [CustomerController::class, 'customerOrderDetail'])->name('customer.orders.detail');
  
+
+
+
+
+
+
+
+
 Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
 Route::prefix('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
