@@ -45,7 +45,9 @@
             let title = (_this.attr('data-text3') || _this.attr('data-text2')) ? "Bạn không thể xóa danh mục" : "Bạn có chắc chắn?";
             
             // Quyết định nội dung thông báo
-            let htmlContent = _this.attr('data-text3')
+            let htmlContent = _this.attr('data-text3') && _this.attr('data-text2')
+                ? '<span style="color: red">' + _this.attr('data-text2') + '</span>' + '<br>'+'<span style="color: red">' + _this.attr('data-text3') + '</span>'
+                : _this.attr('data-text3')
                 ? '<span style="color: red">' + _this.attr('data-text3') + '</span>'
                 : (_this.attr('data-text2')
                     ? '<span style="color: red">' + _this.attr('data-text2') + '</span>'
