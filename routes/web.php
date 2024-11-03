@@ -18,6 +18,7 @@ use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\User\ProductController;
 use App\Http\Controllers\User\CustomerController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Middleware\CustomerMiddleware;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\CheckoutController;
@@ -78,9 +79,19 @@ Route::get('/orders/{id}', [CustomerController::class, 'customerOrderDetail'])->
 
 
 
+Route::get('admin/login', [AdminController::class, 'login'])
+    ->name('admin.login');
+   
+
+Route::post('/admin/login', [AdminController::class, 'check_login'])->name('admin.check_login');
 Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
-Route::prefix('admin')->group(function () {
+Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
+    
+    Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
+
+
+
     Route::prefix('order')->group(function () {
         Route::get('/', [AdminOrderController::class, 'index'])->name('order.index');
         Route::get('/pending', [AdminOrderController::class, 'OrderPending'])->name('order.pending');

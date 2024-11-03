@@ -22,25 +22,20 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    // Khai báo casts cho các trường
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
 
-
+    // Quan hệ với model Post
     public function posts() {
         return $this->hasMany(Post::class, 'user_id', 'id');
     }
 
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    // Phương thức kiểm tra vai trò admin
+    public function isAdmin()
+    {
+        return $this->role_id === 1; // Giả sử role_id = 1 là admin
+    }
 }
