@@ -67,11 +67,11 @@
                                     @foreach ($category->posts->where('publish',2)->take(4) as $post)
                                         <div class="col-md-3 list-post">
                                             <div class="item">
-                                                <div class="image"><a href="https://vietthuong.vn/ai-nen-chon-casio-cdp-s110">
+                                                <div class="image"><a href="{{ route('post.detail',$post->slug) }}">
                                                     <img src="{{ asset('uploads/posts/posts/'. $post->image) }}" alt="Ai nên chọn Casio CDP-S110?" title="Ai nên chọn Casio CDP-S110?"></a>
                                                 </div>
                                                 <div class="name">
-                                                    <a href="https://vietthuong.vn/ai-nen-chon-casio-cdp-s110">
+                                                    <a href="{{ route('post.detail',$post->slug) }}">
                                                         <h3>{{ $post->title }}</h3>
                                                     </a>
                                                 </div>

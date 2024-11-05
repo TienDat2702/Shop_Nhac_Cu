@@ -199,17 +199,14 @@
                                     <div class="slideshow-text container p-3 p-xl-5">
                                         <h2
                                             class="text-uppercase section-title fw-normal mb-3 animate animate_fade animate_btt animate_delay-2">
-                                            Women's <br /><strong>ACCESSORIES</strong></h2>
-                                        <p class="mb-0 animate animate_fade animate_btt animate_delay-5">Accessories are
-                                            the best way to
-                                            update your look. Add a title edge with new styles and new colors, or go for
-                                            timeless pieces.</h6>
+                                            {{$banner->title?? 'Đang Cập Nhật'}} <br /><strong>{{$banner->strong_title?? 'Đang Cập Nhật'}}</strong></h2>
+                                        <p class="mb-0 animate animate_fade animate_btt animate_delay-5">{{$banner->description ?? 'Đang Cập Nhật'}}</h6>
                                     </div>
                                 </div>
                                 <div class="slide-split_media position-relative">
                                     <div class="slideshow-bg" style="background-color: #f5e6e0;">
-                                        <img loading="lazy" src="assets/images/shop/shop_banner3.jpg" width="630"
-                                            height="450" alt="Women's accessories"
+                                        <img loading="lazy" src="{{ asset($banner->image ?? 'path/to/default/image.jpg') }}" width="630"
+                                            height="450" alt="Đang Cập Nhật"
                                             class="slideshow-bg__img object-fit-cover" />
                                     </div>
                                 </div>
@@ -223,17 +220,14 @@
                                     <div class="slideshow-text container p-3 p-xl-5">
                                         <h2
                                             class="text-uppercase section-title fw-normal mb-3 animate animate_fade animate_btt animate_delay-2">
-                                            Women's <br /><strong>ACCESSORIES</strong></h2>
-                                        <p class="mb-0 animate animate_fade animate_btt animate_delay-5">Accessories are
-                                            the best way to
-                                            update your look. Add a title edge with new styles and new colors, or go for
-                                            timeless pieces.</h6>
+                                            {{$banner2->title?? 'Đang Cập Nhật'}} <br /><strong>{{$banner2->strong_title?? 'Đang Cập Nhật'}}</strong></h2>
+                                        <p class="mb-0 animate animate_fade animate_btt animate_delay-5">{{$banner2->description	?? 'Đang Cập Nhật'}}</h6>
                                     </div>
                                 </div>
                                 <div class="slide-split_media position-relative">
                                     <div class="slideshow-bg" style="background-color: #f5e6e0;">
-                                        <img loading="lazy" src="assets/images/shop/shop_banner3.jpg" width="630"
-                                            height="450" alt="Women's accessories"
+                                        <img loading="lazy" src="{{ asset($banner2->image ?? 'path/to/default/image.jpg') }}" width="630"
+                                            height="450" alt="Đang Cập Nhật"
                                             class="slideshow-bg__img object-fit-cover" />
                                     </div>
                                 </div>
@@ -247,17 +241,14 @@
                                     <div class="slideshow-text container p-3 p-xl-5">
                                         <h2
                                             class="text-uppercase section-title fw-normal mb-3 animate animate_fade animate_btt animate_delay-2">
-                                            Women's <br /><strong>ACCESSORIES</strong></h2>
-                                        <p class="mb-0 animate animate_fade animate_btt animate_delay-5">Accessories are
-                                            the best way to
-                                            update your look. Add a title edge with new styles and new colors, or go for
-                                            timeless pieces.</h6>
+                                            {{$banner3->title?? 'Đang Cập Nhật'}} <br /><strong>{{$banner3->strong_title?? 'Đang Cập Nhật'}}</strong></h2>
+                                        <p class="mb-0 animate animate_fade animate_btt animate_delay-5">{{$banner3->description ?? 'Đang Cập Nhật'}}</h6>
                                     </div>
                                 </div>
                                 <div class="slide-split_media position-relative">
                                     <div class="slideshow-bg" style="background-color: #f5e6e0;">
-                                        <img loading="lazy" src="assets/images/shop/shop_banner3.jpg" width="630"
-                                            height="450" alt="Women's accessories"
+                                        <img loading="lazy" src="{{ asset($banner3->image ?? 'path/to/default/image.jpg') }}" width="630"
+                                            height="450" alt="Đang Cập Nhật"
                                             class="slideshow-bg__img object-fit-cover" />
                                     </div>
                                 </div>
@@ -334,6 +325,29 @@
                                                     width="330" height="400" alt="Cropped Faux leather Jacket"
                                                     class="pc__img"></a>
                                         </div>
+
+                                        <div class="swiper-wrapper">
+                                            <div class="swiper">
+                                                <a href="{{ route('product.detail', $product->slug) }}"><img loading="lazy"
+                                                        src="{{ asset('uploads/products/product/'.$product->image) }}" width="330"
+                                                        height="400" alt="{{ $product->name }}"
+                                                        class="pc__img"></a>
+                                            </div>
+                                            {{-- <div class="swiper-slide">
+                                                <a href="details.html"><img loading="lazy"
+                                                        src="{{ asset('uploads/products/product/'.$product->image) }}" width="330"
+                                                        height="400" alt="Cropped Faux leather Jacket"
+                                                        class="pc__img"></a>
+                                            </div> --}}
+                                        </div>
+                                        {{-- <span class="pc__img-prev"><svg width="7" height="11" viewBox="0 0 7 11"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <use href="#icon_prev_sm" />
+                                            </svg></span>
+                                        <span class="pc__img-next"><svg width="7" height="11" viewBox="0 0 7 11"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <use href="#icon_next_sm" />
+                                            </svg></span> --}}
                                     </div>
                                     <button
                                         class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside"
@@ -344,9 +358,14 @@
                                     <p class="pc__category">
                                         {{ $product->productCategory ? $product->productCategory->name : 'Không có danh mục' }}
                                     </p>
-                                    <h6 class="pc__title"><a href="details.html">{{ $product->name }}</a></h6>
+                                    <h6 class="pc__title"><a href="{{ route('product.detail', $product->slug) }}">{{ $product->name }}</a></h6>
                                     <div class="product-card__price d-flex">
-                                        <span class="money price">{{ number_format($product->price) }} VNĐ</span>
+                                        @if ($product->price_sale == null)
+                                            <span class="money price">{{ number_format($product->price) }} VNĐ</span>
+                                        @else
+                                            <span class="money price-old">{{ number_format($product->price) }} VNĐ</span>
+                                            <span class="money price">{{ number_format($product->price_sale) }} VNĐ</span>
+                                        @endif
                                     </div>
                                     <div class="product-card__review d-flex align-items-center">
                                         <div class="reviews-group d-flex">

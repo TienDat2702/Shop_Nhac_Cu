@@ -13,24 +13,31 @@ class ShowroomSeeder extends Seeder
         // Dữ liệu showroom thực tế
         $showroomsData = [
             [
+                'name' => 'Kho tổng TuneNest',
+                'address' => 'Tô Ký, Quận 12, TP.HCM',
+                'phone' => '0987654321',
+                'image' => 'KhoTong.png',
+                'publish' => 1
+            ],
+            [
                 'name' => 'Showroom Hồ Chí Minh',
                 'address' => '123 Đường ABC, Quận 1, TP.HCM',
                 'phone' => '0123456789',
-                'image' => 'https://example.com/image1.jpg',
-                'publish' => 1,
+                'image' => 'ShowroomHCM.png',
+                'publish' => 2,
             ],
             [
                 'name' => 'Showroom Đà Nẵng',
                 'address' => '456 Đường DEF, Quận Hòa Vang, TP.Đà Nẵng',
                 'phone' => '0987654321',
-                'image' => 'https://example.com/image2.jpg',
-                'publish' => 1,
+                'image' => 'ShowroomDN.png',
+                'publish' => 2,
             ], [
                 'name' => 'Showroom Hà Nội',
                 'address' => '456 Đường DEF, Quận Hoàn Kiếm, TP.Hà Nội',
                 'phone' => '0987654321',
-                'image' => 'https://example.com/image2.jpg',
-                'publish' => 1,
+                'image' => 'ShowroomHN.png',
+                'publish' => 2,
             ]
         ];
 

@@ -126,17 +126,18 @@
             <script src="js/share.html" defer="defer"></script>
           </div>
           <div class="product-single__meta-info">
-            <div class="meta-item">
-              <label>SKU:</label>
-              <span>N/A</span>
-            </div>
+            
             <div class="meta-item">
               <label>Danh mục</label>
-              <span>{{ $product->productCategory ? $product->productCategory->image : '' }}</span>
+              <span>{{ $product->productCategory ? $product->productCategory->name : '' }}</span>
             </div>
             <div class="meta-item">
               <label>Thương hiệu:</label>
               <span>{{ $brand ? $brand->name : '' }}</span>
+            </div>
+            <div class="meta-item">
+              <label>Mô tả ngắn:</label>
+              <span>{{ $product->short_description }}</span>
             </div>
           </div>
         </div>
@@ -155,7 +156,7 @@
         <div class="tab-content">
           <div class="tab-pane fade show active" id="tab-description" role="tabpanel"
             aria-labelledby="tab-description-tab">
-            <div class="product-single__description">
+            <div class="product-single__description" style="font-size: 16px;">
               {!! $product->description !!}
             </div>
           </div>
@@ -334,6 +335,7 @@
                   <img loading="lazy" src="{{ asset('uploads/products/product/'.$product->image) }}" width="330" height="400"
                     alt="{{ $product->name }}" class="pc__img">
                   <img loading="lazy" src="{{ asset('uploads/products/product/'.$product->image) }}" width="330" height="400"
+
                     alt="{{ $product->name }}" class="pc__img pc__img-second">
                 </a>
                   <input type="hidden" name="product_id" value="{{ $product->id }}">

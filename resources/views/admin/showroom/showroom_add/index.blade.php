@@ -21,21 +21,21 @@
         <fieldset class="name">
             <div class="body-title mb-10">Tên Showroom <span class="tf-color-1">*</span></div>
             <input class="mb-10" type="text" placeholder="Nhập tên showroom" name="name" tabindex="0" value=""
-                   aria-required="true" required="">
+                    >
             <div class="text-tiny">Nhập tên showroom tối đa 100 ký tự</div>
         </fieldset>
         
         <fieldset class="address">
             <div class="body-title mb-10">Địa Chỉ <span class="tf-color-1">*</span></div>
             <input class="mb-10" type="text" placeholder="Nhập địa chỉ showroom" name="address" tabindex="0" value=""
-                   aria-required="true" required="">
+                    >
             <div class="text-tiny">Nhập địa chỉ tối đa 250 ký tự</div>
         </fieldset>
         
         <fieldset class="phone">
             <div class="body-title mb-10">Số Điện Thoại Liên Hệ<span class="tf-color-1">*</span></div>
             <input class="mb-10" type="text" placeholder="Nhập Số Điện Thoại Showroom" name="phone" tabindex="0" value=""
-                   aria-required="true" required="">
+                    >
             <div class="text-tiny">Nhập số điện thoại</div>
         </fieldset>
     </div>
@@ -53,7 +53,7 @@
                     <i class="icon-upload-cloud"></i>
                 </span>
                 <span class="body-text">Drop your images here or select <span class="tf-color">click to browse</span></span>
-                <input type="file" id="myFile" name="image" accept="image/*" required> <!-- Thêm 'required' nếu cần -->
+                <input type="file" id="myFile" name="image" accept="image/*" > <!-- Thêm 'required' nếu cần -->
             </label>
         </div>
     </div>

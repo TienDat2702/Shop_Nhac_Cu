@@ -35,6 +35,7 @@ class CartController extends Controller
         $discountAmount = 0;
 
         if (session()->has('discount_code')) {
+            
             $discountCode = session('discount_code');
             $discount = Discount::GetDiscount()->where('id', $discountCode)->first();
             // Kiểm tra nếu mã giảm giá vẫn hợp lệ

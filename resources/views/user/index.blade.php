@@ -27,8 +27,8 @@
             <div class="slideshow-text container position-absolute start-50 top-50 translate-middle">
                 <h6 class="text_dash text-uppercase fs-base fw-medium animate animate_fade animate_btt animate_delay-3">
                     Hàng Mới Nhập</h6>
-                <h2 class="h1 fw-normal mb-0 animate animate_fade animate_btt animate_delay-5">Guitar Acoustic</h2>
-                <h2 class="h1 fw-bold animate animate_fade animate_btt animate_delay-5">Sale 11/11</h2>
+                <h2 class="h1 fw-normal mb-0 animate animate_fade animate_btt animate_delay-5">{{$banner->title?? 'Đang Cập Nhật'}}</h2>
+                <h2 class="h1 fw-bold animate animate_fade animate_btt animate_delay-5">{{$banner->strong_title ?? 'Đang Cập Nhật'}}</h2>
                 <a href="#"
                     class="btn-link btn-link_lg default-underline fw-medium animate animate_fade animate_btt animate_delay-7">Shop
                     Now</a>
@@ -43,15 +43,15 @@
                     alt="Woman Fashion 1"
                     class="slideshow-character__img animate animate_fade animate_btt animate_delay-9 w-auto h-auto" />
                 <div class="character_markup">
-                    <p class="text-uppercase font-sofia fw-bold animate animate_fade animate_rtl animate_delay-10">Summer
+                    <p class="text-uppercase font-sofia fw-bold animate animate_fade animate_rtl animate_delay-10">{{$banner2->title ?? 'Đang Cập Nhật'}}
                     </p>
                 </div>
             </div>
             <div class="slideshow-text container position-absolute start-50 top-50 translate-middle">
                 <h6 class="text_dash text-uppercase fs-base fw-medium animate animate_fade animate_btt animate_delay-3">
-                    New Arrivals</h6>
-                <h2 class="h1 fw-normal mb-0 animate animate_fade animate_btt animate_delay-5">Night Spring</h2>
-                <h2 class="h1 fw-bold animate animate_fade animate_btt animate_delay-5">Dresses</h2>
+                    Sản Phẩm Mới</h6>
+                <h2 class="h1 fw-normal mb-0 animate animate_fade animate_btt animate_delay-5">{{$banner2->title ?? 'Đang Cập Nhật'}}</h2>
+                 <h2 class="h1 fw-bold animate animate_fade animate_btt animate_delay-5">{{$banner2->strong_title ?? 'Đang Cập Nhật'}}</h2>
                 <a href="#"
                     class="btn-link btn-link_lg default-underline fw-medium animate animate_fade animate_btt animate_delay-7">Shop
                     Now</a>
@@ -68,9 +68,9 @@
             </div>
             <div class="slideshow-text container position-absolute start-50 top-50 translate-middle">
                 <h6 class="text_dash text-uppercase fs-base fw-medium animate animate_fade animate_btt animate_delay-3">
-                    New Arrivals</h6>
-                <h2 class="h1 fw-normal mb-0 animate animate_fade animate_btt animate_delay-5">Night Spring</h2>
-                <h2 class="h1 fw-bold animate animate_fade animate_btt animate_delay-5">Dresses</h2>
+                    Ưu Đãi Mới</h6>
+                <h2 class="h1 fw-normal mb-0 animate animate_fade animate_btt animate_delay-5">{{$banner3->title ?? 'Đang Cập Nhật'}}</h2>
+                <h2 class="h1 fw-bold animate animate_fade animate_btt animate_delay-5">{{$banner3->strong_title ?? 'Đang Cập Nhật'}}</h2>
                 <a href="#"
                     class="btn-link btn-link_lg default-underline fw-medium animate animate_fade animate_btt animate_delay-7">Shop
                     Now</a>
@@ -232,15 +232,15 @@
                   <div class="swiper-slide product-card product-card_style3">
                     <div class="pc__img-wrapper">
                       <a href="{{ route('product.detail', $product->slug)}}">
-                        <img loading="lazy" src="{{asset('assets/images/home/demo3/product-0-1.jpg')}}" width="258" height="313"
+                        <img loading="lazy" src="{{asset('/uploads/products/product/'.$product->image)}}" width="258" height="313"
                           alt="{{ $product->name }}" class="pc__img">
-                        <img loading="lazy" src="{{asset('assets/images/home/demo3/product-0-2.jpg')}}" width="258" height="313"
+                        <img loading="lazy" src="{{asset('/uploads/products/product/'.$product->image)}}" width="258" height="313"
                           alt="{{ $product->name }}" class="pc__img pc__img-second">
                       </a>
                     </div>
 
                     <div class="pc__info position-relative">
-                      <h6 class="pc__title"><a href="details.html">{{ $product->name }}</a></h6>
+                      <h6 class="pc__title"><a href="{{ route('product.detail', $product->slug) }}">{{ $product->name }}</a></h6>
                       <div class="product-card__price d-flex">
                        
                         @if ($product->price_sale > 0)
@@ -294,8 +294,8 @@
           @foreach ($product_views as $product)
           <div class="col-md-6">
             <div class="category-banner__item border-radius-10 mb-5">
-              <img loading="lazy" class="h-auto" src="{{asset('assets/images/home/demo3/category_9.jpg')}}" width="690" height="665"
-                alt="" />
+              <img loading="lazy" class="h-auto" src="{{asset('uploads/products/product/'.$product->image)}}" width="690" height="665"
+                alt="{{ $product->name }}" />
               <div class="category-banner__item-mark">
                 {{ $product->view }} Lượt xem
               </div>
@@ -319,9 +319,9 @@
           <div class="col-6 col-md-4 col-lg-3">
             <div class="product-card product-card_style3 mb-3 mb-md-4 mb-xxl-5">
               <div class="pc__img-wrapper">
-                <a href="details.html">
-                  <img loading="lazy" src="{{asset('assets/images/home/demo3/product-11.jpg')}}" width="330" height="400"
-                    alt="Cropped Faux leather Jacket" class="pc__img">
+                <a href="{{ route('product.detail', $product->slug) }}">
+                  <img loading="lazy" src="{{asset('uploads/products/product/'.$product->image)}}" width="330" height="400"
+                    alt="{{ $product->name }}" class="pc__img">
                 </a>
               </div>
 
