@@ -18,9 +18,7 @@ class ProductController extends Controller
         $categories = $request->input('categories');
         $minPrice = $request->input('min_price');
         $maxPrice = $request->input('max_price');
-        $banner = Banner::where('order', 1)->where('position', 2)->where('publish', 2)->first();
-        $banner2 = Banner::where('order', 2)->where('position', 2)->where('publish', 2)->first();
-        $banner3 = Banner::where('order', 3)->where('position', 2)->where('publish', 2)->first();
+        $banners = Banner::where('position', 2)->get();
         $query = Product::query()->where('publish', 2);
 
             // Lọc theo thương hiệu
@@ -53,7 +51,7 @@ class ProductController extends Controller
         if ($request->ajax()) {
             return view('user.shop', compact('allCategories', 'allBrands', 'products', 'minPriceFromDb', 'maxPriceFromDb'))->render();
         }
-        return view('user.shop', compact('allCategories', 'allBrands', 'products', 'minPriceFromDb', 'maxPriceFromDb', 'banner', 'banner2', 'banner3'));
+        return view('user.shop', compact('allCategories', 'allBrands', 'products', 'minPriceFromDb', 'maxPriceFromDb', 'banners'));
     }
 
 

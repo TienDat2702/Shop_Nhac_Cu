@@ -1,15 +1,27 @@
+<style>
+    /* Tăng kích thước của select */
+    .selectpicker {
+        height: 45px; /* Điều chỉnh chiều cao */
+        font-size: 16px; /* Điều chỉnh kích thước font chữ */
+    }
+</style>
+
 <div class="wg-table table-all-product">
-<div>
-    <label for="showroomSelect">Chọn showroom:</label>
-    <select id="showroomSelect">
-        <option value="">Chọn showroom</option>
+<div style="position: relative; padding: 10px; margin-bottom: 15px;">
+    <div style="display: flex; align-items: center;">
+        <input type="text" id="showroomSearch" placeholder="Tìm showroom" style="margin-right: 10px; width: 300px; font-size: 16px; padding: 10px;" class="form-control">
+        <button id="transferBtn" class="btn btn-outline-primary" style="font-size: 16px; padding: 10px;">Chuyển sản phẩm</button>
+    </div>
+    <ul id="suggestions" style="list-style-type: none; padding: 0; margin-top: 5px; border: 1px solid #ccc; display: none; background: white; font-size: 16px; width: 300px; position: absolute; z-index: 10;">
         @foreach ($showroomid as $showroom)
-            <option value="{{ $showroom->id }}">{{ $showroom->name }}</option>
+            <li data-id="{{ $showroom->id }}" class="suggestion-item" style="padding: 10px; cursor: pointer;">{{ $showroom->name }}</li>
         @endforeach
-    </select>
+    </ul>
 </div>
 
-<button id="transferBtn">Chuyển sản phẩm</button>
+
+
+
     <table style="table-layout: auto;" class="table table-striped table-bordered">
         <thead>
             <tr>
@@ -124,24 +136,43 @@ function setModalData(element) {
     document.getElementById('modalStock').value = currentStock;
 }
 $(document).ready(function() {
+    $('#showroomSearch').on('keyup', function() {
+        const searchValue = $(this).val().toLowerCase();
+        $('#suggestions').empty(); // Xóa danh sách gợi ý cũ
+
+        @foreach ($showroomid as $showroom)
+            if ('{{ $showroom->name }}'.toLowerCase().includes(searchValue)) {
+                $('#suggestions').append('<li data-id="{{ $showroom->id }}" class="suggestion-item" style="padding: 5px; cursor: pointer;">{{ $showroom->name }}</li>');
+            }
+        @endforeach
+
+        $('#suggestions').toggle($('#suggestions li').length > 0); // Hiện/ẩn danh sách gợi ý
+    });
+
+    // Xử lý sự kiện khi click vào gợi ý
+    $(document).on('click', '.suggestion-item', function() {
+        const showroomId = $(this).data('id');
+        $('#showroomSearch').val($(this).text()); // Đặt giá trị vào input
+        $('#showroomSearch').data('showroom-id', showroomId); // Lưu ID showroom vào input
+        $('#suggestions').hide(); // Ẩn danh sách gợi ý
+    });
+
     $('#transferBtn').on('click', function() {
-        const showroomId = $('#showroomSelect').val();
+        const showroomId = $('#showroomSearch').data('showroom-id'); // Lấy ID showroom
         const products = [];
 
         $('.product-checkbox:checked').each(function() {
             const productId = $(this).data('id');
-            // Tìm .quantity-input trong cùng hàng <tr>
             const quantity = $(this).closest('tr').find('.quantity-input').val();
 
-            // Thêm thông tin sản phẩm vào mảng
             products.push({
                 id: productId,
-                quantity: quantity, // Thêm current showroom id vào sản phẩm nếu cần
+                quantity: quantity,
             });
         });
 
-        if (products.length === 0 || showroomId === '') {
-            alert('Vui lòng chọn ít nhất một sản phẩm và showroom.');
+        if (products.length === 0 || !showroomId) {
+            toastr.error('Vui lòng chọn ít nhất một sản phẩm và showroom.'); // Thông báo lỗi
             return;
         }
 
@@ -155,15 +186,16 @@ $(document).ready(function() {
                 products: products,
             },
             success: function(response) {
-                alert(response.message);
-                location.reload(); // Tải lại trang sau khi chuyển sản phẩm thành công
+                toastr.success(response.message); // Thông báo thành công
+                location.reload(); // Tải lại trang
             },
             error: function(xhr) {
-                alert(xhr.responseJSON.message || 'Đã xảy ra lỗi, vui lòng thử lại.');
+                toastr.error(xhr.responseJSON.message || 'Đã xảy ra lỗi, vui lòng thử lại.'); // Thông báo lỗi
             }
         });
     });
 });
+
 
 
 
