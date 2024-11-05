@@ -128,9 +128,6 @@
                                     </button>
                                 </form>
                             @else
-                            <div data-bs-toggle="modal" data-bs-target="#addProductModal" data-productid="{{ $item->id }}">
-                            <i class="fa-solid fa-store"></i>
-    </div>
                                 <a href="{{ route('product.edit', $item->id) }}" title="Chỉnh sửa">
                                     <div class="item edit">
                                         <i class="icon-edit-3"></i>
@@ -149,43 +146,6 @@
                         </div>
                     </td>
                 </tr>
-                <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true" data-bs-backdrop="false">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form id="addProductForm" action="{{ route('showroom.addProduct') }}" method="POST">
-                @csrf
-                <input type="hidden" name="product_id" id="product_id" value="">
-
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addProductModalLabel">Thêm Sản Phẩm Vào Showroom</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="showroom_id" class="form-label">Chọn Showroom</label>
-                        <select id="showroom_id" name="showroom_id" class="form-select" style="width: 100%;">
-                            <option value="" disabled selected>Chọn showroom</option>
-                            @foreach ($showrooms as $showroom)
-                                <option value="{{ $showroom->id }}">{{ $showroom->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="stock" class="form-label">Số lượng (Stock)</label>
-                        <input type="number" id="stock" name="stock" class="form-control" min="1" placeholder="Nhập số lượng sản phẩm nhập vào" required>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-        <button type="submit" class="btn btn-primary">Thêm</button>
-      </div>
-            </form>
-        </div>
-    </div>
-</div>
 
             @endforeach
         </tbody>
@@ -205,48 +165,7 @@
 </nav>
 
 <script>
-$(document).ready(function() {
-    // Khởi tạo Select2 cho trường showroom_id
-    $('#showroom_id').select2({
-        placeholder: 'Chọn showroom',
-        allowClear: true,
-        dropdownParent: $('#addProductModalLabel')
-    });
 
-    // Khi modal mở, cập nhật giá trị product_id
-    $('#addProductModal').on('show.bs.modal', function(event) {
-        var button = $(event.relatedTarget);
-        var productId = button.data('productid');
-        $('#product_id').val(productId);
-    });
-
-    // Xử lý khi gửi form
-    $('#addProductForm').on('submit', function(event) {
-        event.preventDefault(); // Ngăn không cho form gửi đi theo cách thông thường
-
-        $.ajax({
-            url: $(this).attr('action'),
-            method: $(this).attr('method'),
-            data: $(this).serialize(),
-            success: function(response) {
-                if (response.success) {
-                    toastr.success(response.message);
-                    $('#addProductModal').modal('hide'); // Đóng modal sau khi thêm thành công
-                } else {
-                    toastr.warning(response.message); // Hiển thị cảnh báo
-                }
-            },
-            error: function(xhr) {
-                toastr.error('Đã có lỗi xảy ra. Vui lòng thử lại!'); // Hiển thị thông báo lỗi
-            }
-        });
-    });
-    // Khi modal đóng, xóa dữ liệu đã nhập
-    $('#addProductModal').on('hidden.bs.modal', function() {
-        $(this).find('input[type="text"], input[type="number"], select').val(''); // Xóa dữ liệu
-        $('#showroom_id').val(null).trigger('change'); // Đặt lại Select2
-    });
-});
 
 
 

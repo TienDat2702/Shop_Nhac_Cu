@@ -6,14 +6,68 @@ use App\Http\Controllers\Controller;
 use App\Models\ShowroomProduct;
 use App\Models\Showroom;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 class ProductShowroomController extends Controller
 {
+    public function transfer(Request $request)
+{
+    // Xác thực dữ liệu đầu vào
+    $validator = Validator::make($request->all(), [
+        'showroom_id' => 'required|exists:showrooms,id', // showroom đích
+        'products' => 'required|array', // mảng sản phẩm
+        'products.*.id' => 'required|exists:products,id', // sản phẩm
+        'products.*.quantity' => 'required|integer|min:1', // số lượng
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json(['message' => $validator->errors()->first()], 422);
+    }
+
+    $showroomId = $request->input('showroom_id'); // showroom đích
+    $currentShowroomId = Showroom::where('publish', 4)->first(); // showroom hiện tại có publish = 4
+    $products = $request->input('products');
+
+    DB::beginTransaction();
+
+    try {
+        foreach ($products as $product) {
+            $productId = $product['id'];
+            $quantity = $product['quantity'];
+
+            // Cập nhật hoặc chèn sản phẩm vào showroom đích
+            ShowroomProduct::updateOrInsert(
+                ['product_id' => $productId, 'showroom_id' => $showroomId],
+                ['stock' => DB::raw("COALESCE(stock, 0) + $quantity")]
+            );
+
+            // Nếu showroom hiện tại không rỗng, giảm số lượng từ showroom hiện tại
+            if ($currentShowroomId) {
+                ShowroomProduct::where('product_id', $productId)
+                    ->where('showroom_id', $currentShowroomId->id) // Lấy ID của showroom
+                    ->decrement('stock', $quantity);
+            }
+        }
+
+        DB::commit();
+        return response()->json(['message' => 'Chuyển sản phẩm thành công!']);
+
+    } catch (\Exception $e) {
+        DB::rollback();
+        return response()->json(['message' => 'Lỗi khi chuyển sản phẩm: ' . $e->getMessage()], 500);
+    }
+}
+
+    
+
+
+
+
 public function getProductsByPublishedShowroom()
 {
     // Tìm showroom có publish là 4
     $showroom = Showroom::where('publish', 4)->first();
-    
+    $showroomid = Showroom::get();
     // Kiểm tra xem showroom có tồn tại không
     if (!$showroom) {
         // Nếu không tìm thấy showroom, trả về thông báo lỗi
@@ -25,7 +79,7 @@ public function getProductsByPublishedShowroom()
         ->where('showroom_id', $showroom->id) // Điều kiện showroom_id
         ->get();
 
-        return view('admin.Kho_Product.index', compact('showroom', 'product'));
+        return view('admin.Kho_Product.index', compact('showroomid','showroom', 'product'));
 }
 
 
@@ -128,50 +182,63 @@ public function getProductsByPublishedShowroom()
 
 
 
-    public function removeProductFromShowroom(Request $request)
-    {
-        // Validate yêu cầu, bao gồm kiểm tra product_id và showroom_id
-        $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'showroom_id' => 'required|exists:showrooms,id',
-        ]);
-    
-        // Tìm bản ghi showroom_product theo showroom_id và product_id
-        $showroomProduct = DB::table('showroom_products')
-            ->where('showroom_id', $request->showroom_id)
-            ->where('product_id', $request->product_id)
-            ->first();
-    
-        // Kiểm tra xem sản phẩm có trong showroom không
-        if ($showroomProduct) {
-            // Tìm showroom có publish = 4
-            $targetShowroom = DB::table('showrooms')->where('publish', 4)->first();
-    
-            // Kiểm tra xem showroom mục tiêu có tồn tại không
-            if ($targetShowroom) {
-                // Cộng stock vào showroom có publish = 4
-                DB::table('showroom_products')
-                    ->updateOrInsert(
-                        ['showroom_id' => $targetShowroom->id, 'product_id' => $request->product_id],
-                        ['stock' => DB::raw('stock + ' . $showroomProduct->stock)]
-                    );
-    
-                // Xóa sản phẩm khỏi showroom hiện tại
-                DB::table('showroom_products')
-                    ->where('showroom_id', $request->showroom_id)
-                    ->where('product_id', $request->product_id)
-                    ->delete();
-    
-                toastr()->success('Sản phẩm đã được chuyển đến showroom có publish là 4 thành công!');
-            } else {
-                toastr()->warning('Không tìm thấy showroom có trạng thái publish là 4.');
-            }
-        } else {
-            toastr()->warning('Sản phẩm không tồn tại trong showroom này.');
-        }
-    
+public function transferProductFromShowroom(Request $request, $showroomId)
+{
+    // Xác thực dữ liệu đầu vào
+    $request->validate([
+        'product_id' => 'required|exists:products,id', // Kiểm tra sản phẩm có tồn tại
+    ]);
+
+    // Tìm showroom hiện tại bằng ID
+    $currentShowroom = Showroom::find($showroomId);
+    if (!$currentShowroom) {
+        toastr()->error('Showroom không tồn tại!');
         return redirect()->back();
     }
+
+    // Tìm showroom có publish = 4
+    $targetShowroom = Showroom::where('publish', 4)->first();
+    if (!$targetShowroom) {
+        toastr()->warning('Không tìm thấy showroom có trạng thái publish là 4.');
+        return redirect()->back();
+    }
+
+    // Lấy ID sản phẩm từ yêu cầu
+    $productId = $request->input('product_id');
+
+    // Tìm sản phẩm trong showroom hiện tại
+    $showroomProduct = DB::table('showroom_products')
+        ->where('showroom_id', $currentShowroom->id)
+        ->where('product_id', $productId)
+        ->first();
+
+    // Kiểm tra xem sản phẩm có trong showroom không
+    if (!$showroomProduct) {
+        toastr()->warning('Sản phẩm không tồn tại trong showroom này.');
+        return redirect()->back();
+    }
+
+    // Cộng stock vào showroom có publish = 4
+    DB::table('showroom_products')->updateOrInsert(
+        [
+            'showroom_id' => $targetShowroom->id,
+            'product_id' => $productId,
+        ],
+        [
+            'stock' => DB::raw('stock + ' . $showroomProduct->stock) // Cộng dồn số lượng hàng tồn
+        ]
+    );
+
+    // Xóa sản phẩm khỏi showroom hiện tại
+    DB::table('showroom_products')
+        ->where('showroom_id', $currentShowroom->id)
+        ->where('product_id', $productId)
+        ->delete();
+
+    toastr()->success('Sản phẩm đã được chuyển sang showroom có publish là 4 thành công!');
+    return redirect()->back();
+}
+
 
 
 

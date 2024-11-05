@@ -1,3 +1,13 @@
+<style>
+    .table-bordered>:not(caption)>*>* {
+    height: 100px;
+    border-width: inherit;
+    line-height: 32px;
+    font-size: 14px;
+    border: 1px solid #e1e1e1;
+    vertical-align: middle;
+}
+</style>
 <div class="wg-table table-all-user">
     <table style="table-layout: auto;" class="table table-striped table-bordered">
         <thead>
@@ -31,18 +41,13 @@
                     {{ $item->phone }}
                 </td>
                 <td class="text-center">
-    <form action="{{ route('showroom.togglePublish', $item->id) }}" method="POST" class="d-inline">
-        @csrf
-        @method('POST')
-        <label class="toggle">
-            <input class="toggleswitch" name="publish" type="checkbox"
-                value="{{ $item->publish }}" data-id="{{ $item->id }}"
-                {{ $item->publish == 2 ? 'checked' : '' }}
-                {{ $config == 'deleted' ? 'disabled' : '' }} 
-                onchange="this.form.submit()"> <!-- Tự động submit form khi checkbox thay đổi -->
-            <span class="roundbutton"></span>
-        </label>
-    </form>
+                        <label class="toggle">
+                            <input id="toggleswitch" class="toggleswitch" name="publish" type="checkbox"
+                                value="{{ $item->publish }}" data-id="{{ $item->id }}" data-model="Showroom"
+                                {{ $item->publish == 2 ? 'checked' : '' }}
+                                {{ $config == 'deleted' ? 'disabled' : '' }}>
+                            <span class="roundbutton"></span>
+                        </label>
 </td>
 <td>
                         <div class="list-icon-function">

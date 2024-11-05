@@ -27,8 +27,8 @@
             <div class="slideshow-text container position-absolute start-50 top-50 translate-middle">
                 <h6 class="text_dash text-uppercase fs-base fw-medium animate animate_fade animate_btt animate_delay-3">
                     Hàng Mới Nhập</h6>
-                <h2 class="h1 fw-normal mb-0 animate animate_fade animate_btt animate_delay-5">Guitar Acoustic</h2>
-                <h2 class="h1 fw-bold animate animate_fade animate_btt animate_delay-5">Sale 11/11</h2>
+                <h2 class="h1 fw-normal mb-0 animate animate_fade animate_btt animate_delay-5">{{$banner->title?? 'Đang Cập Nhật'}}</h2>
+                <h2 class="h1 fw-bold animate animate_fade animate_btt animate_delay-5">{{$banner->strong_title ?? 'Đang Cập Nhật'}}</h2>
                 <a href="#"
                     class="btn-link btn-link_lg default-underline fw-medium animate animate_fade animate_btt animate_delay-7">Shop
                     Now</a>
@@ -43,15 +43,15 @@
                     alt="Woman Fashion 1"
                     class="slideshow-character__img animate animate_fade animate_btt animate_delay-9 w-auto h-auto" />
                 <div class="character_markup">
-                    <p class="text-uppercase font-sofia fw-bold animate animate_fade animate_rtl animate_delay-10">Summer
+                    <p class="text-uppercase font-sofia fw-bold animate animate_fade animate_rtl animate_delay-10">{{$banner2->title ?? 'Đang Cập Nhật'}}
                     </p>
                 </div>
             </div>
             <div class="slideshow-text container position-absolute start-50 top-50 translate-middle">
                 <h6 class="text_dash text-uppercase fs-base fw-medium animate animate_fade animate_btt animate_delay-3">
-                    New Arrivals</h6>
-                <h2 class="h1 fw-normal mb-0 animate animate_fade animate_btt animate_delay-5">Night Spring</h2>
-                <h2 class="h1 fw-bold animate animate_fade animate_btt animate_delay-5">Dresses</h2>
+                    Sản Phẩm Mới</h6>
+                <h2 class="h1 fw-normal mb-0 animate animate_fade animate_btt animate_delay-5">{{$banner2->title ?? 'Đang Cập Nhật'}}</h2>
+                 <h2 class="h1 fw-bold animate animate_fade animate_btt animate_delay-5">{{$banner2->strong_title ?? 'Đang Cập Nhật'}}</h2>
                 <a href="#"
                     class="btn-link btn-link_lg default-underline fw-medium animate animate_fade animate_btt animate_delay-7">Shop
                     Now</a>
@@ -68,9 +68,9 @@
             </div>
             <div class="slideshow-text container position-absolute start-50 top-50 translate-middle">
                 <h6 class="text_dash text-uppercase fs-base fw-medium animate animate_fade animate_btt animate_delay-3">
-                    New Arrivals</h6>
-                <h2 class="h1 fw-normal mb-0 animate animate_fade animate_btt animate_delay-5">Night Spring</h2>
-                <h2 class="h1 fw-bold animate animate_fade animate_btt animate_delay-5">Dresses</h2>
+                    Ưu Đãi Mới</h6>
+                <h2 class="h1 fw-normal mb-0 animate animate_fade animate_btt animate_delay-5">{{$banner3->title ?? 'Đang Cập Nhật'}}</h2>
+                <h2 class="h1 fw-bold animate animate_fade animate_btt animate_delay-5">{{$banner3->strong_title ?? 'Đang Cập Nhật'}}</h2>
                 <a href="#"
                     class="btn-link btn-link_lg default-underline fw-medium animate animate_fade animate_btt animate_delay-7">Shop
                     Now</a>

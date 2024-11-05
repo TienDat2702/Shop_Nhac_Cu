@@ -45,7 +45,9 @@
             let title = (_this.attr('data-text3') || _this.attr('data-text2')) ? "Bạn không thể xóa danh mục" : "Bạn có chắc chắn?";
             
             // Quyết định nội dung thông báo
-            let htmlContent = _this.attr('data-text3')
+            let htmlContent = _this.attr('data-text3') && _this.attr('data-text2')
+                ? '<span style="color: red">' + _this.attr('data-text2') + '</span>' + '<br>'+'<span style="color: red">' + _this.attr('data-text3') + '</span>'
+                : _this.attr('data-text3')
                 ? '<span style="color: red">' + _this.attr('data-text3') + '</span>'
                 : (_this.attr('data-text2')
                     ? '<span style="color: red">' + _this.attr('data-text2') + '</span>'
@@ -83,8 +85,8 @@
         });
     };
 
-    HT.sweetalert3 = () => {
-        $('.btn-delete').on('click', function(e) {
+    HT.sweetalertshowroom = () => {
+        $('.btn-delete-showroom').on('click', function(e) {
             let _this = $(this);
             let publishStatus = _this.attr('data-publish');
             let hasProducts = _this.attr('data-has-products');
@@ -104,7 +106,7 @@
             if (hasProducts === 'true') {
                 Swal.fire({
                     title: "Không thể xóa!",
-                    text: "Showroom này có sản phẩm liên kết. Không thể xóa.",
+                    text: _this.attr('data-text'),
                     icon: "error"
                 });
                 e.preventDefault(); // Ngăn chặn hành vi mặc định
@@ -116,7 +118,7 @@
             let form = $(this).closest('form'); // Lấy form gần nhất với button
             Swal.fire({
                 title: "Bạn có chắc chắn?",
-                html: '<span style="color: red">' + _this.attr('data-text2') + '</span><br>' + _this.attr('data-text'),
+                html: '<span style="color: red">' + _this.attr('data-text2'),
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
@@ -136,6 +138,74 @@
             });
         });
     }
+    HT.sweetalertproduct = () => {
+        $('.btn-delete-product').on('click', function(e) {
+            e.preventDefault(); // Ngăn chặn hành vi mặc định
+            let _this = $(this);
+            let form = _this.closest('form'); // Lấy form gần nhất với button
+    
+            // Hiển thị hộp thoại xác nhận xóa
+            Swal.fire({
+                title: "Bạn có chắc chắn?",
+                html: '<span style="color: red">' + _this.attr('data-text2') + '</span>',
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Có, Xóa nó!",
+                cancelButtonText: "Hủy"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Xóa!",
+                        text: "Dữ liệu của bạn đã được xóa.",
+                        icon: "success"
+                    }).then(() => {
+                        form.submit(); // Gửi form
+                    });
+                }
+            });
+        });
+    }
+    HT.sweetalertbanner = () => {
+        $('.btn-delete-banner').on('click', function(e) {
+            e.preventDefault(); // Ngăn chặn hành vi mặc định
+            let _this = $(this);
+            let form = _this.closest('form'); 
+            let publishStatus = _this.attr('data-publish');// Lấy form gần nhất với button
+            if (publishStatus == 2) {
+                Swal.fire({
+                    title: "Không thể xóa!",
+                    text: "Banner đang sử dụng không được phép xóa.",
+                    icon: "error"
+                });
+                e.preventDefault(); // Ngăn chặn hành vi mặc định
+                return; // Dừng thực hiện tiếp
+            }
+            // Hiển thị hộp thoại xác nhận xóa
+            Swal.fire({
+                title: "Bạn có chắc chắn?",
+                html: '<span style="color: red">' + _this.attr('data-text2') + '</span>',
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Có, Xóa nó!",
+                cancelButtonText: "Hủy"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Xóa!",
+                        text: "Dữ liệu của bạn đã được xóa.",
+                        icon: "success"
+                    }).then(() => {
+                        form.submit(); // Gửi form
+                    });
+                }
+            });
+        });
+    }
+    
 
     HT.setupCkeditor = () => {
         if ($('.ck-editor')) {
@@ -269,7 +339,9 @@
     $(document).ready(function () {
         HT.changeStatus();
         HT.sweetalert2();
-        HT.sweetalert3();
+        HT.sweetalertshowroom();
+        HT.sweetalertproduct();
+        HT.sweetalertbanner();
         HT.setupCkeditor();
         HT.keyUpInput();
         HT.trash();

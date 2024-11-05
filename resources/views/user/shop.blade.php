@@ -141,17 +141,14 @@
                                     <div class="slideshow-text container p-3 p-xl-5">
                                         <h2
                                             class="text-uppercase section-title fw-normal mb-3 animate animate_fade animate_btt animate_delay-2">
-                                            Women's <br /><strong>ACCESSORIES</strong></h2>
-                                        <p class="mb-0 animate animate_fade animate_btt animate_delay-5">Accessories are
-                                            the best way to
-                                            update your look. Add a title edge with new styles and new colors, or go for
-                                            timeless pieces.</h6>
+                                            {{$banner->title?? 'Đang Cập Nhật'}} <br /><strong>{{$banner->strong_title?? 'Đang Cập Nhật'}}</strong></h2>
+                                        <p class="mb-0 animate animate_fade animate_btt animate_delay-5">{{$banner->description ?? 'Đang Cập Nhật'}}</h6>
                                     </div>
                                 </div>
                                 <div class="slide-split_media position-relative">
                                     <div class="slideshow-bg" style="background-color: #f5e6e0;">
-                                        <img loading="lazy" src="https://cdn.zenquiz.net/external/2020/04/10/05/3825ea10-7af0-11ea-bf44-050901070303-compressed.jpg" width="630"
-                                            height="450" alt="Women's accessories"
+                                        <img loading="lazy" src="{{ asset($banner->image ?? 'path/to/default/image.jpg') }}" width="630"
+                                            height="450" alt="Đang Cập Nhật"
                                             class="slideshow-bg__img object-fit-cover" />
                                     </div>
                                 </div>
@@ -165,17 +162,14 @@
                                     <div class="slideshow-text container p-3 p-xl-5">
                                         <h2
                                             class="text-uppercase section-title fw-normal mb-3 animate animate_fade animate_btt animate_delay-2">
-                                            Women's <br /><strong>ACCESSORIES</strong></h2>
-                                        <p class="mb-0 animate animate_fade animate_btt animate_delay-5">Accessories are
-                                            the best way to
-                                            update your look. Add a title edge with new styles and new colors, or go for
-                                            timeless pieces.</h6>
+                                            {{$banner2->title?? 'Đang Cập Nhật'}} <br /><strong>{{$banner2->strong_title?? 'Đang Cập Nhật'}}</strong></h2>
+                                        <p class="mb-0 animate animate_fade animate_btt animate_delay-5">{{$banner2->description	?? 'Đang Cập Nhật'}}</h6>
                                     </div>
                                 </div>
                                 <div class="slide-split_media position-relative">
                                     <div class="slideshow-bg" style="background-color: #f5e6e0;">
-                                        <img loading="lazy" src="http://designercomvn.s3.ap-southeast-1.amazonaws.com/wp-content/uploads/2017/07/26020200/thiet-ke-poster-su-kien-ca-nhac.jpg" width="630"
-                                            height="450" alt="Women's accessories"
+                                        <img loading="lazy" src="{{ asset($banner2->image ?? 'path/to/default/image.jpg') }}" width="630"
+                                            height="450" alt="Đang Cập Nhật"
                                             class="slideshow-bg__img object-fit-cover" />
                                     </div>
                                 </div>
@@ -189,17 +183,14 @@
                                     <div class="slideshow-text container p-3 p-xl-5">
                                         <h2
                                             class="text-uppercase section-title fw-normal mb-3 animate animate_fade animate_btt animate_delay-2">
-                                            Women's <br /><strong>ACCESSORIES</strong></h2>
-                                        <p class="mb-0 animate animate_fade animate_btt animate_delay-5">Accessories are
-                                            the best way to
-                                            update your look. Add a title edge with new styles and new colors, or go for
-                                            timeless pieces.</h6>
+                                            {{$banner3->title?? 'Đang Cập Nhật'}} <br /><strong>{{$banner3->strong_title?? 'Đang Cập Nhật'}}</strong></h2>
+                                        <p class="mb-0 animate animate_fade animate_btt animate_delay-5">{{$banner3->description ?? 'Đang Cập Nhật'}}</h6>
                                     </div>
                                 </div>
                                 <div class="slide-split_media position-relative">
                                     <div class="slideshow-bg" style="background-color: #f5e6e0;">
-                                        <img loading="lazy" src="assets/images/shop/shop_banner3.jpg" width="630"
-                                            height="450" alt="Women's accessories"
+                                        <img loading="lazy" src="{{ asset($banner3->image ?? 'path/to/default/image.jpg') }}" width="630"
+                                            height="450" alt="Đang Cập Nhật"
                                             class="slideshow-bg__img object-fit-cover" />
                                     </div>
                                 </div>
