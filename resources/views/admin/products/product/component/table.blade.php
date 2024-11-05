@@ -99,7 +99,7 @@
                         {{ number_format($item->price_sale, 0, ',', '.') }} VNĐ
                     </td>
                     {{-- <td>
-                        {{ $item->description }}
+                        {{ $item->short_description }}
                     </td> --}}
                     <td class="text-center">
                         <label class="toggle">

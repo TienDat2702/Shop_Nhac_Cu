@@ -61,7 +61,7 @@
                         {{ number_format($item->product->price_sale, 0, ',', '.') }} VNĐ
                     </td>
                     <td>
-                        {{ $item->product->description }}
+                        {{ $item->product->short_description }}
                     </td>
                     <td class="text-center">
                         {{$item->stock}}
