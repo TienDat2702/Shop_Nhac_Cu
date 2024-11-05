@@ -33,7 +33,7 @@
                         </ul>
                     </li>
                     <li class="navigation__item">
-                        <a href="{{ route('post.category', 'tu-van') }}" class="navigation__link">Tin tức</a>
+                        <a href="{{ route('post.category', $categorie_parent_post->first()->slug) }}" class="navigation__link">Tin tức</a>
                         <ul class="sub_menu">
                             <div class="menu_col1">
                                 @foreach ($categorie_parent_post as $parent)
