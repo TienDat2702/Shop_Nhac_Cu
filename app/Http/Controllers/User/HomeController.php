@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
     public function index(){
-        $brands = Brand::all();
+        $brands = Brand::where('publish', 2)->get();
         $banner = Banner::where('order', 1)->where('position', 1)->where('publish', 2)->first();
         $banner2 = Banner::where('order', 2)->where('position', 1)->where('publish', 2)->first();
         $banner3 = Banner::where('order', 3)->where('position', 1)->where('publish', 2)->first();
