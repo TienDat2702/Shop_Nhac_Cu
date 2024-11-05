@@ -7,6 +7,7 @@ use App\Models\Brand;
 use App\Models\Banner;
 use App\Models\Product;
 use App\Models\ProductCategory;
+use App\Models\Showroom;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -20,5 +21,12 @@ class HomeController extends Controller
         $product_price = Product::orderBy('price_sale', 'asc')->take(8)->get();
         $products = Product::GetProductPublish()->orderBy('updated_at', 'desc')->paginate(8);
         return view('user.index', compact('brands', 'product_views', 'product_price', 'products', 'banner', 'banner2', 'banner3'));
+    }
+    public function about(){
+        $showrooms = Showroom::all();
+        return view('user.about',compact('showrooms'));
+    }
+    public function contact(){
+        return view('user.contact');
     }
 }

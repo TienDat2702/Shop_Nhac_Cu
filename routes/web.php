@@ -41,6 +41,7 @@ Route::prefix('checkout')->group(function () {
     Route::get('vnpay-return', [CheckoutController::class, 'vnpay_return'])->name('vnpay.return');
     Route::get('/completed', [CheckoutController::class, 'order_completed'])->name('checkout.completed');
     Route::get('/verify/{token}', [CheckoutController::class, 'verify'])->name('checkout.verify');
+
 });
 // user;
 Route::get('/login', [CustomerController::class, 'login'])->name('customer.login');
@@ -52,6 +53,9 @@ Route::get('/orders/history', [CustomerController::class, 'customerOrderHistory'
 Route::post('/orders/cancel', [CustomerController::class, 'customerOrderCancel'])->name('customer.orders.cancel');
 Route::get('/orders/{id}', [CustomerController::class, 'customerOrderDetail'])->name('customer.orders.detail');
  
+Route::get('/about',[HomeController::class,'about'])->name('about');
+Route::get('/contact',[HomeController::class,'contact'])->name('contact');
+
 Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
 Route::prefix('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
