@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Banner;
+use App\Models\Post;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use Illuminate\Http\Request;
@@ -19,6 +20,18 @@ class HomeController extends Controller
         $product_views = Product::GetProductPublish()->orderBy('view', 'desc')->take(2)->get();
         $product_price = Product::GetProductPublish()->orderBy('price_sale', 'asc')->take(8)->get();
         $products = Product::GetProductPublish()->orderBy('updated_at', 'desc')->paginate(8);
-        return view('user.index', compact('brands', 'product_views', 'product_price', 'products', 'banner', 'banner2', 'banner3'));
+
+        $posts = Post::GetPostPublish()->limit(4)->get();
+
+        return view('user.index', compact(
+            'brands', 
+            'product_views', 
+            'product_price', 
+            'products', 
+            'banner', 
+            'banner2', 
+            'banner3',
+            'posts'
+        ));
     }
 }

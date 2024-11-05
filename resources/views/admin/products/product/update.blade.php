@@ -115,6 +115,13 @@
                                             @if ($val->id == old('category_id', $product->category_id)) selected
                                             @endif
                                             value="{{ $val->id }}">
+                                            @php
+                                            $str = '';
+                                            for ($i=0; $i < $val->level ; $i++) {
+                                                echo $str;
+                                                $str .= '-- ';    
+                                            }
+                                            @endphp
                                                 {{ $val->name }}
                                             </option>
                                         @endforeach

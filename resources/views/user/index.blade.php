@@ -358,12 +358,19 @@
             </div>
           </div>
           @endforeach
+          
         </div><!-- /.row -->
-
+        
         {{-- <div class="text-center mt-2">
           <a class="btn-link btn-link_lg default-underline text-uppercase fw-medium" href="#">Load More</a>
         </div> --}}
       </section>
+      
+      {{-- Tin tức và sự kiên --}}
+
+      @include('user.partials.post_index')
+
+      {{-- end Tin tức và sự kiên --}}
     </div>
 
     <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>

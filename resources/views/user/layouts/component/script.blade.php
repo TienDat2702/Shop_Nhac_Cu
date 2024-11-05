@@ -4,6 +4,7 @@
 <script src="{{ asset('assets/js/plugins/swiper.min.js') }}"></script>
 <script src="{{ asset('assets/js/plugins/countdown.js') }}"></script>
 <script src="{{ asset('assets/js/theme.js') }}"></script>
+<script src="{{ asset('js/custom.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.3/dist/sweetalert2.all.min.js"></script>
 <script src="{{ asset('librarys/library.js') }}"></script>
 <script src="{{ asset('librarys/cart.js') }}"></script>

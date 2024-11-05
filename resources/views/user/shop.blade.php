@@ -29,16 +29,72 @@
                         <div id="accordion-filter-1" class="accordion-collapse collapse show border-0"
                             aria-labelledby="accordion-heading-1" data-bs-parent="#categories-list">
                             <div class="accordion-body px-0 pb-0 pt-3">
-                                <ul class="list list-inline mb-0">
-                                    @foreach ($allCategories as $category)
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input chk-filter chk-category"
-                                                value="{{ $category->id }}" id="category-{{ $category->id }}">
-                                            <label class="form-check-label"
-                                                for="category-{{ $category->id }}">{{ $category->name }}</label>
-                                        </div>
+                                {{-- <ul class="category-list">
+                                    @foreach($productCategories as $category)
+                                        <li style="list-style: none; padding-left: {{ 10 * ($category->level - 1) }}px;" class="{{ $category->parent_id == 0 ? 'parent-menu' : 'sub-menu' }}">
+                                            {{ $category->name }}
+                                        </li>
                                     @endforeach
-                                </ul>
+                                </ul> --}}
+                                @php
+                                function renderCategories($categories, $parentId = 0, $level = 1) {
+                                    $hasChild = false;
+
+                                    foreach ($categories as $category) {
+                                        if ($category->parent_id == $parentId) {
+                                            if (!$hasChild) {
+                                                $hasChild = true;
+                                                // Tạo tên class dựa trên cấp độ
+                                                $className = 'subcategory-list-parent' . ($level > 1 ? '-' . ($level - 1) : '');
+                                                echo '<ul class="' . $className . '" style="padding-left: ' . (10 * ($level - 1)) . 'px;">';
+                                            }
+
+                                            echo '<li class="menu-item' . ($parentId == 0 ? ' parent-menu' : ' sub-menu') . '">';
+                                                echo '<a href="' . route('shop.category', $category->slug) . '">';
+                                            echo $category->name;
+
+                                            // Gọi đệ quy để hiển thị danh mục con của danh mục hiện tại
+                                            renderCategories($categories, $category->id, $level + 1);
+                                            
+                                            echo '</a>';
+                                            echo '</li>';
+                                        }
+                                    }
+
+                                    if ($hasChild) echo '</ul>';
+                                }
+                                @endphp
+
+                                <ul class="category-list">
+                                    @php
+                                        renderCategories($productCategories);
+                                    @endphp
+                                </ul>   
+                                
+                                
+                                {{-- <ul class="list list-inline mb-0">
+                                    @foreach ($productCategories as $category)
+                                        <li class="menu-item">
+                                            <a href="{{ route('shop.category',$category->slug) }}">{{ $category->name }}</a>
+                                            
+                                            @if ($category->children && $category->children->count() > 0)
+                                                <ul class="submenu">
+                                                    @foreach ($category->children as $childCategory)
+                                                        <li>
+                                                            <a href="{{ route('shop.category' , $childCategory->slug) }}">{{ $childCategory->name }}</a>
+                                                        </li>
+                                                        <ul class="submenu">
+                                                            <li>
+
+                                                            </li>
+                                                        </ul>
+                                                    @endforeach
+                                                </ul>
+                                            @endif
+                                        </li>
+                                    @endforeach
+                                </ul> --}}
+                                <!-- user/shop.blade.php -->
                             </div>
                         </div>
                     </div>
@@ -65,7 +121,7 @@
                             aria-labelledby="accordion-heading-brand" data-bs-parent="#brand-filters">
                             <div class="search-field multi-select accordion-body px-0 pb-0">
                                 <ul class="list list-inline mb-0 brand-list">
-                                    @foreach ($allBrands as $brand)
+                                    @foreach ($brands as $brand)
                                         <div class="form-check">
                                             <input type="checkbox" class="form-check-input chk-filter chk-brand"
                                                 value="{{ $brand->id }}" id="brand-{{ $brand->id }}">
@@ -96,28 +152,28 @@
                                 </svg>
                             </button>
                         </h5>
-                        <div class="filter-section">
-                          <h5>Price Range</h5>
-                          <div id="accordion-filter-price" class="accordion-collapse collapse show border-0"
-                              aria-labelledby="accordion-heading-price" data-bs-parent="#price-filters">
-                              <input class="price-range-slider" type="text" name="price_range" value=""
-                                  data-slider-min="10000" data-slider-max="15000000" data-slider-step="1000"
-                                  data-slider-value="[250000,4500000]" data-currency="₫" />
-                              <div class="price-range__info d-flex align-items-center mt-2">
-                                  <div class="me-auto">
-                                      <span class="text-secondary">Min Price: </span>
-                                      <span class="price-range__min">₫250,000</span>
-                                  </div>
-                                  <div>
-                                      <span class="text-secondary">Max Price: </span>
-                                      <span class="price-range__max">₫4,500,000</span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                      
+                        {{-- <div class="filter-section">
+                            <div id="accordion-filter-price" class="accordion-collapse collapse show border-0"
+                                aria-labelledby="accordion-heading-price" data-bs-parent="#price-filters">
+                                <input class="price-range-slider" type="text" name="price_range" value=""
+                                    data-slider-min="{{ $minPriceFromDb }}" data-slider-max="{{ $maxPriceFromDb }}"
+                                    data-slider-step="1000"
+                                    data-slider-value="[{{ $minPriceFromDb }},{{ $maxPriceFromDb }}]" data-currency="₫" />
+                                <div class="price-range__info d-flex align-items-center mt-2">
+                                    <div class="me-auto">
+                                        <span class="text-secondary">Min Price: </span>
+                                        <span class="price-range__min">₫250,000</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-secondary">Max Price: </span>
+                                        <span class="price-range__max">₫4,500,000</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> --}}
                     </div>
                 </div>
+
             </div>
 
             <div class="shop-list flex-grow-1">
@@ -183,6 +239,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="swiper-slide">
                             <div class="slide-split h-100 d-block d-md-flex overflow-hidden">
                                 <div class="slide-split_text position-relative d-flex align-items-center"
@@ -271,28 +328,12 @@
                                 <div class="pc__img-wrapper">
                                     <div class="swiper-container background-img js-swiper-slider"
                                         data-settings='{"resizeObserver": true}'>
-                                        <div class="swiper-wrapper">
-                                            <div class="swiper-slide">
-                                                <a href="details.html"><img loading="lazy"
-                                                        src="assets/images/products/product_1.jpg" width="330"
-                                                        height="400" alt="Cropped Faux leather Jacket"
-                                                        class="pc__img"></a>
-                                            </div>
-                                            <div class="swiper-slide">
-                                                <a href="details.html"><img loading="lazy"
-                                                        src="assets/images/products/product_1-1.jpg" width="330"
-                                                        height="400" alt="Cropped Faux leather Jacket"
-                                                        class="pc__img"></a>
-                                            </div>
+                                        <div class="">
+                                            <a href="details.html"><img loading="lazy"
+                                                    src="{{ asset('uploads/products/product/' . $product->image) }}"
+                                                    width="330" height="400" alt="Cropped Faux leather Jacket"
+                                                    class="pc__img"></a>
                                         </div>
-                                        <span class="pc__img-prev"><svg width="7" height="11" viewBox="0 0 7 11"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_prev_sm" />
-                                            </svg></span>
-                                        <span class="pc__img-next"><svg width="7" height="11" viewBox="0 0 7 11"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_next_sm" />
-                                            </svg></span>
                                     </div>
                                     <button
                                         class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside"
@@ -347,10 +388,8 @@
                         </div>
                     @endforeach
                 </div>
-
-                <div class="divider"></div>
                 <div class="flex items-center justify-between flex-wrap gap-10 wgp-pagination">
-                    {{ $products->withQueryString()->links('pagination::bootstrap-5') }}
+                    {{ $products->appends(request()->all())->links('pagination::bootstrap-5') }}
                 </div>
             </div>
         </section>

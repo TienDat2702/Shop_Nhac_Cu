@@ -80,14 +80,18 @@
                             </div>
                         </a>
                         <form class="form-delete" action="{{ route('showroom.destroy', $item->id) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-delete item text-danger delete" title="Xóa"
-                                data-text="Bạn có thể khôi phục dữ liệu lại sau khi xóa."
-                                data-text2="{{ ($item->parent_id == 0) ? 'Bạn có thể xóa tất cả danh mục liên quan đến danh mục hiện tại!' : '' }}">
-                                <i class="icon-trash-2"></i>
-                            </button>
-                        </form>
+    @csrf
+    @method('DELETE')
+    <button type="submit" class="btn btn-delete item text-danger delete" title="Xóa"
+        data-text="Bạn có thể khôi phục dữ liệu lại sau khi xóa."
+        data-text2="Bạn có thể xóa tất cả danh mục liên quan đến danh mục hiện tại!"
+        data-has-products="{{ $item->products()->count() > 0 ? 'true' : 'false' }}"
+        data-publish="{{ $item->publish }}">
+        <i class="icon-trash-2"></i>
+    </button>
+</form>
+
+
                         @endif
                     </div>
                 </td>
@@ -113,6 +117,12 @@
         {{ $dsshowroom->appends(request()->all())->links() }} <!-- Thêm links phân trang -->
     </ul>
 </nav>
+<form class="form-transfer-all" action="{{ route('showroom.transferAll', $item->id) }}" method="POST">
+    @csrf
+    <button type="submit" class="btn btn-transfer-all text-success" title="Chuyển tất cả sản phẩm">
+        Chuyển tất cả sản phẩm
+    </button>
+</form>
 
 
 </div>

@@ -129,7 +129,7 @@
                                                         <select class="input-filter" name="coupon_code" id="coupon_code"
                                                             data-url="{{ route('cart.discount') }}">
                                                             <option value="">Mã giảm giá</option>
-                                                            @foreach ($validDiscounts  as $key => $val)
+                                                            @foreach ($validDiscounts['validDiscounts']  as $key => $val)
                                                                 <option value="{{ $val->id }}"
                                                                     {{ $coupon_code == $val->id ? 'selected' : '' }}>
                                                                     {{ $val->code }}

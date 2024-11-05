@@ -33,6 +33,9 @@ class Brand extends Model
     public function scopeGetBrandAll($query){
         return $query->orderBy('id', 'DESC');
     }
+    public function scopeGetBrandPublish($query){
+        return $query->where('publish',2)->orderBy('id', 'DESC');
+    }
     
     public function scopeGenerateUniqueSlug($query, $str)
     {

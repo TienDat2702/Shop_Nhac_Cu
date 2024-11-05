@@ -7,9 +7,12 @@ use App\Models\Customer;
 use App\Models\Discount;
 use App\Models\LoyaltyLevel;
 use App\Models\Product;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+
+use function Symfony\Component\Clock\now;
 
 class CartController extends Controller
 {
@@ -52,7 +55,10 @@ class CartController extends Controller
 
     public function loyatal_level($total){
         $customer = Auth::guard('customer')->user();
-        $loyaltyAmount = $customer->loyaltyLevel->discount_rate * $total;
+        $loyaltyAmount = 0;
+        if ($customer) {
+            $loyaltyAmount = $customer->loyaltyLevel->discount_rate * $total;
+        }
         return $loyaltyAmount; //tính tiền giảm giá thành viên
         
     }
@@ -76,16 +82,20 @@ class CartController extends Controller
             $total = $this->calculateTotal($carts, $products);
             
             //tính tiền giảm giá thành viên
-            $loyaltyAmount = $customer->loyaltyLevel->discount_rate * $total;
-
-            $validDiscounts = [];
-            foreach ($discounts as $discount) {
-                if ($total >= $discount->minimum_total_value && $discount->use_count < $discount->use_limit) {
-                    $validDiscounts[] = $discount;
-                }
+            $loyaltyAmount = 0;
+            if ($customer) {
+                $loyaltyAmount = $customer->loyaltyLevel->discount_rate * $total;
             }
 
+            // $validDiscounts = [];
+            // foreach ($discounts as $discount) {
+            //     if ($total >= $discount->minimum_total_value && $discount->use_count < $discount->use_limit && Carbon::now()->isBefore($discount->end_date)) {
+            //         $validDiscounts[] = $discount;
+            //     }
+            // }
+            $validDiscounts = $this->ValidDiscounts($total);
             $discountAmount = $this->applyDiscount($total);
+            // dd($validDiscounts);    
             return view('user.cart', compact('products', 'total', 'discountAmount', 'discounts', 'validDiscounts', 'loyaltyAmount'));
         // } catch (\Exception $e) {
         //     Log::error($e->getMessage());
@@ -177,7 +187,6 @@ class CartController extends Controller
             $validDiscounts = $this->ValidDiscounts($total);
             // giảm giá thành viên
             $loyaltyAmount = $this->loyatal_level($total);
-            
             return response()->json([
                 'success' => 'Cập nhật số lượng thành công',
                 'subtotal' => number_format($total, 0, '.', ','),

@@ -133,12 +133,11 @@ video {
   outline: 0;
   font: inherit;
   vertical-align: baseline;
-  font-family: inherit;
+  /* font-family: inherit; */
   font-size: 100%;
   font-style: inherit;
   font-weight: inherit;
 }
-
 article,
 aside,
 details,
@@ -236,7 +235,7 @@ button,
 input,
 select,
 textarea {
-  font-family: "Inter", sans-serif;
+  /* font-family: "Inter", sans-serif; */
   font-weight: 400;
   color: var(--Body-Text);
   -webkit-font-smoothing: antialiased;
@@ -254,7 +253,7 @@ img {
 }
 
 p {
-  font-family: "Inter", sans-serif;
+  /* font-family: "Inter", sans-serif; */
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
@@ -571,7 +570,7 @@ h3, .h3,
 h4, .h4,
 h5, .h5,
 h6, .h6 {
-  font-family: "Inter", sans-serif;
+  /* font-family: "Inter", sans-serif; */
   color: var(--Heading);
   margin: 0;
   font-weight: 700;
@@ -2822,7 +2821,7 @@ a:hover, a:focus {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font-family: "Inter", sans-serif;
+  /* font-family: "Inter", sans-serif; */
   font-size: 14px;
   font-weight: 700;
   line-height: 20px;
@@ -3027,7 +3026,7 @@ form input[type=color] {
   width: 100%;
   padding: 14px 22px;
   font-size: 14px;
-  font-family: "Inter", sans-serif;
+  /* font-family: "Inter", sans-serif; */
   font-weight: 400;
   line-height: 20px;
   background-color: transparent;
@@ -3053,7 +3052,7 @@ form input[type=search]::placeholder,
 form input[type=tel]::placeholder,
 form input[type=color]::placeholder {
   font-size: 14px;
-  font-family: "Inter", sans-serif;
+  /* font-family: "Inter", sans-serif; */
   font-weight: 400;
   line-height: 20px;
   color: var(--Text-Holder);
@@ -3064,7 +3063,7 @@ form input[type=reset],
 form input[type=submit] {
   padding: 14px 22px;
   font-size: 14px;
-  font-family: "Inter", sans-serif;
+  /* font-family: "Inter", sans-serif; */
   font-weight: 400;
   line-height: 20px;
   background-color: transparent;
@@ -3146,7 +3145,7 @@ select {
   box-shadow: none;
   width: 100%;
   padding: 14px 22px;
-  font-family: "Inter", sans-serif;
+  /* font-family: "Inter", sans-serif; */
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
@@ -3163,7 +3162,7 @@ select {
   -ms-appearance: none;
 }
 select option {
-  font-family: "Inter", sans-serif;
+  /* font-family: "Inter", sans-serif; */
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
