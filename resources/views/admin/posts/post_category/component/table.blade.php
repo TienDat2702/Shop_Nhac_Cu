@@ -18,7 +18,7 @@
             </tr>
         </thead>
         <tbody>
-                @foreach ($categories as $index => $item)
+                @foreach ($postCategories as $index => $item)
                     <tr>
                         <td class="text-center">{{ $categories->currentPage() * $categories->perPage() - $categories->perPage() + $index + 1 }}
                         </td>
@@ -29,13 +29,13 @@
                         </td>
                         <td>
                             <div class="name">
-                                {{-- @php
+                                @php
                                     $str = '';
                                     for($i = 0 ; $i < $item->level ; $i++){
-                                    echo $str;
-                                    $str .= '-- ';    
-                                }
-                                @endphp --}}
+                                        echo $str;
+                                        $str .= '-- ';    
+                                    }
+                                @endphp
                                 <a href="#" class="body-title-2">{{ $item->name }}</a>
                             </div>
                         </td>
@@ -82,11 +82,13 @@
                                     <form class="form-delete" action="{{ route('postCategory.destroy', $item->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-delete item text-danger delete" title="Xóa"
-                                        data-text="Bạn có thể khôi phục dữ liệu lại sau khi xóa."
-                                        data-text2="{{ ($item->parent_id == 0) ? 'Bạn Có thể xóa tất cả danh mục liên quan đế danh mục hiện tại!' : '' }}">
-                                            <i class="icon-trash-2"></i>
-                                        </button>
+                                        <button type="submit" class="btn btn-delete item text-danger delete"
+                                        title="Xóa" 
+                                        data-text="Bạn có thể khôi phục dữ liệu lại sau khi xóa."   
+                                        data-text2="{{ $item->parent_id == 0 ? 'Không thể xóa danh mục vì có danh mục liên quan!' : '' }}"
+                                        data-text3="{{ $item->posts()->count() > 0 ? 'Không thể xóa danh mục vì nó có ' . $item->posts()->count() . ' bài viết liên quan!' : '' }}">
+                                        <i class="icon-trash-2"></i>
+                                    </button>
                                     </form>
                                 @endif
                                 

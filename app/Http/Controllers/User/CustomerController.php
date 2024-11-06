@@ -86,10 +86,10 @@ class CustomerController extends Controller
         return redirect()->route('customer.login');
     }
 
-    public function profile()
-    {
-        $user = Auth::guard('customer')->user();
-        return view('user.account-detail', compact('user'));
+    public function profile(){
+        $customer = Auth::guard('customer')->user(); // Lấy thông tin người dùng hiện tại
+        $loyalty = $customer->loyaltyLevel;
+        return view('user.profile', compact('customer', 'loyalty'));
     }
 
     public function check_profile(UpdateProfileRequest $request)

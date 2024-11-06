@@ -10,45 +10,15 @@
               <div class="swiper-container">
                 <div class="swiper-wrapper">
                   <div class="swiper-slide product-single__image-item">
-                    <img loading="lazy" class="h-auto" src="{{ asset('assets/images/products') }}/product_0.jpg" width="674"
+                    <img loading="lazy" class="h-auto" src="{{ asset('uploads/products/product/'.$product->image) }}" width="674"
                       height="674" alt="" />
-                    <a data-fancybox="gallery" href="../images/products/product_0.html" data-bs-toggle="tooltip"
-                      data-bs-placement="left" title="Zoom">
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <use href="#icon_zoom" />
-                      </svg>
-                    </a>
                   </div>
+                  @foreach ($product->thumbnails as $item)
                   <div class="swiper-slide product-single__image-item">
-                    <img loading="lazy" class="h-auto" src="{{ asset('assets/images/products') }}/product_0-1.jpg" width="674"
+                    <img loading="lazy" class="h-auto" src="{{ $item->path }}" width="674"
                       height="674" alt="" />
-                    <a data-fancybox="gallery" href="../images/products/product_0-1.html" data-bs-toggle="tooltip"
-                      data-bs-placement="left" title="Zoom">
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <use href="#icon_zoom" />
-                      </svg>
-                    </a>
                   </div>
-                  <div class="swiper-slide product-single__image-item">
-                    <img loading="lazy" class="h-auto" src="{{ asset('assets/images/products') }}/product_0-2.jpg" width="674"
-                      height="674" alt="" />
-                    <a data-fancybox="gallery" href="../images/products/product_0-2.html" data-bs-toggle="tooltip"
-                      data-bs-placement="left" title="Zoom">
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <use href="#icon_zoom" />
-                      </svg>
-                    </a>
-                  </div>
-                  <div class="swiper-slide product-single__image-item">
-                    <img loading="lazy" class="h-auto" src="{{ asset('assets/images/products') }}/product_0-3.jpg" width="674"
-                      height="674" alt="" />
-                    <a data-fancybox="gallery" href="../images/products/product_0-3.html" data-bs-toggle="tooltip"
-                      data-bs-placement="left" title="Zoom">
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <use href="#icon_zoom" />
-                      </svg>
-                    </a>
-                  </div>
+                  @endforeach
                 </div>
                 <div class="swiper-button-prev"><svg width="7" height="11" viewBox="0 0 7 11"
                     xmlns="http://www.w3.org/2000/svg">
@@ -64,13 +34,11 @@
               <div class="swiper-container">
                 <div class="swiper-wrapper">
                   <div class="swiper-slide product-single__image-item"><img loading="lazy" class="h-auto"
-                      src="{{ asset('assets/images/products') }}/product_0.jpg" width="104" height="104" alt="" /></div>
-                  <div class="swiper-slide product-single__image-item"><img loading="lazy" class="h-auto"
-                      src="{{ asset('assets/images/products') }}/product_0-1.jpg" width="104" height="104" alt="" /></div>
-                  <div class="swiper-slide product-single__image-item"><img loading="lazy" class="h-auto"
-                      src="{{ asset('assets/images/products') }}/product_0-2.jpg" width="104" height="104" alt="" /></div>
-                  <div class="swiper-slide product-single__image-item"><img loading="lazy" class="h-auto"
-                      src="{{ asset('assets/images/products') }}/product_0-3.jpg" width="104" height="104" alt="" /></div>
+                    src="{{ asset('uploads/products/product/'.$product->image) }}" width="104" height="104" alt="" /></div>
+                  @foreach ($product->thumbnails as $item)
+                    <div class="swiper-slide product-single__image-item"><img loading="lazy" class="h-auto"
+                      src="{{  $item->path }}" width="104" height="104" alt="" /></div>
+                  @endforeach
                 </div>
               </div>
             </div>
@@ -83,18 +51,6 @@
               <span class="breadcrumb-separator menu-link fw-medium ps-1 pe-1">/</span>
               <a href="#" class="menu-link menu-link_us-s text-uppercase fw-medium">The Shop</a>
             </div><!-- /.breadcrumb -->
-
-            {{-- <div
-              class="product-single__prev-next d-flex align-items-center justify-content-between justify-content-md-end flex-grow-1">
-              <a href="#" class="text-uppercase fw-medium"><svg width="10" height="10" viewBox="0 0 25 25"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <use href="#icon_prev_md" />
-                </svg><span class="menu-link menu-link_us-s">Prev</span></a>
-              <a href="#" class="text-uppercase fw-medium"><span class="menu-link menu-link_us-s">Next</span><svg
-                  width="10" height="10" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
-                  <use href="#icon_next_md" />
-                </svg></a>
-            </div><!-- /.shop-acs --> --}}
           </div>
           <h1 class="product-single__name">{{ $product->name }}</h1>
           <div class="product-single__rating">
@@ -121,7 +77,7 @@
             <span class="current-price">{{ number_format($product->price) }} VNĐ</span>
           </div>
           <div class="product-single__short-desc">
-            {{-- <p>{{ $product->description }}</p> --}}
+            <p>{{ $product->short_description }}</p>
           </div>
             <div class="product-single__addtocart">
               {{-- quantity --}}
@@ -170,17 +126,18 @@
             <script src="js/share.html" defer="defer"></script>
           </div>
           <div class="product-single__meta-info">
-            <div class="meta-item">
-              <label>SKU:</label>
-              <span>N/A</span>
-            </div>
+            
             <div class="meta-item">
               <label>Danh mục</label>
-              <span>{{ $product->productCategory ? $product->productCategory->image : '' }}</span>
+              <span>{{ $product->productCategory ? $product->productCategory->name : '' }}</span>
             </div>
             <div class="meta-item">
               <label>Thương hiệu:</label>
               <span>{{ $brand ? $brand->name : '' }}</span>
+            </div>
+            <div class="meta-item">
+              <label>Mô tả ngắn:</label>
+              <span>{{ $product->short_description }}</span>
             </div>
           </div>
         </div>
@@ -199,7 +156,7 @@
         <div class="tab-content">
           <div class="tab-pane fade show active" id="tab-description" role="tabpanel"
             aria-labelledby="tab-description-tab">
-            <div class="product-single__description">
+            <div class="product-single__description" style="font-size: 16px;">
               {!! $product->description !!}
             </div>
           </div>
@@ -375,9 +332,10 @@
             <div class="swiper-slide product-card">
               <div class="pc__img-wrapper">
                 <a href="{{ route('product.detail', $product->slug) }}">
-                  <img loading="lazy" src="{{ asset('assets/images/products') }}/product_3.jpg" width="330" height="400"
+                  <img loading="lazy" src="{{ asset('uploads/products/product/'.$product->image) }}" width="330" height="400"
                     alt="{{ $product->name }}" class="pc__img">
-                  <img loading="lazy" src="{{ asset('assets/images/products') }}/product_3-1.jpg" width="330" height="400"
+                  <img loading="lazy" src="{{ asset('uploads/products/product/'.$product->image) }}" width="330" height="400"
+
                     alt="{{ $product->name }}" class="pc__img pc__img-second">
                 </a>
                   <input type="hidden" name="product_id" value="{{ $product->id }}">

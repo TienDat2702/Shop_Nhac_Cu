@@ -11,7 +11,7 @@ use App\Models\PostCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 
-class PostCategoryController extends Controller
+class AdminPostCategoryController extends Controller
 {
 
     protected $uploadImageService;

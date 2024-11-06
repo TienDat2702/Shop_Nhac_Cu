@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use App\Services\UploadImageService;
 use App\Services\LibraryService;
 
-class PostController extends Controller
+class AdminPostController extends Controller
 {
     protected $uploadImageService;
     protected $libraryService; 

@@ -1,4 +1,14 @@
 
+<style>
+    .table-bordered>:not(caption)>*>* {
+    height: 100px;
+    border-width: inherit;
+    line-height: 32px;
+    font-size: 14px;
+    border: 1px solid #e1e1e1;
+    vertical-align: middle;
+}
+</style>
 <div class="wg-table table-all-user">
     @php
     $showrooms = ($config == 'index') ? $dsshowroom : $getDeleted;
@@ -38,18 +48,14 @@
                     {{ $item->phone }}
                 </td>
                 <td class="text-center">
-                    <form action="{{ route('showroom.togglePublish', $item->id) }}" method="POST" class="d-inline">
-                        @csrf
-                        @method('POST')
                         <label class="toggle">
-                            <input class="toggleswitch" name="publish" type="checkbox" value="{{ $item->publish }}"
-                                data-id="{{ $item->id }}" {{ $item->publish == 2 ? 'checked' : '' }}
-                            {{ $config == 'deleted' ? 'disabled' : '' }}
-                            onchange="this.form.submit()"> <!-- Tự động submit form khi checkbox thay đổi -->
+                            <input id="toggleswitch" class="toggleswitch" name="publish" type="checkbox"
+                                value="{{ $item->publish }}" data-id="{{ $item->id }}" data-model="Showroom"
+                                {{ $item->publish == 2 ? 'checked' : '' }}
+                                {{ $config == 'deleted' ? 'disabled' : '' }}>
                             <span class="roundbutton"></span>
                         </label>
-                    </form>
-                </td>
+                    </td>
                 <td>
                     <div class="list-icon-function">
                         @if ($config == 'deleted')
@@ -82,9 +88,9 @@
                         <form class="form-delete" action="{{ route('showroom.destroy', $item->id) }}" method="POST">
     @csrf
     @method('DELETE')
-    <button type="submit" class="btn btn-delete item text-danger delete" title="Xóa"
-        data-text="Bạn có thể khôi phục dữ liệu lại sau khi xóa."
-        data-text2="Bạn có thể xóa tất cả danh mục liên quan đến danh mục hiện tại!"
+    <button type="submit" class="btn btn-delete-showroom item text-danger delete" title="Xóa"
+        data-text="Showroom Hiện Còn {{$item->products()->count()}} sản phẩm cần chuyển đến kho để xóa."
+        data-text2="Tiếp tục xóa bạn có thể khôi phục trong thùng rác"
         data-has-products="{{ $item->products()->count() > 0 ? 'true' : 'false' }}"
         data-publish="{{ $item->publish }}">
         <i class="icon-trash-2"></i>
@@ -117,12 +123,6 @@
         {{ $dsshowroom->appends(request()->all())->links() }} <!-- Thêm links phân trang -->
     </ul>
 </nav>
-<form class="form-transfer-all" action="{{ route('showroom.transferAll', $item->id) }}" method="POST">
-    @csrf
-    <button type="submit" class="btn btn-transfer-all text-success" title="Chuyển tất cả sản phẩm">
-        Chuyển tất cả sản phẩm
-    </button>
-</form>
 
 
 </div>

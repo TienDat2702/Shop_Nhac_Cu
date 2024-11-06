@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
             BrandSeeder::class,
             ProductCategorySeeder::class,
             ProductSeeder::class,
+            ProductThumbnailSeeder::class,
             ShowroomSeeder::class,
             LoyaltyLevelSeeder::class,
             CustomerSeeder::class,
