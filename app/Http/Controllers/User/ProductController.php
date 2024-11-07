@@ -53,14 +53,12 @@ class ProductController extends Controller
     // }
 
     public function index(){
-        $banner = Banner::where('order', 1)->where('position', 2)->where('publish', 2)->first();
-        $banner2 = Banner::where('order', 2)->where('position', 2)->where('publish', 2)->first();
-        $banner3 = Banner::where('order', 3)->where('position', 2)->where('publish', 2)->first();
+        $banners = Banner::where('position', 2 'public', 4)->get();
 
         $products = Product::GetProductPublish()->paginate(9);
         $productCategories = $this->getRecursive(); // Lấy danh sách danh mục phân cấp
         $brands = Brand::GetBrandPublish()->get();
-        return view('user.shop', compact('products','productCategories','brands', 'banner', 'banner2', 'banner3'));
+        return view('user.shop', compact('products','productCategories','brands', 'banners'));
     }
     public function getRecursive()
     {
