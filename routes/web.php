@@ -96,7 +96,7 @@ Route::get('admin/login', [AdminController::class, 'login'])
 
 Route::post('/admin/login', [AdminController::class, 'check_login'])->name('admin.check_login');
 Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
-Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
+// Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {});
 
 Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
 
@@ -216,5 +216,4 @@ Route::prefix('admin')->group(function () {
         Route::get('restore/{id}', [BrandController::class, 'restore'])->name('brand.restore');
         Route::delete('forceDelete/{id}', [BrandController::class, 'forceDelete'])->name('brand.forceDelete');
     });
-});
 });

@@ -8,6 +8,7 @@ use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Mail\ForgotPassword;
 use App\Mail\VerifyAccount;
+use App\Models\Customer;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Models\User; // Đổi từ Customer sang User
@@ -27,26 +28,21 @@ class CustomerController extends Controller
     }
 
     public function dologin(LoginRequest $request)
-{
-    $credentials = $request->only('email', 'password');
-    $customer = User::where('email', $request->email)->where('role_id', 1)->first();
+    {
+        $credentials = $request->only('email', 'password');
+        $customer = Customer::where('email', $request->email)->first();
 
-    if ($customer && is_null($customer->email_verified_at)) {
-        return redirect()->route('customer.login')->with('error', 'Vui lòng xác minh email của bạn trước khi đăng nhập.');
-    }
+        if ($customer && is_null($customer->email_verified_at)) {
+            return redirect()->route('customer.login')->with('error', 'Vui lòng xác minh email của bạn trước khi đăng nhập.');
+        }
 
-    if (Auth::guard('customer')->attempt($credentials)) {
-        if (Auth::guard('customer')->user()->role_id === 1) { // Kiểm tra role_id chính xác
+        if (Auth::guard('customer')->attempt($credentials)) {
             return redirect()->route('home.index')->with('success', 'Đăng nhập thành công');
         } else {
-            Auth::guard('customer')->logout();
-            return redirect()->route('customer.login')->with('error', 'Tài khoản không thuộc loại khách hàng.');
+            \Log::info('Đăng nhập thất bại với thông tin: ', $credentials);
+            return redirect()->route('customer.login')->with('error', 'Email hoặc Mật khẩu không chính xác');
         }
     }
-
-    return redirect()->route('customer.login')->with('error', 'Email hoặc Mật khẩu không chính xác');
-}
-
 
     public function register()
     {
@@ -57,9 +53,9 @@ class CustomerController extends Controller
     {
         $data = $request->only('name', 'email', 'phone');
         $data['password'] = bcrypt($request->password);
-        $data['role_id'] = 1; // Đặt role_id = 1 cho khách hàng
+        // $data['role_id'] = 1; // Đặt role_id = 1 cho khách hàng
 
-        if ($acc = User::create($data)) {
+        if ($acc = Customer::create($data)) {
             Mail::to($acc->email)->send(new VerifyAccount($acc));
             return redirect()->route('customer.login')->with('success', 'Đăng ký thành công. Vui lòng kiểm tra email của bạn.');
         }
@@ -69,7 +65,7 @@ class CustomerController extends Controller
 
     public function verify($email)
     {
-        $acc = User::where('email', $email)->whereNull('email_verified_at')->firstOrFail();
+        $acc = Customer::where('email', $email)->whereNull('email_verified_at')->firstOrFail();
         $acc->email_verified_at = now();
         $acc->save();
 
@@ -121,13 +117,13 @@ class CustomerController extends Controller
     public function check_forgot(Request $req)
     {
         $req->validate([
-            'email' => 'required|exists:users,email',
+            'email' => 'required|exists:customers,email',
         ], [
             'email.required' => 'Bạn hãy nhập địa chỉ email',
             'email.exists' => 'Email này không tồn tại trong hệ thống'
         ]);
 
-        $customer = User::where('email', $req->email)->where('role_id', 1)->first(); // Kiểm tra role_id
+        $customer = Customer::where('email', $req->email)->first();
         $token = \Str::random(40);
 
         CustomerResetToken::where('email', $req->email)->delete();
@@ -148,8 +144,12 @@ class CustomerController extends Controller
     public function reset_password($token)
     {
         $tokenData = CustomerResetToken::checkToken($token);
-        $user = $tokenData->user; // Lấy thông tin user thay vì customer
-    
+        $customer = $tokenData->customer ?? null;
+
+        if (!$customer) {
+            return redirect()->route('customer.login')->with('error', 'Không tìm thấy khách hàng.');
+        }
+
         return view('user.reset_password', compact('token'));
     }
     
@@ -169,16 +169,16 @@ class CustomerController extends Controller
         );
     
         $tokenData = CustomerResetToken::checkToken($token);
-        $user = $tokenData->user; // Lấy thông tin user thay vì customer
+        $customer = $tokenData->customer ?? null;
     
-        if (!$user) {
-            return redirect()->route('customer.login')->with('error', 'Không tìm thấy người dùng.');
+        if (!$customer) {
+            return redirect()->route('customer.login')->with('error', 'Không tìm thấy khách hàng.');
         }
     
         // Cập nhật mật khẩu đã mã hóa
-        $user->password = Hash::make(request('password'));
+        $customer->password = Hash::make(request('password'));
     
-        if ($user->save()) {
+        if ($customer->save()) {
             // Xóa token sau khi đổi mật khẩu thành công để bảo mật
             $tokenData->delete();
             return redirect()->route('customer.login')->with('success', 'Cập nhật mật khẩu thành công. Vui lòng đăng nhập');
@@ -197,12 +197,18 @@ class CustomerController extends Controller
     public function customerOrderDetail($id)
     {
         $order = Order::find($id);
+        if (!$order) {
+            return redirect()->route('customer.orders')->with('error', 'Đơn hàng không tồn tại.');
+        }
         return view('user.userOrderDetail', compact('order'));
     }
 
     public function customerOrderCancel(Request $request)
     {
         $order = Order::find($request->order_id);
+        if (!$order) {
+            return redirect()->route('customer.orders')->with('error', 'Đơn hàng không tồn tại.');
+        }
         $order->status = "đã hủy";
         $order->save();
 
