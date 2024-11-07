@@ -95,6 +95,16 @@
                                     @endforeach
                                 </ul> --}}
                                 <!-- user/shop.blade.php -->
+                                {{-- <ul class="list list-inline mb-0">
+                                    @foreach ($allCategories as $category)
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input chk-filter chk-category"
+                                                value="{{ $category->id }}" id="category-{{ $category->id }}">
+                                            <label class="form-check-label"
+                                                for="category-{{ $category->id }}">{{ $category->name }}</label>
+                                        </div>
+                                    @endforeach
+                                </ul> --}}
                             </div>
                         </div>
                     </div>
@@ -122,6 +132,7 @@
                             <div class="search-field multi-select accordion-body px-0 pb-0">
                                 <ul class="list list-inline mb-0 brand-list">
                                     @foreach ($brands as $brand)
+                                    {{-- @foreach ($allBrands as $brand) --}}
                                         <div class="form-check">
                                             <input type="checkbox" class="form-check-input chk-filter chk-brand"
                                                 value="{{ $brand->id }}" id="brand-{{ $brand->id }}">
@@ -143,8 +154,7 @@
                                 data-bs-toggle="collapse" data-bs-target="#accordion-filter-price" aria-expanded="true"
                                 aria-controls="accordion-filter-price">
                                 Price
-                                <svg class="accordion-button__icon type2" viewBox="0 0 10 6"
-                                    xmlns="http://www.w3.org/2000/svg">
+                                <svg class="accordion-button__icon type2" viewBox="0 0 10 6" xmlns="http://www.w3.org/2000/svg">
                                     <g aria-hidden="true" stroke="none" fill-rule="evenodd">
                                         <path
                                             d="M5.35668 0.159286C5.16235 -0.053094 4.83769 -0.0530941 4.64287 0.159286L0.147611 5.05963C-0.0492049 5.27473 -0.049205 5.62357 0.147611 5.83813C0.344427 6.05323 0.664108 6.05323 0.860924 5.83813L5 1.32706L9.13858 5.83867C9.33589 6.05378 9.65507 6.05378 9.85239 5.83867C10.0492 5.62357 10.0492 5.27473 9.85239 5.06018L5.35668 0.159286Z" />
@@ -173,7 +183,6 @@
                         </div> --}}
                     </div>
                 </div>
-
             </div>
 
             <div class="shop-list flex-grow-1">
@@ -325,7 +334,6 @@
                                                     width="330" height="400" alt="Cropped Faux leather Jacket"
                                                     class="pc__img"></a>
                                         </div>
-
                                         <div class="swiper-wrapper">
                                             <div class="swiper">
                                                 <a href="{{ route('product.detail', $product->slug) }}"><img loading="lazy"
@@ -407,8 +415,10 @@
                         </div>
                     @endforeach
                 </div>
+
+                <div class="divider"></div>
                 <div class="flex items-center justify-between flex-wrap gap-10 wgp-pagination">
-                    {{ $products->appends(request()->all())->links('pagination::bootstrap-5') }}
+                    {{ $products->withQueryString()->links('pagination::bootstrap-5') }}
                 </div>
             </div>
         </section>

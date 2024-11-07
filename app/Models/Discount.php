@@ -31,7 +31,6 @@ class Discount extends Model
     public function scopeGetDiscount($request){
         return $request->where('end_date', '>', now());
     }
-
     public function orders()
     {
         return $this->hasMany(Order::class);

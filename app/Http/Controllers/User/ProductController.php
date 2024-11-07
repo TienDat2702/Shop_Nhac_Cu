@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers\User;
-
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductCategory;
@@ -129,7 +128,6 @@ class ProductController extends Controller
     //     }
     //     return view('user.shop', compact('allCategories', 'allBrands', 'products', 'minPriceFromDb', 'maxPriceFromDb', 'banner', 'banner2', 'banner3'));
     // }
-
 
     public function product_details($slug)
     {

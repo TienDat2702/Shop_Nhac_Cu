@@ -1,3 +1,4 @@
+
 <header id="header" class="header header-fullwidth header-transparent-bg">
     <div class="container">
         <div class="header-desk header-desk_type_1">
@@ -116,21 +117,24 @@
                 </div>
                 @if (!Auth::guard('customer')->check())
                 <div class="header-tools__item hover-container">
-                    <a href="{{ route('customer.login') }}" class="header-tools__item">
-                        <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <use href="#icon_user" />
-                        </svg>
-                    </a>
-                </div>
+                        <a href="{{ route('customer.login') }}" class="header-tools__item">
+                            <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <use href="#icon_user" />
+                            </svg>
+                        </a>
+                    </div>
                 @else
                     <div class="header-tools__item hover-container">
                         <a href="{{ route('customer.profile') }}" class="header-tools__item">
-                            <i class="fa fa-user" style="font-size: 25px;" aria-hidden="true"></i>
+                            {{-- <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                xmlns="http://www.w3.org/2000/svg"> --}}
+                                <i class="fa fa-user" style="font-size: 25px;" aria-hidden="true"></i>
+                            {{-- </svg> --}}
                         </a>
                     </div>
                 @endif
-                <a href="#" class="header-tools__item header-tools__cart">
+                <a href="{{ route('wishlist.index') }}" class="header-tools__item header-tools__cart">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <use href="#icon_heart" />
