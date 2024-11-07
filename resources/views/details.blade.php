@@ -121,9 +121,13 @@
             <span class="current-price">$449</span>
           </div>
           <div class="product-single__short-desc">
+<<<<<<< Updated upstream:resources/views/details.blade.php
             <p>Phasellus sed volutpat orci. Fusce eget lore mauris vehicula elementum gravida nec dui. Aenean aliquam
               varius ipsum, non ultricies tellus sodales eu. Donec dignissim viverra nunc, ut aliquet magna posuere
               eget.</p>
+=======
+            <p>{{ $product->description }}</p>
+>>>>>>> Stashed changes:resources/views/user/details.blade.php
           </div>
           <form name="addtocart-form" method="post">
             <div class="product-single__addtocart">
@@ -137,10 +141,19 @@
             </div>
           </form>
           <div class="product-single__addtolinks">
+<<<<<<< Updated upstream:resources/views/details.blade.php
             <a href="#" class="menu-link menu-link_us-s add-to-wishlist"><svg width="16" height="16" viewBox="0 0 20 20"
                 fill="none" xmlns="http://www.w3.org/2000/svg">
                 <use href="#icon_heart" />
               </svg><span>Add to Wishlist</span></a>
+=======
+          <a href="#" class="menu-link menu-link_us-s add-to-wishlist" data-product-id="{{ $product->id }}">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <use href="#icon_heart" />
+              </svg>
+              <span>Yêu thích</span>
+          </a>
+>>>>>>> Stashed changes:resources/views/user/details.blade.php
             <share-button class="share-button">
               <button class="menu-link menu-link_us-s to-share border-0 bg-transparent d-flex align-items-center">
                 <svg width="16" height="19" viewBox="0 0 16 19" fill="none" xmlns="http://www.w3.org/2000/svg">
