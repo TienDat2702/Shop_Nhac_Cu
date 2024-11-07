@@ -10,10 +10,25 @@ use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\Admin\UploadCKImageController;
 >>>>>>> Stashed changes
 use App\Http\Controllers\Ajax\AjaxDashboardController;
+<<<<<<< Updated upstream
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
+=======
+use App\Http\Controllers\User\CartController;
+use App\Http\Controllers\Admin\ShowroomController;
+use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\Admin\ProductShowroomController;
+use App\Http\Controllers\User\HomeController;
+use App\Http\Controllers\User\OrderController;
+use App\Http\Controllers\User\ProductController;
+use App\Http\Controllers\User\CustomerController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\User\CheckoutController;
+use App\Http\Controllers\User\FavouriteController;
+>>>>>>> Stashed changes
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 use App\Http\Controllers\Admin\DiscountController;
@@ -26,12 +41,42 @@ use App\Http\Controllers\Admin\DiscountController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
+<<<<<<< Updated upstream
 Route::get('/shop/{product_slug}',[ProductController::class,'product_details'])->name('shop.product.details');
 Route::get('/login', [UserController::class, 'login'])->name('user.login');
 Route::get('/register', [UserController::class, 'register'])->name('user.register');
 Route::get('/cart', [OrderController::class, 'index'])->name('cart.index');
 
 // AJAX
+=======
+Route::get('/product/{slug}', [ProductController::class, 'product_details'])->name('product.detail');
+Route::prefix('cart')->group(function () {
+    Route::get('/', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/add/{id}', [CartController::class, 'add'])->name('cart.add');
+    Route::post('/update/quantity/{id}', [CartController::class, 'updateQuantity'])->name('cart.update.quantity');
+    Route::post('/discount', [CartController::class, 'discount'])->name('cart.discount');
+    Route::post('/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+});
+Route::prefix('checkout')->group(function () {
+    Route::get('/', [CheckoutController::class, 'checkout'])->name('checkout');
+    Route::post('/online', [CheckoutController::class, 'onlineCheckout'])->name('checkout.online');
+    Route::get('vnpay-return', [CheckoutController::class, 'vnpay_return'])->name('vnpay.return');
+    Route::get('/completed', [CheckoutController::class, 'order_completed'])->name('checkout.completed');
+    Route::get('/verify/{token}', [CheckoutController::class, 'verify'])->name('checkout.verify');
+});
+// user;
+Route::get('/login', [CustomerController::class, 'login'])->name('customer.login');
+Route::post('/do-login', [CustomerController::class, 'dologin'])->name('customer.dologin');
+Route::get('/logout', [CustomerController::class, 'logout'])->name('customer.logout');
+Route::get('/profile', [CustomerController::class, 'profile'])->name('customer.profile');
+Route::get('/orders', [CustomerController::class, 'customerOrder'])->name('customer.orders');
+Route::get('/orders/history', [CustomerController::class, 'customerOrderHistory'])->name('customer.orders.history');
+Route::post('/orders/cancel', [CustomerController::class, 'customerOrderCancel'])->name('customer.orders.cancel');
+Route::get('/orders/{id}', [CustomerController::class, 'customerOrderDetail'])->name('customer.orders.detail');
+
+
+
+>>>>>>> Stashed changes
 Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
 
 
@@ -135,6 +180,7 @@ Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'cha
     });
 <<<<<<< Updated upstream
 });
+<<<<<<< Updated upstream
 =======
  });
 >>>>>>> Stashed changes
@@ -143,5 +189,24 @@ Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'cha
 
 
 
+
+>>>>>>> Stashed changes
+=======
+
+Route::prefix('user')->group(function () {
+    Route::get('/profile', [User\ProfileController::class, 'show'])->name('user.profile'); // Route để xem hồ sơ người dùng
+    Route::get('/orders', [User\CustomerController::class, 'customerOrder'])->name('user.orders'); // Route để xem đơn hàng
+    Route::get('/orders/history', [User\CustomerController::class, 'customerOrderHistory'])->name('user.orders.history'); // Route để xem lịch sử đơn hàng
+    Route::get('/orders/{id}', [User\CustomerController::class, 'customerOrderDetail'])->name('user.orders.detail'); // Route để xem chi tiết đơn hàng
+    Route::post('/orders/cancel', [User\CustomerController::class, 'customerOrderCancel'])->name('user.orders.cancel'); // Route để hủy đơn hàng
+});
+
+Route::prefix('wishlist')->group(function () {
+    Route::get('/', [FavouriteController::class, 'index'])->name('wishlist.index'); // Xem wishlist
+    Route::post('/add/{id}', [FavouriteController::class, 'add'])->name('wishlist.add'); // Thêm sản phẩm vào wishlist
+    Route::delete('/remove/{id}', [FavouriteController::class, 'remove'])->name('wishlist.remove'); // Xóa sản phẩm khỏi wishlist
+});
+
+Route::post('/wishlist/add/{id}', [FavouriteController::class, 'add'])->name('wishlist.add');
 
 >>>>>>> Stashed changes
