@@ -18,12 +18,14 @@ use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\User\ProductController;
 use App\Http\Controllers\User\CustomerController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Middleware\CustomerMiddleware;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\CheckoutController;
 use App\Http\Controllers\User\PostController;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
-
+use App\Http\Middleware\CustomerAuth;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
@@ -61,21 +63,51 @@ Route::prefix('post')->group(function () {
 // user;
 Route::get('/login', [CustomerController::class, 'login'])->name('customer.login');
 Route::post('/do-login', [CustomerController::class, 'dologin'])->name('customer.dologin');
+Route::get('/verify-account/{email}', [CustomerController::class, 'verify'])->name('customer.verify');
+Route::get('/register', [CustomerController::class, 'register'])->name('customer.register');
+Route::post('/register', [CustomerController::class, 'check_register'])->name('customer.check_register');
+
+Route::middleware(CustomerAuth::class)->group(function () {
+    Route::get('/profile', [CustomerController::class, 'profile'])->name('customer.profile');
+    Route::post('/profile', [CustomerController::class, 'check_profile'])->name('customer.chek_profile');
+    Route::get('/change-password', [CustomerController::class, 'change_password'])->name('customer.change_password');
+    Route::post('/change-password', [CustomerController::class, 'check_change_password']);
+});
+
+
+Route::get('/forgot', [CustomerController::class, 'forgot'])->name('customer.forgot');
+Route::post('/forgot', [CustomerController::class, 'check_forgot'])->name('customer.check_forgot');
+Route::get('/reset-password/{token}', [CustomerController::class, 'reset_password'])->name('customer.reset_password');
+Route::post('/reset-password/{token}', [CustomerController::class, 'check_reset_password'])->name('customer.check_reset_password');
+
+
 Route::get('/logout', [CustomerController::class, 'logout'])->name('customer.logout');
-Route::get('/profile', [CustomerController::class, 'profile'])->name('customer.profile');
 Route::get('/orders', [CustomerController::class, 'customerOrder'])->name('customer.orders');
 Route::get('/orders/history', [CustomerController::class, 'customerOrderHistory'])->name('customer.orders.history');
 Route::post('/orders/cancel', [CustomerController::class, 'customerOrderCancel'])->name('customer.orders.cancel');
 Route::get('/orders/{id}', [CustomerController::class, 'customerOrderDetail'])->name('customer.orders.detail');
  
+
 Route::get('/about',[HomeController::class,'about'])->name('about');
 Route::get('/contact',[HomeController::class,'contact'])->name('contact');
+Route::get('admin/login', [AdminController::class, 'login'])
+    ->name('admin.login');
+   
+
+Route::post('/admin/login', [AdminController::class, 'check_login'])->name('admin.check_login');
+Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
+Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
 
 Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
 
 // ADMIN
 Route::prefix('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
+    
+    Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
+
+
+
     Route::prefix('order')->group(function () {
         Route::get('/', [AdminOrderController::class, 'index'])->name('order.index');
         Route::get('/pending', [AdminOrderController::class, 'OrderPending'])->name('order.pending');
@@ -184,4 +216,5 @@ Route::prefix('admin')->group(function () {
         Route::get('restore/{id}', [BrandController::class, 'restore'])->name('brand.restore');
         Route::delete('forceDelete/{id}', [BrandController::class, 'forceDelete'])->name('brand.forceDelete');
     });
+});
 });

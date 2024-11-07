@@ -6,13 +6,13 @@
             <ul class="nav nav-tabs mb-5" id="login_register" role="tablist">
                 <li class="nav-item" role="presentation">
                     <a class="nav-link nav-link_underscore active" id="login-tab" data-bs-toggle="tab" href="#tab-item-login"
-                        role="tab" aria-controls="tab-item-login" aria-selected="true">Login</a>
+                        role="tab" aria-controls="tab-item-login" aria-selected="true">Forgot Password</a>
                 </li>
             </ul>
             <div class="tab-content pt-2" id="login_register_tab_content">
                 <div class="tab-pane fade show active" id="tab-item-login" role="tabpanel" aria-labelledby="login-tab">
                     <div class="login-form">
-                        <form method="POST" action="{{ route('customer.dologin') }}" name="login-form" class="needs-validation"
+                        <form method="POST" action="{{ route('customer.check_forgot') }}" name="login-form" class="needs-validation"
                             novalidate="">
                             @csrf
                             @method('POST')
@@ -31,25 +31,14 @@
 
                             <div class="pb-3"></div>
 
-                            <div class="form-floating mb-3">
-                                <input id="password" type="password" class="form-control form-control_gray "
-                                    name="password" autocomplete="current-password">
-                                <label for="customerPasswodInput">Password *</label>
-                                @if ($errors->any())
-                                <span class="error-message"> *
-                                    {{
-                                        $errors->first('password')
-                                    }}
-                                </span>
-                            @endif
-                            </div>
+                            
 
-                            <button class="btn btn-primary w-100 text-uppercase" type="submit">Log In</button>
+                            <button class="btn btn-primary w-100 text-uppercase" type="submit">Send Mail</button>
 
                             <div class="customer-option mt-4 text-center">
-                                <span class="text-secondary">No account yet?</span>
+                                
                                 <a href="{{route('customer.register')}}" class="btn-text js-show-register">Create Account</a> |
-                                <a href="{{route('customer.forgot')}}" class="btn-text js-show-register">Forgot Password</a> 
+                                <a href="{{route('customer.login')}}" class="btn-text js-show-register">Login</a> 
                             </div>
                         </form>
                     </div>
