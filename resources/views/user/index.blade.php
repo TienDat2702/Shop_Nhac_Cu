@@ -1,6 +1,10 @@
 @extends('user.layouts.app')
 @section('content')
-    
+<style>
+    .swiper-slide {
+    width: 1100px;
+}
+</style>
 <main>
 
     <section class="swiper-container js-swiper-slider swiper-number-pagination slideshow" data-settings='{
@@ -36,47 +40,51 @@
         </div>
     </div>
 
-    <div class="swiper-slide">
-        <div class="overflow-hidden position-relative h-100">
-            <div class="slideshow-character position-absolute bottom-0 pos_right-center">
-                <img loading="lazy" src="{{ asset($banner2->image ?? 'path/to/default/image.jpg') }}" width="400" height="733"
-                    alt="Woman Fashion 1"
-                    class="slideshow-character__img animate animate_fade animate_btt animate_delay-9 w-auto h-auto" />
-                <div class="character_markup">
-                    <p class="text-uppercase font-sofia fw-bold animate animate_fade animate_rtl animate_delay-10">{{$banner2->title ?? 'Đang Cập Nhật'}}
-                    </p>
+    <div class="swiper-wrapper">
+    @if ($banners && count($banners) > 0)
+        @foreach ($banners as $banner)
+        <div class="swiper-slide">
+            <div class="overflow-hidden position-relative h-100">
+                <div class="slideshow-character position-absolute bottom-0 pos_right-center">
+                    <img loading="lazy" src="{{ asset($banner->image ?? 'path/to/default/image.jpg') }}" width="400" height="733"
+                        alt="{{ $banner->title ?? 'Đang Cập Nhật' }}"
+                        class="slideshow-character__img animate animate_fade animate_btt animate_delay-9 w-auto h-auto" />
+                    <div class="character_markup">
+                        <p class="text-uppercase font-sofia fw-bold animate animate_fade animate_rtl animate_delay-10">{{ $banner->title ?? 'Đang Cập Nhật' }}</p>
+                    </div>
+                </div>
+                <div class="slideshow-text container position-absolute start-50 top-50 translate-middle">
+                    <h6 class="text_dash text-uppercase fs-base fw-medium animate animate_fade animate_btt animate_delay-3">
+                        {{ $banner->subtitle ?? 'Hàng Mới Nhập' }}</h6>
+                    <h2 class="h1 fw-normal mb-0 animate animate_fade animate_btt animate_delay-5">{{ $banner->title ?? 'Đang Cập Nhật' }}</h2>
+                    <h2 class="h1 fw-bold animate animate_fade animate_btt animate_delay-5">{{ $banner->strong_title ?? 'Đang Cập Nhật' }}</h2>
+                    <a href="#"
+                        class="btn-link btn-link_lg default-underline fw-medium animate animate_fade animate_btt animate_delay-7">Shop
+                        Now</a>
                 </div>
             </div>
-            <div class="slideshow-text container position-absolute start-50 top-50 translate-middle">
-                <h6 class="text_dash text-uppercase fs-base fw-medium animate animate_fade animate_btt animate_delay-3">
-                    Sản Phẩm Mới</h6>
-                <h2 class="h1 fw-normal mb-0 animate animate_fade animate_btt animate_delay-5">{{$banner2->title ?? 'Đang Cập Nhật'}}</h2>
-                 <h2 class="h1 fw-bold animate animate_fade animate_btt animate_delay-5">{{$banner2->strong_title ?? 'Đang Cập Nhật'}}</h2>
-                <a href="#"
-                    class="btn-link btn-link_lg default-underline fw-medium animate animate_fade animate_btt animate_delay-7">Shop
-                    Now</a>
-            </div>
         </div>
-    </div>
-
+        @endforeach
+    @else
     <div class="swiper-slide">
         <div class="overflow-hidden position-relative h-100">
             <div class="slideshow-character position-absolute bottom-0 pos_right-center">
-                <img loading="lazy" src="{{ asset($banner3->image ?? 'path/to/default/image.jpg') }}" width="400" height="690"
-                    alt="Woman Fashion 2"
+                <img loading="lazy" src="{{ asset('path/to/default/image.jpg') }}" width="400" height="690"
+                    alt="Đang Cập Nhật"
                     class="slideshow-character__img animate animate_fade animate_rtl animate_delay-10 w-auto h-auto" />
             </div>
             <div class="slideshow-text container position-absolute start-50 top-50 translate-middle">
                 <h6 class="text_dash text-uppercase fs-base fw-medium animate animate_fade animate_btt animate_delay-3">
                     Ưu Đãi Mới</h6>
-                <h2 class="h1 fw-normal mb-0 animate animate_fade animate_btt animate_delay-5">{{$banner3->title ?? 'Đang Cập Nhật'}}</h2>
-                <h2 class="h1 fw-bold animate animate_fade animate_btt animate_delay-5">{{$banner3->strong_title ?? 'Đang Cập Nhật'}}</h2>
+                <h2 class="h1 fw-normal mb-0 animate animate_fade animate_btt animate_delay-5">Đang Cập Nhật</h2>
+                <h2 class="h1 fw-bold animate animate_fade animate_btt animate_delay-5">Đang Cập Nhật</h2>
                 <a href="#"
                     class="btn-link btn-link_lg default-underline fw-medium animate animate_fade animate_btt animate_delay-7">Shop
                     Now</a>
             </div>
         </div>
     </div>
+    @endif
 </div>
 
 

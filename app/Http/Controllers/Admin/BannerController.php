@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
+use App\Http\Requests\BannerRequest;
 use Illuminate\Http\Request;
 class BannerController extends Controller
 {
@@ -24,17 +25,8 @@ class BannerController extends Controller
     return view('admin.banner.banner_add.index'); // Trả về view tạo showroom
 }
 
-public function store(Request $request)
+public function store(BannerRequest $request)
 {
-    // Xác thực dữ liệu đầu vào
-    $request->validate([
-        'images.*' => 'image|max:2048', // Kiểm tra tất cả các hình ảnh
-        'order.*' => 'required|integer|min:0', // Kiểm tra order
-        'position.*' => 'required|integer|min:0', // Kiểm tra position
-        'title.*' => 'required|string|max:255', // Xác thực trường title
-        'strong_title.*' => 'required|string|max:255', // Xác thực trường strong_title
-    ]);
-
     $uploadedImages = []; // Mảng lưu trữ đường dẫn hình ảnh
 
     // Lặp qua tất cả hình ảnh và lưu trữ
@@ -68,15 +60,19 @@ public function store(Request $request)
         $banner->order = $order; // Lưu giá trị order từ request
         $banner->title = $request->input('title')[$index]; // Lưu giá trị title từ request
         $banner->strong_title = $request->input('strong_title')[$index]; // Lưu giá trị strong_title từ request
+        $banner->description = $request->input('description')[$index] ?? null; // Lưu giá trị description từ request (có thể null)
         $banner->publish = 2; // Mặc định là 2 (không hoạt động)
         $banner->save(); // Lưu banner vào cơ sở dữ liệu
     }
 
     toastr()->success('Thêm Banner Thành Công!');
-    
+
     // Chuyển hướng về trang chỉ định với đường dẫn hình ảnh đã tải lên
     return redirect()->route('banner.index')->with('uploadedImages', $uploadedImages);
 }
+
+
+
 
 
 

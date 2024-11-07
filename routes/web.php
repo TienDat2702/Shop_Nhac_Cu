@@ -125,7 +125,7 @@ Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'cha
 Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
 
 // ADMIN
-Route::prefix('admin')->group(function () {
+Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
     
     Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
@@ -334,7 +334,6 @@ Route::prefix('user')->group(function () {
     Route::get('/orders/{id}', [CustomerController::class, 'customerOrderDetail'])->name('user.orders.detail'); // Route để xem chi tiết đơn hàng
     Route::post('/orders/cancel', [CustomerController::class, 'customerOrderCancel'])->name('user.orders.cancel'); // Route để hủy đơn hàng
 });
-
 Route::prefix('wishlist')->group(function () {
     Route::get('/', [FavouriteController::class, 'index'])->name('wishlist.index'); // Xem wishlist
     Route::post('/add/{id}', [FavouriteController::class, 'add'])->name('wishlist.add'); // Thêm sản phẩm vào wishlist
@@ -343,3 +342,4 @@ Route::prefix('wishlist')->group(function () {
 
 Route::post('/wishlist/add/{id}', [FavouriteController::class, 'add'])->name('wishlist.add');
     });
+/* }); */

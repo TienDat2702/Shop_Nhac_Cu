@@ -34,7 +34,7 @@
                         </ul>
                     </li>
                     <li class="navigation__item">
-                        <a href="
+                        <a href="#
                         {{-- {{ route('post.category', $categorie_parent_post->first()->slug) }} --}}
                             " class="navigation__link">Tin tức</a>
                         <ul class="sub_menu">
