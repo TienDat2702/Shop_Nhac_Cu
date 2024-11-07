@@ -62,5 +62,15 @@
     $(document).ready(function () {
         HT.changeStatus();
         HT.sweetalert2();
+<<<<<<< Updated upstream
+=======
+        HT.sweetalert3();
+        HT.setupCkeditor();
+        HT.keyUpInput();
+        HT.trash();
+        HT.checkFilters(); // Khởi tạo chức năng lọc
+
+
+>>>>>>> Stashed changes
     });
 })(jQuery);
