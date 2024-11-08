@@ -111,7 +111,11 @@ Route::get('/orders/history', [CustomerController::class, 'customerOrderHistory'
 Route::post('/orders/cancel', [CustomerController::class, 'customerOrderCancel'])->name('customer.orders.cancel');
 Route::get('/orders/{id}', [CustomerController::class, 'customerOrderDetail'])->name('customer.orders.detail');
  
-
+Route::prefix('wishlist')->group(function () {
+    Route::get('/', [FavouriteController::class, 'index'])->name('wishlist.index'); // Xem wishlist
+    Route::post('/add/{id}', [FavouriteController::class, 'add'])->name('wishlist.add'); // Thêm sản phẩm vào wishlist
+    Route::delete('/remove/{id}', [FavouriteController::class, 'remove'])->name('wishlist.remove'); // Xóa sản phẩm khỏi wishlist
+});
 Route::get('/about',[HomeController::class,'about'])->name('about');
 Route::get('/contact',[HomeController::class,'contact'])->name('contact');
 Route::get('admin/login', [AdminController::class, 'login'])
@@ -205,15 +209,7 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
     Route::get('/completed', [CheckoutController::class, 'order_completed'])->name('checkout.completed');
     Route::get('/verify/{token}', [CheckoutController::class, 'verify'])->name('checkout.verify');
 });
-// user;
-Route::get('/login', [CustomerController::class, 'login'])->name('customer.login');
-Route::post('/do-login', [CustomerController::class, 'dologin'])->name('customer.dologin');
-Route::get('/logout', [CustomerController::class, 'logout'])->name('customer.logout');
-Route::get('/profile', [CustomerController::class, 'profile'])->name('customer.profile');
-Route::get('/orders', [CustomerController::class, 'customerOrder'])->name('customer.orders');
-Route::get('/orders/history', [CustomerController::class, 'customerOrderHistory'])->name('customer.orders.history');
-Route::post('/orders/cancel', [CustomerController::class, 'customerOrderCancel'])->name('customer.orders.cancel');
-Route::get('/orders/{id}', [CustomerController::class, 'customerOrderDetail'])->name('customer.orders.detail');
+
 
 
 Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
@@ -334,12 +330,6 @@ Route::prefix('user')->group(function () {
     Route::get('/orders/{id}', [CustomerController::class, 'customerOrderDetail'])->name('user.orders.detail'); // Route để xem chi tiết đơn hàng
     Route::post('/orders/cancel', [CustomerController::class, 'customerOrderCancel'])->name('user.orders.cancel'); // Route để hủy đơn hàng
 });
-Route::prefix('wishlist')->group(function () {
-    Route::get('/', [FavouriteController::class, 'index'])->name('wishlist.index'); // Xem wishlist
-    Route::post('/add/{id}', [FavouriteController::class, 'add'])->name('wishlist.add'); // Thêm sản phẩm vào wishlist
-    Route::delete('/remove/{id}', [FavouriteController::class, 'remove'])->name('wishlist.remove'); // Xóa sản phẩm khỏi wishlist
-});
 
-Route::post('/wishlist/add/{id}', [FavouriteController::class, 'add'])->name('wishlist.add');
-    });
+});
 /* }); */

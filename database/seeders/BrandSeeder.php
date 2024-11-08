@@ -45,5 +45,54 @@ class BrandSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+        $Taylor = Brand::create([
+            'name' => 'Taylor',
+            'image' => 'Taylor.jpg',
+            'publish' => 1,
+            'description' => 'Thương hiệu Taylor',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        $Boston = Brand::create([
+            'name' => 'Boston',
+            'image' => 'Boston.jpg',
+            'publish' => 1,
+            'description' => 'Thương hiệu Boston',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        $Fender = Brand::create([
+            'name' => 'Fender',
+            'image' => 'Fender.jpg',
+            'publish' => 1,
+            'description' => 'Thương hiệu Fender',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        $Alesis = Brand::create([
+            'name' => 'Alesis',
+            'image' => 'Alesis.jpg',
+            'publish' => 1,
+            'description' => 'Thương hiệu Alesis',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        $Steinway_sons = Brand::create([
+            'name' => 'Steinway-sons',
+            'image' => 'Steinway-sons.jpg',
+            'publish' => 1,
+            'description' => 'Thương hiệu Steinway-sons',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        $Essex = Brand::create([
+            'name' => 'Essex',
+            'image' => 'Essex.jpg',
+            'publish' => 1,
+            'description' => 'Thương hiệu Essex',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        
     }
 }
