@@ -42,6 +42,7 @@ class ProductCategorySeeder extends Seeder
             'description' => 'Danh mục các loại piano khác nhau',
             'slug' => 'piano', // Thêm trường slug
         ]);
+        
 
         // Tạo các danh mục con cho Guitar
         ProductCategory::create([
