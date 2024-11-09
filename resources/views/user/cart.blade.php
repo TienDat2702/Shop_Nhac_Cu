@@ -35,9 +35,9 @@
                                 <tr>
                                     <th>Sản phẩm</th>
                                     <th></th>
-                                    <th>giá</th>
+                                    <th style="width: 18%">giá</th>
                                     <th>Số lượng</th>
-                                    <th>Đơn giá</th>
+                                    <th style="width: 15%">Đơn giá</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -141,6 +141,12 @@
                                             </td>
                                         </tr>
                                         <tr>
+                                            <th>Mã giảm giá</th>
+                                            <td>
+                                                <a href="">Chọn mã giảm giá</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
                                             <th>Ưu đãi thành viên</th>
                                             <td id="loyalty_rate_Amount">
                                                 {{ number_format($loyaltyAmount, 0, '.', ',') . ' VNĐ' }}</td>
@@ -174,6 +180,22 @@
                         <a class="btn-comeback" href="{{ route('home.index') }}"> Mua ngay </a>
                     </div>
         @endif
+        {{-- <div class="voucher_overlay"></div>
+        <div class="box-voucher">
+            <div class="voucher_header"><h3 class="title-voucher">CHỌN VOUCHER</h3></div>
+            <div class="voucher_body">
+                <div class="voucher_image">
+                    <img src="{{ asset('images/logo/logo.jpg') }}" alt="">
+                </div>
+                <div class="voucher_content">
+                    <div class="voucher_name">Giảm 15% Giảm tối đa ₫15k
+                        Đơn Tối Thiểu ₫0</div>
+                </div>
+                <div class="voucher_radio">
+                    <input type="radio">
+                </div>
+            </div>
+        </div> --}}
         </section>
     </main>
 @endsection

@@ -74,10 +74,29 @@ class Post extends Model
         return $monthYear;
     }
     
-    public function scopeGetWidget($query,$post_category_id){
-        return $query->where('post_category_id', $post_category_id)->where('id', '<>', $this->id) ;
+ 
+    public function scopeGetHot($query,$post_category_id){
+        return $query
+        ->where('publish', 2)
+        ->where('post_category_id', $post_category_id)
+        ->where('id', '!=', $this->id)
+        ->orderBy('view', 'DESC')
+        ->limit(6);
+    }
+    public function scopeGetPostEvent($query){
+        return $query
+        ->where('publish', 2)
+        ->where('postCategory', function($query){
+            $query->where('name', 'Sự kiện');
+        })
+        ->orWhereIn()
+        ;
     }
 
+    public function careAbout($query){
+
+    }
+    
     public function users(){
         return $this->belongsTo(User::class, 'user_id', 'id');
     }

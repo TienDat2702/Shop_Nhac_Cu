@@ -1,4 +1,5 @@
 @extends('user.layouts.app')
+@section('title', $product->name)
 @section('content')
 <main class="pt-90">
     <div class="mb-md-1 pb-md-3"></div>

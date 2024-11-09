@@ -1676,12 +1676,6 @@ class ProductSeeder extends Seeder
             ],
             [
                 "category_id"=> 4,
-<<<<<<< HEAD
-                "name"=> "GUITAR CLASSIC",
-                "image"=> "https://vietthuong.vn/image/cache/catalog/casio/Piano/dan-piano-casio-px-s7000hm-400x400.jpg",
-                "price"=> 0,
-                "price_sale"=> 13100000,
-=======
                 "name"=> "GUITAR CLASSIC CORDOBA FUSION 5 KÈM BAG GUCLCOR-05407",
                 "image"=> "guitar-classic-cordoba-fusion-5-kem-bag-guclcor-05407-450x471.jpg",
                 "price"=> 13100000,
@@ -1876,7 +1870,6 @@ Xem thêm
     </tbody>
 </table>
 <iframe width="100%" height="580" src="https://www.youtube.com/embed?enablejsapi=1&amp;origin=https%3A%2F%2Fvietthuong.vn" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" data-gtm-yt-inspected-7172713_33="true" id="20181419" data-gtm-yt-inspected-22="true" title="YouTube video player"></iframe> <!-- <div id="BSplugin0"></div> <script type="textjavascript"> jwplayer("BSplugin0").setup( { primary:"html5", width:"100%", height:"400", abouttext:"jwplayer 7", aspectratio:"16:9", image: "https:vietthuong.vnuploadvt.png", skin:"five", sources:[{file:"", type:"mp4",label:"720"},] }); </script> ',              
->>>>>>> 4d596bdcbdd593d56225b36107842a5754e0a809
                 "short_description"=> "Cordoba Fusion 5, cây guitar classic thiết kế dáng cutaway hiện đại, dễ dàng tiếp cận các phím cao, đi kèm túi đựng chuyên nghiệp."
             ]
         ];
@@ -1892,15 +1885,9 @@ Xem thêm
                 'price_sale' => $data['price_sale'],
                 'view' => $faker->numberBetween(0, 1000),
                 'short_description' => $data['short_description'],
-<<<<<<< HEAD
-                'description' => $faker->paragraph,
-                'publish' => 2,
-                'slug' => $faker->slug,
-=======
                 'description' => $data['description'],
                 'publish' => 2,
                 'slug' => Str::slug($data['name']),
->>>>>>> 4d596bdcbdd593d56225b36107842a5754e0a809
             ]);
         }
     }

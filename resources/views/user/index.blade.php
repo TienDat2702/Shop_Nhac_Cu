@@ -1,4 +1,5 @@
 @extends('user.layouts.app')
+@section('title', 'TuneNest')
 @section('content')
     
 <main>

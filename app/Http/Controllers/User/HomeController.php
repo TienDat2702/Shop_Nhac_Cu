@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Banner;
 use App\Models\Post;
+use App\Models\PostCategory;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\Showroom;
@@ -25,7 +26,21 @@ class HomeController extends Controller
         // $product_price = Product::orderBy('price_sale', 'asc')->where('publish', 2)->take(8)->get();
         $products = Product::GetProductPublish()->orderBy('updated_at', 'desc')->paginate(8);
 
-        $posts = Post::GetPostPublish()->limit(4)->get();
+        $post_category_event = PostCategory::GetAllByPublish()->where('name', 'Sự Kiện')->first();
+        if ($post_category_event) {
+            // Lấy tất cả các ID của danh mục con
+            $post_category_event_child_ids = PostCategory::GetAllByPublish()
+                ->where('parent_id', $post_category_event->id)
+                ->pluck('id')
+                ->toArray();
+        
+            // Lấy các bài viết thuộc danh mục cha "Sự Kiện" hoặc các danh mục con của nó
+            $posts = Post::GetPostPublish()
+                ->where('post_category_id', $post_category_event->id)
+                ->orWhereIn('post_category_id', $post_category_event_child_ids)
+                ->limit(4)
+                ->get();
+        }
 
         return view('user.index', compact(
             'brands', 
