@@ -15,31 +15,51 @@
         <section class="contact-us container">
             <div class="mw-930 row">
                 <div class="contact-us__form col-lg-6 col-sm-6">
-                    <form name="contact-us-form" class="needs-validation" novalidate="" method="POST">
+                    <form name="contact-us-form" class="needs-validation" novalidate method="POST" action="{{ route('contact.post') }}">
+                        @csrf
                         <h3 class="mb-5">Liên Hệ Với Chúng Tôi</h3>
+                    
+                        <!-- Tên -->
                         <div class="form-floating my-4">
-                            <input type="text" class="form-control" name="name" placeholder="Tên *" required="">
+                            <input type="text" class="form-control" name="name" placeholder="Tên *" value="{{ old('name') }}">
                             <label for="contact_us_name">Tên *</label>
-                            <span class="text-danger"></span>
+                            @if ($errors->has('name'))
+                                <span class="text-danger">{{ $errors->first('name') }}</span>
+                            @endif
                         </div>
+                    
+                        <!-- Số điện thoại -->
                         <div class="form-floating my-4">
-                            <input type="text" class="form-control" name="phone" placeholder="Số điện thoại *" required="">
-                            <label for="contact_us_name">Số điện thoại *</label>
-                            <span class="text-danger"></span>
+                            <input type="text" class="form-control" name="phone" placeholder="Số điện thoại *" value="{{ old('phone') }}">
+                            <label for="contact_us_phone">Số điện thoại *</label>
+                            @if ($errors->has('phone'))
+                                <span class="text-danger">{{ $errors->first('phone') }}</span>
+                            @endif
                         </div>
+                    
+                        <!-- Địa chỉ email -->
                         <div class="form-floating my-4">
-                            <input type="email" class="form-control" name="email" placeholder="Địa chỉ email *" required="">
-                            <label for="contact_us_name">Địa chỉ email *</label>
-                            <span class="text-danger"></span>
+                            <input type="email" class="form-control" name="email" placeholder="Địa chỉ email *" value="{{ old('email') }}">
+                            <label for="contact_us_email">Địa chỉ email *</label>
+                            @if ($errors->has('email'))
+                                <span class="text-danger">{{ $errors->first('email') }}</span>
+                            @endif
                         </div>
+                    
+                        <!-- Tin nhắn -->
                         <div class="my-4">
-                            <textarea class="form-control form-control_gray" name="comment" placeholder="Tin nhắn của bạn" cols="30" rows="8" required=""></textarea>
-                            <span class="text-danger"></span>
+                            <textarea class="form-control form-control_gray" name="comment" placeholder="Tin nhắn của bạn" cols="30" rows="8" >{{ old('comment') }}</textarea>
+                            @if ($errors->has('comment'))
+                                <span class="text-danger">{{ $errors->first('comment') }}</span>
+                            @endif
                         </div>
+                    
+                        <!-- Nút gửi -->
                         <div class="my-4">
                             <button type="submit" class="btn btn-primary">Gửi</button>
                         </div>
                     </form>
+                    
                 </div>
                 <div class="col-lg-6 col-sm-6 map">
                     <h3>Địa chỉ kho tổng TuneNest</h3>

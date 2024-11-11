@@ -34,7 +34,9 @@
             </div>
         </div>
     </div>
-
+    <div id="loading-spinner" class="loading-spinner">
+        <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+    </div>
 {{-- script --}}
 @include('admin.layout.component.script')
 {{-- end script --}}

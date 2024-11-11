@@ -43,35 +43,43 @@
             <div class="row mt-5">
               <div class="col-md-6">
                 <div class="form-floating my-3">
-                  <input type="text" class="form-control" value="{{ $customer->name }}" name="name" required="">
+                  <input type="text" class="form-control" value="{{ old('name') ?? $customer->name }}" name="name" >
                   <label for="name">Họ và tên *</label>
-                  <span class="text-danger"></span>
+                  @if ($errors->has('name'))
+                    <span class="text-danger">{{ $errors->first('name') }}</span>
+                  @endif
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-floating my-3">
-                  <input type="text" class="form-control" value="{{ $customer->phone }}" name="phone" required="">
+                  <input type="text" class="form-control" value="{{ old('phone') ?? $customer->phone }}" name="phone" >
                   <label for="phone">Số điện thoại *</label>
-                  <span class="text-danger"></span>
+                  @if ($errors->has('phone'))
+                    <span class="text-danger">{{ $errors->first('phone') }}</span>
+                  @endif
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-floating my-3">
-                  <input type="text" class="form-control" value="{{ $customer->address }}" name="address" required="">
+                  <input type="text" class="form-control" value="{{ old('address') ?? $customer->address }}" name="address" >
                   <label for="address">Địa chỉ *</label>
-                  <span class="text-danger"></span>
+                  @if ($errors->has('address'))
+                    <span class="text-danger">{{ $errors->first('address') }}</span>
+                  @endif
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-floating my-3">
-                  <input type="text" class="form-control" value="{{ $customer->email }}"  name="email" required="">
+                  <input type="text" class="form-control" value="{{ old('email') ?? $customer->email }}"  name="email" >
                   <label for="email">Email *</label>
-                  <span class="text-danger"></span>
+                  @if ($errors->has('email'))
+                    <span class="text-danger">{{ $errors->first('email') }}</span>
+                  @endif
                 </div>
               </div>
               <div class="col-md-12">
                 <div class="form-floating my-3">
-                  <textarea style="height: 300px" class="form-control" name="customer_note" required=""> </textarea>
+                  <textarea style="height: 300px" class="form-control" name="customer_note">{{ old('customer_note') }}</textarea>
                   <label for="customer_note">Ghi chú</label>
                   <span class="text-danger"></span>
                 </div>

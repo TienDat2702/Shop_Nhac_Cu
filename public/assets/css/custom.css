@@ -17,6 +17,9 @@
 .form-floating>.form-select {
     height: 48px;
 }
+.shopping-cart__product-item__detail a:hover{
+    text-decoration: underline;
+}
 button.remove-cart {
     border: none;
     background-color: white;
@@ -218,9 +221,132 @@ li.menu-cate-item > a{
 
 
 /* voucher */
-.box-voucher {
-    height: 38.75rem;
-    padding: 1rem 1.5rem;
-    width: 31rem;
-    position: absolute;
+.voucher_overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
 }
+
+.box-voucher {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    width: 90%;
+    max-width: 31rem;
+    max-height: 80%;
+    overflow-y: auto;
+    z-index: 10000;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.voucher_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid;
+}
+
+.close-voucher {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.voucher_body {
+    margin-top: 15px;
+    max-height: 400px; /* Giới hạn chiều cao của danh sách voucher */
+    overflow-y: auto; /* Hiển thị thanh cuộn dọc khi nội dung vượt quá chiều cao */
+    padding: 0 15px 10px 10px;
+}
+
+.voucher_item {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    padding: 10px 10px;
+    border-bottom: 1px solid #ddd;
+    /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0; */
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+}
+.disabled-voucher {
+    opacity: 0.5;
+}
+.voucher_image img {
+    width: 100px;
+    height: auto;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.voucher_content {
+    flex: 1;
+    padding-left: 10px;
+}
+
+.voucher_radio {
+    padding-left: 10px;
+}
+.voucher_radio input[type="radio"] {
+    width: 20px;
+    height: 20px;
+    accent-color: #b9a16b; /* Màu nút radio */
+    border-radius: 50%; /* Bo tròn cho nút radio */
+    border: 2px solid #b9a16b !important; /* Viền nút radio */
+    outline: none; /* Bỏ viền khi focus */
+    cursor: pointer; /* Hiệu ứng khi di chuột */
+    transition: border-color 0.3s, background-color 0.3s; /* Hiệu ứng khi hover */
+}
+
+.voucher_radio input[type="radio"]:checked {
+    background-color: #b9a16b; /* Màu nền khi được chọn */
+    border-color: #b9a16b !important; /* Màu viền khi chọn */
+}
+
+.voucher_name {
+    font-size: 16px;
+    color: #b9a16b;
+}
+.voucher_footer{
+    margin-top: 20px;
+    text-align: end;
+}
+.voucher_footer a {
+    display: inline-block;
+    background-color: #b9a16b; /* Màu cam giống Shopee */
+    color: #fff; /* Màu chữ trắng */
+    padding: 10px 80px; /* Kích thước nút */
+    border-radius: 4px; /* Bo tròn các góc */
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease; /* Hiệu ứng khi hover */
+    font-size: 16px; /* Kích thước chữ */
+}
+
+.voucher_footer a:hover {
+    background-color: #a48f5f; /* Màu tối hơn khi hover */
+}
+.voucher_des {
+    color: #7c7c7c;
+}
+a.btn-voucher {
+    color: #05a;
+}
+a.btn-voucher:hover {
+    text-decoration: underline;
+}
+/* end box voucher */
+
+
+

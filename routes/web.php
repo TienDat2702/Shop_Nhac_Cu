@@ -24,8 +24,6 @@ use App\Http\Controllers\User\PostController;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
-
-
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
 Route::get('/shop/category/{slug}', [ProductController::class, 'category'])->name('shop.category');
@@ -40,6 +38,7 @@ Route::prefix('cart')->group(function () {
     Route::post('/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
     Route::post('/clear', [CartController::class, 'clear'])->name('cart.clear');
 });
+
 // THANH TOÁN
 Route::prefix('checkout')->group(function () {
     Route::get('/', [CheckoutController::class, 'checkout'])->name('checkout');
@@ -50,6 +49,7 @@ Route::prefix('checkout')->group(function () {
     Route::get('/verify/{token}', [CheckoutController::class, 'verify'])->name('checkout.verify');
 
 });
+
 // TIN TỨC
 Route::prefix('post')->group(function () {
     Route::get('/', [PostController::class, 'index'])->name('post.page');
@@ -68,14 +68,21 @@ Route::get('/orders/history', [CustomerController::class, 'customerOrderHistory'
 Route::post('/orders/cancel', [CustomerController::class, 'customerOrderCancel'])->name('customer.orders.cancel');
 Route::get('/orders/{id}', [CustomerController::class, 'customerOrderDetail'])->name('customer.orders.detail');
  
+// ABOUT
 Route::get('/about',[HomeController::class,'about'])->name('about');
-Route::get('/contact',[HomeController::class,'contact'])->name('contact');
 
+// CONTACT
+Route::get('/contact',[HomeController::class,'contact'])->name('contact');
+Route::post('/contact/post',[HomeController::class,'postContact'])->name('contact.post');
+
+// AJAX CHANGE PUBLISH
 Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
 
 // ADMIN
 Route::prefix('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
+
+    // ORDER
     Route::prefix('order')->group(function () {
         Route::get('/', [AdminOrderController::class, 'index'])->name('order.index');
         Route::get('/pending', [AdminOrderController::class, 'OrderPending'])->name('order.pending');
@@ -112,8 +119,8 @@ Route::prefix('admin')->group(function () {
         Route::get('restore/{id}', [AdminPostController::class, 'restore'])->name('post.restore');
         Route::delete('forceDelete/{id}', [AdminPostController::class, 'forceDelete'])->name('post.forceDelete');
     });
-    Route::post('uploadImage', [UploadCKImageController::class, 'upload'])->name('ckeditor.upload');
-    //Showroom
+   
+    //SHOWROOM
     Route::prefix('showroom')->group(function () {
         Route::get('create', [ShowroomController::class, 'create'])->name('showroom.create'); // Route mới
         Route::post('store', [ShowroomController::class, 'store'])->name('showroom.store'); // Route mới
@@ -128,6 +135,8 @@ Route::prefix('admin')->group(function () {
         Route::post('/showrooms/products', [ShowroomController::class, 'addProductToShowroom'])->name('showroom.addProduct');
         Route::get('/api/showrooms', [ShowroomController::class, 'searchShowrooms'])->name('Search.showroom');
     });
+
+    // PRODUCT SHOWROOM
     Route::prefix('Product_showroom')->group(function () {
         Route::get('category/{showroomId}/products', [ProductShowroomController::class, 'index'])->name('Productshowroom.index');
         Route::get('kho/products', [ProductShowroomController::class, 'getProductsByPublishedShowroom'])->name('Kho.index');
@@ -136,6 +145,8 @@ Route::prefix('admin')->group(function () {
         Route::post('/{id}/transfer-all', [ProductShowroomController::class, 'transferAllProductsFromShowroom'])->name('showroom.transferAll');
         Route::post('/transfer-product', [ProductShowroomController::class, 'transfer'])->name('transfer.product');
     });
+
+    // BANNER
     Route::prefix('banner')->group(function () {
         Route::get('category', [BannerController::class, 'index'])->name('banner.index'); // Route mới
         Route::post('toggle-publish/{id}', [BannerController::class, 'togglePublish'])->name('banner.togglePublish');
@@ -147,7 +158,12 @@ Route::prefix('admin')->group(function () {
         Route::get('create', [BannerController::class, 'create'])->name('banner.create'); // Route mới
         Route::post('store', [BannerController::class, 'store'])->name('banner.store');
     });
+
+    // UPLOAD IMAGE CKEDITOR
     Route::post('/admin/upload-ck-image', [UploadCKImageController::class, 'upload'])->name('ckeditor.upload');
+    // UPLOAD IMAGE
+    Route::post('uploadImage', [UploadCKImageController::class, 'upload'])->name('ckeditor.upload');
+
     // PRODUCT CATEGORY
     Route::prefix('product')->group(function () {
         Route::get('category', [ProductCategoryController::class, 'index'])->name('productCategory.index');
@@ -160,6 +176,7 @@ Route::prefix('admin')->group(function () {
         Route::get('category/restore/{id}', [ProductCategoryController::class, 'restore'])->name('productCategory.restore');
         Route::delete('category/forceDelete/{id}', [ProductCategoryController::class, 'forceDelete'])->name('productCategory.forceDelete');
     });
+
     // PRODUCT
     Route::prefix('product')->group(function () {
         Route::get('/', [AdminProductController::class, 'index'])->name('product.index');
@@ -172,6 +189,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/restore/{id}', [AdminProductController::class, 'restore'])->name('product.restore');
         Route::delete('/forceDelete/{id}', [AdminProductController::class, 'forceDelete'])->name('product.forceDelete');
     });
+
     // BRAND
     Route::prefix('brand')->group(function () {
         Route::get('/', [BrandController::class, 'index'])->name('brand.index');

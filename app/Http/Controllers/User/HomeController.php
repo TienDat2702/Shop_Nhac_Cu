@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ContactRequest;
+use App\Mail\Contact;
 use App\Models\Brand;
 use App\Models\Banner;
 use App\Models\Post;
@@ -10,7 +12,10 @@ use App\Models\PostCategory;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\Showroom;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use PhpParser\Node\Expr\New_;
 
 class HomeController extends Controller
 {
@@ -59,5 +64,11 @@ class HomeController extends Controller
     }
     public function contact(){
         return view('user.contact');
+    }
+    public function postContact(ContactRequest $request){
+        $contact = $request->validated();
+        Mail::to('tiendat03533@gmail.com')->send( New Contact($contact) );
+        toastr()->success('Gửi thành công');
+        return redirect()->route('contact');
     }
 }

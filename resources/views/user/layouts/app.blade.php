@@ -37,6 +37,10 @@
 
     {{-- <div id="scrollTop" class="visually-hidden end-0"></div>
     <div class="page-overlay"></div> --}}
+
+    <div id="loading-spinner" class="loading-spinner">
+        <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+    </div>
     {{-- mã script --}}
     @include('user.layouts.component.script')
     

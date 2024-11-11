@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CheckoutRequest;
 use App\Mail\OrderConfirmation;
 use App\Mail\OrderSuccess;
 use App\Models\Customer;
@@ -240,7 +241,7 @@ class CheckoutController extends Controller
         }
     }
 
-    public function onlineCheckout(Request $request) {
+    public function onlineCheckout(CheckoutRequest $request) {
         $method = $request->input('checkout_payment_method');
         $carts = session()->get('carts', []);
         $products = Product::GetProductPublish()->whereIn('id', array_column($carts, 'id'))->get();
@@ -338,9 +339,9 @@ class CheckoutController extends Controller
                 }
             }
 
-            $productIds = $order->orderDetails->pluck('product_id');
-            $product_stock = Product::whereIn('id', $productIds)->get();
-            dd($product_stock);
+            // $productIds = $order->orderDetails->pluck('product_id');
+            // $product_stock = Product::whereIn('id', $productIds)->get();
+            // dd($product_stock);
 
             // Lưu thay đổi vào cơ sở dữ liệu
             $customer->save();

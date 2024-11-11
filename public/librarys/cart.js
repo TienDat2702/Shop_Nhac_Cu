@@ -49,20 +49,17 @@
                     $('.js-cart-items-count').text(data.cartCount);
                     $('#subtotalAmount').text(data.subtotal + ' VNĐ');
                     $('#discountAmount').text(data.discountAmount.toLocaleString() + ' VNĐ')
-                    // $('#totalAmount').text(data.total.toLocaleString() + ' VNĐ')
 
                     var total = parseFloat(data.total.toString().replace(/,/g, '')) || 0;
                     var loyaltyAmount = parseFloat(data.loyaltyAmount.toString().replace(/,/g, '')) || 0;
 
                     var totalAmount = total - loyaltyAmount;
-
-                    console.log(total);
-                    console.log(loyaltyAmount);
-                    console.log(totalAmount);
                     
                     // Cập nhật giá trị vào giao diện người dùng
                     $('#totalAmount').text(totalAmount.toLocaleString() + ' VNĐ');
+
                     $('#loyalty_rate_Amount').text(loyaltyAmount.toLocaleString() + ' VNĐ');
+
                     // Xóa sản phẩm khỏi bảng
                     _this.closest('tr').remove();
                     if (data.cartCount === 0) {
@@ -72,16 +69,8 @@
                             <a class="btn-comeback btn-comeback-pst" href="{{ route('home.index') }}"> Mua ngay </a>
                             </div>`);
                         }
-                    HT.ValidateDiscount(data.validDiscounts);
-                     // Kiểm tra nếu mã giảm giá không còn hợp lệ
-                    if (data.discountInvalid) {
-                        toastr.warning('Mã giảm giá không còn hợp lệ và đã được xóa.');
-                        $('#discountAmount').text(0 + ' VNĐ'); // Xóa mã giảm giá trong select
-                        $('#coupon_code').val(''); // Xóa mã giảm giá trong ô input
-                    }
-                    else if (data.sessionDiscount !== null && data.sessionDiscount !== '') {
-                        $('#coupon_code').val(data.sessionDiscount); // Cập nhật mã giảm giá từ session
-                    }
+                    // cập nhật voucher
+                    HT.updateVoucherList(data.validDiscounts, total);
                 },
                 error: function(jqXHR) {
                     let errorMsg = jqXHR.responseJSON && jqXHR.responseJSON.error ? jqXHR.responseJSON.error : 'Đã có lỗi xảy ra, vui lòng thử lại.';
@@ -92,10 +81,16 @@
     }
 
     HT.applyDiscount = () => {
-        $('#coupon_code').on('change', function () {
-            var couponCode = $(this).val();
-            var url = $(this).data('url');
-    
+        $('#apply-voucher').on('click', function (e) { // Thêm sự kiện cho nút bấm "Áp dụng"
+            e.preventDefault();
+            var couponCode = $('input[name="voucher"]:checked').val(); // Lấy giá trị mã giảm giá đã chọn từ radio button
+            var url = $(this).data('url'); // Lấy URL từ dữ liệu của nút bấm
+        
+            if (!couponCode) {
+                toastr.error('Vui lòng chọn mã giảm giá!');
+                return; // Dừng lại nếu chưa chọn mã giảm giá
+            }
+        
             $.ajax({
                 url: url,
                 type: 'POST',
@@ -110,21 +105,23 @@
                     // Cập nhật các giá trị hiển thị
                     var total = parseFloat(data.total.toString().replace(/,/g, '')) || 0;
                     var loyaltyAmount = parseFloat(data.loyaltyAmount.toString().replace(/,/g, '')) || 0;
-
+    
                     var totalAmount = total - loyaltyAmount;
-
+    
                     // Cập nhật giá trị vào giao diện người dùng
                     $('#totalAmount').text(totalAmount.toLocaleString() + ' VNĐ');
                     $('#loyalty_rate_Amount').text(loyaltyAmount.toLocaleString() + ' VNĐ');
                     $('#discountAmount').text(data.discountAmount.toLocaleString() + ' VNĐ'); // Cập nhật giảm giá
-                    // $('#totalAmount').text(data.total.toLocaleString() + ' VNĐ'); // Cập nhật tổng
                 },
                 error: function (xhr) {
                     toastr.error(xhr.responseJSON.message || 'Có lỗi xảy ra.');
                 }
             });
+
+            $('.voucher_overlay').hide();            // Ẩn lớp mờ
+            $('.box-voucher').hide();  // Ẩn hộp voucher
         });
-    }
+    };
     
 
     HT.changeQuantity = () => {
@@ -166,19 +163,9 @@
                     $('#subtotalAmount').text(response.subtotal + ' VNĐ');
                     $('#discountAmount').text(response.discountAmount.toLocaleString() + ' VNĐ')
                     $(`.shopping-cart__subtotal-${productId}`).text(response.productTotal + ' VNĐ'); 
-
-                    // Gọi hàm kiểm tra điều kiện mã giảm giá
-                    HT.ValidateDiscount(response.validDiscounts);
-
-                    // Kiểm tra nếu mã giảm giá không còn hợp lệ
-                    if (response.discountInvalid) {
-                        toastr.warning('Mã giảm giá không còn hợp lệ và đã được xóa.');
-                        $('#discountAmount').text(0 + ' VNĐ'); // Xóa mã giảm giá trong select
-                        $('#coupon_code').val(''); // Xóa mã giảm giá trong ô input
-                    }
-                    else if (response.sessionDiscount !== null && response.sessionDiscount !== '') {
-                        $('#coupon_code').val(response.sessionDiscount); // Cập nhật mã giảm giá từ session
-                    }
+                    
+                    // cập nhật voucher
+                    HT.updateVoucherList(response.validDiscounts, total);
                     
 
                 }
@@ -189,19 +176,45 @@
         });
     }
 
-    HT.ValidateDiscount = (validDiscounts) => {
-        let select = $('#coupon_code');
-        select.empty(); // Xóa các option hiện tại
-    
-        // Thêm option mặc định
-        select.append('<option value="">Mã giảm giá</option>');
-    
-        // Thêm các mã giảm giá đủ điều kiện
-        validDiscounts.forEach(function(discount) {
-            select.append(`<option value="${discount.id}">${discount.code}</option>`);
+    // Hàm cập nhật lại danh sách voucher
+    HT.updateVoucherList = (discounts, total) => {
+        var voucherBody = $('.voucher_body'); // Lấy phần chứa danh sách voucher
+
+        voucherBody.empty(); // Xóa tất cả các voucher hiện tại
+
+        // Duyệt qua từng voucher và thêm vào lại phần giao diện
+        discounts.forEach(val => {
+            var disabledClass = (val.use_count >= val.use_limit || total < val.minimum_total_value) ? 'disabled-voucher' : '';
+            var disabledAttribute = (val.use_count >= val.use_limit || total < val.minimum_total_value) ? 'disabled' : '';
+            var daysLeft = Math.ceil((new Date(val.end_date) - new Date()) / (1000 * 60 * 60 * 24));
+            var voucherItem = `
+                <div class="voucher_item ${disabledClass}">
+                    <div class="voucher_image">
+                        <img src="http://127.0.0.1:8000/images/voucher1.png" alt="Voucher Logo">
+                    </div>
+                    <div class="voucher_content">
+                        <div class="voucher_name">${val.code}</div>
+                        <div class="voucher_des">
+                            <span>Đơn tối thiểu ${Number(val.minimum_total_value).toLocaleString()} VNĐ</span>
+                        </div>
+                        <div class="voucher_des">
+                            <span>Giảm tối đa ${Number(val.max_value).toLocaleString()} VNĐ </span>
+                        </div>
+                        <div class="voucher_des d-flex align-items-center justify-content-between">
+                            <span>Hạn còn: ${ daysLeft } ngày</span>
+                            <span>SL: ${val.use_limit - val.use_count}</span>
+                        </div>
+                    </div>
+                    <div class="voucher_radio">
+                        <input type="radio" name="voucher" value="${val.id }" ${disabledAttribute}>
+                    </div>
+                </div>
+            `;
+
+            voucherBody.append(voucherItem); // Thêm voucher vào giao diện
         });
     }
-    
+
     HT.ClearCart = () => {
         $('.btn-clear').on('click', function(e){
             e.preventDefault();
@@ -249,12 +262,28 @@
         })
     }
 
+    HT.ClickVoucher = () => {
+        $('.btn-voucher').on('click', function(e){
+            e.preventDefault();
+            $('body').css('overflow', 'hidden'); // Chặn cuộn trang
+            $('.voucher_overlay').show(); // Hiện lớp mờ
+            $('.box-voucher').show();     // Hiện hộp voucher
+        })
+        // Khi nhấn vào lớp mờ, ẩn cả lớp mờ và hộp voucher
+        $('.voucher_overlay, .close-voucher').on('click', function () {
+            $('body').css('overflow', ''); // Mở lại cuộn trang
+            $('.voucher_overlay').hide(); // Ẩn lớp mờ
+            $('.box-voucher').hide();  // Ẩn hộp voucher
+        });
+    }
+
     $(document).ready(function () {
         HT.addToCart();
         HT.removeCart();
         HT.applyDiscount();
         HT.changeQuantity();
-        HT.ClearCart()
+        HT.ClearCart();
+        HT.ClickVoucher()
 
     });
 

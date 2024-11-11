@@ -46,17 +46,21 @@
                                     <tr>
                                         <td>
                                             <div class="shopping-cart__product-item">
-                                                <img loading="lazy"
+                                                <a href="{{ route('product.detail', $item->slug) }}">
+                                                    <img loading="lazy"
                                                     src="{{ asset('uploads/products/product/' . $item->image) }}"
                                                     width="120" height="120" alt="" />
+                                                </a>
                                             </div>
                                         </td>
                                         <td>
                                             <div class="shopping-cart__product-item__detail">
-                                                <h4>{{ $item['name'] }}</h4>
+                                                <a href="{{ route('product.detail', $item->slug) }}">
+                                                    <h4>{{ $item['name'] }}</h4>
+                                                </a>
                                                 <ul class="shopping-cart__product-item__options">
-                                                    <li>{{ $item->productCategory->name }}</li>
-                                                    <li>{{ $item->brand->name }}</li>
+                                                    <li><a href="{{ route('shop.category', $item->productCategory->slug) }}">Danh mục: {{ $item->productCategory->name }}</a></li>
+                                                    <li><a href="#">Thương hiệu: {{ $item->brand->name }}</a></li>
                                                 </ul>
                                             </div>
                                         </td>
@@ -114,36 +118,10 @@
                                             <th>Tạm tính</th>
                                             <td id="subtotalAmount">{{ number_format($total, 0, '.', ',') . ' VNĐ' }}</td>
                                         </tr>
-                                        {{-- <tr>
-                                            <th>VAT</th>
-                                            <td>$19</td>
-                                        </tr> --}}
                                         <tr>
                                             <th>Mã giảm giá</th>
                                             <td>
-                                                <fieldset class="coupon_code" style="width: 50%">
-                                                    <div class="select">
-                                                        @php
-                                                            $coupon_code = session('discount_code');
-                                                        @endphp
-                                                        <select class="input-filter" name="coupon_code" id="coupon_code"
-                                                            data-url="{{ route('cart.discount') }}">
-                                                            <option value="">Mã giảm giá</option>
-                                                            @foreach ($validDiscounts['validDiscounts']  as $key => $val)
-                                                                <option value="{{ $val->id }}"
-                                                                    {{ $coupon_code == $val->id ? 'selected' : '' }}>
-                                                                    {{ $val->code }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </fieldset>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>Mã giảm giá</th>
-                                            <td>
-                                                <a href="">Chọn mã giảm giá</a>
+                                                <a href="javascript:void(0)" class="btn-voucher">Xem mã giảm giá</a>
                                             </td>
                                         </tr>
                                         <tr>
@@ -180,22 +158,59 @@
                         <a class="btn-comeback" href="{{ route('home.index') }}"> Mua ngay </a>
                     </div>
         @endif
-        {{-- <div class="voucher_overlay"></div>
+
+
+        {{-- voucher box --}}
+        <div class="voucher_overlay"></div>
         <div class="box-voucher">
-            <div class="voucher_header"><h3 class="title-voucher">CHỌN VOUCHER</h3></div>
-            <div class="voucher_body">
-                <div class="voucher_image">
-                    <img src="{{ asset('images/logo/logo.jpg') }}" alt="">
-                </div>
-                <div class="voucher_content">
-                    <div class="voucher_name">Giảm 15% Giảm tối đa ₫15k
-                        Đơn Tối Thiểu ₫0</div>
-                </div>
-                <div class="voucher_radio">
-                    <input type="radio">
-                </div>
+            <div class="voucher_header">
+                <h4 class="title-voucher">CHỌN PHIẾU GIẢM GIÁ</h4>
+                <button class="close-voucher">&times;</button>
             </div>
-        </div> --}}
+            <div class="voucher_body">
+                <!-- Danh sách voucher -->
+                @foreach ($discounts as $val)
+                <div class="voucher_item @if($val->use_count >= $val->use_limit || $total < $val->minimum_total_value)disabled-voucher @endif">
+                    <div class="voucher_image">
+                        <img src="{{ asset('images/voucher1.png') }}" alt="Voucher Logo">
+                    </div>
+                    <div class="voucher_content">
+                        <div class="voucher_name">{{ $val->code }} </div>
+                        <div class="voucher_des">
+                            <span>Đơn tối thiểu {{ number_format( $val->minimum_total_value	, 0, '.', ',') . ' VNĐ' }}</span>
+                        </div>
+                        <div class="voucher_des">
+                            <span>Giảm tối đa {{ number_format( $val->max_value	, 0, '.', ',') . ' VNĐ' }}</span>
+                        </div>
+                        <div class="voucher_des d-flex align-items-center justify-content-between">
+                            {{-- \Carbon\Carbon::now() lấy thời gian hiện tại --}}
+                            {{-- diffInDays() là một phương thức của Carbon, được sử dụng để tính sự khác biệt giữa hai ngày dưới dạng số ngày. --}}
+                            {{-- round() là một hàm PHP dùng để làm tròn một số đến số nguyên gần nhất. --}}
+                            <span>Hạn còn: {{ round(\Carbon\Carbon::now()->diffInDays($val->end_date, false)) }} ngày</span>
+                            <span>SL: {{  $val->use_limit - $val->use_count }}</span>
+                        </div>
+                    </div>
+                    <div class="voucher_radio">
+                        <input type="radio" name="voucher" value="{{ $val->id }}" @if($val->use_count >= $val->use_limit || $total < $val->minimum_total_value) disabled @endif>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            <div class="voucher_footer">
+                <a id="apply-voucher" data-url="{{ route('cart.discount') }}" href="">OK</a>
+            </div>
+        </div>
+        
         </section>
     </main>
+@endsection
+
+
+
+@section('script')
+<script>
+   
+
+
+</script>
 @endsection

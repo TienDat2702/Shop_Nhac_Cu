@@ -264,7 +264,7 @@
                             data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
                           </form> --}}
                           <a href="#" data-url="{{ route('cart.add', $product->id )}}" class="btn-link btn-link_lg me-4 text-uppercase fw-medium add-to-cart"
-                          data-aside="cartDrawer" title="Add To Cart">Add To Cart</a>
+                          data-aside="cartDrawer" title="Add To Cart">Thêm Vào Giỏ</a>
 
                           <a href="{{ route('product.detail', $product->slug) }}" class="btn-link btn-link_lg me-4 text-uppercase fw-medium" title="Quick view">
                             <span class="">Quick View</span>
@@ -302,7 +302,7 @@
               </div>
               <div class="category-banner__item-content">
                 <h3 class="mb-0">{{ $product->name }}</h3>
-                <a href="#" class="btn-link default-underline text-uppercase fw-medium">Xem ngay</a>
+                <a href="{{ route('product.detail', $product->slug) }}" class="btn-link default-underline text-uppercase fw-medium">Xem ngay</a>
               </div>
             </div>
           </div>
@@ -339,8 +339,8 @@
 
                 <div
                   class="anim_appear-bottom position-absolute bottom-0 start-0 d-none d-sm-flex align-items-center bg-body">
-                  <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-add-cart js-open-aside"
-                    data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
+                  <a href="#" data-url="{{ route('cart.add', $product->id )}}" class="btn-link btn-link_lg me-4 text-uppercase fw-medium add-to-cart"
+                    data-aside="cartDrawer" title="Add To Cart">Thêm Vào Giỏ</a>
                   <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-quick-view"
                     data-bs-toggle="modal" data-bs-target="#quickView" title="Quick view">
                     <span class="d-none d-xxl-block">Quick View</span>

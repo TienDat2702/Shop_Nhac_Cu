@@ -88,16 +88,9 @@ class CartController extends Controller
                 $loyaltyAmount = $customer->loyaltyLevel->discount_rate * $total;
             }
 
-            // $validDiscounts = [];
-            // foreach ($discounts as $discount) {
-            //     if ($total >= $discount->minimum_total_value && $discount->use_count < $discount->use_limit && Carbon::now()->isBefore($discount->end_date)) {
-            //         $validDiscounts[] = $discount;
-            //     }
-            // }
-            $validDiscounts = $this->ValidDiscounts($total);
             $discountAmount = $this->applyDiscount($total);
             // dd($validDiscounts);    
-            return view('user.cart', compact('products', 'total', 'discountAmount', 'discounts', 'validDiscounts', 'loyaltyAmount'));
+            return view('user.cart', compact('products', 'total', 'discountAmount', 'discounts', 'loyaltyAmount'));
         // } catch (\Exception $e) {
         //     Log::error($e->getMessage());
         //     return response()->json(['message' => 'Có lỗi xảy ra khi tải giỏ hàng.'], 500);
@@ -181,11 +174,10 @@ class CartController extends Controller
                 $carts,
                 Product::GetProductPublish()->whereIn('id', array_column($carts, 'id'))->get()
             );
+            $discounts = Discount::get();
 
             // Kiểm tra mã giảm giá từ session
             $discountAmount = $this->applyDiscount($total);
-            // Lấy các mã giảm giá hợp lệ
-            $validDiscounts = $this->ValidDiscounts($total);
             // giảm giá thành viên
             $loyaltyAmount = $this->loyatal_level($total);
             return response()->json([
@@ -194,9 +186,7 @@ class CartController extends Controller
                 'discountAmount' => number_format($discountAmount, 0, '.', ','),
                 'total' => number_format($total - $discountAmount, 0, '.', ','),
                 'productTotal' => number_format($productTotal, 0, '.', ','), 
-                'validDiscounts' => $validDiscounts['validDiscounts'], 
-                'discountInvalid' => $validDiscounts['discountInvalid'],
-                'sessionDiscount' => $validDiscounts['discount'],
+                'validDiscounts' => $discounts,
                 'loyaltyAmount' => number_format($loyaltyAmount, 0, '.', ','),
             ]);
         // } catch (\Exception $e) {
@@ -220,6 +210,7 @@ class CartController extends Controller
             $total = $this->calculateTotal($carts, $products);
             // giảm giá thành viên
             $loyaltyAmount = $this->loyatal_level($total);
+            // Nếu không có mã giảm giá, xóa mã giảm giá khỏi session
             if ($code == '') {
                 session()->forget('discount_code');
             } else {
@@ -228,6 +219,7 @@ class CartController extends Controller
                     session(['discount_code' => $code]);
                     $discountRate = $discount->discount_rate;
                     $discountAmount = ($total * $discountRate) / 100;
+                    // Áp dụng giảm giá tối đa nếu vượt quá giá trị giới hạn
                     if ($discountAmount > $discount->max_value) {
                         $discountAmount = $discount->max_value;
                     }
@@ -243,7 +235,7 @@ class CartController extends Controller
             }
             
 
-            // Nếu không có mã giảm giá, trả về tổng không thay đổi
+            // Nếu không có mã giảm giá, trả về tổng tiền ban đầu
             return response()->json([
                 'total' => $total, 
                 'loyaltyAmount' => number_format($loyaltyAmount, 0, '.', ','), 
@@ -277,7 +269,7 @@ class CartController extends Controller
 
             $discountAmount = $this->applyDiscount($total);
 
-            $validDiscounts = $this->ValidDiscounts($total);
+            $discounts = Discount::get();
             // giảm giá thành viên
             $loyaltyAmount = $this->loyatal_level($total);
             return response()->json([
@@ -286,9 +278,7 @@ class CartController extends Controller
                 'subtotal' => number_format($total, 0, '.', ','),
                 'total' => number_format($total - $discountAmount, 0, '.', ','),
                 'discountAmount' => number_format($discountAmount, 0, '.', ','),
-                'validDiscounts' => $validDiscounts['validDiscounts'], 
-                'discountInvalid' => $validDiscounts['discountInvalid'],
-                'sessionDiscount' => $validDiscounts['discount'],
+                'validDiscounts' => $discounts,
                 'loyaltyAmount' => number_format($loyaltyAmount, 0, '.', ','),
             ]);
         } catch (\Exception $e) {
