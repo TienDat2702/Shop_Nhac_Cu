@@ -32,6 +32,11 @@ class ProductController extends Controller
         // Khởi tạo truy vấn sản phẩm
         $productsQuery = Product::GetProductPublish();
 
+        // Thêm sắp xếp sản phẩm nếu có
+        if ($request->has('sort')) {
+            $productsQuery->sortBy($request->sort);
+        }
+
         // Lọc sản phẩm theo khoảng giá nếu có
         if ($request->has('price_segment') && !empty($request->price_segment)) {
             $priceSegmentsChecked = (array) $request->price_segment; // Đảm bảo price_segment luôn là mảng

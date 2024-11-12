@@ -202,8 +202,6 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
         Route::delete('banner/{id}', [BannerController::class, 'destroy'])->name('banner.destroy');
         Route::get('create', [BannerController::class, 'create'])->name('banner.create'); // Route mới
         Route::post('store', [BannerController::class, 'store'])->name('banner.store');
-    Route::get('/completed', [CheckoutController::class, 'order_completed'])->name('checkout.completed');
-    Route::get('/verify/{token}', [CheckoutController::class, 'verify'])->name('checkout.verify');
 });
 
 
