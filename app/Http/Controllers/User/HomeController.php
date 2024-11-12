@@ -46,7 +46,9 @@ class HomeController extends Controller
                 ->limit(4)
                 ->get();
         }
-
+        $posts = Post::GetPostPublish()
+        ->limit(4)
+        ->get();
         return view('user.index', compact(
             'brands', 
             'product_views', 
