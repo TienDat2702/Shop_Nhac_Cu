@@ -38,12 +38,12 @@ class Product extends Model
         if (isset($request['category_id']) && $request['category_id'] > 0) {
             $query->where('category_id', $request['category_id']);
         }
-        return $query->orderBy('id', 'DESC')->paginate(10);
+        return $query->paginate(9);
     }
 
 
     public function scopeGetProductPublish($query) {
-        return $query->where('publish', 2)->orderBy('id','DESC');
+        return $query->where('publish', 2);
     }
    
     public function scopeGenerateUniqueSlug($query, $str)
@@ -91,4 +91,21 @@ class Product extends Model
 {
     return $this->belongsTo(ProductCategory::class);
 }
+
+public function scopeSortBy($query, $sortOption)
+{
+    switch ($sortOption) {
+        case 'price_asc':
+            return $query->orderByRaw('IF(price_sale IS NOT NULL, price_sale, price) ASC');
+        case 'price_desc':
+            return $query->orderByRaw('IF(price_sale IS NOT NULL, price_sale, price) DESC');
+        case 'name_asc':
+            return $query->orderBy('name', 'ASC');
+        case 'name_desc':
+            return $query->orderBy('name', 'DESC');
+        default:
+            return $query->orderBy('id', 'DESC');
+    }
+}
+
 }
