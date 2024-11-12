@@ -1,4 +1,5 @@
 @extends('user.layouts.app')
+@section('title', 'Cửa hàng')
 @section('content')
 <form method="GET" action="{{ $currentCategory ? route('shop.category', $currentCategory->slug) : route('shop.index') }}">
     <main class="pt-90">

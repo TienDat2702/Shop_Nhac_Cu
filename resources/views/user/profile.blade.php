@@ -1,4 +1,5 @@
 @extends('user.layouts.app')
+@section('title', 'Thông tin cá nhân')
 @section('content')
 <style>
   .table> :not(caption)>tr>th {

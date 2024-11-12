@@ -1,4 +1,5 @@
 @extends('user.layouts.app')
+@section('title', 'Tin tức')
 @section('content')
     <main class="pt-90">
         <section class="post-single container">
@@ -8,14 +9,14 @@
                     <div class="col-left">
                         <div class="item ">
                             <div class="image"><a
-                                    href="https://vietthuong.vn/mo-rong-kho-tang-am-thanh-voi-bo-tieng-gx-10-va-cac-san-pham-boss-moi-nhat-tren-boss-exchange"><img
+                                    href="{{ route('post.detail', $post_view->first()->slug) }}"><img
                                         src="{{ asset('uploads/posts/posts/' . $post_view->first()->image) }}"
                                         alt="Mở rộng kho tàng âm thanh với bộ tiếng GX-10 và các sản phẩm Boss mới nhất trên Boss Exchange"
                                         title="Mở rộng kho tàng âm thanh với bộ tiếng GX-10 và các sản phẩm Boss mới nhất trên Boss Exchange"></a>
                             </div>
                             <div class="caption">
                                 <div class="name"><a
-                                        href="https://vietthuong.vn/mo-rong-kho-tang-am-thanh-voi-bo-tieng-gx-10-va-cac-san-pham-boss-moi-nhat-tren-boss-exchange">
+                                        href="{{ route('post.detail', $post_view->first()->slug) }}">
                                         <h3>{{ $post_view->first()->title }}</h3>
                                     </a></div>
                                 <div class="description">{!! $post_view->first()->description !!}
@@ -30,14 +31,14 @@
                         @foreach ($nextTwoPosts as $item)
                             <div class="item ">
                                 <div class="image"><a
-                                        href="https://vietthuong.vn/mo-rong-kho-tang-am-thanh-voi-bo-tieng-gx-10-va-cac-san-pham-boss-moi-nhat-tren-boss-exchange"><img
+                                        href="{{ route('post.detail', $item->slug) }}"><img
                                             src="{{ asset('uploads/posts/posts/' . $item->image) }}"
                                             alt="Mở rộng kho tàng âm thanh với bộ tiếng GX-10 và các sản phẩm Boss mới nhất trên Boss Exchange"
                                             title="Mở rộng kho tàng âm thanh với bộ tiếng GX-10 và các sản phẩm Boss mới nhất trên Boss Exchange"></a>
                                 </div>
                                 <div class="caption">
                                     <div class="name"><a
-                                            href="https://vietthuong.vn/mo-rong-kho-tang-am-thanh-voi-bo-tieng-gx-10-va-cac-san-pham-boss-moi-nhat-tren-boss-exchange">
+                                            href="{{ route('post.detail', $item->slug) }}">
                                             <h3>{{ $item->title }}</h3>
                                         </a></div>
                                 </div>
@@ -46,10 +47,13 @@
                     </div>
                 </div>
                 @endif
-                <div class="category">
+                <div class="categorys">
+                    @php
+                        $lastSegment = last(request()->segments());
+                    @endphp
                     <ul class="menu-cate d-flex align-items-center justify-center">
                         @foreach ($postCategoriesParent as $category)
-                        <li class="menu-cate-item">
+                        <li class="menu-cate-item {{ $category->slug == $lastSegment ? 'active' : ''}}">
                             <a href="{{ route('post.category',$category->slug ) }}">
                                 <div class="text">{{ $category->name }}</div>
                             </a>
@@ -64,11 +68,18 @@
                                 <h2 class="title_home2">{{ $category->name }}</h2>
                                 <div class="xemtatca"><a class="post_category" href="{{ route('post.category.all',$category->slug ) }}">Xem tất cả</a></div>
                                 <div class="row">  
-                                    @foreach ($category->posts->where('publish',2)->take(4) as $post)
+                                    @foreach ($category->posts->where('publish',2)->take(8) as $post)
                                         <div class="col-md-3 list-post">
                                             <div class="item">
                                                 <div class="image"><a href="{{ route('post.detail',$post->slug) }}">
                                                     <img src="{{ asset('uploads/posts/posts/'. $post->image) }}" alt="Ai nên chọn Casio CDP-S110?" title="Ai nên chọn Casio CDP-S110?"></a>
+                                                    @if ($categories->name == 'Video')
+                                                        <div class="icon_play">
+                                                            <a href="{{ route('post.detail',$post->slug) }}">
+                                                                <i class="fa fa-play" aria-hidden="true"></i>
+                                                            </a>
+                                                        </div>
+                                                    @endif
                                                 </div>
                                                 <div class="name">
                                                     <a href="{{ route('post.detail',$post->slug) }}">

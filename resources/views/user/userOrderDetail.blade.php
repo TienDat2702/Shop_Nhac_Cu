@@ -1,5 +1,5 @@
 @extends('user.layouts.app')
-
+@section('title', 'Chi tiết đơn hàng')
 @section('content')
     <style type="text/css" media="print">
         @media print {

@@ -31,6 +31,14 @@ button.remove-cart {
     width: 100%;
     height: auto;
 }
+.shopping-cart .cart-table tbody td {
+    padding: 1.875rem 0.875rem;
+}
+
+select.input-filter option {
+    padding: 50px !important; /* Thay đổi giá trị padding tùy ý */
+}
+
 
 .btn-comeback {
     display: inline-block;
@@ -149,10 +157,6 @@ section.shop-checkout.container {
 
 
 
-
-
-
-
 .menu-cate{
     list-style: none;
     margin: 10px 0 20px 0;
@@ -164,7 +168,7 @@ li.menu-cate-item {
     margin-right: 10px;
     border-radius: 10px;
 }
-li.menu-cate-item:hover{
+li.menu-cate-item:hover, li.menu-cate-item.active{
     background-color:#76653d;
 }
 li.menu-cate-item > a{
@@ -172,3 +176,51 @@ li.menu-cate-item > a{
 }
 
 
+/* chữ mờ */
+.text-gray{
+    color: #9b9b9b
+}
+
+/* nút play */
+.post-category .image, .post_detail .image{
+    position: relative;
+}
+.icon_play {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+    padding-top: 22%;
+}
+.icon_play i {
+    font-size: 30px;
+    color: #fff;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    padding-top: 8px;
+    padding-left: 0px;
+}
+.fa-play:before {
+    content: "\f04b";
+}
+
+
+
+.image img{
+    width: 100% !important;
+}
+
+
+/* voucher */
+.box-voucher {
+    height: 38.75rem;
+    padding: 1rem 1.5rem;
+    width: 31rem;
+    position: absolute;
+}

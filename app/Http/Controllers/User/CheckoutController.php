@@ -338,6 +338,10 @@ class CheckoutController extends Controller
                 }
             }
 
+            $productIds = $order->orderDetails->pluck('product_id');
+            $product_stock = Product::whereIn('id', $productIds)->get();
+            dd($product_stock);
+
             // Lưu thay đổi vào cơ sở dữ liệu
             $customer->save();
 

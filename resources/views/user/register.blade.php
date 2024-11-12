@@ -1,4 +1,5 @@
 @extends('user.layouts.app')
+@section('title', 'Đăng kí')
 @section('content')
 <main class="pt-90">
     <div class="mb-4 pb-4"></div>

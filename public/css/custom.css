@@ -583,7 +583,7 @@ a.btn-clear:hover {
 .list-news .item {
     width: 100%;
     float: left;
-    padding-bottom: 10px;
+    /* padding-bottom: 10px; */
     margin-bottom: 10px;
 }
 .list_ad_top .item_l {
@@ -644,6 +644,28 @@ a.btn-clear:hover {
 }
 .caption .description{
     font-size: 16px;
+}
+.category{
+    margin-bottom: 20px;
+}
+.category>ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.category>ul>li>a {
+    color: #231f20;
+    padding: 10px 0;
+    border-bottom: 1px solid #e6e7e8;
+    display: inline-flex;
+}
+.category>ul>li>a>i {
+    margin-right: 10px;
+}
+.category>ul>li>a h3 {
+    font-size: 15px;
+    margin: 0;
+    line-height: 16px;
 }
 /* end post detail */
 
