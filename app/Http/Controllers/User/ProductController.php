@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\User;
+
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductCategory;
@@ -11,55 +12,74 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    // public function index(Request $request)
-    // {
-    //     $brands = $request->input('brands');
-    //     $categories = $request->input('categories');
-    //     $minPrice = $request->input('min_price');
-    //     $maxPrice = $request->input('max_price');
-    //     $query = Product::query();
-    
-    //     // Lọc theo thương hiệu
-    //     if (!empty($brands)) {
-    //         $query->whereIn('brand_id', $brands);
-    //     }
-    
-    //     // Lọc theo danh mục
-    //     if (!empty($categories)) {
-    //         $query->whereIn('category_id', $categories);
-    //     }
-    
-    //     // Lọc theo giá nếu có giá trị được gửi
-    //     if (!is_null($minPrice) && !is_null($maxPrice)) {
-    //         $query->whereBetween('price', [$minPrice, $maxPrice]);
-    //     }
-    
-    //     // Lấy sản phẩm để phân trang
-    //     $products = $query->paginate(9);
-        
-    //     // Lấy giá nhỏ nhất và lớn nhất từ bảng sản phẩm
-    //     $minPriceFromDb = Product::min('price');
-    //     $maxPriceFromDb = Product::max('price');
-        
-    //     $allCategories = ProductCategory::where('parent_id', 0)->get();
-    //     $allBrands = Brand::all();
-    
-    //     if ($request->ajax()) {
-    //         return view('user.shop', compact('allCategories', 'allBrands', 'products', 'minPriceFromDb', 'maxPriceFromDb'))->render();
-    //     }
-        
-    
-    //     return view('user.shop', compact('allCategories', 'allBrands', 'products', 'minPriceFromDb', 'maxPriceFromDb'));
-    // }
-
-    public function index(){
-        $banners = Banner::where('position', 2 )->where('publish', 2)->get();
-
-        $products = Product::GetProductPublish()->paginate(9);
-        $productCategories = $this->getRecursive(); // Lấy danh sách danh mục phân cấp
+    public function index(Request $request)
+    {
+        // Lấy danh sách banner, danh mục sản phẩm và thương hiệu
+        $banners = Banner::where('position', 2)->where('publish', 2)->get();
+        $productCategories = $this->getRecursive();
         $brands = Brand::GetBrandPublish()->get();
-        return view('user.shop', compact('products','productCategories','brands', 'banners'));
+
+        // Định nghĩa các phân khúc giá
+        $priceSegments = [
+            '0-20000000' => 'Dưới 20 triệu',
+            '20000000-50000000' => '20 triệu - 50 triệu',
+            '50000000-100000000' => '50 triệu - 100 triệu',
+            '100000000-200000000' => '100 triệu - 200 triệu',
+            '200000000-500000000' => '200 triệu - 500 triệu',
+            '500000000-999999999' => 'Trên 500 triệu'
+        ];
+
+        // Khởi tạo truy vấn sản phẩm
+        $productsQuery = Product::GetProductPublish();
+
+        // Lọc sản phẩm theo khoảng giá nếu có
+        if ($request->has('price_segment') && !empty($request->price_segment)) {
+            $priceSegmentsChecked = (array) $request->price_segment; // Đảm bảo price_segment luôn là mảng
+            $productsQuery->where(function ($query) use ($priceSegmentsChecked) {
+                foreach ($priceSegmentsChecked as $segment) {
+                    $range = explode('-', $segment);
+                    if (count($range) === 2) {
+                        $minPrice = (float) $range[0];
+                        $maxPrice = (float) $range[1];
+                        $query->orWhere(function ($subQuery) use ($minPrice, $maxPrice) {
+                            $subQuery->whereBetween('price_sale', [$minPrice, $maxPrice])
+                                ->orWhere(function ($innerQuery) use ($minPrice, $maxPrice) {
+                                    $innerQuery->whereNull('price_sale')
+                                        ->whereBetween('price', [$minPrice, $maxPrice]);
+                                });
+                        });
+                    }
+                }
+            });
+        }
+
+        // Lọc sản phẩm theo thương hiệu nếu có chọn
+        if ($request->has('brand_ids') && is_array($request->brand_ids) && count($request->brand_ids) > 0) {
+            $productsQuery->whereIn('brand_id', $request->brand_ids);
+        }
+
+        // Lọc theo danh mục nếu có slug trong URL
+        if ($request->has('category_slug') && !empty($request->category_slug)) {
+            $category = ProductCategory::GetAllByPublish()->where('slug', $request->category_slug)->first();
+            if ($category) {
+                $productsQuery->where('category_id', $category->id);
+            }
+        }
+        // Phân trang sản phẩm
+        $products = $productsQuery->paginate(9);
+
+        if (!$products->isEmpty()) {
+            return view('user.shop', compact('products', 'productCategories', 'brands', 'banners', 'priceSegments'))->with('currentCategory', null);
+        } else {
+            toastr()->warning('Không có sản phẩm!');
+            return view('user.shop', compact('products', 'productCategories', 'brands', 'banners', 'priceSegments'))->with('currentCategory', null);
+        }
     }
+
+
+
+
+
     public function getRecursive()
     {
         $productCategories = ProductCategory::GetAllByPublish()->get();
@@ -68,69 +88,74 @@ class ProductController extends Controller
         return $listCategories;
     }
 
-    public function category($slug, Request $request){
-        $max = $request->input('max_price');
-        
-        $categories = ProductCategory::GetAllByPublish()->where('slug', $slug)->first();
-        if (!$categories) {
-            // Xử lý nếu không tìm thấy danh mục
+    public function category($slug, Request $request)
+    {
+        // Tìm danh mục dựa trên slug
+        $category = ProductCategory::GetAllByPublish()->where('slug', $slug)->first();
+        if (!$category) {
             return redirect()->route('shop.index')->with('error', 'Danh mục không tồn tại.');
         }
-        $productCategories = $this->getRecursive(); // Lấy danh sách danh mục phân cấp
+
+        // Lấy danh sách danh mục sản phẩm và thương hiệu
+        $productCategories = $this->getRecursive();
         $brands = Brand::GetBrandPublish()->get();
-        $products = Product::GetProductPublish()->where('category_id', $categories->id)->paginate(9);
-        
+
+        // Định nghĩa các phân khúc giá
+        $priceSegments = [
+            '0-20000000' => 'Dưới 20 triệu',
+            '20000000-50000000' => '20 triệu - 50 triệu',
+            '50000000-100000000' => '50 triệu - 100 triệu',
+            '100000000-200000000' => '100 triệu - 200 triệu',
+            '200000000-500000000' => '200 triệu - 500 triệu',
+            '500000000-999999999' => 'Trên 500 triệu'
+        ];
+
+        // Khởi tạo truy vấn sản phẩm cho danh mục hiện tại
+        $productsQuery = Product::GetProductPublish()->where('category_id', $category->id);
+
+        // Lọc sản phẩm theo khoảng giá nếu có
+        if ($request->has('price_segment') && !empty($request->price_segment)) {
+            $priceSegmentsChecked = $request->price_segment;
+            if (is_array($priceSegmentsChecked)) {
+                $productsQuery->where(function ($query) use ($priceSegmentsChecked) {
+                    foreach ($priceSegmentsChecked as $segment) {
+                        $range = explode('-', $segment);
+                        if (count($range) === 2) {
+                            $minPrice = (float) $range[0];
+                            $maxPrice = (float) $range[1];
+                            $query->orWhere(function ($subQuery) use ($minPrice, $maxPrice) {
+                                $subQuery->whereBetween('price_sale', [$minPrice, $maxPrice])
+                                    ->orWhere(function ($innerQuery) use ($minPrice, $maxPrice) {
+                                        $innerQuery->whereNull('price_sale')
+                                            ->whereBetween('price', [$minPrice, $maxPrice]);
+                                    });
+                            });
+                        }
+                    }
+                });
+            }
+        }
+
+        // Lọc sản phẩm theo thương hiệu nếu có
+        if ($request->filled('brand_ids')) {
+            $productsQuery->whereIn('brand_id', $request->brand_ids);
+        }
+
+        // Thực hiện phân trang
+        $products = $productsQuery->paginate(9);
+
         if (!$products->isEmpty()) {
-            return view('user.shop', compact('products','productCategories','brands'));
+            return view('user.shop', compact('products', 'productCategories', 'brands', 'priceSegments'))->with('currentCategory', $category);
+        } else {
+            toastr()->warning('Không có sản phẩm!');
+            return view('user.shop', compact('products', 'productCategories', 'brands', 'priceSegments'))->with('currentCategory', $category);
         }
     }
-    
-
-    //     $brands = $request->input('brands');
-    //     $categories = $request->input('categories');
-    //     $minPrice = $request->input('min_price');
-    //     $maxPrice = $request->input('max_price');
-    //     $banner = Banner::where('order', 1)->where('position', 2)->where('publish', 2)->first();
-    //     $banner2 = Banner::where('order', 2)->where('position', 2)->where('publish', 2)->first();
-    //     $banner3 = Banner::where('order', 3)->where('position', 2)->where('publish', 2)->first();
-    //     $query = Product::query()->where('publish', 2);
-
-    //         // Lọc theo thương hiệu
-    //     if (!empty($brands)) {
-    //         $query->whereIn('brand_id', $brands);
-    //     }
-
-    //     // Lọc theo danh mục
-    //     if (!empty($categories)) {
-    //         $query->whereIn('category_id', $categories);
-    //     }
-
-    //     // Lọc theo giá nếu có giá trị được gửi
-    //     if (!is_null($minPrice) && !is_null($maxPrice)) {
-    //         $query->whereBetween('price', [$minPrice, $maxPrice]);
-    //     }
-
-    //     // Lấy sản phẩm để phân trang
-    //     $products = $query->paginate(9);
-
-    //     // Lấy giá nhỏ nhất và lớn nhất từ bảng sản phẩm với điều kiện publish = 2
-    //     $minPriceFromDb = Product::where('publish', 2)->min('price_sale');
-    //     $maxPriceFromDb = Product::where('publish', 2)->max('price_sale');
-
-
-    //     // Lấy tất cả danh mục và thương hiệu
-    //     $allCategories = $this->getRecursive();
-    //     $allBrands = Brand::where('publish', 2)->get();
-
-    //     if ($request->ajax()) {
-    //         return view('user.shop', compact('allCategories', 'allBrands', 'products', 'minPriceFromDb', 'maxPriceFromDb'))->render();
-    //     }
-    //     return view('user.shop', compact('allCategories', 'allBrands', 'products', 'minPriceFromDb', 'maxPriceFromDb', 'banner', 'banner2', 'banner3'));
-    // }
 
     public function product_details($slug)
     {
         $product = Product::where('slug', $slug)->first();
+
         $product->view += 1;
         $product->save();
         $brand = Brand::find($product->brand_id);

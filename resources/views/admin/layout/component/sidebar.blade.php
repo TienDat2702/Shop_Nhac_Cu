@@ -34,17 +34,8 @@
                             </a>
                         </li>
                         <li class="sub-menu-item">
-<<<<<<< HEAD
-                            <a href="{{ route('post.index') }}" class="">
-=======
-<<<<<<< Updated upstream
-                            <a href="products.html" class="">
->>>>>>> 9f9cddb6cd5fd62b90912b47bdd717e0c6e22c77
-                                <div class="text">Bài viêt</div>
-=======
                             <a href="{{ route('post.index') }}" class="">
                                 <div class="text">Bài viết</div>
->>>>>>> Stashed changes
                             </a>
                         </li>
                     </ul>

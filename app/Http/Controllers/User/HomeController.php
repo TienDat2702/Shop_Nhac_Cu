@@ -23,7 +23,7 @@ class HomeController extends Controller
         // $product_views = Product::orderBy('view', 'desc')->where('publish', 2)->take(2)->get();
         // $product_price = Product::orderBy('price_sale', 'asc')->where('publish', 2)->take(8)->get();
         $products = Product::GetProductPublish()->orderBy('updated_at', 'desc')->paginate(8);
-
+        $product_cateogries = ProductCategory::where('publish',2)->where('level',1)->take(6)->get();
         $posts = Post::GetPostPublish()->limit(4)->get();
 
         return view('user.index', compact(
@@ -32,7 +32,8 @@ class HomeController extends Controller
             'product_price', 
             'products', 
             'banners', 
-            'posts'
+            'posts',
+            'product_cateogries'
         ));
     }
     public function about(){
