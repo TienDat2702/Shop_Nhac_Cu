@@ -75,7 +75,7 @@ Route::middleware(CustomerAuth::class)->group(function () {
         Route::get('momo-return', [CheckoutController::class, 'momo_return'])->name('momo.return');
         Route::get('/completed', [CheckoutController::class, 'order_completed'])->name('checkout.completed');
         Route::get('/verify/{token}', [CheckoutController::class, 'verify'])->name('checkout.verify');
-
+        Route::get('/showrooms/nearest', [ShowroomController::class, 'findNearestShowroom'])->name('checkout.showroom');
     });
 });
 
