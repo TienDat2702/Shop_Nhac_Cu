@@ -384,25 +384,10 @@
                                                             width="330" height="400" alt="{{ $product->name }}"
                                                             class="pc__img"></a>
                                                 </div>
-                                                {{-- <div class="swiper-slide">
-                                                <a href="details.html"><img loading="lazy"
-                                                        src="{{ asset('uploads/products/product/'.$product->image) }}" width="330"
-                                                        height="400" alt="Cropped Faux leather Jacket"
-                                                        class="pc__img"></a>
-                                            </div> --}}
                                             </div>
-                                            {{-- <span class="pc__img-prev"><svg width="7" height="11" viewBox="0 0 7 11"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_prev_sm" />
-                                            </svg></span>
-                                        <span class="pc__img-next"><svg width="7" height="11" viewBox="0 0 7 11"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_next_sm" />
-                                            </svg></span> --}}
                                         </div>
-                                        <button
-                                            class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside"
-                                            data-aside="cartDrawer" title="Add To Cart">Thêm vào giỏ hàng</button>
+                                        <a class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium add-to-cart"
+                                            data-aside="cartDrawer" data-url="{{ route('cart.add', $product->id) }}" title="Add To Cart">Thêm vào giỏ hàng</a>
                                     </div>
 
                                     <div class="pc__info position-relative">

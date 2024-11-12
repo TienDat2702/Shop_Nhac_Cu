@@ -278,9 +278,6 @@ class CheckoutController extends Controller
             }
             
             //nếu có method là VNPAY thì chuyển đến VNPAY
-            if ($method == 'Thanh toán khi nhận hàng') {
-                
-            }
             if ($method == 'Thanh toán VNPAY') {
                 return $this->vnpay_payment($order->id);
             }

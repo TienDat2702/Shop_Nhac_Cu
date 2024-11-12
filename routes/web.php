@@ -35,16 +35,15 @@ use App\Http\Controllers\User\FavouriteController;
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
 Route::get('/shop/category/{slug}', [ProductController::class, 'category'])->name('shop.category');
-Route::get('/product/{product_slug}', [ProductController::class, 'product_details'])->name('product.detail');
+Route::get('/product/{slug}', [ProductController::class, 'product_details'])->name('product.detail');
+
+
+Route::get('/about',[HomeController::class,'about'])->name('about');
+// CONTACT
+Route::get('/contact',[HomeController::class,'contact'])->name('contact');
+Route::post('/contact/post',[HomeController::class,'postContact'])->name('contact.post');
 
 // GIỎ HÀNG
-Route::get('/shop/{product_slug}',[ProductController::class,'product_details'])->name('shop.product.details');
-Route::get('/login', [CustomerController::class, 'login'])->name('customer.login');
-Route::get('/register', [CustomerController::class, 'register'])->name('customer.register');
-Route::get('/cart', [OrderController::class, 'index'])->name('cart.index');
-
-// AJAX
-Route::get('/product/{slug}', [ProductController::class, 'product_details'])->name('product.detail');
 Route::prefix('cart')->group(function () {
     Route::get('/', [CartController::class, 'index'])->name('cart.index');
     Route::post('/add/{id}', [CartController::class, 'add'])->name('cart.add');
@@ -54,16 +53,7 @@ Route::prefix('cart')->group(function () {
     Route::post('/clear', [CartController::class, 'clear'])->name('cart.clear');
 });
 
-// THANH TOÁN
-Route::prefix('checkout')->group(function () {
-    Route::get('/', [CheckoutController::class, 'checkout'])->name('checkout');
-    Route::post('/online', [CheckoutController::class, 'onlineCheckout'])->name('checkout.online');
-    Route::get('vnpay-return', [CheckoutController::class, 'vnpay_return'])->name('vnpay.return');
-    Route::get('momo-return', [CheckoutController::class, 'momo_return'])->name('momo.return');
-    Route::get('/completed', [CheckoutController::class, 'order_completed'])->name('checkout.completed');
-    Route::get('/verify/{token}', [CheckoutController::class, 'verify'])->name('checkout.verify');
 
-});
 
 // TIN TỨC
 Route::prefix('post')->group(function () {
@@ -85,6 +75,17 @@ Route::middleware(CustomerAuth::class)->group(function () {
     Route::post('/profile', [CustomerController::class, 'check_profile'])->name('customer.chek_profile');
     Route::get('/change-password', [CustomerController::class, 'change_password'])->name('customer.change_password');
     Route::post('/change-password', [CustomerController::class, 'check_change_password']);
+
+    // THANH TOÁN
+    Route::prefix('checkout')->group(function () {
+        Route::get('/', [CheckoutController::class, 'checkout'])->name('checkout');
+        Route::post('/online', [CheckoutController::class, 'onlineCheckout'])->name('checkout.online');
+        Route::get('vnpay-return', [CheckoutController::class, 'vnpay_return'])->name('vnpay.return');
+        Route::get('momo-return', [CheckoutController::class, 'momo_return'])->name('momo.return');
+        Route::get('/completed', [CheckoutController::class, 'order_completed'])->name('checkout.completed');
+        Route::get('/verify/{token}', [CheckoutController::class, 'verify'])->name('checkout.verify');
+
+    });
 });
 
 
@@ -108,16 +109,8 @@ Route::prefix('wishlist')->group(function () {
     Route::delete('/remove/{id}', [FavouriteController::class, 'remove'])->name('wishlist.remove'); // Xóa sản phẩm khỏi wishlist
 });
 
-Route::get('/about',[HomeController::class,'about'])->name('about');
 Route::get('admin/login', [AdminController::class, 'login'])->name('admin.login');
-   
-
 Route::post('/admin/login', [AdminController::class, 'check_login'])->name('admin.check_login');
-Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
-
-// CONTACT
-Route::get('/contact',[HomeController::class,'contact'])->name('contact');
-Route::post('/contact/post',[HomeController::class,'postContact'])->name('contact.post');
 
 // AJAX CHANGE PUBLISH
 Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
@@ -202,31 +195,10 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
         Route::delete('banner/{id}', [BannerController::class, 'destroy'])->name('banner.destroy');
         Route::get('create', [BannerController::class, 'create'])->name('banner.create'); // Route mới
         Route::post('store', [BannerController::class, 'store'])->name('banner.store');
-    Route::get('/completed', [CheckoutController::class, 'order_completed'])->name('checkout.completed');
-    Route::get('/verify/{token}', [CheckoutController::class, 'verify'])->name('checkout.verify');
-});
-
-
-
-    Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
-
-
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
-
+    });
 
     // POST CATEGORY
     Route::prefix('post')->group(function () {
-        
-        Route::get('category', [AdminPostCategoryController::class,'index'])->name('postCatagory.index');
-
-        Route::get('category/search', [AdminPostCategoryController::class,'search'])->name('postCatagory.search');
-        Route::get('category/create', [AdminPostCategoryController::class,'create'])->name('postCatagory.create');
-        Route::post('category/store', [AdminPostCategoryController::class,'store'])->name('postCatagory.store');
-        Route::get('category/edit/{id}', [AdminPostCategoryController::class,'edit'])->name('postCatagory.edit');
-        Route::post('category/update/{id}', [AdminPostCategoryController::class,'update'])->name('postCatagory.update');
-        Route::delete('category/destroy/{id}', [AdminPostCategoryController::class,'destroy'])->name('postCatagory.destroy');
-    });
-    
         Route::get('category', [AdminPostCategoryController::class,'index'])->name('postCategory.index');
         Route::get('category/deleted', [AdminPostCategoryController::class,'deleted'])->name('postCategory.deleted');
         Route::get('category/search/{config}', [AdminPostCategoryController::class,'search'])->name('postCategory.search');
@@ -237,20 +209,21 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
         Route::delete('category/destroy/{id}', [AdminPostCategoryController::class,'destroy'])->name('postCategory.destroy');
         Route::get('category/restore/{id}', [AdminPostCategoryController::class,'restore'])->name('postCategory.restore');
         Route::delete('category/forceDelete/{id}', [AdminPostCategoryController::class,'forceDelete'])->name('postCategory.forceDelete');
-    // });
+    });
+    
     // POST
     Route::prefix('post')->group(function () {
-        Route::get('/', [PostController::class,'index'])->name('post.index');
-        Route::get('/test', [PostController::class,'test'])->name('post.test');
-        Route::get('deleted', [PostController::class,'deleted'])->name('post.deleted');
-        Route::get('search/{config}', [PostController::class,'search'])->name('post.search');
-        Route::get('create', [PostController::class,'create'])->name('post.create');
-        Route::post('store', [PostController::class,'store'])->name('post.store');
-        Route::get('edit/{slug}', [PostController::class,'edit'])->name('post.edit');
-        Route::post('update/{slug}', [PostController::class,'update'])->name('post.update');
-        Route::delete('destroy/{id}', [PostController::class,'destroy'])->name('post.destroy');
-        Route::get('restore/{id}', [PostController::class,'restore'])->name('post.restore');
-        Route::delete('forceDelete/{id}', [PostController::class,'forceDelete'])->name('post.forceDelete');
+        Route::get('/', [AdminPostController::class,'index'])->name('post.index');
+        Route::get('/test', [AdminPostController::class,'test'])->name('post.test');
+        Route::get('deleted', [AdminPostController::class,'deleted'])->name('post.deleted');
+        Route::get('search/{config}', [AdminPostController::class,'search'])->name('post.search');
+        Route::get('create', [AdminPostController::class,'create'])->name('post.create');
+        Route::post('store', [AdminPostController::class,'store'])->name('post.store');
+        Route::get('edit/{slug}', [AdminPostController::class,'edit'])->name('post.edit');
+        Route::post('update/{slug}', [AdminPostController::class,'update'])->name('post.update');
+        Route::delete('destroy/{id}', [AdminPostController::class,'destroy'])->name('post.destroy');
+        Route::get('restore/{id}', [AdminPostController::class,'restore'])->name('post.restore');
+        Route::delete('forceDelete/{id}', [AdminPostController::class,'forceDelete'])->name('post.forceDelete');
     });
 
     // UPLOAD IMAGE CKEDITOR

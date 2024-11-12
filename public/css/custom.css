@@ -49,6 +49,7 @@ body {
     position: relative;
     overflow: hidden;
     color: white;
+    height: 250px;
 }
 .category-item img {
     width: 100%;
@@ -1035,4 +1036,13 @@ a.btn-clear:hover {
   100% {
     opacity: 0;
   }
+}
+
+
+
+
+
+button.menu-link.menu-link_us-s.add-to-wishlist {
+    border: none;
+    background: #fff;
 }

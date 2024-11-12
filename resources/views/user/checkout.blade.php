@@ -188,17 +188,10 @@
                 </div>
               
               <button id="checkoutButton" type="submit" class="btn btn-primary btn-checkout">ĐẶT HÀNG</button>
-              <script>
-
-              </script>
             </div>
           </div>
         </div>
       </form>
-      {{-- <form action="{{ route('checkout.vnpay') }}" method="POST">
-        @csrf
-        <button type="submit" name="redirect" class="btn btn-primary">Thanh toán VNPAY</button>
-      </form> --}}
     </section>
   </main>
 
