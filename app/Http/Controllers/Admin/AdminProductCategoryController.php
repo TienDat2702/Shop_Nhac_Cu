@@ -9,7 +9,7 @@ use App\Services\UploadImageService;
 use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 
-class ProductCategoryController extends Controller
+class AdminProductCategoryController extends Controller
 {
     protected $uploadImageService;
 

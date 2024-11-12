@@ -6,7 +6,7 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AdminPostCategoryController;
 use App\Http\Controllers\Admin\AdminPostController;
-use App\Http\Controllers\Admin\ProductCategoryController;
+use App\Http\Controllers\Admin\AdminProductCategoryController;
 use App\Http\Controllers\Admin\UploadCKImageController;
 use App\Http\Controllers\Ajax\AjaxDashboardController;
 use App\Http\Controllers\User\CartController;
@@ -18,11 +18,15 @@ use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\User\ProductController;
 use App\Http\Controllers\User\CustomerController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Middleware\CustomerMiddleware;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\CheckoutController;
 use App\Http\Controllers\User\PostController;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
+
+use App\Http\Middleware\CustomerAuth;
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
@@ -61,8 +65,25 @@ Route::prefix('post')->group(function () {
 // user;
 Route::get('/login', [CustomerController::class, 'login'])->name('customer.login');
 Route::post('/do-login', [CustomerController::class, 'dologin'])->name('customer.dologin');
+Route::get('/verify-account/{email}', [CustomerController::class, 'verify'])->name('customer.verify');
+Route::get('/register', [CustomerController::class, 'register'])->name('customer.register');
+Route::post('/register', [CustomerController::class, 'check_register'])->name('customer.check_register');
+
+Route::middleware(CustomerAuth::class)->group(function () {
+    Route::get('/profile', [CustomerController::class, 'profile'])->name('customer.profile');
+    Route::post('/profile', [CustomerController::class, 'check_profile'])->name('customer.chek_profile');
+    Route::get('/change-password', [CustomerController::class, 'change_password'])->name('customer.change_password');
+    Route::post('/change-password', [CustomerController::class, 'check_change_password']);
+});
+
+
+Route::get('/forgot', [CustomerController::class, 'forgot'])->name('customer.forgot');
+Route::post('/forgot', [CustomerController::class, 'check_forgot'])->name('customer.check_forgot');
+Route::get('/reset-password/{token}', [CustomerController::class, 'reset_password'])->name('customer.reset_password');
+Route::post('/reset-password/{token}', [CustomerController::class, 'check_reset_password'])->name('customer.check_reset_password');
+
+
 Route::get('/logout', [CustomerController::class, 'logout'])->name('customer.logout');
-Route::get('/profile', [CustomerController::class, 'profile'])->name('customer.profile');
 Route::get('/orders', [CustomerController::class, 'customerOrder'])->name('customer.orders');
 Route::get('/orders/history', [CustomerController::class, 'customerOrderHistory'])->name('customer.orders.history');
 Route::post('/orders/cancel', [CustomerController::class, 'customerOrderCancel'])->name('customer.orders.cancel');
@@ -70,6 +91,13 @@ Route::get('/orders/{id}', [CustomerController::class, 'customerOrderDetail'])->
  
 // ABOUT
 Route::get('/about',[HomeController::class,'about'])->name('about');
+Route::get('/contact',[HomeController::class,'contact'])->name('contact');
+Route::get('admin/login', [AdminController::class, 'login'])
+    ->name('admin.login');
+   
+
+Route::post('/admin/login', [AdminController::class, 'check_login'])->name('admin.check_login');
+Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
 
 // CONTACT
 Route::get('/contact',[HomeController::class,'contact'])->name('contact');
@@ -79,8 +107,9 @@ Route::post('/contact/post',[HomeController::class,'postContact'])->name('contac
 Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
 
 // ADMIN
-Route::prefix('admin')->group(function () {
+Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
+    Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
 
     // ORDER
     Route::prefix('order')->group(function () {
@@ -166,15 +195,15 @@ Route::prefix('admin')->group(function () {
 
     // PRODUCT CATEGORY
     Route::prefix('product')->group(function () {
-        Route::get('category', [ProductCategoryController::class, 'index'])->name('productCategory.index');
-        Route::get('category/deleted', [ProductCategoryController::class, 'deleted'])->name('productCategory.deleted');
-        Route::get('category/create', [ProductCategoryController::class, 'create'])->name('productCategory.create');
-        Route::post('category/store', [ProductCategoryController::class, 'store'])->name('productCategory.store');
-        Route::get('category/edit/{id}', [ProductCategoryController::class, 'edit'])->name('productCategory.edit');
-        Route::post('category/update/{id}', [ProductCategoryController::class, 'update'])->name('productCategory.update');
-        Route::delete('category/destroy/{id}', [ProductCategoryController::class, 'destroy'])->name('productCategory.destroy');
-        Route::get('category/restore/{id}', [ProductCategoryController::class, 'restore'])->name('productCategory.restore');
-        Route::delete('category/forceDelete/{id}', [ProductCategoryController::class, 'forceDelete'])->name('productCategory.forceDelete');
+        Route::get('category', [AdminProductCategoryController::class, 'index'])->name('productCategory.index');
+        Route::get('category/deleted', [AdminProductCategoryController::class, 'deleted'])->name('productCategory.deleted');
+        Route::get('category/create', [AdminProductCategoryController::class, 'create'])->name('productCategory.create');
+        Route::post('category/store', [AdminProductCategoryController::class, 'store'])->name('productCategory.store');
+        Route::get('category/edit/{id}', [AdminProductCategoryController::class, 'edit'])->name('productCategory.edit');
+        Route::post('category/update/{id}', [AdminProductCategoryController::class, 'update'])->name('productCategory.update');
+        Route::delete('category/destroy/{id}', [AdminProductCategoryController::class, 'destroy'])->name('productCategory.destroy');
+        Route::get('category/restore/{id}', [AdminProductCategoryController::class, 'restore'])->name('productCategory.restore');
+        Route::delete('category/forceDelete/{id}', [AdminProductCategoryController::class, 'forceDelete'])->name('productCategory.forceDelete');
     });
 
     // PRODUCT
