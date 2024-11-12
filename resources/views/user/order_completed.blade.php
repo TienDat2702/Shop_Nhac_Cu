@@ -4,7 +4,7 @@
     <main class="pt-90">
         <div class="mb-4 pb-4"></div>
         <section class="shop-checkout container">
-            <h2 class="page-title">Order Received</h2>
+            <h2 class="page-title">Đã nhận được đơn hàng</h2>
             <div class="checkout-steps">
               <a href="{{ route('cart.index') }}" class="checkout-steps__item active">
                 <span class="checkout-steps__item-number">01</span>

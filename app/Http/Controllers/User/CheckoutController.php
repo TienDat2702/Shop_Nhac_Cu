@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CheckoutRequest;
+use App\Mail\CongratulationsLoalty;
 use App\Mail\OrderConfirmation;
 use App\Mail\OrderSuccess;
 use App\Models\Customer;
@@ -302,15 +303,16 @@ class CheckoutController extends Controller
         $order_id = session('order');
         // Tìm đơn hàng theo order_id
         $order = Order::find($order_id);
-         // giảm giá thành viên
-        $loyaltyAmount = $this->loyatal_level($order->total);
-        $discountAmount = $this->applyDiscount($order->total);
-        // Lấy chi tiết sản phẩm trong đơn hàng (quan hệ đã được thiết lập)
-        $orderDetails = $order->orderDetails;
+        
         if(!$order){
             toastr()->success('Cám ơn bạn <3');
             return redirect()->route('home.index');
         }else{
+             // giảm giá thành viên
+            $loyaltyAmount = $this->loyatal_level($order->total);
+            $discountAmount = $this->applyDiscount($order->total);
+            // Lấy chi tiết sản phẩm trong đơn hàng (quan hệ đã được thiết lập)
+            $orderDetails = $order->orderDetails;
             // Xóa order_id khỏi session để tránh hiển thị lại đơn hàng này
             session()->forget('carts');
             $discount = Discount::where('id',session('discount_code'))->first();
@@ -331,18 +333,27 @@ class CheckoutController extends Controller
             // Lấy tất cả các mức loyalty level (giả định rằng có trường `threshold` trong bảng loyalty levels)
             $loyaltyLevels = LoyaltyLevel::orderBy('order_total_price', 'asc')->get(); // Lấy danh sách các cấp độ theo thứ tự tăng dần
 
-            // Kiểm tra từng mức loyalty level
-            foreach ($loyaltyLevels as $loyaltyLevel) {
-                if ($order_total_price > $loyaltyLevel->order_total_price) { 
-                    // Nếu tổng giá trị đơn hàng lớn hơn mức threshold hiện tại, cập nhật loyalty_level_id
-                    $customer->loyalty_level_id = $loyaltyLevel->id; // Cập nhật cấp độ thành viên của khách hàng
+            if ($loyaltyLevels) {
+
+                // Lưu giá trị loyalty_level_id trước khi cập nhật
+                $oldLoyaltyLevelId = $customer->loyalty_level_id;
+                // dd($oldLoyaltyLevelId);
+                // Kiểm tra từng mức loyalty level
+                foreach ($loyaltyLevels as $loyaltyLevel) {
+                    if ($order_total_price > $loyaltyLevel->order_total_price && $customer->loyalty_level_id != 4) { 
+
+                        // Nếu tổng giá trị đơn hàng lớn hơn mức threshold hiện tại, cập nhật loyalty_level_id
+                        $level = $loyaltyLevel->id;
+                        $customer->loyalty_level_id = $level; // Cập nhật cấp độ thành viên của khách hàng
+                        $loyalty = $loyaltyLevels->where('id', $level)->first();
+                        // gửi email nếu loyalty_level_id thay đổi
+                        if ($oldLoyaltyLevelId < $customer->loyalty_level_id) {
+                            Mail::to($customer->email)->send(new CongratulationsLoalty($loyalty,$customer));
+                        }
+                    }
                 }
             }
-
-            // $productIds = $order->orderDetails->pluck('product_id');
-            // $product_stock = Product::whereIn('id', $productIds)->get();
-            // dd($product_stock);
-
+            
             // Lưu thay đổi vào cơ sở dữ liệu
             $customer->save();
 

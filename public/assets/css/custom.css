@@ -300,9 +300,8 @@ li.menu-cate-item > a{
 .voucher_radio input[type="radio"] {
     width: 20px;
     height: 20px;
-    accent-color: #b9a16b; /* Màu nút radio */
+    accent-color: #95752e; /* Màu nút radio */
     border-radius: 50%; /* Bo tròn cho nút radio */
-    border: 2px solid #b9a16b !important; /* Viền nút radio */
     outline: none; /* Bỏ viền khi focus */
     cursor: pointer; /* Hiệu ứng khi di chuột */
     transition: border-color 0.3s, background-color 0.3s; /* Hiệu ứng khi hover */
@@ -310,7 +309,6 @@ li.menu-cate-item > a{
 
 .voucher_radio input[type="radio"]:checked {
     background-color: #b9a16b; /* Màu nền khi được chọn */
-    border-color: #b9a16b !important; /* Màu viền khi chọn */
 }
 
 .voucher_name {
@@ -348,5 +346,76 @@ a.btn-voucher:hover {
 }
 /* end box voucher */
 
-
-
+.progress-tracker {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    position: relative;
+    margin-top: 20px;
+  }
+  
+  .progress-step {
+    text-align: center;
+    flex: 1;
+    position: relative;
+  }
+  
+  .progress-step__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin: 0 auto;
+  }
+  
+  .circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #ddd;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+  
+  .progress-step--completed .circle {
+    background-color: #2dc258;
+  }
+  
+  .progress-step--current .circle {
+    background-color: #007bff;
+  }
+  
+  .progress-step__text {
+    margin-top: 5px;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  .progress-step__date {
+    font-size: 12px;
+    color: #666;
+    margin-top: 2px;
+  }
+  
+  .progress-line {
+    position: absolute;
+    top: 20px;
+    left: 5%;
+    width: 90%;
+    height: 4px;
+    background-color: #e0e0e0;
+    z-index: -1;
+  }
+  
+  .progress-line__foreground {
+    position: absolute;
+    height: 100%;
+    background-color: #2dc258;
+    transition: width 0.3s ease;
+  }
+  

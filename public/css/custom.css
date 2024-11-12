@@ -907,7 +907,7 @@ a.btn-clear:hover {
     display: none; /* Ẩn mặc định */
     justify-content: center;
     align-items: center;
-    z-index: 9999; /* Đảm bảo vòng xoay luôn nằm trên tất cả các phần tử khác */
+    z-index: 99999; /* Đảm bảo vòng xoay luôn nằm trên tất cả các phần tử khác */
 }
 
 

@@ -8,25 +8,6 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    // public function index(){
-    //     $config = 'danh mục';
-    //     $post_categories = PostCategory::whereHas('posts', function ($query) {
-    //         $query->GetPostPublish();
-    //     })->paginate(4);
-    //     $post_view = Post::GetPostPublish()->orderBy('view','DESC')->get();
-    //     $posts = Post::GetPostPublish()->get();
-    //     $postCategories = PostCategory::GetAllByPublish()->where('parent_id',0)->get();
-    //     $categories = PostCategory::GetAllByPublish()->get();
-    //     return view('user.post' , compact('post_categories','posts', 'postCategories', 'post_view','categories','config'));
-    // }
-
-    // public function getRecursive(){
-    //     $postCategories = PostCategory::GetAllByPublish()->get(); // danh sách tất cả danh mục đang hoạt động
-    //     $listCategories = []; // tạo mảng chứa category
-    //     PostCategory::recursive($postCategories, $parents = 0, $level = 1, $listCategories); // hàm đệ quy
-    //     return $listCategories;
-    // }
-
 
     public function category($slug){
         $categories = PostCategory::where('slug', $slug)->first();

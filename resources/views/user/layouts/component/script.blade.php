@@ -9,6 +9,7 @@
     // Hiển thị vòng xoay khi bắt đầu tải hoặc chuyển trang
     function showLoader() {
         document.getElementById('loading-spinner').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
     }
 
     // Ẩn vòng xoay khi tải xong hoặc chuyển trang xong
@@ -30,7 +31,7 @@
 
 <script>
     window.onbeforeunload = function() {
-    showLoader(); // Hiển thị vòng xoay khi rời khỏi trang
+        showLoader(); // Hiển thị vòng xoay khi rời khỏi trang
     };
 </script>
 

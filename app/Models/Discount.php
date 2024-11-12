@@ -29,9 +29,8 @@ class Discount extends Model
     ];
 
     public function scopeGetDiscount($request){
-        return $request->where('end_date', '>', now());
+        return $request->where('end_date', '>', now())->where('status', 'active')->whereColumn('use_count', '<', 'use_limit');
     }
-
     public function orders()
     {
         return $this->hasMany(Order::class);

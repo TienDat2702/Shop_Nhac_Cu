@@ -86,10 +86,10 @@
             var couponCode = $('input[name="voucher"]:checked').val(); // Lấy giá trị mã giảm giá đã chọn từ radio button
             var url = $(this).data('url'); // Lấy URL từ dữ liệu của nút bấm
         
-            if (!couponCode) {
-                toastr.error('Vui lòng chọn mã giảm giá!');
-                return; // Dừng lại nếu chưa chọn mã giảm giá
-            }
+            // if (!couponCode) {
+            //     toastr.error('Vui lòng chọn mã giảm giá!');
+            //     return; // Dừng lại nếu chưa chọn mã giảm giá
+            // }
         
             $.ajax({
                 url: url,
@@ -270,7 +270,7 @@
             $('.box-voucher').show();     // Hiện hộp voucher
         })
         // Khi nhấn vào lớp mờ, ẩn cả lớp mờ và hộp voucher
-        $('.voucher_overlay, .close-voucher').on('click', function () {
+        $('.voucher_overlay, .close-voucher, #apply-voucher').on('click', function () {
             $('body').css('overflow', ''); // Mở lại cuộn trang
             $('.voucher_overlay').hide(); // Ẩn lớp mờ
             $('.box-voucher').hide();  // Ẩn hộp voucher

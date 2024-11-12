@@ -1,5 +1,5 @@
 @extends('user.layouts.app')
-@section('title', 'Tin tức')
+@section('title', $categories->name)
 @section('content')
     <main class="pt-90">
         <section class="post-single container">

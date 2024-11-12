@@ -74,8 +74,7 @@ class CartController extends Controller
             $customer = Auth::guard('customer')->user();
             
             $carts = session()->get('carts', []);
-            $discounts = Discount::get();
-  
+            $discounts = Discount::GetDiscount()->get();
             $productIds = array_column($carts, 'id');
             $products = Product::GetProductPublish()->whereIn('id', $productIds)->get();
              
@@ -123,7 +122,7 @@ class CartController extends Controller
 
     private function ValidDiscounts($total)
     {
-        $discounts = Discount::get();
+        $discounts = Discount::GetDiscount()->get();
         $validDiscounts = [];
         $discountInvalid = false;
         foreach ($discounts as $discount) {
@@ -174,7 +173,7 @@ class CartController extends Controller
                 $carts,
                 Product::GetProductPublish()->whereIn('id', array_column($carts, 'id'))->get()
             );
-            $discounts = Discount::get();
+            $discounts = Discount::GetDiscount()->get();
 
             // Kiểm tra mã giảm giá từ session
             $discountAmount = $this->applyDiscount($total);
@@ -269,7 +268,7 @@ class CartController extends Controller
 
             $discountAmount = $this->applyDiscount($total);
 
-            $discounts = Discount::get();
+            $discounts = Discount::GetDiscount()->get();
             // giảm giá thành viên
             $loyaltyAmount = $this->loyatal_level($total);
             return response()->json([

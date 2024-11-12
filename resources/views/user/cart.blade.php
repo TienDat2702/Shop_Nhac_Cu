@@ -169,32 +169,40 @@
             </div>
             <div class="voucher_body">
                 <!-- Danh sách voucher -->
-                @foreach ($discounts as $val)
-                <div class="voucher_item @if($val->use_count >= $val->use_limit || $total < $val->minimum_total_value)disabled-voucher @endif">
-                    <div class="voucher_image">
-                        <img src="{{ asset('images/voucher1.png') }}" alt="Voucher Logo">
-                    </div>
-                    <div class="voucher_content">
-                        <div class="voucher_name">{{ $val->code }} </div>
-                        <div class="voucher_des">
-                            <span>Đơn tối thiểu {{ number_format( $val->minimum_total_value	, 0, '.', ',') . ' VNĐ' }}</span>
+                @if (count($discounts) > 1)
+                    @foreach ($discounts as $val)
+                    <div class="voucher_item @if($val->use_count >= $val->use_limit || $total < $val->minimum_total_value) disabled-voucher @endif">
+                        <div class="voucher_image">
+                            <img src="{{ asset('images/voucher1.png') }}" alt="Voucher Logo">
                         </div>
-                        <div class="voucher_des">
-                            <span>Giảm tối đa {{ number_format( $val->max_value	, 0, '.', ',') . ' VNĐ' }}</span>
+                        <div class="voucher_content">
+                            <div class="voucher_name">{{ $val->code }} </div>
+                            <div class="voucher_des">
+                                <span>Đơn tối thiểu {{ number_format( $val->minimum_total_value	, 0, '.', ',') . ' VNĐ' }}</span>
+                            </div>
+                            <div class="voucher_des">
+                                <span>Giảm tối đa {{ number_format( $val->max_value	, 0, '.', ',') . ' VNĐ' }}</span>
+                            </div>
+                            <div class="voucher_des d-flex align-items-center justify-content-between">
+                                {{-- \Carbon\Carbon::now() lấy thời gian hiện tại --}}
+                                {{-- diffInDays() là một phương thức của Carbon, được sử dụng để tính sự khác biệt giữa hai ngày dưới dạng số ngày. --}}
+                                {{-- round() là một hàm PHP dùng để làm tròn một số đến số nguyên gần nhất. --}}
+                                <span>Hạn còn: {{ round(\Carbon\Carbon::now()->diffInDays($val->end_date, false)) }} ngày</span>
+                                <span>SL: {{  $val->use_limit - $val->use_count }}</span>
+                            </div>
                         </div>
-                        <div class="voucher_des d-flex align-items-center justify-content-between">
-                            {{-- \Carbon\Carbon::now() lấy thời gian hiện tại --}}
-                            {{-- diffInDays() là một phương thức của Carbon, được sử dụng để tính sự khác biệt giữa hai ngày dưới dạng số ngày. --}}
-                            {{-- round() là một hàm PHP dùng để làm tròn một số đến số nguyên gần nhất. --}}
-                            <span>Hạn còn: {{ round(\Carbon\Carbon::now()->diffInDays($val->end_date, false)) }} ngày</span>
-                            <span>SL: {{  $val->use_limit - $val->use_count }}</span>
+                        <div class="voucher_radio">
+                            <input type="radio" name="voucher" value="{{ $val->id }}" @if($val->use_count >= $val->use_limit || $total < $val->minimum_total_value) disabled @endif>
                         </div>
                     </div>
-                    <div class="voucher_radio">
-                        <input type="radio" name="voucher" value="{{ $val->id }}" @if($val->use_count >= $val->use_limit || $total < $val->minimum_total_value) disabled @endif>
+                    @endforeach
+                @else
+                    <div class="text-center not-fount-voucher">
+                        <i style="font-size: 50px; margin-bottom:10px" class="fa-solid fa-circle-exclamation"></i>
+                        <h4>Hiện bạn chưa có phiếu giảm giá</h4>
                     </div>
-                </div>
-                @endforeach
+                @endif
+               
             </div>
             <div class="voucher_footer">
                 <a id="apply-voucher" data-url="{{ route('cart.discount') }}" href="">OK</a>

@@ -60,7 +60,12 @@ class CustomerController extends Controller
     public function profile(){
         $customer = Auth::guard('customer')->user(); // Lấy thông tin người dùng hiện tại
         $loyalty = $customer->loyaltyLevel;
-        return view('user.profile', compact('customer', 'loyalty'));
+        $total_order = 0;
+        $orders = Order::where('customer_id', $customer->id)->get();
+        foreach($orders as $order){
+            $total_order += $order->total;
+        }
+        return view('user.profile', compact('customer', 'loyalty','total_order'));
     }
 
     public function customerOrder(){

@@ -104,6 +104,56 @@
                             </table>
                         </div>
                     </div>
+
+                    <div class="progress-tracker">
+                        <div class="progress-step progress-step--completed" aria-label="Đơn hàng đã đặt, 16:58 07-08-2024" tabindex="0">
+                          <div class="progress-step__icon progress-step__icon--completed">
+                            <div class="circle">1</div>
+                          </div>
+                          <div class="progress-step__text">Đơn hàng đã đặt</div>
+                          <div class="progress-step__date">16:58 07-08-2024</div>
+                        </div>
+                      
+                        <div class="progress-step progress-step--completed" aria-label="Đơn hàng đã thanh toán (₫38.000), 16:59 07-08-2024" tabindex="0">
+                          <div class="progress-step__icon progress-step__icon--completed">
+                            <div class="circle">2</div>
+                          </div>
+                          <div class="progress-step__text">Đơn hàng đã thanh toán (₫38.000)</div>
+                          <div class="progress-step__date">16:59 07-08-2024</div>
+                        </div>
+                      
+                        <div class="progress-step progress-step--current" aria-label="Đang xử lý, 17:05 07-08-2024" tabindex="0">
+                          <div class="progress-step__icon progress-step__icon--current">
+                            <div class="circle">3</div>
+                          </div>
+                          <div class="progress-step__text">Đang xử lý</div>
+                          <div class="progress-step__date">17:05 07-08-2024</div>
+                        </div>
+                      
+                        <div class="progress-step" aria-label="Đang giao hàng" tabindex="0">
+                          <div class="progress-step__icon">
+                            <div class="circle">4</div>
+                          </div>
+                          <div class="progress-step__text">Đang giao hàng</div>
+                          <div class="progress-step__date"></div>
+                        </div>
+                      
+                        <div class="progress-step" aria-label="Đã giao hàng" tabindex="0">
+                          <div class="progress-step__icon">
+                            <div class="circle">5</div>
+                          </div>
+                          <div class="progress-step__text">Đã giao hàng</div>
+                          <div class="progress-step__date"></div>
+                        </div>
+                      
+                        <div class="progress-line">
+                          <div class="progress-line__background"></div>
+                          <div class="progress-line__foreground" style="width: 60%;"></div>
+                        </div>
+                      </div>
+                      
+
+
                     @if ($order->discount_id)
                         <div class="wg-box mt-5">
                             <h5>Mã giảm giá</h5>

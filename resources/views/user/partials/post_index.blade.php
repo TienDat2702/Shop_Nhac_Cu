@@ -17,6 +17,10 @@
                     </span>
                 </div>
             </div>
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <span>{{ $item->view }} Lượt xem</span>
+              <span>{{ date('d/m/Y', strtotime($item->created_at)) }}</span>
+            </div>
             <div class="btn-readnews">
                 <a href="{{ route('post.detail', $item->slug) }}">Xem ngay</a>
             </div>
