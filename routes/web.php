@@ -9,26 +9,17 @@ use App\Http\Controllers\Admin\AdminPostController;
 use App\Http\Controllers\Admin\AdminProductCategoryController;
 use App\Http\Controllers\Admin\UploadCKImageController;
 use App\Http\Controllers\Ajax\AjaxDashboardController;
-use App\Http\Controllers\Admin\PostCategoryController;
-use App\Http\Controllers\Admin\DiscountController;
-use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\User\HomeController;
-use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\User\ProductController;
-use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\Admin\ShowroomController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ProductShowroomController;
 use App\Http\Controllers\User\CustomerController;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Middleware\CustomerMiddleware;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\CheckoutController;
 use App\Http\Controllers\User\PostController;
 use Illuminate\Support\Facades\Route;
-use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 use App\Http\Middleware\CustomerAuth;
 use App\Http\Controllers\User\FavouriteController;
 
@@ -36,7 +27,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
 Route::get('/shop/category/{slug}', [ProductController::class, 'category'])->name('shop.category');
 Route::get('/product/{slug}', [ProductController::class, 'product_details'])->name('product.detail');
-
+Route::post('/product/{proId}/comment', [ProductController::class, 'post_comment'])->name('product.comment');
 
 Route::get('/about',[HomeController::class,'about'])->name('about');
 // CONTACT
@@ -196,36 +187,6 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
         Route::get('create', [BannerController::class, 'create'])->name('banner.create'); // Route mới
         Route::post('store', [BannerController::class, 'store'])->name('banner.store');
     });
-
-    // POST CATEGORY
-    Route::prefix('post')->group(function () {
-        Route::get('category', [AdminPostCategoryController::class,'index'])->name('postCategory.index');
-        Route::get('category/deleted', [AdminPostCategoryController::class,'deleted'])->name('postCategory.deleted');
-        Route::get('category/search/{config}', [AdminPostCategoryController::class,'search'])->name('postCategory.search');
-        Route::get('category/create', [AdminPostCategoryController::class,'create'])->name('postCategory.create');
-        Route::post('category/store', [AdminPostCategoryController::class,'store'])->name('postCategory.store');
-        Route::get('category/edit/{slug}', [AdminPostCategoryController::class,'edit'])->name('postCategory.edit');
-        Route::post('category/update/{slug}', [AdminPostCategoryController::class,'update'])->name('postCategory.update');
-        Route::delete('category/destroy/{id}', [AdminPostCategoryController::class,'destroy'])->name('postCategory.destroy');
-        Route::get('category/restore/{id}', [AdminPostCategoryController::class,'restore'])->name('postCategory.restore');
-        Route::delete('category/forceDelete/{id}', [AdminPostCategoryController::class,'forceDelete'])->name('postCategory.forceDelete');
-    });
-    
-    // POST
-    Route::prefix('post')->group(function () {
-        Route::get('/', [AdminPostController::class,'index'])->name('post.index');
-        Route::get('/test', [AdminPostController::class,'test'])->name('post.test');
-        Route::get('deleted', [AdminPostController::class,'deleted'])->name('post.deleted');
-        Route::get('search/{config}', [AdminPostController::class,'search'])->name('post.search');
-        Route::get('create', [AdminPostController::class,'create'])->name('post.create');
-        Route::post('store', [AdminPostController::class,'store'])->name('post.store');
-        Route::get('edit/{slug}', [AdminPostController::class,'edit'])->name('post.edit');
-        Route::post('update/{slug}', [AdminPostController::class,'update'])->name('post.update');
-        Route::delete('destroy/{id}', [AdminPostController::class,'destroy'])->name('post.destroy');
-        Route::get('restore/{id}', [AdminPostController::class,'restore'])->name('post.restore');
-        Route::delete('forceDelete/{id}', [AdminPostController::class,'forceDelete'])->name('post.forceDelete');
-    });
-
     // UPLOAD IMAGE CKEDITOR
     Route::post('/admin/upload-ck-image', [UploadCKImageController::class, 'upload'])->name('ckeditor.upload');
     // UPLOAD IMAGE

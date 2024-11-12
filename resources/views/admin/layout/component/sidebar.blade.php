@@ -120,12 +120,12 @@
                     </a>
                     <ul class="sub-menu">
                         <li class="sub-menu-item">
-                            <a href="" class="">
+                            <a href="#" class="">
                                 <div class="text">Danh sách mã giảm giá</div>
                             </a>
                         </li>
                         <li class="sub-menu-item">
-                            <a href="" class="">
+                            <a href="#" class="">
                                 <div class="text">Thêm mã giảm giá</div>
                             </a>
                         </li>

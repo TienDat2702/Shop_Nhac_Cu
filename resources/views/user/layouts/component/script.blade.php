@@ -33,6 +33,12 @@
     window.onbeforeunload = function() {
         showLoader(); // Hiển thị vòng xoay khi rời khỏi trang
     };
+    // Ẩn vòng xoay khi trang được tải lại từ bộ nhớ cache của trình duyệt
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) { // Kiểm tra xem trang có được tải từ cache hay không
+            hideLoader(); 
+        }
+    });
 </script>
 
 @stack('scripts')

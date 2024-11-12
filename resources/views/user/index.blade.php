@@ -293,7 +293,7 @@
                                                     <a href="{{ route('product.detail', $product->slug) }}"
                                                         class="btn-link btn-link_lg me-4 text-uppercase fw-medium"
                                                         title="Quick view">
-                                                        <span class="">Quick View</span>
+                                                        <span class="">Xem ngay</span>
                                                     </a>
                                                     <form action="{{ route('wishlist.add', $product->id) }}"
                                                         method="POST" style="display:inline;">
@@ -380,15 +380,11 @@
                                         <a href="#" data-url="{{ route('cart.add', $product->id) }}"
                                             class="btn-link btn-link_lg me-4 text-uppercase fw-medium add-to-cart"
                                             data-aside="cartDrawer" title="Add To Cart">Thêm Giỏ Hàng</a>
-                                        <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-quick-view"
-                                            data-bs-toggle="modal" data-bs-target="#quickView" title="Quick view">
-                                            <span class="d-none d-xxl-block">Quick View</span>
-                                            <span class="d-block d-xxl-none"><svg width="18" height="18"
-                                                    viewBox="0 0 18 18" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <use href="#icon_view" />
-                                                </svg></span>
-                                        </button>
+                                            <a href="{{ route('product.detail', $product->slug) }}"
+                                                class="btn-link btn-link_lg me-4 text-uppercase fw-medium"
+                                                title="Quick view">
+                                                <span class="">Xem Ngay</span>
+                                            </a>
                                         <button class="pc__btn-wl bg-transparent border-0 js-add-wishlist"
                                             title="Add To Wishlist">
                                             <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
