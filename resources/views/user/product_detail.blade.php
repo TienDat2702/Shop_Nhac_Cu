@@ -90,10 +90,13 @@
               <button data-url="{{ route('cart.add', $product->id) }}" type="submit" class="btn btn-primary btn-addtocart add-to-cart" data-aside="cartDrawer">Thêm vào giỏ hàng</button>
             </div>
           <div class="product-single__addtolinks">
-            <a href="#" class="menu-link menu-link_us-s add-to-wishlist"><svg width="16" height="16" viewBox="0 0 20 20"
-                fill="none" xmlns="http://www.w3.org/2000/svg">
-                <use href="#icon_heart" />
-              </svg><span>Yêu thích</span></a>
+
+          <a href="#" class="menu-link menu-link_us-s add-to-wishlist" data-product-id="{{ $product->id }}">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <use href="#icon_heart" />
+              </svg>
+              <span>Yêu thích</span>
+          </a>
             <share-button class="share-button">
               <button class="menu-link menu-link_us-s to-share border-0 bg-transparent d-flex align-items-center">
                 <svg width="16" height="19" viewBox="0 0 16 19" fill="none" xmlns="http://www.w3.org/2000/svg">

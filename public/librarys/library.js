@@ -348,6 +348,7 @@
         HT.sweetalertshowroom();
         HT.sweetalertproduct();
         HT.sweetalertbanner();
+        HT.sweetalert3();
         HT.setupCkeditor();
         HT.keyUpInput();
         HT.trash();

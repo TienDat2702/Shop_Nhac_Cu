@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ShowroomProduct;
 use App\Models\Showroom;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
@@ -21,6 +22,7 @@ class ProductShowroomController extends Controller
     ]);
 
     if ($validator->fails()) {
+        // Lưu thông báo lỗi vào session và trả về phản hồi JSON
         return response()->json(['message' => $validator->errors()->first()], 422);
     }
 
@@ -35,13 +37,30 @@ class ProductShowroomController extends Controller
             $productId = $product['id'];
             $quantity = $product['quantity'];
 
+            // Lấy tên sản phẩm từ bảng products
+            $productData = Product::find($productId);
+            $productname = $productData ? $productData->name : 'Sản phẩm không tìm thấy';
+
+            // Nếu showroom hiện tại không rỗng, kiểm tra tồn kho trước khi giảm
+            if ($currentShowroomId) {
+                $currentStock = ShowroomProduct::where('product_id', $productId)
+                    ->where('showroom_id', $currentShowroomId->id)
+                    ->value('stock'); // Lấy số lượng tồn kho hiện tại
+
+                // Kiểm tra xem số lượng tồn kho có đủ không
+                if ($currentStock < $quantity) {
+                    // Trả về phản hồi lỗi nếu tồn kho không đủ
+                    return response()->json(['message' => "Tồn kho sản phẩm {$productname} không đủ để chuyển!"], 422);
+                }
+            }
+
             // Cập nhật hoặc chèn sản phẩm vào showroom đích
             ShowroomProduct::updateOrInsert(
                 ['product_id' => $productId, 'showroom_id' => $showroomId],
                 ['stock' => DB::raw("COALESCE(stock, 0) + $quantity")]
             );
 
-            // Nếu showroom hiện tại không rỗng, giảm số lượng từ showroom hiện tại
+            // Giảm số lượng từ showroom hiện tại
             if ($currentShowroomId) {
                 ShowroomProduct::where('product_id', $productId)
                     ->where('showroom_id', $currentShowroomId->id) // Lấy ID của showroom
@@ -50,13 +69,18 @@ class ProductShowroomController extends Controller
         }
 
         DB::commit();
-        return response()->json(['message' => 'Chuyển sản phẩm thành công!']);
+        return response()->json(['message' => 'Chuyển sản phẩm thành công!']); // Trả về thông báo thành công
 
     } catch (\Exception $e) {
         DB::rollback();
+        // Trả về phản hồi lỗi nếu có ngoại lệ
         return response()->json(['message' => 'Lỗi khi chuyển sản phẩm: ' . $e->getMessage()], 500);
     }
 }
+
+    
+
+
 
     
 

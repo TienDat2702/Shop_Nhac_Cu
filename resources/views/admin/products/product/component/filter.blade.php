@@ -26,7 +26,19 @@
                     </select>
                 </div>
             </fieldset>
-
+            <fieldset class="publish" style="width: 50%">
+                <div class="select">
+                    @php
+                        $publish = request('publish') ?: old('publish');
+                    @endphp
+                    <select class="input-filter" name="publish">
+                        @foreach (Config('general.publish') as $key => $val)
+                            <option value="{{ $key }}" {{ $publish == $key ? 'selected' : '' }}>
+                                {{ $val }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </fieldset>
             <fieldset class="category" style="width: 40%">
                 <div class="select">
                     @php

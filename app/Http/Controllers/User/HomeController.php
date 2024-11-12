@@ -21,16 +21,16 @@ class HomeController extends Controller
 {
     public function index(){
         $brands = Brand::where('publish', 2)->get();
-        $banner = Banner::where('order', 1)->where('position', 1)->where('publish', 2)->first();
-        $banner2 = Banner::where('order', 2)->where('position', 1)->where('publish', 2)->first();
-        $banner3 = Banner::where('order', 3)->where('position', 1)->where('publish', 2)->first();
-        
+        $banners = Banner::where('position', 1)
+                 ->where('publish', 2)
+                 ->get();
         $product_views = Product::GetProductPublish()->orderBy('view', 'desc')->take(2)->get();
         $product_price = Product::GetProductPublish()->orderBy('price_sale', 'asc')->take(8)->get();
         // $product_views = Product::orderBy('view', 'desc')->where('publish', 2)->take(2)->get();
         // $product_price = Product::orderBy('price_sale', 'asc')->where('publish', 2)->take(8)->get();
         $products = Product::GetProductPublish()->orderBy('updated_at', 'desc')->paginate(8);
-
+        $product_cateogries = ProductCategory::where('publish',2)->where('level',1)->take(6)->get();
+        $posts = Post::GetPostPublish()->limit(4)->get();
         $post_category_event = PostCategory::GetAllByPublish()->where('name', 'Sự Kiện')->first();
         if ($post_category_event) {
             // Lấy tất cả các ID của danh mục con
@@ -54,10 +54,9 @@ class HomeController extends Controller
             'product_views', 
             'product_price', 
             'products', 
-            'banner', 
-            'banner2', 
-            'banner3',
-            'posts'
+            'banners', 
+            'posts',
+            'product_cateogries'
         ));
     }
     public function about(){
