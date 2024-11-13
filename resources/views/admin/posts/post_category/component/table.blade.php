@@ -85,7 +85,7 @@
                                         <button type="submit" class="btn btn-delete item text-danger delete"
                                         title="Xóa" 
                                         data-text="Bạn có thể khôi phục dữ liệu lại sau khi xóa."   
-                                        data-text2="{{ $item->parent_id == 0 ? 'Không thể xóa danh mục vì có danh mục liên quan!' : '' }}"
+                                        data-text2="{{ $item->children()->count() > 0  ? 'Không thể xóa danh mục vì có danh mục liên quan!' : '' }}"
                                         data-text3="{{ $item->posts()->count() > 0 ? 'Không thể xóa danh mục vì nó có ' . $item->posts()->count() . ' bài viết liên quan!' : '' }}">
                                         <i class="icon-trash-2"></i>
                                     </button>

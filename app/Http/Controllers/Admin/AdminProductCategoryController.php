@@ -72,16 +72,22 @@ class AdminProductCategoryController extends Controller
         return redirect()->route('productCategory.index');
     }
 
-    public function edit(string $id)
+    public function edit(string $slug)
     {
         $productCategories = $this->getRecursive();
-        $productCategory = ProductCategory::GetWithParent()->find($id);
+        $productCategory = ProductCategory::GetWithParent()->where('slug', $slug)->first();
         return view('admin.products.product_category.update', compact('productCategories', 'productCategory'));
     }
 
-    public function update(ProductCategoryUpdateRequest $request, string $id)
+    public function update(ProductCategoryUpdateRequest $request, string $slug)
     {
-        $productCategory = ProductCategory::GetWithParent()->find($id);
+        $productCategory = ProductCategory::GetWithParent()->where('slug', $slug)->first();
+        // Kiểm tra và tạo slug mới nếu tên sản phẩm thay đổi
+        $newSlug = $request->input('slug');
+        if ($newSlug == '' || $productCategory->name !== $request->input('name')) {
+            // Tạo slug mới dựa trên tên, đảm bảo không trùng lặp
+            $newSlug = ProductCategory::GenerateUniqueSlug($request->input('name'));
+        }
         if (!$productCategory) {
             return redirect()->back()->withErrors(['Danh mục không tồn tại!']);
         }
@@ -98,6 +104,7 @@ class AdminProductCategoryController extends Controller
             'description' => $request->input('description'),
             'parent_id' => $request->input('parent_id'),
             'level' => $level,
+            'slug' => $newSlug,
         ];
 
         if ($request->hasFile('image')) {
@@ -122,24 +129,24 @@ class AdminProductCategoryController extends Controller
         return redirect()->route('productCategory.index');
     }
 
- public function destroy(string $id)
-{
-    $productCategory = ProductCategory::GetWithParent()->find($id);
+    public function destroy(string $id)
+    {
+        $productCategory = ProductCategory::GetWithParent()->find($id);
 
-    if (!$productCategory) {
-        return redirect()->back()->withErrors(['Danh mục không tồn tại!']);
+        if (!$productCategory) {
+            return redirect()->back()->withErrors(['Danh mục không tồn tại!']);
+        }
+        // Nếu không có sản phẩm liên quan, đánh dấu danh mục là không công khai và xóa
+        $productCategory->publish = 1; // Đánh dấu danh mục là không công khai
+        $productCategory->save();
+
+        self::deleteRecursive($productCategory); // Gọi phương thức xóa đệ quy
+
+        toastr()->success('Xóa thành công!');
+        return redirect()->back();
     }
-    // Nếu không có sản phẩm liên quan, đánh dấu danh mục là không công khai và xóa
-    $productCategory->publish = 1; // Đánh dấu danh mục là không công khai
-    $productCategory->save();
 
-    self::deleteRecursive($productCategory); // Gọi phương thức xóa đệ quy
 
-    toastr()->success('Xóa thành công!');
-    return redirect()->back();
-}
-
-    
 
     public static function deleteRecursive($parentCategory)
     {

@@ -198,8 +198,8 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
         Route::get('/category/deleted', [AdminProductCategoryController::class, 'deleted'])->name('productCategory.deleted');
         Route::get('/category/create', [AdminProductCategoryController::class, 'create'])->name('productCategory.create');
         Route::post('/category/store', [AdminProductCategoryController::class, 'store'])->name('productCategory.store');
-        Route::get('/category/edit/{id}', [AdminProductCategoryController::class, 'edit'])->name('productCategory.edit');
-        Route::post('/category/update/{id}', [AdminProductCategoryController::class, 'update'])->name('productCategory.update');
+        Route::get('/category/edit/{slug}', [AdminProductCategoryController::class, 'edit'])->name('productCategory.edit');
+        Route::post('/category/update/{slug}', [AdminProductCategoryController::class, 'update'])->name('productCategory.update');
         Route::delete('/category/destroy/{id}', [AdminProductCategoryController::class, 'destroy'])->name('productCategory.destroy');
         Route::get('/category/restore/{id}', [AdminProductCategoryController::class, 'restore'])->name('productCategory.restore');
         Route::delete('/category/forceDelete/{id}', [AdminProductCategoryController::class, 'forceDelete'])->name('productCategory.forceDelete');
@@ -211,8 +211,8 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
         Route::get('/deleted', [AdminProductController::class, 'deleted'])->name('product.deleted');
         Route::get('/create', [AdminProductController::class, 'create'])->name('product.create');
         Route::post('/store', [AdminProductController::class, 'store'])->name('product.store');
-        Route::get('/edit/{id}', [AdminProductController::class, 'edit'])->name('product.edit');
-        Route::post('/update/{id}', [AdminProductController::class, 'update'])->name('product.update');
+        Route::get('/edit/{slug}', [AdminProductController::class, 'edit'])->name('product.edit');
+        Route::post('/update/{slug}', [AdminProductController::class, 'update'])->name('product.update');
         Route::delete('/destroy/{id}', [AdminProductController::class, 'destroy'])->name('product.destroy');
         Route::get('/restore/{id}', [AdminProductController::class, 'restore'])->name('product.restore');
         Route::delete('/forceDelete/{id}', [AdminProductController::class, 'forceDelete'])->name('product.forceDelete');
