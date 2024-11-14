@@ -37,7 +37,8 @@
                                             {{ $category->name }}
                                         </li>
                                     @endforeach
-                                </ul> --}} @php
+                                </ul> --}}
+                                    @php
                                         function renderCategories($categories, $parentId = 0, $level = 1)
                                         {
                                             $hasChild = false;
@@ -86,8 +87,9 @@
 
                                     {{-- <ul class="list list-inline mb-0">
                                     @foreach ($productCategories as $category)
-                                        <li class="menu-item"> <a href="{{ route('shop.category',$category->slug) }}">{{ $category->name }}</a>
-                                            
+                                        <li class="menu-item">
+                                            <a href="{{ route('shop.category',$category->slug) }}">{{ $category->name }}</a>
+
                                             @if ($category->children && $category->children->count() > 0)
                                                 <ul class="submenu">
                                                     @foreach ($category->children as $childCategory)
@@ -129,7 +131,8 @@
                                     aria-controls="accordion-filter-brand">
                                     Thương hiệu
                                     <svg class="accordion-button__icon type2" viewBox="0 0 10 6"
-                                        xmlns="http://www.w3.org/2000/svg"> <g aria-hidden="true" stroke="none" fill-rule="evenodd">
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <g aria-hidden="true" stroke="none" fill-rule="evenodd">
                                             <path
                                                 d="M5.35668 0.159286C5.16235 -0.053094 4.83769 -0.0530941 4.64287 0.159286L0.147611 5.05963C-0.0492049 5.27473 -0.049205 5.62357 0.147611 5.83813C0.344427 6.05323 0.664108 6.05323 0.860924 5.83813L5 1.32706L9.13858 5.83867C9.33589 6.05378 9.65507 6.05378 9.85239 5.83867C10.0492 5.62357 10.0492 5.27473 9.85239 5.06018L5.35668 0.159286Z" />
                                         </g>
@@ -164,7 +167,8 @@
                                     <svg class="accordion-button__icon type2" viewBox="0 0 10 6"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <g aria-hidden="true" stroke="none" fill-rule="evenodd">
-                                            <path d="M5.35668 0.159286C5.16235 -0.053094 4.83769 -0.0530941 4.64287 0.159286L0.147611 5.05963C-0.0492049 5.27473 -0.049205 5.62357 0.147611 5.83813C0.344427 6.05323 0.664108 6.05323 0.860924 5.83813L5 1.32706L9.13858 5.83867C9.33589 6.05378 9.65507 6.05378 9.85239 5.83867C10.0492 5.62357 10.0492 5.27473 9.85239 5.06018L5.35668 0.159286Z" />
+                                            <path
+                                                d="M5.35668 0.159286C5.16235 -0.053094 4.83769 -0.0530941 4.64287 0.159286L0.147611 5.05963C-0.0492049 5.27473 -0.049205 5.62357 0.147611 5.83813C0.344427 6.05323 0.664108 6.05323 0.860924 5.83813L5 1.32706L9.13858 5.83867C9.33589 6.05378 9.65507 6.05378 9.85239 5.83867C10.0492 5.62357 10.0492 5.27473 9.85239 5.06018L5.35668 0.159286Z" />
                                         </g>
                                     </svg>
                                 </button>
@@ -193,13 +197,14 @@
                                             function toggleSelectAll(source) {
                                                 // Lấy tất cả checkbox có tên 'price_segment[]'
                                                 const checkboxes = document.querySelectorAll('input[name="price_segment[]"]');
-                                                
+
                                                 // Nếu checkbox "Tất cả" được chọn, chọn tất cả các checkbox
                                                 checkboxes.forEach(function(checkbox) {
                                                     checkbox.checked = source.checked;
                                                 });
-                                            } </script>
-                                        
+                                            }
+                                        </script>
+
                                     </ul>
                                 </div>
                             </div>
@@ -226,7 +231,8 @@
             }
           }'>
                         <div class="swiper-wrapper">
-                            @foreach($banners)
+                            @if ($banners && count($banners) > 0)
+                            @foreach($banners as $banner)
                             <div class="swiper-slide">
                                 <div class="slide-split h-100 d-block d-md-flex overflow-hidden">
                                     <div class="slide-split_text position-relative d-flex align-items-center"
@@ -251,7 +257,29 @@
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
+                            @endforeach
+                            @else
+                            <div class="swiper-slide">
+                                <div class="slide-split h-100 d-block d-md-flex overflow-hidden">
+                                  <div class="slide-split_text position-relative d-flex align-items-center"
+                                    style="background-color: #f5e6e0;">
+                                    <div class="slideshow-text container p-3 p-xl-5">
+                                      <h2
+                                        class="text-uppercase section-title fw-normal mb-3 animate animate_fade animate_btt animate_delay-2">
+                                        Đang Cập Nhật <br /><strong>Đang Cập Nhật</strong></h2>
+                                      <p class="mb-0 animate animate_fade animate_btt animate_delay-5">Đang Cập Nhật</h6>
+                                    </div>
+                                  </div>
+                                  <div class="slide-split_media position-relative">
+                                    <div class="slideshow-bg" style="background-color: #f5e6e0;">
+                                      <img loading="lazy" src="assets/images/shop/shop_banne.jpg" width="630" height="450"
+                                        alt="Đang Cập Nhật" class="slideshow-bg__img object-fit-cover" />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              @endif
+                        </div>
 
                         <div class="container p-3 p-xl-5">
                             <div
@@ -285,7 +313,8 @@
                             <div class="col-size align-items-center order-1 d-none d-lg-flex">
                                 <span class="text-uppercase fw-medium me-2">View</span>
                                 <button class="btn-link fw-medium me-2 js-cols-size" data-target="products-grid"
-                                    data-cols="2">2</button> <button class="btn-link fw-medium me-2 js-cols-size" data-target="products-grid"
+                                    data-cols="2">2</button>
+                                <button class="btn-link fw-medium me-2 js-cols-size" data-target="products-grid"
                                     data-cols="3">3</button>
                                 <button class="btn-link fw-medium js-cols-size" data-target="products-grid"
                                     data-cols="4">4</button>
@@ -346,7 +375,8 @@
                                                 <span class="money price">{{ number_format($product->price_sale) }}
                                                     VNĐ</span>
                                             @endif
-                                        </div> <div class="product-card__review d-flex align-items-center">
+                                        </div>
+                                        <div class="product-card__review d-flex align-items-center">
                                             <div class="reviews-group d-flex">
                                                 <svg class="review-star" viewBox="0 0 9 9"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -389,7 +419,8 @@
                     </div>
 
                     <div class="divider"></div>
-                    <div class="flex items-center justify-between flex-wrap gap-10 wgp-pagination"> {{ $products->withQueryString()->links('pagination::bootstrap-5') }}
+                    <div class="flex items-center justify-between flex-wrap gap-10 wgp-pagination">
+                        {{ $products->withQueryString()->links('pagination::bootstrap-5') }}
                     </div>
                 </div>
             </section>

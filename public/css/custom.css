@@ -394,16 +394,16 @@ select{
 
 /* silde thương hiệu */
 
-.swiper-slide{
+.swiper-slide2{
     width: 123px;
-  
+
 }
 img.w-100.h-auto.mb-3 {
     width: 100%;
     height: 123px !important;
     border-radius: 50%;
 }
-/* 
+/*
 .btn-update-cart{
     padding-left: 20px !important;
     padding-right: 20px !important;
@@ -499,7 +499,7 @@ a.btn-clear:hover {
     width: 100%;
     height: auto;
     border-radius: 10px;
-   
+
 }
 /* end post index */
 
@@ -684,13 +684,13 @@ a.btn-clear:hover {
 
 .carousel-inner {
     display: flex;
-    transition: transform 0.5s ease-in-out; 
+    transition: transform 0.5s ease-in-out;
 }
 
 .carousel-item {
     min-width: 100%;
     position: relative;
-    transition: transform 0.5s ease-in-out; 
+    transition: transform 0.5s ease-in-out;
 }
 
 .carousel-item img {
@@ -738,7 +738,7 @@ a.btn-clear:hover {
     right: 15px;
 }
 
-  
+
 /* end album post */
 
 
@@ -815,7 +815,7 @@ a.btn-clear:hover {
     text-decoration: none;
     background: #b9a16b;
     color: #fff;
-    
+
 }
 /* end menu hove */
 
@@ -860,7 +860,7 @@ a.btn-clear:hover {
 .advisory_latest .name a {
     color: #fff;
     font-size: 16px;
-    
+
 }
 .advisory_latest .description {
     color: #fff;
