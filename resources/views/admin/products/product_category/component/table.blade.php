@@ -70,7 +70,7 @@
                                         </button>
                                     </form>
                                 @else
-                                    <a href="{{ route('productCategory.edit', $item->id) }}" title="Chỉnh sửa">
+                                    <a href="{{ route('productCategory.edit', $item->slug) }}" title="Chỉnh sửa">
                                         <div class="item edit">
                                             <i class="icon-edit-3"></i>
                                         </div>
@@ -82,7 +82,7 @@
                                         <button type="submit" class="btn btn-delete item text-danger delete"
                                             title="Xóa" 
                                             data-text="Bạn có thể khôi phục dữ liệu lại sau khi xóa."   
-                                            data-text2="{{ $item->parent_id == 0 ? 'Không thể xóa danh mục vì có danh mục liên quan!' : '' }}"
+                                            data-text2="{{ $item->children()->count() > 0 ? 'Không thể xóa danh mục vì có '.$item->children()->count().' danh mục liên quan!' : '' }}"
                                             data-text3="{{ $item->products()->count() > 0 ? 'Không thể xóa danh mục vì nó có ' . $item->products()->count() . ' sản phẩm liên quan!' : '' }}">
                                             <i class="icon-trash-2"></i>
                                         </button>

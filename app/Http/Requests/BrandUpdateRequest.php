@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Requests;
-
+use App\Models\Brand;
 use Illuminate\Foundation\Http\FormRequest;
 
 class BrandUpdateRequest extends FormRequest
@@ -12,9 +12,10 @@ class BrandUpdateRequest extends FormRequest
     }
 
     public function rules(): array
-    {
+    {   
+        $brand = Brand::where('slug', $this->route('slug'))->first();
         return [
-            'name' => 'required|unique:brands,name,' . $this->id . '|max:125',
+            'name' => 'required|unique:brands,name,' . $brand->id . '|max:125',
         ];
     }
 

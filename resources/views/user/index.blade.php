@@ -17,96 +17,78 @@
         "effect": "fade",
         "loop": true
       }'>
+
             <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <div class="overflow-hidden position-relative h-100">
-                        <div class="slideshow-character position-absolute bottom-0 pos_right-center">
-                            <img loading="lazy" src="{{ asset($banner->image ?? 'path/to/default/image.jpg') }}" width="542"
-                                height="733" alt="Woman Fashion 1"
-                                class="slideshow-character__img animate animate_fade animate_btt animate_delay-9 w-auto h-auto" />
-                            <div class="character_markup type2">
-                                <p
-                                    class="text-uppercase font-sofia mark-grey-color animate animate_fade animate_btt animate_delay-10 mb-0">
-                                    Tunenest</p>
+                @if ($banners && count($banners) > 0)
+                    @foreach ($banners as $banner)
+                        <div class="swiper-slide">
+                            <div class="overflow-hidden position-relative h-100">
+                                <div class="slideshow-character position-absolute bottom-0 pos_right-center">
+                                    <img loading="lazy"
+                                        src="{{ asset($banner->image ? 'uploads/banner/' . $banner->image : 'path/to/default/image.jpg') }}"
+                                        width="800" height="733" alt="{{ $banner->title ?? 'Đang Cập Nhật' }}"
+                                        class="slideshow-character__img animate animate_fade animate_btt animate_delay-9 w-auto h-auto" />
+
+                                    <div class="character_markup">
+                                        <p
+                                            class="text-uppercase font-sofia fw-bold animate animate_fade animate_rtl animate_delay-10">
+                                            {{ $banner->title ?? 'Đang Cập Nhật' }}</p>
+                                    </div>
+                                </div>
+                                <div class="slideshow-text container position-absolute start-50 top-50 translate-middle">
+                                    <h6
+                                        class="text_dash text-uppercase fs-base fw-medium animate animate_fade animate_btt animate_delay-3">
+                                        {{ $banner->description ?? 'Hàng Mới Nhập' }}</h6>
+                                    <h2 class="h1 fw-normal mb-0 animate animate_fade animate_btt animate_delay-5">
+                                        {{ $banner->title ?? 'Đang Cập Nhật' }}</h2>
+                                    <h2 class="h1 fw-bold animate animate_fade animate_btt animate_delay-5">
+                                        {{ $banner->strong_title ?? 'Đang Cập Nhật' }}</h2>
+                                    <a href="#"
+                                        class="btn-link btn-link_lg default-underline fw-medium animate animate_fade animate_btt animate_delay-7">Mua
+                                        hàng</a>
+                                </div>
                             </div>
                         </div>
-                        <div class="slideshow-text container position-absolute start-50 top-50 translate-middle">
-                            <h6
-                                class="text_dash text-uppercase fs-base fw-medium animate animate_fade animate_btt animate_delay-3">
-                                Hàng Mới Nhập</h6>
-                            <h2 class="h1 fw-normal mb-0 animate animate_fade animate_btt animate_delay-5">
-                                {{ $banner->title ?? 'Đang Cập Nhật' }}</h2>
-                            <h2 class="h1 fw-bold animate animate_fade animate_btt animate_delay-5">
-                                {{ $banner->strong_title ?? 'Đang Cập Nhật' }}</h2>
-                            <a href="#"
-                                class="btn-link btn-link_lg default-underline fw-medium animate animate_fade animate_btt animate_delay-7">Shop
-                                Now</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="swiper-wrapper">
-                    @if ($banners && count($banners) > 0)
-                        @foreach ($banners as $banner)
+                    @endforeach
+                @else
+                    <div class="swiper-slide">
+                        <div class="overflow-hidden position-relative h-100">
+                            <div class="slideshow-character position-absolute bottom-0 pos_right-center">
+                                <img loading="lazy" src="{{ asset('path/to/default/image.jpg') }}" width="400"
+                                    height="690" alt="Đang Cập Nhật"
+                                    class="slideshow-character__img animate animate_fade animate_rtl animate_delay-10 w-auto h-auto" />
+                            </div>
                             <div class="swiper-slide">
                                 <div class="overflow-hidden position-relative h-100">
                                     <div class="slideshow-character position-absolute bottom-0 pos_right-center">
-                                        <img loading="lazy" src="{{ asset($banner->image ?? 'path/to/default/image.jpg') }}"
-                                            width="400" height="733" alt="{{ $banner->title ?? 'Đang Cập Nhật' }}"
-                                            class="slideshow-character__img animate animate_fade animate_btt animate_delay-9 w-auto h-auto" />
-                                        <div class="character_markup">
-                                            <p
-                                                class="text-uppercase font-sofia fw-bold animate animate_fade animate_rtl animate_delay-10">
-                                                {{ $banner->title ?? 'Đang Cập Nhật' }}</p>
-                                        </div>
+                                        <img loading="lazy" src="{{ asset('path/to/default/image.jpg') }}" width="400"
+                                            height="690" alt="Đang Cập Nhật"
+                                            class="slideshow-character__img animate animate_fade animate_rtl animate_delay-10 w-auto h-auto" />
                                     </div>
                                     <div
                                         class="slideshow-text container position-absolute start-50 top-50 translate-middle">
                                         <h6
                                             class="text_dash text-uppercase fs-base fw-medium animate animate_fade animate_btt animate_delay-3">
-                                            {{ $banner->subtitle ?? 'Hàng Mới Nhập' }}</h6>
-                                        <h2 class="h1 fw-normal mb-0 animate animate_fade animate_btt animate_delay-5">
-                                            {{ $banner->title ?? 'Đang Cập Nhật' }}</h2>
-                                        <h2 class="h1 fw-bold animate animate_fade animate_btt animate_delay-5">
-                                            {{ $banner->strong_title ?? 'Đang Cập Nhật' }}</h2>
+                                            Ưu Đãi Mới</h6>
+                                        <h2 class="h1 fw-normal mb-0 animate animate_fade animate_btt animate_delay-5">Đang
+                                            Cập Nhật</h2>
+                                        <h2 class="h1 fw-bold animate animate_fade animate_btt animate_delay-5">Đang Cập
+                                            Nhật</h2>
                                         <a href="#"
                                             class="btn-link btn-link_lg default-underline fw-medium animate animate_fade animate_btt animate_delay-7">Shop
                                             Now</a>
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
-                    @else
-                        <div class="swiper-slide">
-                            <div class="overflow-hidden position-relative h-100">
-                                <div class="slideshow-character position-absolute bottom-0 pos_right-center">
-                                    <img loading="lazy" src="{{ asset('path/to/default/image.jpg') }}" width="400"
-                                        height="690" alt="Đang Cập Nhật"
-                                        class="slideshow-character__img animate animate_fade animate_rtl animate_delay-10 w-auto h-auto" />
-                                </div>
-                                <div class="slideshow-text container position-absolute start-50 top-50 translate-middle">
-                                    <h6
-                                        class="text_dash text-uppercase fs-base fw-medium animate animate_fade animate_btt animate_delay-3">
-                                        Ưu Đãi Mới</h6>
-                                    <h2 class="h1 fw-normal mb-0 animate animate_fade animate_btt animate_delay-5">Đang Cập
-                                        Nhật</h2>
-                                    <h2 class="h1 fw-bold animate animate_fade animate_btt animate_delay-5">Đang Cập Nhật
-                                    </h2>
-                                    <a href="#"
-                                        class="btn-link btn-link_lg default-underline fw-medium animate animate_fade animate_btt animate_delay-7">Shop
-                                        Now</a>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
-                </div>
+                @endif
+            </div>
 
 
-                <div class="container">
-                    <div
-                        class="slideshow-pagination slideshow-number-pagination d-flex align-items-center position-absolute bottom-0 mb-5">
-                    </div>
+            <div class="container">
+                <div
+                    class="slideshow-pagination slideshow-number-pagination d-flex align-items-center position-absolute bottom-0 mb-5">
                 </div>
+            </div>
         </section>
         <div class="container mw-1620 bg-white border-radius-10">
             <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
@@ -154,14 +136,18 @@
             }'>
                         <div class="swiper-wrapper">
                             @foreach ($brands as $brand)
+                            <a href="{{ route('brands.index', $brand->slug) }}">
+
                                 <div class="swiper-slide">
-                                    <img loading="lazy" class="w-100 h-auto mb-3"
-                                        src="{{ asset('uploads/brands/' . $brand->image) }}" width="124" height="124"
-                                        alt="{{ $brand->name }}" />
-                                    <div class="text-center">
-                                        <a href="#" class="menu-link fw-medium">{{ $brand->name }}</a>
-                                    </div>
+                                        <img loading="lazy" class="w-100 h-auto mb-3"
+                                            src="{{ asset('uploads/brands/' . $brand->image) }}" width="124"
+                                            height="124" alt="{{ $brand->name }}" />
+                                        <div class="text-center">
+                                            <a href="#" class="menu-link fw-medium">{{ $brand->name }}</a>
+                                        </div>
                                 </div>
+                                    </a>
+
                             @endforeach
                         </div><!-- /.swiper-wrapper -->
                     </div><!-- /.swiper-container js-swiper-slider -->
@@ -201,7 +187,7 @@
             <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
 
             <section class="hot-deals container">
-                <h2 class="section-title text-center mb-3 pb-xl-3 mb-xl-4">Hot Deals</h2>
+                <h2 class="section-title text-center mb-3 pb-xl-3 mb-xl-4">Ưu đãi Hot</h2>
                 <div class="row">
                     <div
                         class="col-md-6 col-lg-4 col-xl-20per d-flex align-items-center flex-column justify-content-center py-4 align-items-md-start">
@@ -305,19 +291,14 @@
 
                                                 <div
                                                     class="anim_appear-bottom position-absolute bottom-0 start-0 d-none d-sm-flex align-items-center bg-body">
-                                                    {{-- <form action="{{ route('cart.add',$product->id) }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="product_id" value="{{ $product->id }}">
-                            <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium"
-                            data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
-                          </form> --}}
-                          <a href="#" data-url="{{ route('cart.add', $product->id )}}" class="btn-link btn-link_lg me-4 text-uppercase fw-medium add-to-cart"
-                          data-aside="cartDrawer" title="Add To Cart">Add To Cart</a>
+                                                    <a href="#" data-url="{{ route('cart.add', $product->id) }}"
+                                                        class="btn-link btn-link_lg me-4 text-uppercase fw-medium add-to-cart"
+                                                        data-aside="cartDrawer" title="Add To Cart">Thêm Giỏ Hàng</a>
 
                                                     <a href="{{ route('product.detail', $product->slug) }}"
                                                         class="btn-link btn-link_lg me-4 text-uppercase fw-medium"
                                                         title="Quick view">
-                                                        <span class="">Quick View</span>
+                                                        <span class="">Xem ngay</span>
                                                     </a>
                                                     <form action="{{ route('wishlist.add', $product->id) }}"
                                                         method="POST" style="display:inline;">
@@ -328,7 +309,7 @@
                                                                 fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                 <use href="#icon_heart" />
                                                             </svg>
-                                                            <span>Yêu thích</span>
+
                                                         </button>
                                                     </form>
 
@@ -345,26 +326,28 @@
 
             <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
 
-      <section class="category-banner container">
-        <h2 class="section-title text-center mb-3 pb-xl-3 mb-xl-4">Nhiều lượt xem nhất</h2>
-        <div class="row">
-          @foreach ($product_views as $product)
-          <div class="col-md-6">
-            <div class="category-banner__item border-radius-10 mb-5">
-              <img loading="lazy" class="h-auto" src="{{asset('uploads/products/product/'.$product->image)}}" width="690" height="665"
-                alt="{{ $product->name }}" />
-              <div class="category-banner__item-mark">
-                {{ $product->view }} Lượt xem
-              </div>
-              <div class="category-banner__item-content">
-                <h3 class="mb-0">{{ $product->name }}</h3>
-                <a href="#" class="btn-link default-underline text-uppercase fw-medium">Xem ngay</a>
-              </div>
-            </div>
-          </div>
-          @endforeach
-        </div>
-      </section>
+            <section class="category-banner container">
+                <h2 class="section-title text-center mb-3 pb-xl-3 mb-xl-4">Nhiều lượt xem nhất</h2>
+                <div class="row">
+                    @foreach ($product_views as $product)
+                        <div class="col-md-6">
+                            <div class="category-banner__item border-radius-10 mb-5">
+                                <img loading="lazy" class="h-auto"
+                                    src="{{ asset('uploads/products/product/' . $product->image) }}" width="690"
+                                    height="665" alt="{{ $product->name }}" />
+                                <div class="category-banner__item-mark">
+                                    {{ $product->view }} Lượt xem
+                                </div>
+                                <div class="category-banner__item-content">
+                                    <h3 class="mb-0">{{ $product->name }}</h3>
+                                    <a href="#" class="btn-link default-underline text-uppercase fw-medium">Xem
+                                        ngay</a>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </section>
 
             <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
 
@@ -397,32 +380,31 @@
                                         @endif
                                     </div>
 
-                <div
-                  class="anim_appear-bottom position-absolute bottom-0 start-0 d-none d-sm-flex align-items-center bg-body">
-                  <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-add-cart js-open-aside"
-                    data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
-                  <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-quick-view"
-                    data-bs-toggle="modal" data-bs-target="#quickView" title="Quick view">
-                    <span class="d-none d-xxl-block">Quick View</span>
-                    <span class="d-block d-xxl-none"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <use href="#icon_view" />
-                      </svg></span>
-                  </button>
-                  <button class="pc__btn-wl bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <use href="#icon_heart" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          @endforeach
-          
-        </div><!-- /.row -->
-        
-        {{-- <div class="text-center mt-2">
+                                    <div
+                                        class="anim_appear-bottom position-absolute bottom-0 start-0 d-none d-sm-flex align-items-center bg-body">
+                                        <a href="#" data-url="{{ route('cart.add', $product->id) }}"
+                                            class="btn-link btn-link_lg me-4 text-uppercase fw-medium add-to-cart"
+                                            data-aside="cartDrawer" title="Add To Cart">Thêm Giỏ Hàng</a>
+                                        <a href="{{ route('product.detail', $product->slug) }}"
+                                            class="btn-link btn-link_lg me-4 text-uppercase fw-medium" title="Quick view">
+                                            <span class="">Xem Ngay</span>
+                                        </a>
+                                        <button class="pc__btn-wl bg-transparent border-0 js-add-wishlist"
+                                            title="Add To Wishlist">
+                                            <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <use href="#icon_heart" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+
+                </div><!-- /.row -->
+
+                {{-- <div class="text-center mt-2">
           <a class="btn-link btn-link_lg default-underline text-uppercase fw-medium" href="#">Load More</a>
         </div> --}}
             </section>

@@ -145,7 +145,7 @@
                                         </button>
                                     </form>
                                 @else
-                                    <a href="{{ route('product.edit', $item->id) }}" title="Chỉnh sửa">
+                                    <a href="{{ route('product.edit', $item->slug) }}" title="Chỉnh sửa">
                                         <div class="item edit">
                                             <i class="icon-edit-3"></i>
                                         </div>

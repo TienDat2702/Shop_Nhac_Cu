@@ -321,6 +321,8 @@ class CheckoutController extends Controller
                     return redirect()->back();
                 }
             }
+            
+            //nếu có method là VNPAY thì chuyển đến VNPAY
     
             session()->forget('carts');
     
@@ -328,7 +330,6 @@ class CheckoutController extends Controller
             if ($method == 'Thanh toán khi nhận hàng') {
                 // Xử lý thanh toán khi nhận hàng
             }
-    
             if ($method == 'Thanh toán VNPAY') {
                 return $this->vnpay_payment($order->id);
             }

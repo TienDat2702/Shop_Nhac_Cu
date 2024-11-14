@@ -9,6 +9,8 @@ use App\Models\Brand;
 use App\Models\Banner;
 use App\Models\ThumbnailProduct;
 use Illuminate\Http\Request;
+use App\Models\Comment;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -157,15 +159,49 @@ class ProductController extends Controller
         }
     }
 
+    // public function product_details($slug)
+    // {
+    //     $product = Product::where('slug', $slug)->first();
+
+    //     $product->view += 1;
+    //     $product->save();
+    //     $brand = Brand::find($product->brand_id);
+    //     $product_images = ThumbnailProduct::where('product_id', $product->id)->get();
+    //     $product_related = Product::where('category_id', $product->category_id)->where('slug', '!=', $slug)->get();
+    //     return view('user.product_detail', compact('product', 'brand', 'product_images', 'product_related'));
+    // }
     public function product_details($slug)
     {
-        $product = Product::where('slug', $slug)->first();
-
+        $product = Product::where('slug', $slug)->firstOrFail();
         $product->view += 1;
         $product->save();
         $brand = Brand::find($product->brand_id);
-        $product_images = ThumbnailProduct::where('product_id', $product->id)->get();
         $product_related = Product::where('category_id', $product->category_id)->where('slug', '!=', $slug)->get();
-        return view('user.product_detail', compact('product', 'brand', 'product_images', 'product_related'));
+        $product_images = ThumbnailProduct::where('product_id', $product->id)->get();
+
+        $comments = Comment::where('product_id', $product->id)->with('customer')->latest()->get();
+
+        return view('user.product_detail', compact('product', 'brand', 'product_images', 'product_related', 'comments'));
+    }
+
+    public function post_comment($proId, Request $request)
+    {
+        $request->validate([
+            'comment' => 'required|string',
+        ], [
+            'comment.required' => 'Bạn hãy nhập nội dung bình luận của bạn'
+        ]);
+
+        if (Auth::guard('customer')->check()) {
+            Comment::create([
+                'product_id' => $proId,
+                'customer_id' => Auth::guard('customer')->id(),
+                'comment' => $request->input('comment'),
+            ]);
+
+            return redirect()->back()->with('success', 'Bình luận của bạn đã được đăng.');
+        }
+
+        return redirect()->route('customer.login')->with('error', 'Bạn cần đăng nhập để bình luận.');
     }
 }
