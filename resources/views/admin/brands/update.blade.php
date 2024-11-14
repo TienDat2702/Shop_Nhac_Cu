@@ -40,8 +40,9 @@
                     </div>
                 @endif
                 <form class="tf-section-2 form-add-product" method="post" enctype="multipart/form-data"
-                    action="{{ route('brand.update', $brand->id) }}">
+                    action="{{ route('brand.update', $brand->slug) }}">
                     @csrf
+                    
                     <div class="wg-box">
                         <fieldset class="name">
                             <div class="body-title mb-10">Tên thương hiệu <span class="tf-color-1">*</span></div>

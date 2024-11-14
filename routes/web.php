@@ -24,6 +24,7 @@ use App\Http\Middleware\CustomerAuth;
 use App\Http\Controllers\User\FavouriteController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
+Route::get('/brand/{slug}', [HomeController::class, 'brand'])->name('brands.index');
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
 Route::get('/shop/category/{slug}', [ProductController::class, 'category'])->name('shop.category');
 Route::get('/product/{slug}', [ProductController::class, 'product_details'])->name('product.detail');
@@ -224,8 +225,8 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
         Route::get('deleted', [BrandController::class, 'deleted'])->name('brand.deleted');
         Route::get('create', [BrandController::class, 'create'])->name('brand.create');
         Route::post('store', [BrandController::class, 'store'])->name('brand.store');
-        Route::get('edit/{id}', [BrandController::class, 'edit'])->name('brand.edit');
-        Route::post('update/{id}', [BrandController::class, 'update'])->name('brand.update');
+        Route::get('edit/{slug}', [BrandController::class, 'edit'])->name('brand.edit');
+        Route::post('update/{slug}', [BrandController::class, 'update'])->name('brand.update');
         Route::delete('destroy/{id}', [BrandController::class, 'destroy'])->name('brand.destroy');
         Route::get('restore/{id}', [BrandController::class, 'restore'])->name('brand.restore');
         Route::delete('forceDelete/{id}', [BrandController::class, 'forceDelete'])->name('brand.forceDelete');

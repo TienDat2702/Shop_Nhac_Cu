@@ -44,7 +44,8 @@
                                     <h2 class="h1 fw-bold animate animate_fade animate_btt animate_delay-5">
                                         {{ $banner->strong_title ?? 'Đang Cập Nhật' }}</h2>
                                     <a href="#"
-                                        class="btn-link btn-link_lg default-underline fw-medium animate animate_fade animate_btt animate_delay-7">Mua hàng</a>
+                                        class="btn-link btn-link_lg default-underline fw-medium animate animate_fade animate_btt animate_delay-7">Mua
+                                        hàng</a>
                                 </div>
                             </div>
                         </div>
@@ -53,7 +54,7 @@
                     <div class="swiper-slide">
                         <div class="overflow-hidden position-relative h-100">
                             <div class="slideshow-character position-absolute bottom-0 pos_right-center">
-<img loading="lazy" src="{{ asset('path/to/default/image.jpg') }}" width="400"
+                                <img loading="lazy" src="{{ asset('path/to/default/image.jpg') }}" width="400"
                                     height="690" alt="Đang Cập Nhật"
                                     class="slideshow-character__img animate animate_fade animate_rtl animate_delay-10 w-auto h-auto" />
                             </div>
@@ -83,11 +84,11 @@
             </div>
 
 
-                <div class="container">
-                    <div
-                        class="slideshow-pagination slideshow-number-pagination d-flex align-items-center position-absolute bottom-0 mb-5">
-                    </div>
+            <div class="container">
+                <div
+                    class="slideshow-pagination slideshow-number-pagination d-flex align-items-center position-absolute bottom-0 mb-5">
                 </div>
+            </div>
         </section>
         <div class="container mw-1620 bg-white border-radius-10">
             <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
@@ -135,14 +136,18 @@
             }'>
                         <div class="swiper-wrapper">
                             @foreach ($brands as $brand)
+                            <a href="{{ route('brands.index', $brand->slug) }}">
+
                                 <div class="swiper-slide">
-                                    <img loading="lazy" class="w-100 h-auto mb-3"
-                                        src="{{ asset('uploads/brands/' . $brand->image) }}" width="124" height="124"
-                                        alt="{{ $brand->name }}" />
-                                    <div class="text-center">
-                                        <a href="#" class="menu-link fw-medium">{{ $brand->name }}</a>
-                                    </div>
+                                        <img loading="lazy" class="w-100 h-auto mb-3"
+                                            src="{{ asset('uploads/brands/' . $brand->image) }}" width="124"
+                                            height="124" alt="{{ $brand->name }}" />
+                                        <div class="text-center">
+                                            <a href="#" class="menu-link fw-medium">{{ $brand->name }}</a>
+                                        </div>
                                 </div>
+                                    </a>
+
                             @endforeach
                         </div><!-- /.swiper-wrapper -->
                     </div><!-- /.swiper-container js-swiper-slider -->
@@ -380,11 +385,10 @@
                                         <a href="#" data-url="{{ route('cart.add', $product->id) }}"
                                             class="btn-link btn-link_lg me-4 text-uppercase fw-medium add-to-cart"
                                             data-aside="cartDrawer" title="Add To Cart">Thêm Giỏ Hàng</a>
-                                            <a href="{{ route('product.detail', $product->slug) }}"
-                                                class="btn-link btn-link_lg me-4 text-uppercase fw-medium"
-                                                title="Quick view">
-                                                <span class="">Xem Ngay</span>
-                                            </a>
+                                        <a href="{{ route('product.detail', $product->slug) }}"
+                                            class="btn-link btn-link_lg me-4 text-uppercase fw-medium" title="Quick view">
+                                            <span class="">Xem Ngay</span>
+                                        </a>
                                         <button class="pc__btn-wl bg-transparent border-0 js-add-wishlist"
                                             title="Add To Wishlist">
                                             <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
