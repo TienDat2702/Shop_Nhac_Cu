@@ -60,21 +60,21 @@
                   <input type="text" class="form-control" id="address" required="">
                   <input type="hidden" id="latitude" name="latitude" value="{{ $customer->latitude }}">
                   <input type="hidden" id="longitude" name="longitude" value="{{ $customer->longitude }}">
-                  <label for="address">Địa chỉ *</label>
+                  <label for="address">Địa chỉ thành phố*</label>
                   <span class="text-danger"></span>
                   <div id="showrooms"></div>  <!-- Hiển thị danh sách showroom ở đây -->
 
                 </div>
               </div>
+
               <div class="col-md-6">
-                <div class="form-floating my-3">
-                  <input type="text" class="form-control" value="{{ $customer->address }}" name="address" required="">
-                  <label for="address">Địa chỉ cụ thể*</label>
-                  <span class="text-danger"></span>
-                  <div id="showrooms"></div>  <!-- Hiển thị danh sách showroom ở đây -->
-
-                </div>
-              </div>
+    <div class="form-floating my-3">
+        <input type="text" class="form-control" id="specificAddress" name="address" required="" value="{{ $customer->address }}" placeholder="Địa chỉ cụ thể">
+        <label for="specificAddress">Địa chỉ cụ thể*</label>
+        <span class="text-danger" id="addressError"></span>
+    </div>
+</div>
+              
               <div class="col-md-6">
                 <div class="form-floating my-3">
                   <input type="text" class="form-control" value="{{ $customer->email }}"  name="email" required="">
@@ -266,13 +266,48 @@ function findNearestShowrooms(lat, lon) {
 
 // Lấy thông tin showroom gần nhất khi người dùng nhấn thanh toán
 document.getElementById('checkoutForm').addEventListener('submit', function(event) {
-    // Thêm thông tin showroom vào form trước khi gửi
-    var showroomDataInput = document.createElement('input');
-    showroomDataInput.type = 'hidden';
-    showroomDataInput.name = 'nearest_showrooms';
-    showroomDataInput.value = JSON.stringify(nearestShowrooms); // Chuyển đổi mảng showroom thành chuỗi JSON
-    this.appendChild(showroomDataInput);
+    const cityAddress = document.getElementById('address').value.trim().toLowerCase();
+    const specificAddress = document.getElementById('specificAddress').value.trim().toLowerCase();
+    let isValid = true;
+
+    // Kiểm tra nếu các trường đều đã được điền
+    if (!cityAddress) {
+        toastr.error("Vui lòng nhập Địa Chỉ Thành Phố.", "Lỗi");
+        isValid = false;
+    }
+
+    if (!specificAddress) {
+        toastr.error("Vui lòng nhập Địa chỉ cụ thể.", "Lỗi");
+        isValid = false;
+    }
+
+    // Kiểm tra xem quận/thành phố có trong địa chỉ cụ thể hay không
+    if (isValid && !specificAddress.includes(cityAddress)) {
+        toastr.error("Tỉnh hoặc thành phố phải trùng với địa chỉ thành phố", "Lỗi");
+        isValid = false;
+    }
+
+    // Kiểm tra nếu mảng nearestShowrooms rỗng hoặc không tồn tại
+    if (isValid && (!Array.isArray(nearestShowrooms) || nearestShowrooms.length === 0)) {
+        toastr.error("Vui lòng nhập 'Địa Chỉ Thành Phố' chính xác và chậm lại", "Lỗi");
+        isValid = false;
+    }
+
+    // Nếu có lỗi thì ngăn chặn gửi form
+    if (!isValid) {
+        event.preventDefault();
+    } else {
+        toastr.success("Thông tin hợp lệ! Đang gửi...", "Thành công");
+
+        // Thêm thông tin showroom vào form trước khi gửi
+        const showroomDataInput = document.createElement('input');
+        showroomDataInput.type = 'hidden';
+        showroomDataInput.name = 'nearest_showrooms';
+        showroomDataInput.value = JSON.stringify(nearestShowrooms); // Chuyển đổi mảng showroom thành chuỗi JSON
+        this.appendChild(showroomDataInput);
+    }
 });
+
 
 
 </script>
