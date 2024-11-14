@@ -1,11 +1,6 @@
 @extends('user.layouts.app')
 @section('title', 'TuneNest')
 @section('content')
-    <style>
-        .swiper-slide {
-            width: 1100px;
-        }
-    </style>
     <main>
 
         <section class="swiper-container js-swiper-slider swiper-number-pagination slideshow"
@@ -138,7 +133,7 @@
                             @foreach ($brands as $brand)
                             <a href="{{ route('brands.index', $brand->slug) }}">
 
-                                <div class="swiper-slide">
+                                <div class="swiper-slide2">
                                         <img loading="lazy" class="w-100 h-auto mb-3"
                                             src="{{ asset('uploads/brands/' . $brand->image) }}" width="124"
                                             height="124" alt="{{ $brand->name }}" />
