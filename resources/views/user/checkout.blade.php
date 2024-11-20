@@ -74,7 +74,7 @@
         <span class="text-danger" id="addressError"></span>
     </div>
 </div>
-              
+
               <div class="col-md-6">
                 <div class="form-floating my-3">
                   <input type="text" class="form-control" value="{{ $customer->email }}"  name="email" required="">
@@ -107,17 +107,17 @@
                       <tr>
                         <td>
                           <img width="50px" src="{{ asset('uploads/products/product/' . $item->image) }}" alt="">
-                          {{ $item->name 
+                          {{ $item->name
                           . ' x '
                           . session('carts')[$item->id]['quantity']
-                        
-                        }}  
+
+                        }}
                         </td>
                         <td align="right">
                           {{ number_format(($item->price_sale ?? $item->price) * session('carts')[$item->id]['quantity'], 0, '.', ',') . ' VNĐ'}}
                         </td>
                       </tr>
-                    @endforeach 
+                    @endforeach
                   </tbody>
                 </table>
                 <table class="checkout-totals">
@@ -160,7 +160,7 @@
                     <label class="form-check-label" for="checkout_payment_method_1">
                       Thanh toán VNPAY
                       <p class="option-detail">
-                        
+
                       </p>
                     </label>
                   </div>
@@ -235,34 +235,35 @@ function findNearestShowrooms(lat, lon) {
     fetch(url)
         .then(response => response.json())
         .then(data => {
-    if (data && data.showrooms) {
-        var showroomList = data.showrooms;
+            if (data && data.showrooms) {
+                var showroomList = data.showrooms;
 
-        // Cập nhật mảng showroom gần nhất
-        nearestShowrooms = showroomList;
+                // Sắp xếp showroom theo khoảng cách từ gần đến xa
+                showroomList.sort((a, b) => a.distance - b.distance);
 
-        // Hiển thị các showroom gần nhất từ gần đến xa
-        if (showroomList.length > 0) {
-            let showroomListHTML = '';
-            showroomList.forEach(showroom => {
-                // Kiểm tra nếu khoảng cách hợp lệ và không phải là null
-                if (showroom.distance !== null && showroom.distance !== undefined) {
-                    showroomListHTML += `<p>Showroom: ${showroom.name}, Khoảng cách: ${showroom.distance.toFixed(2)} km</p>`;
+                // Giới hạn chỉ 3 showroom gần nhất
+                var nearestShowrooms = showroomList.slice(0, 3);
+
+                // Hiển thị các showroom gần nhất
+                if (nearestShowrooms.length > 0) {
+                    let showroomListHTML = '';
+                    nearestShowrooms.forEach(showroom => {
+                        // Kiểm tra nếu khoảng cách hợp lệ và không phải là null
+                        if (showroom.distance !== null && showroom.distance !== undefined) {
+                            showroomListHTML += `<p>Showroom: ${showroom.name}, Khoảng cách: ${showroom.distance.toFixed(2)} km</p>`;
+                        }
+                    });
+                    document.getElementById('showrooms').innerHTML = showroomListHTML;
                 } else {
-                    showroomListHTML += ``;
+                    alert("Không tìm thấy showroom gần nhất.");
                 }
-            });
-            document.getElementById('showrooms').innerHTML = showroomListHTML;
-        } else {
-            alert("Không tìm thấy showroom gần nhất.");
-        }
-    }
-})
-.catch(error => {
-    console.error("Error finding nearest showrooms:", error);
-});
-
+            }
+        })
+        .catch(error => {
+            console.error("Error finding nearest showrooms:", error);
+        });
 }
+
 
 // Lấy thông tin showroom gần nhất khi người dùng nhấn thanh toán
 document.getElementById('checkoutForm').addEventListener('submit', function(event) {
