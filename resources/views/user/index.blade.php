@@ -18,42 +18,37 @@
         "loop": true
       }'>
 
-            <div class="swiper-wrapper">
-                @if ($banners && count($banners) > 0)
-                    @foreach ($banners as $banner)
-                        <div class="swiper-slide">
-                            <div class="overflow-hidden position-relative h-100">
-                                <div class="slideshow-character position-absolute bottom-0 pos_right-center">
-                                    <img loading="lazy"
-                                        src="{{ asset($banner->image ? 'uploads/banner/' . $banner->image : 'path/to/default/image.jpg') }}"
-                                        width="800" height="733" alt="{{ $banner->title ?? 'Đang Cập Nhật' }}"
-                                        class="slideshow-character__img animate animate_fade animate_btt animate_delay-9 w-auto h-auto" />
-
-                                    <div class="character_markup">
-                                        <p
-                                            class="text-uppercase font-sofia fw-bold animate animate_fade animate_rtl animate_delay-10">
-                                            {{ $banner->title ?? 'Đang Cập Nhật' }}</p>
-                                    </div>
-                                </div>
-                                <div class="slideshow-text container position-absolute start-50 top-50 translate-middle">
-                                    <h6
-                                        class="text_dash text-uppercase fs-base fw-medium animate animate_fade animate_btt animate_delay-3">
-                                        {{ $banner->description ?? 'Hàng Mới Nhập' }}</h6>
-                                    <h2 class="h1 fw-normal mb-0 animate animate_fade animate_btt animate_delay-5">
-                                        {{ $banner->title ?? 'Đang Cập Nhật' }}</h2>
-                                    <h2 class="h1 fw-bold animate animate_fade animate_btt animate_delay-5">
-                                        {{ $banner->strong_title ?? 'Đang Cập Nhật' }}</h2>
-                                    <a href="#"
-                                        class="btn-link btn-link_lg default-underline fw-medium animate animate_fade animate_btt animate_delay-7">Mua hàng</a>
-                                </div>
-                            </div>
+      <div class="swiper-wrapper">
+        @if ($banners && count($banners) > 0)
+            @foreach ($banners as $banner)
+            <div class="swiper-slide">
+                <div class="overflow-hidden position-relative h-100 w-100">
+                        <div class="background-overlay"></div>
+                        <img loading="lazy"
+                             src="{{ asset($banner->image ? $banner->image : 'path/to/default/image.jpg') }}" 
+                             alt="{{ $banner->title ?? 'Đang Cập Nhật' }}" 
+                             class="slideshow-character__img animate animate_fade animate_btt animate_delay-9 w-100 h-100" 
+                             style="object-fit: cover;" />
+                        <div class="slideshow-text container position-absolute start-50 top-50 translate-middle">
+                            <h6 class="text_dash text-uppercase fs-base fw-medium animate animate_fade animate_btt animate_delay-3">
+                                {{ $banner->description ?? 'Hàng Mới Nhập' }}
+                            </h6>
+                            <h2 class="h1 fw-normal mb-0 animate animate_fade animate_btt animate_delay-5">
+                                {{ $banner->title ?? 'Đang Cập Nhật' }}
+                            </h2>
+                            <h2 class="h1 fw-bold animate animate_fade animate_btt animate_delay-5">
+                                {{ $banner->strong_title ?? 'Đang Cập Nhật' }}
+                            </h2>
+                            <a href="{{ route('shop.index') }}" class="btn-link btn-link_lg default-underline fw-medium animate animate_fade animate_btt animate_delay-7">Mua hàng</a>
                         </div>
-                    @endforeach
+                    </div>
+                </div>
+            @endforeach
                 @else
-                    <div class="swiper-slide">
+                <div class="swiper-slide">
                         <div class="overflow-hidden position-relative h-100">
                             <div class="slideshow-character position-absolute bottom-0 pos_right-center">
-<img loading="lazy" src="{{ asset('path/to/default/image.jpg') }}" width="400"
+                                    <img loading="lazy" src="{{ asset('path/to/default/image.jpg') }}" width="400"
                                     height="690" alt="Đang Cập Nhật"
                                     class="slideshow-character__img animate animate_fade animate_rtl animate_delay-10 w-auto h-auto" />
                             </div>
@@ -182,12 +177,13 @@
             <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
 
             <section class="hot-deals container">
-                <h2 class="section-title text-center mb-3 pb-xl-3 mb-xl-4">Ưu đãi Hot</h2>
+                <div class="section-title-home">
+                    <h2 class="section-title text-center mb-3 pb-xl-3 mb-xl-4"><span>Ưu đãi hot</span></h2>
+                </div>
                 <div class="row">
                     <div
                         class="col-md-6 col-lg-4 col-xl-20per d-flex align-items-center flex-column justify-content-center py-4 align-items-md-start">
                         <h2>Giảm giá cuối năm</h2>
-                        <h2 class="fw-bold">Up to 60% Off</h2>
 
                         <div class="position-relative d-flex align-items-center text-center pt-xxl-4 js-countdown mb-3"
                             data-date="18-3-2024" data-time="06:50">
@@ -212,7 +208,7 @@
                             </div>
                         </div>
 
-                        <a href="#" class="btn-link default-underline text-uppercase fw-medium mt-3">View All</a>
+                        <a href="{{ route('shop.index') }}" class="btn-link default-underline text-uppercase fw-medium mt-3">Xem tất cả</a>
                     </div>
                     <div class="col-md-6 col-lg-8 col-xl-80per">
                         <div class="position-relative">
@@ -252,7 +248,10 @@
                 }'>
                                 <div class="swiper-wrapper">
                                     @foreach ($product_price as $product)
-                                        <div class="swiper-slide product-card product-card_style3">
+                                        <div class="swiper-slide product-card product-card_style3 pst">
+                                            <div class="product_sale">
+                                                <span>Giảm giá</span>
+                                            </div>
                                             <div class="pc__img-wrapper">
                                                 <a href="{{ route('product.detail', $product->slug) }}">
                                                     <img loading="lazy"
@@ -260,7 +259,13 @@
                                                         width="258" height="313" alt="{{ $product->name }}"
                                                         class="pc__img">
                                                     <img loading="lazy"
+
+                                                    @if (count($product->thumbnails) > 0) 
+                                                        src="{{ $product->thumbnails->first()->path }}"
+                                                    @else
                                                         src="{{ asset('/uploads/products/product/' . $product->image) }}"
+                                                    @endif
+
                                                         width="258" height="313" alt="{{ $product->name }}"
                                                         class="pc__img pc__img-second">
                                                 </a>
@@ -321,43 +326,34 @@
 
             <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
 
-            <section class="category-banner container">
-                <h2 class="section-title text-center mb-3 pb-xl-3 mb-xl-4">Nhiều lượt xem nhất</h2>
+            <div class="section-title-home">
+                <h2 class="section-title text-center mb-3 pb-xl-3 mb-xl-4"><span>Nhiều lượt xem</span></h2>
+            </div>
+            <section class="products-grid products-grid-view">
                 <div class="row">
                     @foreach ($product_views as $product)
-                        <div class="col-md-6">
-                            <div class="category-banner__item border-radius-10 mb-5">
-                                <img loading="lazy" class="h-auto"
-                                    src="{{ asset('uploads/products/product/' . $product->image) }}" width="690"
-                                    height="665" alt="{{ $product->name }}" />
-                                <div class="category-banner__item-mark">
-                                    {{ $product->view }} Lượt xem
-                                </div>
-                                <div class="category-banner__item-content">
-                                    <h3 class="mb-0">{{ $product->name }}</h3>
-                                    <a href="#" class="btn-link default-underline text-uppercase fw-medium">Xem
-                                        ngay</a>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </section>
-
-            <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
-
-            <section class="products-grid container">
-                <h2 class="section-title text-center mb-3 pb-xl-3 mb-xl-4">Top sản phẩm</h2>
-
-                <div class="row">
-                    @foreach ($products as $product)
-                        <div class="col-6 col-md-4 col-lg-3">
-                            <div class="product-card product-card_style3 mb-3 mb-md-4 mb-xxl-5">
+                        <div class="col-6 col-md-4 col-lg-3 product-view">
+                            <div class="product-card product-card-view product-card_style3 mb-3 mb-md-4 mb-xxl-5 pst">
+                                @if ($product->price_sale)
+                                    <div class="product_sale">
+                                        <span>Giảm giá</span>
+                                    </div>
+                                @endif
+                               
                                 <div class="pc__img-wrapper">
                                     <a href="{{ route('product.detail', $product->slug) }}">
                                         <img loading="lazy"
                                             src="{{ asset('uploads/products/product/' . $product->image) }}"
                                             width="330" height="400" alt="{{ $product->name }}" class="pc__img">
+                                        <img loading="lazy"
+                                        @if (count($product->thumbnails) > 0) 
+                                            src="{{ $product->thumbnails->first()->path }}"
+                                        @else
+                                            src="{{ asset('/uploads/products/product/' . $product->image) }}"
+                                        @endif
+    
+                                            width="258" height="313" alt="{{ $product->name }}"
+                                            class="pc__img pc__img-second">
                                     </a>
                                 </div>
 
@@ -400,11 +396,174 @@
 
                 </div><!-- /.row -->
 
-                {{-- <div class="text-center mt-2">
-          <a class="btn-link btn-link_lg default-underline text-uppercase fw-medium" href="#">Load More</a>
-        </div> --}}
+                {{-- <div class="text-center mt-2 mb-5">
+                    <a class="btn-link btn-link_lg default-underline text-uppercase fw-medium" href="{{ route('shop.index') }}">Xem tất cả</a>
+                    </div> --}}
             </section>
 
+            <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
+
+            <section class="products-grid container">
+                <div class="section-title-home">
+                    <h2 class="section-title text-center mb-3 pb-xl-3 mb-xl-4"><span>Top sản phẩm</span></h2>
+                </div>
+
+                <div class="row">
+                    @foreach ($products as $product)
+                        <div class="col-6 col-md-4 col-lg-3">
+                            <div class="product-card product-card_style3 mb-3 mb-md-4 mb-xxl-5 pst">
+                                @if ($product->price_sale)
+                                    <div class="product_sale">
+                                        <span>Giảm giá</span>
+                                    </div>
+                                @endif
+                               
+                                <div class="pc__img-wrapper">
+                                    <a href="{{ route('product.detail', $product->slug) }}">
+                                        <img loading="lazy"
+                                            src="{{ asset('uploads/products/product/' . $product->image) }}"
+                                            width="330" height="400" alt="{{ $product->name }}" class="pc__img">
+                                        <img loading="lazy"
+                                        @if (count($product->thumbnails) > 0) 
+                                            src="{{ $product->thumbnails->first()->path }}"
+                                        @else
+                                            src="{{ asset('/uploads/products/product/' . $product->image) }}"
+                                        @endif
+    
+                                            width="258" height="313" alt="{{ $product->name }}"
+                                            class="pc__img pc__img-second">
+                                    </a>
+                                </div>
+
+                                <div class="pc__info position-relative">
+                                    <h6 class="pc__title">{{ $product->name }}</h6>
+                                    <div class="product-card__price d-flex align-items-center">
+                                        @if ($product->price_sale == null)
+                                            <span class="money price text-secondary">{{ number_format($product->price) }}
+                                                VNĐ</span>
+                                        @else
+                                            <span class="money price-old">{{ number_format($product->price) }} VNĐ</span>
+                                            <span
+                                                class="money price text-secondary">{{ number_format($product->price_sale) }}
+                                                VNĐ</span>
+                                        @endif
+                                    </div>
+
+                                    <div
+                                        class="anim_appear-bottom position-absolute bottom-0 start-0 d-none d-sm-flex align-items-center bg-body">
+                                        <a href="#" data-url="{{ route('cart.add', $product->id) }}"
+                                            class="btn-link btn-link_lg me-4 text-uppercase fw-medium add-to-cart"
+                                            data-aside="cartDrawer" title="Add To Cart">Thêm Giỏ Hàng</a>
+                                            <a href="{{ route('product.detail', $product->slug) }}"
+                                                class="btn-link btn-link_lg me-4 text-uppercase fw-medium"
+                                                title="Quick view">
+                                                <span class="">Xem Ngay</span>
+                                            </a>
+                                        <button class="pc__btn-wl bg-transparent border-0 js-add-wishlist"
+                                            title="Add To Wishlist">
+                                            <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <use href="#icon_heart" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+
+                </div><!-- /.row -->
+
+                <div class="text-center mt-2 mb-5">
+                    <a class="btn-link btn-link_lg default-underline text-uppercase fw-medium" href="{{ route('shop.index') }}">Xem tất cả</a>
+                    </div>
+            </section>
+
+            {{-- tất cả sản phẩm và danh mục --}}
+            @if (count($product_cateogries)> 0)
+                @foreach ($product_cateogries as $cateogries)
+                    @if (count($cateogries->products) > 0)
+                    <section class="products-grid container">
+                        <div class="section-title-home">
+                            <h2 class="section-title text-center mb-3 pb-xl-3 mb-xl-4"><span>{{ $cateogries->name }}</span></h2>
+                        </div>
+                        <div class="row">
+                            @foreach ($cateogries->products->take(4) as $product)
+                                <div class="col-6 col-md-4 col-lg-3">
+                                    <div class="product-card product-card_style3 mb-3 mb-md-4 mb-xxl-5 pst">
+                                        @if ($product->price_sale)
+                                            <div class="product_sale">
+                                                <span>Giảm giá</span>
+                                            </div>
+                                        @endif
+                                       
+                                        <div class="pc__img-wrapper">
+                                            <a href="{{ route('product.detail', $product->slug) }}">
+                                                <img loading="lazy"
+                                                    src="{{ asset('uploads/products/product/' . $product->image) }}"
+                                                    width="330" height="400" alt="{{ $product->name }}" class="pc__img">
+                                                <img loading="lazy"
+                                                @if (count($product->thumbnails) > 0) 
+                                                    src="{{ $product->thumbnails->first()->path }}"
+                                                @else
+                                                    src="{{ asset('/uploads/products/product/' . $product->image) }}"
+                                                @endif
+            
+                                                    width="258" height="313" alt="{{ $product->name }}"
+                                                    class="pc__img pc__img-second">
+                                            </a>
+                                        </div>
+        
+                                        <div class="pc__info position-relative">
+                                            <h6 class="pc__title">{{ $product->name }}</h6>
+                                            <div class="product-card__price d-flex align-items-center">
+                                                @if ($product->price_sale == null)
+                                                    <span class="money price text-secondary">{{ number_format($product->price) }}
+                                                        VNĐ</span>
+                                                @else
+                                                    <span class="money price-old">{{ number_format($product->price) }} VNĐ</span>
+                                                    <span
+                                                        class="money price text-secondary">{{ number_format($product->price_sale) }}
+                                                        VNĐ</span>
+                                                @endif
+                                            </div>
+        
+                                            <div
+                                                class="anim_appear-bottom position-absolute bottom-0 start-0 d-none d-sm-flex align-items-center bg-body">
+                                                <a href="#" data-url="{{ route('cart.add', $product->id) }}"
+                                                    class="btn-link btn-link_lg me-4 text-uppercase fw-medium add-to-cart"
+                                                    data-aside="cartDrawer" title="Add To Cart">Thêm Giỏ Hàng</a>
+                                                    <a href="{{ route('product.detail', $product->slug) }}"
+                                                        class="btn-link btn-link_lg me-4 text-uppercase fw-medium"
+                                                        title="Quick view">
+                                                        <span class="">Xem Ngay</span>
+                                                    </a>
+                                                <button class="pc__btn-wl bg-transparent border-0 js-add-wishlist"
+                                                    title="Add To Wishlist">
+                                                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <use href="#icon_heart" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                            <div class="text-center mt-2 mb-5">
+                                <a class="btn-link btn-link_lg default-underline text-uppercase fw-medium" href="{{ route('shop.category',$cateogries->slug) }}">Xem thêm</a>
+                            </div>
+                        </div>
+                        <!-- /.row -->
+        
+                       
+                    </section>
+                    @endif
+                
+                @endforeach
+            @endif
+            
+            {{-- end tất cả sản phẩm và danh mục --}}
             {{-- Tin tức và sự kiên --}}
 
             @include('user.partials.post_index')

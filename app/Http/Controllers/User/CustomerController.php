@@ -13,6 +13,7 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Models\User; // Đổi từ Customer sang User
 use App\Models\CustomerResetToken;
+use App\Models\LoyaltyLevel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -53,6 +54,11 @@ class CustomerController extends Controller
     {
         $data = $request->only('name', 'email', 'phone');
         $data['password'] = bcrypt($request->password);
+        $loyoty_level = LoyaltyLevel::where('id',1)->first();
+        if ($loyoty_level) {
+            $data['loyalty_level_id'] = 1;
+        }
+        
         // $data['role_id'] = 1; // Đặt role_id = 1 cho khách hàng
 
         if ($acc = Customer::create($data)) {
@@ -202,11 +208,76 @@ class CustomerController extends Controller
     public function customerOrderDetail($id)
     {
         $order = Order::find($id);
-        if (!$order) {
-            return redirect()->route('customer.orders')->with('error', 'Đơn hàng không tồn tại.');
+       
+        if ($order) {
+            $orderStatus = $order->status; // Trạng thái của đơn hàng
+        
+            // Các bước trạng thái và thời gian tương ứng
+            $steps = [
+                ['text' => 'Đơn hàng đã đặt', 'status' => 'Đơn hàng đã đặt'],
+                ['text' => 'Xác nhận đơn hàng', 'status' => 'Chưa xác nhận'],
+                ['text' => 'Chờ xử lý', 'status' => 'Chờ xử lý'],
+                ['text' => 'Đã duyệt', 'status' => 'Duyệt'],
+                ['text' => 'Đang giao', 'status' => 'Đang giao'],
+                ['text' => 'Đã giao', 'status' => 'Đã giao'],
+            ];
+            
+            // Chỉ mục trạng thái của các bước
+            $statusOrder = [
+                'Đơn hàng đã đặt' => 1,
+                'Chưa xác nhận' => 2,
+                'Chờ xử lý' => 4,
+                'Duyệt' => 5,
+                'Đang giao' => 6,
+                'Đã giao' => 7,
+            ];
+        
+            // Nếu trạng thái là "Đã thanh toán", loại bỏ bước "Chưa xác nhận" và các bước sau đó
+            if ($orderStatus == 'Đã thanh toán') {
+                $steps = array_filter($steps, function($step) {
+                    return $step['status'] != 'Chưa xác nhận';
+                });
+        
+                // Reset lại chỉ mục mảng để tránh lỗi khi duyệt mảng
+                $steps = array_values($steps);
+            }
+        
+            // Xử lý các trạng thái
+            foreach ($steps as $index => &$step) {
+                if ($step['status'] == $orderStatus) {
+                    // Đánh dấu trạng thái hiện tại
+                    $step['class'] = 'progress-step--current';
+                } 
+                elseif (isset($statusOrder[$orderStatus]) && $statusOrder[$orderStatus] > $statusOrder[$step['status']]) {
+                    // Đánh dấu bước đã hoàn thành
+                    $step['class'] = 'progress-step--completed';
+                } else {
+                    // Bước chưa hoàn thành
+                    $step['class'] = '';
+                }
+            }
+        
+            // Tính toán tỷ lệ tiến trình
+            $progressWidth = $this->getProgressWidth($orderStatus, $statusOrder);
         }
-        return view('user.userOrderDetail', compact('order'));
+        else{
+            abort(404);
+        }
+    
+        return view('user.userOrderDetail', compact('order', 'steps', 'orderStatus', 'progressWidth'));
     }
+    
+    
+    private function getProgressWidth($orderStatus, $statusOrder)
+    {
+        // Lấy giá trị tiến trình từ trạng thái hiện tại
+        $status = $statusOrder[$orderStatus] ?? 0;
+        $totalSteps = count($statusOrder);
+        return ($status / $totalSteps) * 82; // Tính tỷ lệ phần trăm tiến trình
+    }
+    
+
+
 
     public function customerOrderCancel(Request $request)
     {
@@ -214,10 +285,18 @@ class CustomerController extends Controller
         if (!$order) {
             return redirect()->route('customer.orders')->with('error', 'Đơn hàng không tồn tại.');
         }
-        $order->status = "đã hủy";
+        if ($order->status == 'Đã giao') {
+            $order->status = "Đã nhận hàng";
+            toastr()->success('Cảm ơn bạn đã xác nhận');
+        }
+        if ($order->status =='Chờ xử lý' || $order->status =='Chưa xác nhận') {
+            $order->status = "Đã hủy";
+            $order->delete();
+            toastr()->error('Bạn đẫ hủy xin hãy đặt đơn hàng mới');
+        }
         $order->save();
 
-        return redirect()->route('customer.orders')->with('success', 'Đơn hàng đã được hủy thành công');
+        return redirect()->route('customer.orders');
     }
 
     public function customerOrderHistory()

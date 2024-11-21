@@ -231,6 +231,7 @@
             }
           }'>
                         <div class="swiper-wrapper">
+                            {{-- @foreach($banners as $banner)
                             <div class="swiper-slide">
                                 <div class="slide-split h-100 d-block d-md-flex overflow-hidden">
                                     <div class="slide-split_text position-relative d-flex align-items-center"
@@ -255,56 +256,31 @@
                                     </div>
                                 </div>
                             </div>
-
+                            @endforeach --}}
+                            @foreach($banners as $banner)
                             <div class="swiper-slide">
-                                <div class="slide-split h-100 d-block d-md-flex overflow-hidden">
-                                    <div class="slide-split_text position-relative d-flex align-items-center"
-                                        style="background-color: #f5e6e0;">
-                                        <div class="slideshow-text container p-3 p-xl-5">
-                                            <h2
-                                                class="text-uppercase section-title fw-normal mb-3 animate animate_fade animate_btt animate_delay-2">
-                                                {{ $banner2->title ?? 'Đang Cập Nhật' }}
-                                                <br /><strong>{{ $banner2->strong_title ?? 'Đang Cập Nhật' }}</strong>
-                                            </h2>
-                                            <p class="mb-0 animate animate_fade animate_btt animate_delay-5">
-                                                {{ $banner2->description ?? 'Đang Cập Nhật' }}</h6>
-                                        </div>
-                                    </div>
-                                    <div class="slide-split_media position-relative">
-                                        <div class="slideshow-bg" style="background-color: #f5e6e0;">
-                                            <img loading="lazy"
-                                                src="{{ asset($banner2->image ?? 'path/to/default/image.jpg') }}"
-                                                width="630" height="450" alt="Đang Cập Nhật"
-                                                class="slideshow-bg__img object-fit-cover" />
-                                        </div>
+                                <div class="slide-split h-100 overflow-hidden position-relative">
+                                    <!-- Ảnh nền -->
+                                    <img loading="lazy" 
+                                         src="{{ asset($banner->image ?? 'path/to/default/image.jpg') }}" 
+                                         alt="Đang Cập Nhật"
+                                         class="slideshow-bg__img object-fit-cover w-100 h-100" />
+                                    
+                                    <!-- Lớp phủ màu đen mờ -->
+                                    <div class="overlay position-absolute top-0 start-0 w-100 h-100"></div>
+                                    
+                                    <!-- Nội dung chữ -->
+                                    <div class="slide-overlay_text container position-absolute top-50 start-0 translate-middle-y text-white text-start">
+                                        <h2 class="text-uppercase section-title fw-normal mb-3">
+                                            {{ $banner->title ?? 'Đang Cập Nhật' }}<br />
+                                            <strong>{{ $banner->strong_title ?? 'Đang Cập Nhật' }}</strong>
+                                        </h2>
+                                        <p class="mb-0">{{ $banner->description ?? 'Đang Cập Nhật' }}</p>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="swiper-slide">
-                                <div class="slide-split h-100 d-block d-md-flex overflow-hidden">
-                                    <div class="slide-split_text position-relative d-flex align-items-center"
-                                        style="background-color: #f5e6e0;">
-                                        <div class="slideshow-text container p-3 p-xl-5">
-                                            <h2
-                                                class="text-uppercase section-title fw-normal mb-3 animate animate_fade animate_btt animate_delay-2">
-                                                {{ $banner3->title ?? 'Đang Cập Nhật' }}
-                                                <br /><strong>{{ $banner3->strong_title ?? 'Đang Cập Nhật' }}</strong>
-                                            </h2>
-                                            <p class="mb-0 animate animate_fade animate_btt animate_delay-5">
-                                                {{ $banner3->description ?? 'Đang Cập Nhật' }}</h6>
-                                        </div>
-                                    </div>
-                                    <div class="slide-split_media position-relative">
-                                        <div class="slideshow-bg" style="background-color: #f5e6e0;">
-                                            <img loading="lazy"
-                                                src="{{ asset($banner3->image ?? 'path/to/default/image.jpg') }}"
-                                                width="630" height="450" alt="Đang Cập Nhật"
-                                                class="slideshow-bg__img object-fit-cover" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            @endforeach
+                            
                         </div>
 
                         <div class="container p-3 p-xl-5">

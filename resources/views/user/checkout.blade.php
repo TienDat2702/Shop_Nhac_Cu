@@ -131,10 +131,10 @@
                       <td id="discountAmount" align="right">
                           {{ number_format($discountAmount, 0, '.', ',') . ' VNĐ' }}</td>
                     </tr>
-                    <tr>
+                    {{-- <tr>
                       <th>VAT</th>
                       <td align="right">$19</td>
-                    </tr>
+                    </tr> --}}
                     <tr>
                       <th>TỔNG THANH TOÁN</th>
                       <td id="totalAmount" align="right">

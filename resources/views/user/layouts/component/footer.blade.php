@@ -1,4 +1,4 @@
-<footer class="footer footer_type_2">
+<footer class="footer footer_type_2 pst">
     <div class="footer-middle container">
         <div class="row row-cols-lg-5 row-cols-2">
             <div class="footer-column footer-store-info col-12 mb-4 mb-lg-0">

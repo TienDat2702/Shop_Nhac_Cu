@@ -54,14 +54,50 @@
                 </div>
 
                 <div class="col-lg-10">
+                    <div class="text-right d-flex justify-content-end">
+                        <a class="btn btn-sm btn-danger me-3" href="{{ route('customer.orders') }}">Quay lại</a>
+                        <button class="btn btn-sm btn-primary" onclick="printOrder()">In đơn hàng</button>
+                    </div>
+                    <div class="wg-box mt-5">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <h3 style="font-weight: 600;">Thông tin khách hàng</h3>
+                                <div class="my-account__address-item mt-3">
+                                    <div style="font-size: 16px;" class="my-account__address-item__detail">
+                                        <p class="mb-2"><strong>Địa chỉ :</strong> {{ $order->address }}</p>
+                                        <p class="mb-2"><strong>Tên : </strong>{{ $order->customer->name }}</p>
+                                        <p class="mb-2"><strong>Email : </strong>{{ $order->customer->email }}</p>
+                                        <p class="mb-2"><strong>Số điện thoại :</strong> {{ $order->customer->phone }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <h3 style="font-weight: 600;">Thông tin Giao hàng</h3>
+                                <div class="my-account__address-item mt-3">
+                                    <div style="font-size: 16px;" class="my-account__address-item__detail">
+                                        <p class="mb-2"><strong>Địa chỉ giao hàng :</strong> {{ $order->address }}</p>
+                                        <p class="mb-2"><strong>Tên người nhận : </strong>{{ $order->name }}</p>
+                                        <p class="mb-2"><strong>Số điện thoại :</strong> {{ $order->phone }}</p>
+                                        <p class="mb-2"><strong>Phương thức thanh toán :</strong> {{ $order->payment_method }}</p>
+                                        <p class="mb-2"><strong>Ghi chú :</strong> {{ $order->customer_note }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    {{-- Theo dõi đơn hàng --}}
+                    @if ($order->status != 'Đã nhận hàng')
+                        <h3 style="font-weight: 600;" class="mt-4">Tình trạng đơn hàng</h3>
+                        @include('user.partials.progress_tracker')
+                    @endif
+                    {{-- end Theo dõi đơn hàng --}}
+
                     <div class="wg-box mt-5 mb-5">
                         <div class="row mb-2">
                             <div class="col-6">
-                                <h5>Sản phẩm đơn hàng</h5>
-                            </div>
-                            <div class="col-6 text-right">
-                                <a class="btn btn-sm btn-danger" href="{{ route('customer.orders') }}">Quay lại</a>
-                                <button class="btn btn-sm btn-primary" onclick="printOrder()">In đơn hàng</button>
+                                <h3 style="font-weight: 600;">Sản phẩm đơn hàng</h3>
                             </div>
                         </div>
                         <div class="table-responsive">
@@ -101,104 +137,32 @@
                                         </tr>
                                     @endforeach
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td>
+                                            Tổng Thanh Toán
+                                        </td>
+                                        <td colspan="5">
+                                            {{ number_format($order->total) }} VNĐ
+                                        </td>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
 
-                    <div class="progress-tracker">
-                        <div class="progress-step progress-step--completed" aria-label="Đơn hàng đã đặt, 16:58 07-08-2024" tabindex="0">
-                          <div class="progress-step__icon progress-step__icon--completed">
-                            <div class="circle">1</div>
-                          </div>
-                          <div class="progress-step__text">Đơn hàng đã đặt</div>
-                          <div class="progress-step__date">16:58 07-08-2024</div>
-                        </div>
-                      
-                        <div class="progress-step progress-step--completed" aria-label="Đơn hàng đã thanh toán (₫38.000), 16:59 07-08-2024" tabindex="0">
-                          <div class="progress-step__icon progress-step__icon--completed">
-                            <div class="circle">2</div>
-                          </div>
-                          <div class="progress-step__text">Đơn hàng đã thanh toán (₫38.000)</div>
-                          <div class="progress-step__date">16:59 07-08-2024</div>
-                        </div>
-                      
-                        <div class="progress-step progress-step--current" aria-label="Đang xử lý, 17:05 07-08-2024" tabindex="0">
-                          <div class="progress-step__icon progress-step__icon--current">
-                            <div class="circle">3</div>
-                          </div>
-                          <div class="progress-step__text">Đang xử lý</div>
-                          <div class="progress-step__date">17:05 07-08-2024</div>
-                        </div>
-                      
-                        <div class="progress-step" aria-label="Đang giao hàng" tabindex="0">
-                          <div class="progress-step__icon">
-                            <div class="circle">4</div>
-                          </div>
-                          <div class="progress-step__text">Đang giao hàng</div>
-                          <div class="progress-step__date"></div>
-                        </div>
-                      
-                        <div class="progress-step" aria-label="Đã giao hàng" tabindex="0">
-                          <div class="progress-step__icon">
-                            <div class="circle">5</div>
-                          </div>
-                          <div class="progress-step__text">Đã giao hàng</div>
-                          <div class="progress-step__date"></div>
-                        </div>
-                      
-                        <div class="progress-line">
-                          <div class="progress-line__background"></div>
-                          <div class="progress-line__foreground" style="width: 60%;"></div>
-                        </div>
-                      </div>
-                      
-
-
-                    @if ($order->discount_id)
-                        <div class="wg-box mt-5">
-                            <h5>Mã giảm giá</h5>
-                            <div class="my-account__address-item col-md-6">
-                                <div class="my-account__address-item__detail">
-                                    <p>{{ $order->discount->code }}</p>
-                                    <br>
-                                    <p>Số tiền được giảm: {{ $order->discount->value }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
-                    <div class="wg-box mt-5">
-                        <h5>Địa chỉ giao hàng</h5>
-                        <div class="my-account__address-item col-md-6">
-                            <div class="my-account__address-item__detail">
-                                <p>{{ $order->address }}</p>
-                                <br>
-                                <p>{{ $order->customer->name }}</p>
-                                <br>
-                                <p>Số điện thoại: {{ $order->customer->phone }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="wg-box mt-5">
-                        <h5>Thanh toán</h5>
-                        <table class="table table-striped table-bordered table-transaction">
-                            <tbody>
-                                <tr>
-                                    <th>Tổng tiền</th>
-                                    <td>{{ number_format($order->total) }}VNĐ</td>
-                                    <th>Mã giảm giá</th>
-                                    <td>{{ $order->discount->code ?? 'N/A' }}</td>
-                                    <th>Giảm giá</th>
-                                    <td>{{ $order->discount->value ?? 'N/A' }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
                     <div class="wg-box mt-5 text-right">
-                        @if ($order->status =='chờ duyệt')
+                        @if ($order->status =='Chờ xử lý' || $order->status =='Chưa xác nhận')
                             <form action="{{ route('customer.orders.cancel', $order->id) }}" method="POST">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}" autocomplete="off">
                                 <input type="hidden" name="order_id" value="{{ $order->id }}">
                                 <button type="submit" class="btn bg-danger">Hủy đơn hàng</button>
+                            </form>
+                        @elseif($order->status =='Đã giao')
+                            <form action="{{ route('customer.orders.cancel', $order->id) }}" method="POST">
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}" autocomplete="off">
+                                <input type="hidden" name="order_id" value="{{ $order->id }}">
+                                <button type="submit" class="btn bg-success">Đã nhận hàng</button>
                             </form>
                         @else
                             <a href="{{ route('customer.orders') }}" class="btn btn-primary">Quay lại</a>

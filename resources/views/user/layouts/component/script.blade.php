@@ -15,6 +15,7 @@
     // Ẩn vòng xoay khi tải xong hoặc chuyển trang xong
     function hideLoader() {
         document.getElementById('loading-spinner').style.display = 'none';
+        document.body.style.overflow = '';
     }
 
 </script>
@@ -41,5 +42,13 @@
     });
 </script>
 
+{{-- chat box AI --}}
+<script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+<df-messenger
+  intent="WELCOME"
+  chat-title="TuneNests"
+  agent-id="f59cb04a-1fc0-4c79-ab47-e0f8d087a61e"
+  language-code="vi"
+></df-messenger>
 @stack('scripts')
 

@@ -193,7 +193,7 @@
                         <img src="http://127.0.0.1:8000/images/voucher1.png" alt="Voucher Logo">
                     </div>
                     <div class="voucher_content">
-                        <div class="voucher_name">${val.code}</div>
+                        <div class="voucher_name">${val.name}</div>
                         <div class="voucher_des">
                             <span>Đơn tối thiểu ${Number(val.minimum_total_value).toLocaleString()} VNĐ</span>
                         </div>

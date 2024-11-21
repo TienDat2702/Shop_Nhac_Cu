@@ -5,7 +5,7 @@
     @include('user.layouts.component.head')
 </head>
 
-<body class="gradient-bg">
+<body class="gradient-bg {{ request()->is('/') ? 'home-page' : '' }} home-page-2">
     @include('user.layouts.component.scg')
     {{-- <style>
         #header {

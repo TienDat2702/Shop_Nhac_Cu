@@ -181,7 +181,7 @@ li.menu-cate-item > a{
 
 /* chữ mờ */
 .text-gray{
-    color: #9b9b9b
+    color: #747474
 }
 
 /* nút play */
@@ -418,4 +418,14 @@ a.btn-voucher:hover {
     background-color: #2dc258;
     transition: width 0.3s ease;
   }
+  
+
+
+
+
+
+
+
+
+
   

@@ -88,24 +88,24 @@ class Product extends Model
         return $this->belongsTo(Brand::class, 'brand_id');
     }
     public function productCategory1()
-{
-    return $this->belongsTo(ProductCategory::class);
-}
-
-public function scopeSortBy($query, $sortOption)
-{
-    switch ($sortOption) {
-        case 'price_asc':
-            return $query->orderByRaw('IF(price_sale IS NOT NULL, price_sale, price) ASC');
-        case 'price_desc':
-            return $query->orderByRaw('IF(price_sale IS NOT NULL, price_sale, price) DESC');
-        case 'name_asc':
-            return $query->orderBy('name', 'ASC');
-        case 'name_desc':
-            return $query->orderBy('name', 'DESC');
-        default:
-            return $query->orderBy('id', 'DESC');
+    {
+        return $this->belongsTo(ProductCategory::class);
     }
-}
+
+    public function scopeSortBy($query, $sortOption)
+    {
+        switch ($sortOption) {
+            case 'price_asc':
+                return $query->orderByRaw('IF(price_sale IS NOT NULL, price_sale, price) ASC');
+            case 'price_desc':
+                return $query->orderByRaw('IF(price_sale IS NOT NULL, price_sale, price) DESC');
+            case 'name_asc':
+                return $query->orderBy('name', 'ASC');
+            case 'name_desc':
+                return $query->orderBy('name', 'DESC');
+            default:
+                return $query->orderBy('id', 'DESC');
+        }
+    }
 
 }

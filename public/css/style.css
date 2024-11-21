@@ -2401,7 +2401,8 @@ a:hover, a:focus {
   -ms-transform: translate(-50%, -50%);
   -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  font-family: 'Roboto', sans-serif;
+  /* font-family: 'Roboto', sans-serif; */
+  font-family: "Inter", sans-serif;
   content: "\e931";
   font-size: 18px;
   color: #22C55E;
@@ -3114,7 +3115,8 @@ fieldset {
   content: "\e934";
   right: 22px;
   top: 50%;
-  font-family: 'Roboto', sans-serif;
+  /* font-family: 'Roboto', sans-serif; */
+  font-family: "icomoon";
   font-size: 18px;
   color: var(--Body-Text);
   pointer-events: none;
@@ -3371,7 +3373,8 @@ select.h40 {
   top: 0;
   left: 0;
   border-radius: 8px;
-  font-family: 'Roboto', sans-serif;
+  /* font-family: 'Roboto', sans-serif; */
+  font-family: "Inter", sans-serif;
   border: 1px solid rgba(35, 119, 252, 0.1);
   background: #E9F2FF;
   font-size: 20px;
@@ -3693,7 +3696,8 @@ select.h40 {
   right: 14px;
   color: #111111;
   font-size: 16px;
-  font-family: 'Roboto', sans-serif;
+  /* font-family: 'Roboto', sans-serif; */
+  font-family: "icomoon";
   -webkit-transition: all 0.3s ease;
   -moz-transition: all 0.3s ease;
   -ms-transition: all 0.3s ease;

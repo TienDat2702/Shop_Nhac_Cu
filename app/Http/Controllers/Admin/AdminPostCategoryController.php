@@ -118,6 +118,7 @@ class AdminPostCategoryController extends Controller
     public function update(PostCategoryUpdateRequest $request, string $slug)
     {
         $postCategory = PostCategory::GetWithParent()->where('slug',$slug)->first();
+        $slug = PostCategory::GenerateUniqueSlug($request->input('name'));
         // kiểm tra xem id có tồn tại hay không
         if (!$postCategory) {
             return redirect()->back()->withErrors(['Danh mục không tồn tại!']);
@@ -136,7 +137,8 @@ class AdminPostCategoryController extends Controller
             'name' => $request->input('name'),
             'description' => $request->input('description'),
             'parent_id' => $request->input('parent_id'),
-            'level' => $level
+            'level' => $level,
+            'slug' => $slug
         ];
 
         // kiểm tra nếu tồn tại ảnh cũ hay không

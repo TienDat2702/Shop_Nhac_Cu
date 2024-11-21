@@ -11,6 +11,7 @@ use App\Models\PostCategory;
 use Illuminate\Http\Request;
 use App\Services\UploadImageService;
 use App\Services\LibraryService;
+use Illuminate\Support\Facades\Auth;
 
 class AdminPostController extends Controller
 {
@@ -44,24 +45,6 @@ class AdminPostController extends Controller
             return view('admin.posts.post.index', compact('posts','countDeleted', 'config', 'postCategories','date'));
         }
     }
-    public function test(Request $request)
-    {
-        $date = Post::Date();
-        $countDeleted = Post::onlyTrashed()->get();
-        $postCategories = $this->getRecursive();
-
-        if ($request['deleted'] == 'daxoa') {
-            $config = 'deleted';
-            $getDeleted = Post::onlyTrashed()->Search($request->all());
-            return view('admin.posts.post.index', compact('config', 'countDeleted','getDeleted', 'postCategories', 'date'));
-        }
-        else{
-            $config ='index';
-            $posts = Post::GetPostAll()->Search($request->all());
-            return view('admin.posts.post.test', compact('posts','countDeleted', 'config', 'postCategories','date'));
-        }
-    }
-
     //--------------------------------- Hiện thêm bài viết----------------------------------------
 
     public function create()
@@ -93,7 +76,7 @@ class AdminPostController extends Controller
         }
 
         $post = Post::create([
-            'user_id' => 1,
+            'user_id' => Auth::user()->id,
             'title' => $request->input('title'),
             'content' => $request->input('content'),
             'description' => $request->input('description'),

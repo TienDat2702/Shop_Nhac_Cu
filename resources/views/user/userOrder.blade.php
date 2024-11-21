@@ -69,19 +69,33 @@
                                             <tr>
                                                 <td class="text-center">#{{ $order->id }}</td>
                                                 <td class="text-center">{{ number_format($order->total) }} VND</td>
-                                                {{-- <td class="text-center">{{ $order->coupon_code }}</td>
-                                            <td class="text-center">{{ $order->discount_amount }}</td>
-                                            <td class="text-center">{{ $order->total_amount }}</td> --}}
 
                                                 <td class="text-center">
-                                                    <span
-                                                        class="badge bg-danger text-uppercase py-3">{{ $order->status }}</span>
+                                                    @php
+                                                        $status = $order->status;
+                                                    @endphp
+
+                                                    @if($status == 'Đã giao')
+                                                        <span class="badge bg-success text-uppercase py-3 span-status">{{ $status }}</span>
+                                                    @elseif($status == 'Đã hủy')
+                                                        <span class="badge bg-danger text-uppercase py-3 span-status">{{ $status }}</span>
+                                                    @elseif($status == 'Đang giao')
+                                                        <span class="badge bg-warning text-uppercase py-3 span-status">{{ $status }}</span>
+                                                    @elseif($status == 'Duyệt')
+                                                        <span class="badge bg-primary text-uppercase py-3 span-status">Đã duyệt</span>
+                                                    @elseif($status == 'Chờ xử lý')
+                                                        <span class="badge bg-info text-uppercase py-3 span-status">{{ $status }}</span>
+                                                    @else
+                                                        <span class="badge bg-success text-uppercase py-3 span-status">{{ $status }}</span>
+                                                    @endif
                                                 </td>
-                                                <td class="text-center">{{ $order->created_at }}</td>
+                                                <td class="text-center">
+                                                    {{ date('d/m/Y', strtotime($order->created_at)) }}
+                                                </td>
                                                 <td class="text-center">{{ $order->orderDetails->sum('quantity') }}</td>
                                                 <td>
-                                                    @if ($order->delivery_date)
-                                                        {{ $order->delivery_date }}
+                                                    @if ($order->delivered_at)
+                                                        {{ date('d/m/Y', strtotime( $order->delivered_at )) }}
                                                     @else
                                                         Đang chờ giao hàng
                                                     @endif

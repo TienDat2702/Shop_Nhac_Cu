@@ -55,6 +55,7 @@ body {
     width: 100%;
     height: auto;
     display: block;
+    transition: 0.6s ease;
 }
 .category-title {
     position: absolute;
@@ -81,6 +82,8 @@ body {
 
 .category-title {
     color: white; /* Đảm bảo chữ trong category-title là màu trắng */
+    font-size: 20px;
+    text-transform: uppercase;
 }
 /* Đảm bảo khi hover vào thẻ <a> thì màu chữ vẫn trắng */
 .category-item a:hover .category-title {
@@ -503,6 +506,34 @@ a.btn-clear:hover {
 }
 /* end post index */
 
+
+
+/* post */
+.nav-post{
+    margin: 0 auto;
+}
+.active:after {
+    width: 2em;
+}
+.post__link{
+    font-size: 18px;
+}
+.navigation__item:not(:last-child)::after {
+    /* content: '|'; */
+    margin: 0 10px; /* Khoảng cách giữa dấu gạch và chữ */
+    color: #ccc; /* Màu của dấu gạch */
+}
+.description_singer{
+    font-size: 18px !important;
+}
+.category ul li a h3{
+    font-size: 17px !important;
+}
+.post-category-content a{
+    font-size: 17px;
+}
+/* end post */
+
 /* post detail */
 .breadcrumbs {
     padding: 25px 0;
@@ -622,7 +653,7 @@ a.btn-clear:hover {
     color: #231f20;
 }
 .box .list-news .item .name a h3{
-    font-size: 16px;
+    font-size: 17px;
 }
 .list-news .item .image img {
     backface-visibility: hidden;
@@ -866,7 +897,6 @@ a.btn-clear:hover {
     color: #fff;
     font-size: 16px;
     font-weight: 600;
-    font-family: Roboto-Bold;
 }
 .advisory_latest .col-right .image {
     height: 250px;
@@ -1045,4 +1075,289 @@ a.btn-clear:hover {
 button.menu-link.menu-link_us-s.add-to-wishlist {
     border: none;
     background: #fff;
+}
+
+
+
+
+
+
+
+/* product */
+.product-card{
+    border: 1px solid;
+    padding: 10px;
+    border-radius: 10px;
+    border-color: #cfcfcf;
+}
+.swiper-slide.product-card.product-card_style3 {
+    width: 269px !important;
+    margin-right: 15px !important;
+}
+.pc__info.position-relative {
+    height: 60px;
+}
+/*end product */
+
+
+
+
+/* banner */
+
+.home-page section.swiper-container.js-swiper-slider.swiper-number-pagination.slideshow.swiper-container-fade.swiper-container-initialized.swiper-container-horizontal.swiper-container-pointer-events .swiper-slide {
+    width: 100vw; /* Đặt chiều rộng 100% của màn hình */
+    height: 111vh;
+}
+
+.home-page .slideshow-character__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Đảm bảo hình ảnh lấp đầy container mà không bị méo */
+}
+
+@media (min-width: 992px) {
+    .home-page .pos_right-center {
+        left: 0;
+    }
+}
+@media (min-width: 992px) {
+    .home-page .slideshow-character__img {
+        max-height: 100%;
+    }
+}
+@media (min-width: 992px) {
+    .home-page .slideshow {
+        height: 54rem !important;
+    }
+}
+.home-page .pos_right-center {
+    left: 0;
+}
+
+.slideshow-number-pagination .swiper-pagination-bullet:before {
+    content: '';
+    border-top: 1px solid #fff;
+    width: 2.3125rem;
+    display: block;
+}
+span.swiper-pagination-bullet {
+    color: #fff !important;
+}
+.home-page.home-page-2 a.navigation__link,
+.home-page.home-page-2 a.header-tools__item,
+.home-page.home-page-2 a.header-tools__item.header-tools__cart,
+.home-page.home-page-2 a.header-tools__item,
+.home-page.home-page-2 a.search-field__actor {
+    color: #fff;
+}
+
+h6.text_dash.text-uppercase.fs-base.fw-medium.animate.animate_fade.animate_btt.animate_delay-3,
+h2.h1.fw-normal.mb-0.animate.animate_fade.animate_btt.animate_delay-5,
+h2.h1.fw-bold.animate.animate_fade.animate_btt.animate_delay-5,
+a.btn-link.btn-link_lg.default-underline.fw-medium.animate.animate_fade.animate_btt.animate_delay-7 {
+    color: #fff;
+    z-index: 30;
+}
+.col-md-6.col-lg-4.col-xl-20per.d-flex.align-items-center.flex-column.justify-content-center.py-4.align-items-md-start {
+    background: #efe4d2;
+}
+
+.background-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgb(0 0 0 / 42%);
+    z-index: 1; /* Lớp phủ sẽ nằm dưới văn bản */
+}
+
+.slideshow-text {
+    position: relative;
+    z-index: 2; /* Đảm bảo văn bản nổi lên trên lớp phủ */
+}
+/* end banner */
+
+
+/* product */
+.pst{
+    position: relative;
+}
+.product_sale {
+    position: absolute;
+    top: 5px;
+    left: 0;
+    width: 85px;
+    background: #ec246c;
+    border-radius: 7px;
+    padding: 2px 2px;
+    color: #fff;
+    text-align: center;
+    z-index: 30;
+}
+
+
+.section-title-home {
+    position: relative;
+    text-align: center;
+  }
+  
+  .section-title-home .section-title {
+    width: 400px;
+    position: relative;
+    display: inline-block;
+    padding: 0 20px; /* Khoảng cách giữa chữ và gạch ngang */
+    font-size: 35px;
+    font-weight: 500;
+    background-color: #fff; /* Để chữ nổi bật trên nền gạch ngang */
+    z-index: 1;
+  }
+  
+  .section-title-home .section-title:before,
+  .section-title-home .section-title:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 495px;/* Độ rộng của gạch ngang để kéo dài toàn màn hình */
+    height: 1px; /* Độ dày của gạch ngang */
+    background-color: #000; /* Màu sắc của gạch ngang */
+    transform: translateY(-50%);
+    z-index: 0;
+  }
+  
+  .section-title-home .section-title:before {
+    right: 100%; /* Đặt phía bên trái của tiêu đề */
+    margin-right: 10px; /* Khoảng cách giữa gạch ngang và chữ */
+  }
+  
+  .section-title-home .section-title:after {
+    left: 100%; /* Đặt phía bên phải của tiêu đề */
+    margin-left: 10px; /* Khoảng cách giữa gạch ngang và chữ */
+  }
+  
+  
+/* end product */
+
+
+
+/* banner hidden */
+.banner-hidden{
+    position: fixed;
+    top: 100px;
+    left: 50px;
+    bottom: 100px;
+    right: 50px;
+    z-index: -9999;
+}
+.banner-hidden img{
+    width: 100%;
+    
+}
+.products-grid-view{
+    padding-top: 100px;
+    padding-bottom: 50px;
+    padding-left: 160px;
+    background: url(http://127.0.0.1:8000/images/banner-index.jpg) fixed top;
+    background-size: 100%;
+    position: relative;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+
+}
+.product-card-view{
+    background-color: #fff;
+}
+.products-grid-view > .row > .product-view{
+    max-width: 320px !important;
+}
+/* end banner hidden */
+
+
+
+
+.span-status{
+    padding: 10px 20px !important;
+    font-size: 12px !important;
+}
+.bg-info {
+    background-color: #62bbe4 !important;
+}   
+.bg-primary {
+    background-color: #0468d0 !important;
+}
+.notification{
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    margin-bottom: 20px;
+    border-radius: 7px;
+}
+.notification > span{
+    font-size: 20px;
+    color: #fff;
+    line-height: 50px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* Ảnh full khung */
+.slideshow-bg__img {
+    object-fit: cover; /* Ảnh sẽ giữ tỷ lệ và phủ toàn khung */
+    width: 100%; 
+    height: 100%; 
+}
+
+/* Lớp phủ màu */
+.overlay {
+    background: rgb(59 59 59 / 42%); /* Màu đen mờ */
+    z-index: 1; /* Đảm bảo lớp phủ ở trên ảnh */
+}
+
+/* Vùng chữ trên ảnh */
+.slide-overlay_text {
+    z-index: 2; /* Đảm bảo chữ nằm trên lớp phủ */
+    max-width: 600px; /* Giới hạn chiều rộng chữ */
+    padding: 20px; /* Khoảng cách chữ */
+}
+
+/* Đưa chữ về bên trái */
+.slide-overlay_text h2,
+.slide-overlay_text p {
+    text-align: left;
+    color: #fff;
+}
+
+/* Hiệu chỉnh chỉ trên desktop */
+@media (min-width: 992px) {
+    .slide-overlay_text {
+        left: 5%; /* Đưa nội dung cách lề trái 5% */
+    }
+}
+
+/* Trên màn hình nhỏ hơn desktop */
+@media (max-width: 991px) {
+    .slide-overlay_text {
+        left: 50%; /* Ở giữa màn hình nhỏ */
+        transform: translate(-50%, -50%);
+        text-align: center;
+    }
+}
+
+.box-chat{
+    background: red;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    bottom: 300px;
+    right: 100px;
 }

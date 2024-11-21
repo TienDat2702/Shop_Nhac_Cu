@@ -145,7 +145,7 @@
                             </div>
                             <div class="mobile_fixed-btn_wrapper">
                                 <div class="button-wrapper container">
-                                    <a href="{{ Auth::guard('customer')->user() ? route('checkout') : route('customer.login') }}"
+                                    <a href="{{route('checkout')}}"
                                         class="btn btn-primary btn-checkout">TIẾN HÀNH THANH
                                         TOÁN</a>
                                 </div>
@@ -176,7 +176,7 @@
                             <img src="{{ asset('images/voucher1.png') }}" alt="Voucher Logo">
                         </div>
                         <div class="voucher_content">
-                            <div class="voucher_name">{{ $val->code }} </div>
+                            <div class="voucher_name">{{ $val->name }} </div>
                             <div class="voucher_des">
                                 <span>Đơn tối thiểu {{ number_format( $val->minimum_total_value	, 0, '.', ',') . ' VNĐ' }}</span>
                             </div>

@@ -109,17 +109,20 @@ class CheckoutController extends Controller
         return $result;
     }
     
-    private function momo_payment(){
+    private function momo_payment($order_id){
         
         // include "../common/helper.php";
-        
+        $order = Order::find($order_id);
+        if (!$order) {
+            return redirect()->route('checkout')->with('error', 'Đơn hàng không tồn tại.');
+        }
         $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
         $partnerCode = 'MOMOBKUN20180529';
         $accessKey = 'klm05TvNBzhg7h7j';
         $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
         $orderInfo = "Thanh toán qua ATM MoMo";
-        $amount = "10000";
-        $orderId = time() . "";
+        $amount = (int) round($order->total);
+        $orderId = $order->id;
         $redirectUrl = route('checkout');
         $ipnUrl = route('checkout');
         $extraData = "";
@@ -228,7 +231,7 @@ class CheckoutController extends Controller
             if ($order) {
                 session(['order' => $order->id]); // lưu vào session
                 // Cập nhật trạng thái đơn hàng
-                $order->status = 'Đã thanh toán';
+                $order->status = 'Chờ xử lý';
                 $order->save();
     
                 // Xóa session
@@ -272,7 +275,7 @@ class CheckoutController extends Controller
             'email' => $request->input('email'),
             'phone' => $request->input('phone'),
             'address' => $request->input('address'),
-            'status' => 'Chưa thanh toán',
+            'status' => 'Chưa xác nhận',
             'payment_method' => $method,
             'customer_note' => $request->input('customer_note'),
             'total' => $total,
@@ -324,8 +327,7 @@ class CheckoutController extends Controller
             
             //nếu có method là VNPAY thì chuyển đến VNPAY
     
-            session()->forget('carts');
-    
+            
             // Xử lý các phương thức thanh toán
             if ($method == 'Thanh toán khi nhận hàng') {
                 // Xử lý thanh toán khi nhận hàng
@@ -333,10 +335,11 @@ class CheckoutController extends Controller
             if ($method == 'Thanh toán VNPAY') {
                 return $this->vnpay_payment($order->id);
             }
-    
+            
             if ($method == 'Thanh toán MoMo') {
-                return $this->momo_payment();
+                return $this->momo_payment($order->id);
             }
+            session()->forget('carts');
     
             // Gửi email xác nhận đơn hàng
             Mail::to($order->email)->send(new OrderConfirmation($order, $token));
@@ -423,7 +426,7 @@ class CheckoutController extends Controller
 
         if ($order) {
             $order->token = null;
-            $order->status = 'Đã xác nhận';
+            $order->status = 'Chờ xử lý';
             $order->save();
             toastr()->success('Xác nhận thành công');
             return redirect()->route('home.index');
