@@ -59,7 +59,7 @@
                     </ul>
                 </li>
                 <li class="menu-item ">
-                    <a href="{{ route('Kho.index')}}" class="menu-item-button">/-strong/-heart:>:o:-((:-h <div class="icon"><i class="icon-layers"></i></div>
+                    <a href="{{ route('Kho.index')}}" class="menu-item-button"><div class="icon"><i class="icon-layers"></i></div>
                         <div class="text">Kho</div>
                     </a>
                 </li>

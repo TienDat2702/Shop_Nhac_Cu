@@ -78,11 +78,11 @@ class ProductShowroomController extends Controller
     }
 }
 
-    
 
 
 
-    
+
+
 
 
 
@@ -95,7 +95,8 @@ public function getProductsByPublishedShowroom()
     // Kiểm tra xem showroom có tồn tại không
     if (!$showroom) {
         // Nếu không tìm thấy showroom, trả về thông báo lỗi
-        return redirect()->back()->withErrors(['Không có showroom nào được publish!']);
+        toastr()->error('Hiện chưa có kho nào!');
+        return redirect()->back();
     }
 
     // Truy vấn toàn bộ sản phẩm và stock từ showroom_products
@@ -113,7 +114,8 @@ public function getProductsByPublishedShowroom()
     $showroom = Showroom::find($showroomId);
     if (!$showroom) {
         // Nếu không tìm thấy showroom, có thể trả về thông báo lỗi hoặc chuyển hướng
-        return redirect()->back()->withErrors(['Showroom không tồn tại!']);
+        toastr()->error('lỗi không tìm thấy showroom');
+        return redirect()->back();
     }
 
     // Truy vấn toàn bộ sản phẩm và stock từ showroom_products

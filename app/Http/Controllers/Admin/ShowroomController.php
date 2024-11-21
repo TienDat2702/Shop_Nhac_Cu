@@ -30,7 +30,7 @@ class ShowroomController extends Controller
     }
 }
 
-    
+
 
 
 
@@ -121,7 +121,7 @@ public function findNearestShowroom(Request $request)
               sin( radians( latitude ) ) )
             ) AS distance", [$lat, $lon, $lat])
         // Bỏ điều kiện giới hạn khoảng cách nếu muốn lấy tất cả showroom
-        // ->having('distance', '<', 50)  
+        // ->having('distance', '<', 50)
         ->orderBy('distance', 'asc')  // Sắp xếp showroom gần nhất
         ->get();
 
@@ -148,95 +148,118 @@ public function findNearestShowroom(Request $request)
 
 public function update(Request $request, $id)
 {
-    // Validate dữ liệu từ request
+    // Validate data from request
     $request->validate([
         'name' => 'required|string|max:125',
         'address' => 'nullable|string|max:225',
         'phone' => 'nullable|string|max:30',
-        'image' => 'nullable|image|max:2048', // Kiểm tra ảnh nếu có
+        'image' => 'nullable|image|max:2048',
+        'longitude' => 'nullable|numeric', // Add validation for longitude
+        'latitude' => 'nullable|numeric',  // Add validation for latitude
     ]);
 
-    // Tìm showroom theo id
+    // Find showroom by id
     $showroom = Showroom::findOrFail($id);
 
-    // Nếu tên showroom không thay đổi, cho phép sửa bình thường
+    // Prepare name to check for the "Kho" condition
+    $inputName = strtolower($request->input('name'));
+
+    // Check if showroom name contains "kho"
+    if (preg_match('/kho/i', $inputName)) {
+        $existingShowroom = Showroom::whereRaw("LOWER(name) REGEXP 'kho'")->where('publish', 4)->first();
+
+        // If there's already a showroom with "kho" and publish = 4, return error
+        if ($existingShowroom) {
+            toastr()->error('Chỉ có thể có một showroom với tên chứa "kho" và trạng thái publish là 4.');
+            return redirect()->back()->withInput();
+        }
+
+        // Set publish status to 4 if the name contains "kho"
+        $publishStatus = 4;
+    } else {
+        $publishStatus = 2;
+    }
+
+    // Ensure there's only one showroom with publish = 4
+    $existingPublishedShowroom = Showroom::where('publish', 4)->first();
+
+    if ($existingPublishedShowroom && $publishStatus == 4) {
+        toastr()->error('Chỉ có thể có một showroom với trạng thái publish là 4.');
+        return redirect()->back()->withInput();
+    }
+
+    // Check if the name hasn't changed, then update only other fields
     if ($showroom->name === $request->name) {
-        // Cập nhật các thông tin showroom
         $showroom->address = $request->address;
         $showroom->phone = $request->phone;
+        $showroom->longitude = $request->longitude;
+        $showroom->latitude = $request->latitude;
 
-        // Nếu có upload hình ảnh mới
+        // Handle image upload if a new image is provided
         if ($request->hasFile('image')) {
-            // Kiểm tra xem showroom có hình ảnh cũ hay không và xóa nếu cần
+            // Delete old image if it exists
             if ($showroom->image) {
                 $oldImagePath = public_path($showroom->image);
                 if (file_exists($oldImagePath)) {
-                    unlink($oldImagePath); // Xóa hình ảnh cũ
+                    unlink($oldImagePath); // Delete old image
                 }
             }
-            // Upload hình ảnh mới và lưu vào đúng thư mục
+
+            // Upload new image
             $image = $request->file('image');
-            $imageName = time() . '_' . $image->getClientOriginalName(); // Đặt tên file
-            $image->move(public_path('uploads/showrooms'), $imageName); // Di chuyển file đến thư mục public/uploads/showrooms
-            $showroom->image = 'uploads/showrooms/' . $imageName; // Lưu đường dẫn tương đối của ảnh
+            $imageName = time() . '_' . $image->getClientOriginalName(); // Set file name
+            $image->move(public_path('uploads/showrooms'), $imageName); // Move file to uploads directory
+            $showroom->image = 'uploads/showrooms/' . $imageName; // Save relative image path
         }
 
-        // Lưu showroom
+        // Save showroom
         $showroom->save();
         toastr()->success('Hoàn tất thay đổi!');
         return redirect()->route('showroomcategory.index');
     }
 
-    // Kiểm tra xem showroom hiện tại có tên là "Kho"
-    if ($showroom->name === 'Kho') {
-        toastr()->error('Không thể cập nhật showroom này vì tên hiện tại là "Kho"!');
-        return redirect()->back(); // Quay lại trang trước đó
-    }
-
-    // Kiểm tra xem có showroom nào khác có tên giống tên mới trong cơ sở dữ liệu hay không
+    // Check for duplicate showroom name
     $existingShowroom = Showroom::where('name', $request->name)
-                                ->where('id', '!=', $id) // Đảm bảo không so sánh với chính showroom đang cập nhật
+                                ->where('id', '!=', $id) // Ensure it doesn't compare with the current showroom
                                 ->first();
 
-    // Nếu có showroom trùng tên
     if ($existingShowroom) {
         toastr()->error('Tên showroom này đã tồn tại trong cơ sở dữ liệu!');
-        return redirect()->back(); // Quay lại trang trước đó
+        return redirect()->back(); // Return to previous page
     }
 
-    // Kiểm tra nếu tên showroom nhập vào có liên quan đến "Kho"
-    if (strpos($request->name, 'Kho') !== false && Showroom::where('name', 'Kho')->exists()) {
-        toastr()->error('Tên showroom không thể chứa từ "Kho" vì showroom này đã tồn tại trong cơ sở dữ liệu!');
-        return redirect()->back(); // Quay lại trang trước đó
-    }
-
-    // Cập nhật tên showroom
+    // Update showroom name and other details
     $showroom->name = $request->name;
     $showroom->address = $request->address;
     $showroom->phone = $request->phone;
+    $showroom->longitude = $request->longitude;
+    $showroom->latitude = $request->latitude;
+    $showroom->publish = $publishStatus;
 
-    // Nếu có upload hình ảnh mới
+    // Handle image upload if a new image is provided
     if ($request->hasFile('image')) {
-        // Kiểm tra xem showroom có hình ảnh cũ hay không và xóa nếu cần
+        // Delete old image if it exists
         if ($showroom->image) {
             $oldImagePath = public_path($showroom->image);
             if (file_exists($oldImagePath)) {
-                unlink($oldImagePath); // Xóa hình ảnh cũ
+                unlink($oldImagePath); // Delete old image
             }
         }
-        // Upload hình ảnh mới và lưu vào đúng thư mục
+
+        // Upload new image
         $image = $request->file('image');
-        $imageName = time() . '_' . $image->getClientOriginalName(); // Đặt tên file
-        $image->move(public_path('uploads/showrooms'), $imageName); // Di chuyển file đến thư mục public/uploads/showrooms
-        $showroom->image = 'uploads/showrooms/' . $imageName; // Lưu đường dẫn tương đối của ảnh
+        $imageName = time() . '_' . $image->getClientOriginalName(); // Set file name
+        $image->move(public_path('uploads/showrooms'), $imageName); // Move file to uploads directory
+        $showroom->image = 'uploads/showrooms/' . $imageName; // Save relative image path
     }
 
-    // Lưu showroom
+    // Save showroom
     $showroom->save();
     toastr()->success('Hoàn tất thay đổi!');
-    // Redirect về trang danh sách showroom và hiển thị thông báo thành công
+    // Redirect to showroom category index with success message
     return redirect()->route('showroomcategory.index');
 }
+
 
 public function forceDelete(string $id)
 {
