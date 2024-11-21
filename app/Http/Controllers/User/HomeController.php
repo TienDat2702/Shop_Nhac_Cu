@@ -32,24 +32,24 @@ class HomeController extends Controller
         $product_cateogries = ProductCategory::where('publish',2)->where('level',1)->take(6)->get();
         $posts = Post::GetPostPublish()->limit(4)->get();
         $post_category_event = PostCategory::GetAllByPublish()->where('name', 'Sự Kiện')->first();
-        if ($post_category_event) {
-            // Lấy tất cả các ID của danh mục con
-            $post_category_event_child_ids = PostCategory::GetAllByPublish()
-                ->where('parent_id', $post_category_event->id)
-                ->pluck('id')
-                ->toArray();
+        // if ($post_category_event) {
+        //     // Lấy tất cả các ID của danh mục con
+        //     $post_category_event_child_ids = PostCategory::GetAllByPublish()
+        //         ->where('parent_id', $post_category_event->id)
+        //         ->pluck('id')
+        //         ->toArray();
         
-            // Lấy các bài viết thuộc danh mục cha "Sự Kiện" hoặc các danh mục con của nó
-            $posts = Post::GetPostPublish()
-                ->where('post_category_id', $post_category_event->id)
-                ->orWhereIn('post_category_id', $post_category_event_child_ids)
-                ->limit(4)
-                ->get();
-        }else{
-            $posts = Post::GetPostPublish()
-            ->limit(4)
-            ->get();
-        }
+        //     // Lấy các bài viết thuộc danh mục cha "Sự Kiện" hoặc các danh mục con của nó
+        //     $posts = Post::GetPostPublish()
+        //         ->where('post_category_id', $post_category_event->id)
+        //         ->orWhereIn('post_category_id', $post_category_event_child_ids)
+        //         ->limit(4)
+        //         ->get();
+        // }else{
+        //     $posts = Post::GetPostPublish()
+        //     ->limit(4)
+        //     ->get();
+        // }
         
         return view('user.index', compact(
             'brands', 
