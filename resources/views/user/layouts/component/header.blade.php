@@ -58,7 +58,6 @@
                     </li>
                 </ul>
             </nav>
-
             <div class="header-tools d-flex align-items-center">
                 <div class="header-tools__item hover-container">
                     <div class="js-hover__open position-relative">
@@ -71,8 +70,8 @@
                         </a>
                     </div>
 
-                    <div class="search-popup js-hidden-content">
-                        <form action="#" method="GET" class="search-field container">
+                            <div class="search-popup js-hidden-content">
+                        <form action="{{ route('search') }}" method="GET" class="search-field container">
                             <p class="text-uppercase text-secondary fw-medium mb-4">Bạn muốn tìm gì?</p>
                             <div class="position-relative">
                                 <input class="search-field__input search-popup__input w-100 fw-medium"
@@ -84,28 +83,6 @@
                                     </svg>
                                 </button>
                                 <button class="btn-icon btn-close-lg search-popup__reset" type="reset"></button>
-                            </div>
-
-                            <div class="search-popup__results">
-                                <div class="sub-menu search-suggestion">
-                                    <h6 class="sub-menu__title fs-base">Liên kết nhanh</h6>
-                                    <ul class="sub-menu__list list-unstyled">
-                                        <li class="sub-menu__item"><a href="shop2.html"
-                                                class="menu-link menu-link_us-s">Hàng mới về</a>
-                                        </li>
-                                        <li class="sub-menu__item"><a href="#"
-                                                class="menu-link menu-link_us-s">Sản phẩm</a></li>
-                                        <li class="sub-menu__item"><a href="shop3.html"
-                                                class="menu-link menu-link_us-s">Phụ kiện</a>
-                                        </li>
-                                        <li class="sub-menu__item"><a href="#"
-                                                class="menu-link menu-link_us-s">Giày dép</a></li>
-                                        <li class="sub-menu__item"><a href="#"
-                                                class="menu-link menu-link_us-s">Áo khoác</a></li>
-                                    </ul>
-                                </div>
-
-                                <div class="search-result row row-cols-5"></div>
                             </div>
                         </form>
                     </div>

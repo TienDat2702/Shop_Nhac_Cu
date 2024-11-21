@@ -36,7 +36,20 @@ class ProductController extends Controller
 
         // Thêm sắp xếp sản phẩm nếu có
         if ($request->has('sort')) {
-            $productsQuery->sortBy($request->sort);
+            switch ($request->sort) {
+                case 'price_asc':
+                    $productsQuery->orderBy('price', 'asc');
+                    break;
+                case 'price_desc':
+                    $productsQuery->orderBy('price', 'desc');
+                    break;
+                case 'name_asc':
+                    $productsQuery->orderBy('name', 'asc');
+                    break;
+                case 'name_desc':
+                    $productsQuery->orderBy('name', 'desc');
+                    break;
+            }
         }
 
         // Lọc sản phẩm theo khoảng giá nếu có

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminOrderController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\DiscountController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AdminPostCategoryController;
 use App\Http\Controllers\Admin\AdminPostController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Admin\AdminProductCategoryController;
 use App\Http\Controllers\Admin\UploadCKImageController;
 use App\Http\Controllers\Ajax\AjaxDashboardController;
 use App\Http\Controllers\User\HomeController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\User\ProductController;
 use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\Admin\ShowroomController;
@@ -100,6 +102,7 @@ Route::prefix('wishlist')->group(function () {
     Route::post('/add/{id}', [FavouriteController::class, 'add'])->name('wishlist.add'); // Thêm sản phẩm vào wishlist
     Route::delete('/remove/{id}', [FavouriteController::class, 'remove'])->name('wishlist.remove'); // Xóa sản phẩm khỏi wishlist
 });
+Route::post('/wishlist/add/{id}', [FavouriteController::class, 'add'])->name('wishlist.add');
 
 Route::get('admin/login', [AdminController::class, 'login'])->name('admin.login');
 Route::post('/admin/login', [AdminController::class, 'check_login'])->name('admin.check_login');
@@ -111,7 +114,16 @@ Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'cha
 Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
-
+    //Discount
+    Route::prefix('discounts')->group(function () {
+        Route::get('/', [DiscountController::class, 'index'])->name('discount.index');
+        Route::get('/create', [DiscountController::class, 'create'])->name('discount.create');
+        Route::post('/', [DiscountController::class, 'store'])->name('discount.store');
+        Route::get('/{id}/edit', [DiscountController::class, 'edit'])->name('discount.edit');
+        Route::put('/{id}', [DiscountController::class, 'update'])->name('discount.update');
+        Route::delete('/{id}', [DiscountController::class, 'destroy'])->name('discount.destroy');
+        Route::post('/{id}/restore', [DiscountController::class, 'restore'])->name('discount.restore');
+    });    
     // ORDER
     Route::prefix('order')->group(function () {
         Route::get('/', [AdminOrderController::class, 'index'])->name('order.index');
@@ -232,3 +244,7 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
         Route::delete('forceDelete/{id}', [BrandController::class, 'forceDelete'])->name('brand.forceDelete');
     });
 });
+
+    //Search 
+    Route::get('/search', [SearchController::class, 'index'])->name('search');
+
