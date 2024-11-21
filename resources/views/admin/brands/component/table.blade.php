@@ -59,7 +59,7 @@
                                     </button>
                                 </form>
                             @else
-                                <a href="{{ route('brand.edit', $item->id) }}" title="Chỉnh sửa">
+                                <a href="{{ route('brand.edit', $item->slug) }}" title="Chỉnh sửa">
                                     <div class="item edit">
                                         <i class="icon-edit-3"></i>
                                     </div>  
@@ -69,7 +69,7 @@
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-delete item text-danger delete" title="Xóa"
                                     data-text="Bạn có thể khôi phục dữ liệu lại sau khi xóa."
-                                    data-text2="{{ ($item->parent_id == 0) ? 'Bạn có thể xóa tất cả danh mục liên quan đến danh mục hiện tại!' : '' }}">
+                                    data-text2="{{ $item->brands()->count() > 0 ? 'Không thể xóa thương hiệu vì nó có ' . $item->brands()->count() . ' sản phẩm liên quan!' : ''}}">
                                         <i class="icon-trash-2"></i>
                                     </button>
                                 </form>

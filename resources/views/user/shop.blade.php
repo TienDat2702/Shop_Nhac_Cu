@@ -1,8 +1,9 @@
 @extends('user.layouts.app')
 @section('title', 'Cửa hàng')
 @section('content')
-<form method="GET" action="{{ $currentCategory ? route('shop.category', $currentCategory->slug) : route('shop.index') }}">
-    <main class="pt-90">
+    <form method="GET"
+        action="{{ $currentCategory ? route('shop.category', $currentCategory->slug) : route('shop.index') }}">
+        <main class="pt-90">
             <section class="shop-main container d-flex pt-4 pt-xl-5">
                 <div class="shop-sidebar side-sticky bg-body" id="shopFilter">
                     <div class="aside-header d-flex d-lg-none align-items-center">
@@ -38,58 +39,50 @@
                                         </li>
                                     @endforeach
                                 </ul> --}}
-                                    @php
-                                        function renderCategories($categories, $parentId = 0, $level = 1)
-                                        {
-                                            $hasChild = false;
+                                @php
+                                function renderCategories($categories, $parentId = 0, $level = 1)
+                                {
+                                    $hasChild = false;
 
-                                            foreach ($categories as $category) {
-                                                if ($category->parent_id == $parentId) {
-                                                    if (!$hasChild) {
-                                                        $hasChild = true;
-                                                        // Tạo tên class dựa trên cấp độ
-                                                        $className =
-                                                            'subcategory-list-parent' .
-                                                            ($level > 1 ? '-' . ($level - 1) : '');
-                                                        echo '<ul class="' .
-                                                            $className .
-                                                            '" style="padding-left: ' .
-                                                            10 * ($level - 1) .
-                                                            'px;">';
-                                                    }
+                                    foreach ($categories as $category) {
+                                        if ($category->parent_id == $parentId) {
+                                            if (!$hasChild) {
+                                                $hasChild = true;
 
-                                                    echo '<li class="menu-item' .
-                                                        ($parentId == 0 ? ' parent-menu' : ' sub-menu') .
-                                                        '">';
-                                                    echo '<a href="' . route('shop.category', $category->slug) . '">';
-                                                    echo $category->name;
+                                                // Tạo tên class dựa trên cấp độ
+                                                $className = 'subcategory-list-parent' . ($level > 1 ? '-' . ($level - 1) : '');
+                                                echo '<ul class="' . $className . '" style="padding-left: ' . (10 * ($level - 1)) . 'px;">';
 
-                                                    // Gọi đệ quy để hiển thị danh mục con của danh mục hiện tại
-                                                    renderCategories($categories, $category->id, $level + 1);
-
-                                                    echo '</a>';
-                                                    echo '</li>';
-                                                }
                                             }
+                                            echo '<li class="menu-item' . ($parentId == 0 ? ' parent-menu' : ' sub-menu') . '">';
+                                            echo '<a href="' . route('shop.category', $category->slug) . '">';
+                                            echo $category->name;
 
-                                            if ($hasChild) {
-                                                echo '</ul>';
-                                            }
+                                            // Gọi đệ quy để hiển thị danh mục con của danh mục hiện tại
+                                            renderCategories($categories, $category->id, $level + 1);
+
+                                            echo '</a>';
+                                            echo '</li>';
                                         }
-                                    @endphp
+                                    }
 
-                                    <ul class="category-list">
-                                        @php
-                                            renderCategories($productCategories);
-                                        @endphp
-                                    </ul>
+                                    if ($hasChild) {
+                                        echo '</ul>';
+                                    }
+                                }
+                                @endphp
+
+                                <ul class="category-list">
+                                    @php
+                                        renderCategories($productCategories);
+                                    @endphp
+                                </ul>
 
 
                                     {{-- <ul class="list list-inline mb-0">
                                     @foreach ($productCategories as $category)
                                         <li class="menu-item">
                                             <a href="{{ route('shop.category',$category->slug) }}">{{ $category->name }}</a>
-                                            
                                             @if ($category->children && $category->children->count() > 0)
                                                 <ul class="submenu">
                                                     @foreach ($category->children as $childCategory)
@@ -145,7 +138,8 @@
                                     <ul class="list list-inline mb-0 brand-list">
                                         @foreach ($brands as $brand)
                                             <li class="form-check">
-                                                <input type="checkbox" class="form-check-input"name="brand_ids[]" value="{{ $brand->id }}"
+                                                <input type="checkbox" class="form-check-input"name="brand_ids[]"
+                                                    value="{{ $brand->id }}"
                                                     {{ is_array(request('brand_ids')) && in_array($brand->id, request('brand_ids')) ? 'checked' : '' }}>
                                                 <label>{{ $brand->name }}</label>
                                             </li>
@@ -178,7 +172,8 @@
                                 <div class="search-field multi-select accordion-body px-0 pb-0">
                                     <ul class="list list-inline mb-0 price-list">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="select-all" onclick="toggleSelectAll(this)">
+                                            <input class="form-check-input" type="checkbox" id="select-all"
+                                                onclick="toggleSelectAll(this)">
                                             <label class="form-check-label" for="select-all">
                                                 Tất cả
                                             </label>
@@ -197,14 +192,14 @@
                                             function toggleSelectAll(source) {
                                                 // Lấy tất cả checkbox có tên 'price_segment[]'
                                                 const checkboxes = document.querySelectorAll('input[name="price_segment[]"]');
-                                                
+
                                                 // Nếu checkbox "Tất cả" được chọn, chọn tất cả các checkbox
                                                 checkboxes.forEach(function(checkbox) {
                                                     checkbox.checked = source.checked;
                                                 });
                                             }
                                         </script>
-                                        
+
                                     </ul>
                                 </div>
                             </div>
@@ -261,14 +256,14 @@
                             <div class="swiper-slide">
                                 <div class="slide-split h-100 overflow-hidden position-relative">
                                     <!-- Ảnh nền -->
-                                    <img loading="lazy" 
-                                         src="{{ asset($banner->image ?? 'path/to/default/image.jpg') }}" 
+                                    <img loading="lazy"
+                                         src="{{ asset($banner->image ?? 'path/to/default/image.jpg') }}"
                                          alt="Đang Cập Nhật"
                                          class="slideshow-bg__img object-fit-cover w-100 h-100" />
-                                    
+
                                     <!-- Lớp phủ màu đen mờ -->
                                     <div class="overlay position-absolute top-0 start-0 w-100 h-100"></div>
-                                    
+
                                     <!-- Nội dung chữ -->
                                     <div class="slide-overlay_text container position-absolute top-50 start-0 translate-middle-y text-white text-start">
                                         <h2 class="text-uppercase section-title fw-normal mb-3">
@@ -280,7 +275,7 @@
                                 </div>
                             </div>
                             @endforeach
-                            
+
                         </div>
 
                         <div class="container p-3 p-xl-5">
@@ -302,12 +297,17 @@
 
                         <div
                             class="shop-acs d-flex align-items-center justify-content-between justify-content-md-end flex-grow-1">
-                            <select class="shop-acs__select form-select w-auto border-0 py-0 order-1 order-md-0" name="sort" onchange="this.form.submit()">
+                            <select class="shop-acs__select form-select w-auto border-0 py-0 order-1 order-md-0"
+                                name="sort" onchange="this.form.submit()">
                                 <option value="">Sắp xếp theo</option>
-                                <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Giá: Thấp đến Cao</option>
-                                <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Giá: Cao đến Thấp</option>
-                                <option value="name_asc" {{ request('sort') == 'name_asc' ? 'selected' : '' }}>Tên: A-Z</option>
-                                <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>Tên: Z-A</option>
+                                <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Giá: Thấp
+                                    đến Cao</option>
+                                <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Giá:
+                                    Cao đến Thấp</option>
+                                <option value="name_asc" {{ request('sort') == 'name_asc' ? 'selected' : '' }}>Tên: A-Z
+                                </option>
+                                <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>Tên: Z-A
+                                </option>
                             </select>
 
                             <div class="shop-asc__seprator mx-3 bg-light d-none d-md-block order-md-0"></div>
@@ -358,7 +358,8 @@
                                             </div>
                                         </div>
                                         <a class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium add-to-cart"
-                                            data-aside="cartDrawer" data-url="{{ route('cart.add', $product->id) }}" title="Add To Cart">Thêm vào giỏ hàng</a>
+                                            data-aside="cartDrawer" data-url="{{ route('cart.add', $product->id) }}"
+                                            title="Add To Cart">Thêm vào giỏ hàng</a>
                                     </div>
 
                                     <div class="pc__info position-relative">

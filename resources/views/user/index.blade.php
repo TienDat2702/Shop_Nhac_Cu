@@ -1,11 +1,6 @@
 @extends('user.layouts.app')
 @section('title', 'TuneNest')
 @section('content')
-    <style>
-        .swiper-slide {
-            width: 1100px;
-        }
-    </style>
     <main>
 
         <section class="swiper-container js-swiper-slider swiper-number-pagination slideshow"
@@ -25,9 +20,9 @@
                 <div class="overflow-hidden position-relative h-100 w-100">
                         <div class="background-overlay"></div>
                         <img loading="lazy"
-                             src="{{ asset($banner->image ? $banner->image : 'path/to/default/image.jpg') }}" 
-                             alt="{{ $banner->title ?? 'Đang Cập Nhật' }}" 
-                             class="slideshow-character__img animate animate_fade animate_btt animate_delay-9 w-100 h-100" 
+                             src="{{ asset($banner->image ? $banner->image : 'path/to/default/image.jpg') }}"
+                             alt="{{ $banner->title ?? 'Đang Cập Nhật' }}"
+                             class="slideshow-character__img animate animate_fade animate_btt animate_delay-9 w-100 h-100"
                              style="object-fit: cover;" />
                         <div class="slideshow-text container position-absolute start-50 top-50 translate-middle">
                             <h6 class="text_dash text-uppercase fs-base fw-medium animate animate_fade animate_btt animate_delay-3">
@@ -78,11 +73,11 @@
             </div>
 
 
-                <div class="container">
-                    <div
-                        class="slideshow-pagination slideshow-number-pagination d-flex align-items-center position-absolute bottom-0 mb-5">
-                    </div>
+            <div class="container">
+                <div
+                    class="slideshow-pagination slideshow-number-pagination d-flex align-items-center position-absolute bottom-0 mb-5">
                 </div>
+            </div>
         </section>
         <div class="container mw-1620 bg-white border-radius-10">
             <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
@@ -130,14 +125,18 @@
             }'>
                         <div class="swiper-wrapper">
                             @foreach ($brands as $brand)
-                                <div class="swiper-slide">
-                                    <img loading="lazy" class="w-100 h-auto mb-3"
-                                        src="{{ asset('uploads/brands/' . $brand->image) }}" width="124" height="124"
-                                        alt="{{ $brand->name }}" />
-                                    <div class="text-center">
-                                        <a href="#" class="menu-link fw-medium">{{ $brand->name }}</a>
-                                    </div>
+                            <a href="{{ route('brands.index', $brand->slug) }}">
+
+                                <div class="swiper-slide2">
+                                        <img loading="lazy" class="w-100 h-auto mb-3"
+                                            src="{{ asset('uploads/brands/' . $brand->image) }}" width="124"
+                                            height="124" alt="{{ $brand->name }}" />
+                                        <div class="text-center">
+                                            <a href="#" class="menu-link fw-medium">{{ $brand->name }}</a>
+                                        </div>
                                 </div>
+                                    </a>
+
                             @endforeach
                         </div><!-- /.swiper-wrapper -->
                     </div><!-- /.swiper-container js-swiper-slider -->
@@ -260,7 +259,7 @@
                                                         class="pc__img">
                                                     <img loading="lazy"
 
-                                                    @if (count($product->thumbnails) > 0) 
+                                                    @if (count($product->thumbnails) > 0)
                                                         src="{{ $product->thumbnails->first()->path }}"
                                                     @else
                                                         src="{{ asset('/uploads/products/product/' . $product->image) }}"
@@ -339,19 +338,19 @@
                                         <span>Giảm giá</span>
                                     </div>
                                 @endif
-                               
+
                                 <div class="pc__img-wrapper">
                                     <a href="{{ route('product.detail', $product->slug) }}">
                                         <img loading="lazy"
                                             src="{{ asset('uploads/products/product/' . $product->image) }}"
                                             width="330" height="400" alt="{{ $product->name }}" class="pc__img">
                                         <img loading="lazy"
-                                        @if (count($product->thumbnails) > 0) 
+                                        @if (count($product->thumbnails) > 0)
                                             src="{{ $product->thumbnails->first()->path }}"
                                         @else
                                             src="{{ asset('/uploads/products/product/' . $product->image) }}"
                                         @endif
-    
+
                                             width="258" height="313" alt="{{ $product->name }}"
                                             class="pc__img pc__img-second">
                                     </a>
@@ -417,19 +416,19 @@
                                         <span>Giảm giá</span>
                                     </div>
                                 @endif
-                               
+
                                 <div class="pc__img-wrapper">
                                     <a href="{{ route('product.detail', $product->slug) }}">
                                         <img loading="lazy"
                                             src="{{ asset('uploads/products/product/' . $product->image) }}"
                                             width="330" height="400" alt="{{ $product->name }}" class="pc__img">
                                         <img loading="lazy"
-                                        @if (count($product->thumbnails) > 0) 
+                                        @if (count($product->thumbnails) > 0)
                                             src="{{ $product->thumbnails->first()->path }}"
                                         @else
                                             src="{{ asset('/uploads/products/product/' . $product->image) }}"
                                         @endif
-    
+
                                             width="258" height="313" alt="{{ $product->name }}"
                                             class="pc__img pc__img-second">
                                     </a>
@@ -496,24 +495,24 @@
                                                 <span>Giảm giá</span>
                                             </div>
                                         @endif
-                                       
+
                                         <div class="pc__img-wrapper">
                                             <a href="{{ route('product.detail', $product->slug) }}">
                                                 <img loading="lazy"
                                                     src="{{ asset('uploads/products/product/' . $product->image) }}"
                                                     width="330" height="400" alt="{{ $product->name }}" class="pc__img">
                                                 <img loading="lazy"
-                                                @if (count($product->thumbnails) > 0) 
+                                                @if (count($product->thumbnails) > 0)
                                                     src="{{ $product->thumbnails->first()->path }}"
                                                 @else
                                                     src="{{ asset('/uploads/products/product/' . $product->image) }}"
                                                 @endif
-            
+
                                                     width="258" height="313" alt="{{ $product->name }}"
                                                     class="pc__img pc__img-second">
                                             </a>
                                         </div>
-        
+
                                         <div class="pc__info position-relative">
                                             <h6 class="pc__title">{{ $product->name }}</h6>
                                             <div class="product-card__price d-flex align-items-center">
@@ -527,7 +526,7 @@
                                                         VNĐ</span>
                                                 @endif
                                             </div>
-        
+
                                             <div
                                                 class="anim_appear-bottom position-absolute bottom-0 start-0 d-none d-sm-flex align-items-center bg-body">
                                                 <a href="#" data-url="{{ route('cart.add', $product->id) }}"
@@ -555,14 +554,14 @@
                             </div>
                         </div>
                         <!-- /.row -->
-        
-                       
+
+
                     </section>
                     @endif
-                
+
                 @endforeach
             @endif
-            
+
             {{-- end tất cả sản phẩm và danh mục --}}
             {{-- Tin tức và sự kiên --}}
 

@@ -21,28 +21,26 @@ class FavouriteController extends Controller
         $product = Product::find($id);
 
         if (!$product) {
-            return response()->json(['message' => 'Product not found'], 404);
+            return redirect()->back()->with('error', 'Sản phẩm không tồn tại.');
         }
 
-        // Kiểm tra xem sản phẩm đã có trong favourites chưa
         $existingFavourite = Favourite::where('product_id', $id)
             ->where('customer_id', Auth::guard('customer')->id())
             ->first();
 
         if ($existingFavourite) {
-            return response()->json(['message' => 'Product already in favourites'], 409);
+            return redirect()->back()->with('error', 'Sản phẩm đã có trong danh sách yêu thích.');
         }
 
-        // Thêm sản phẩm vào favourites
         try {
             $favourite = new Favourite();
             $favourite->product_id = $id;
-            $favourite->customer_id = Auth::guard('customer')->id(); // Gán customer_id
+            $favourite->customer_id = Auth::guard('customer')->id();
             $favourite->save();
 
-            return response()->json(['message' => 'Product added to favourites'], 200);
+            return redirect()->back()->with('success', 'Sản phẩm đã được thêm vào danh sách yêu thích.');
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Error adding product to favourites', 'error' => $e->getMessage()], 500);
+            return redirect()->back()->with('error', 'Có lỗi xảy ra khi thêm sản phẩm vào danh sách yêu thích.');
         }
     }
 

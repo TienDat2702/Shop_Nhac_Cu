@@ -36,7 +36,20 @@ class ProductController extends Controller
 
         // Thêm sắp xếp sản phẩm nếu có
         if ($request->has('sort')) {
-            $productsQuery->sortBy($request->sort);
+            switch ($request->sort) {
+                case 'price_asc':
+                    $productsQuery->orderBy('price', 'asc');
+                    break;
+                case 'price_desc':
+                    $productsQuery->orderBy('price', 'desc');
+                    break;
+                case 'name_asc':
+                    $productsQuery->orderBy('name', 'asc');
+                    break;
+                case 'name_desc':
+                    $productsQuery->orderBy('name', 'desc');
+                    break;
+            }
         }
 
         // Lọc sản phẩm theo khoảng giá nếu có
@@ -104,8 +117,10 @@ class ProductController extends Controller
             return redirect()->route('shop.index')->with('error', 'Danh mục không tồn tại.');
         }
 
-        // Lấy danh sách danh mục sản phẩm và thương hiệu
-        $productCategories = $this->getRecursive();
+        // Lấy danh sách danh mục sản phẩm
+        $productCategories = $this->getRecursive(); // đảm bảo phương thức này trả về danh sách các danh mục
+
+        // Lấy danh sách thương hiệu
         $brands = Brand::GetBrandPublish()->get();
 
         // Định nghĩa các phân khúc giá
@@ -118,8 +133,14 @@ class ProductController extends Controller
             '500000000-999999999' => 'Trên 500 triệu'
         ];
 
-        // Khởi tạo truy vấn sản phẩm cho danh mục hiện tại
-        $productsQuery = Product::GetProductPublish()->where('category_id', $category->id);
+        // Khởi tạo truy vấn sản phẩm cho danh mục hiện tại và danh mục con
+        $categoryIds = ProductCategory::GetAllByPublish()
+            ->where('id', $category->id)
+            ->orWhere('parent_id', $category->id)
+            ->pluck('id')
+            ->toArray();
+
+        $productsQuery = Product::GetProductPublish()->whereIn('category_id', $categoryIds);
 
         // Lọc sản phẩm theo khoảng giá nếu có
         if ($request->has('price_segment') && !empty($request->price_segment)) {

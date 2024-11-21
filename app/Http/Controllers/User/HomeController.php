@@ -66,7 +66,13 @@ class HomeController extends Controller
         return view('user.about',compact('showrooms'));
     }
     public function contact(){
-        return view('user.contact');
+        $khotong = Showroom::where('publish', 4)->first();
+        return view('user.contact', compact('khotong'));
+    }
+    public function brand($slug){
+        $brand = Brand::where('slug',$slug)->first();
+        $products = Product::GetProductPublish()->where('brand_id',$brand->id)->get();
+        return view('user.brand',compact('products','brand'));
     }
     public function postContact(ContactRequest $request){
         $contact = $request->validated();

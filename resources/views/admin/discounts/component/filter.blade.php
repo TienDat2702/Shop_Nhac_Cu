@@ -1,11 +1,7 @@
-<form action="{{ route('brand.index') }}" method="GET">
+<form action="{{ route('discount.index') }}" method="GET">
     @if ($config == 'deleted')
         <input type="hidden" name="deleted" value="daxoa">
     @endif
-    <div class="fill-deleted">
-        <a class="all" href="{{ route('brand.index') }}"> Tất cả</a> |
-        <a class="trash" href="{{ route('brand.index', ['deleted' => 'daxoa']) }}">Thùng rác <span>({{ $countDeleted }})</span></a>
-    </div>
 
     <div class="flex items-center justify-between gap-10 flex-wrap">
         <div class="wg-filter wg-filter-postc">
@@ -33,7 +29,7 @@
             </div>
         </div>
 
-        <a class="tf-button style-1 w208" href="{{ route('brand.create') }}">
+        <a class="tf-button style-1 w208" href="{{ route('discount.create') }}">
             <i class="icon-plus"></i>Thêm mới
         </a>
     </div>

@@ -40,7 +40,7 @@
                     </div>
                 @endif
                 <form class="tf-section-2 form-add-product" method="post" enctype="multipart/form-data"
-                    action="{{ route('productCategory.update', $productCategory->id) }}">
+                    action="{{ route('productCategory.update', $productCategory->slug) }}">
                     @csrf
                     <div class="wg-box">
                         <fieldset class="name">

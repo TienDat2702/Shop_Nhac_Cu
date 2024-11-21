@@ -40,7 +40,9 @@ class Product extends Model
         }
         return $query->paginate(9);
     }
-
+    public function scopeGetProductAll($query){
+        return $query->orderBy('id', 'DESC');
+    }
 
     public function scopeGetProductPublish($query) {
         return $query->where('publish', 2);

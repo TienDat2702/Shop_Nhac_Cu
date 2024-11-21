@@ -65,9 +65,9 @@
     @if($item->latitude && $item->longitude)
         <!-- Thêm liên kết bản đồ nhỏ -->
         <a href="https://www.openstreetmap.org/?mlat={{ $item->latitude }}&mlon={{ $item->longitude }}#map=16/{{ $item->latitude }}/{{ $item->longitude }}" target="_blank">
-            <div id="map{{ $item->id }}" class="map-container" style="height: 150px; width: 100%;"></div>
+            <div id="map{{ $item->id }}" class="map-container" style="z-index: 1;height: 150px; width: 100%;"></div>
         </a>
-        
+
         <script>
             // Tạo bản đồ với Leaflet và ẩn nút zoom
             var map = L.map('map{{ $item->id }}', {

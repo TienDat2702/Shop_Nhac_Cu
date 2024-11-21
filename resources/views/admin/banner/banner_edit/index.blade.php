@@ -60,7 +60,7 @@
             </div>
         </fieldset>
 
-        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="submit" class="btn btn-primary" style="width: 500px;">Update</button>
     </div>
     </form>
 </div>

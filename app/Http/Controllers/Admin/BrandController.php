@@ -60,25 +60,26 @@ class BrandController extends Controller
         return redirect()->route('brand.index');
     }
 
-    public function edit(string $id)
+    public function edit(string $slug)
     {
-        $brand = Brand::findOrFail($id);
-        // if (!$brand) {
-        //     return redirect()->back()->withErrors(['Thương hiệu không tồn tại!']);
-        // }
+        $brand = Brand::GetBrandAll()->where('slug',$slug)->first();
         return view('admin.brands.update', compact('brand'));
     }
 
-    public function update(BrandUpdateRequest $request, string $id)
+    public function update(BrandUpdateRequest $request, string $slug)
     {
-        $brand = Brand::findOrFail($id);
-        // if (!$brand) {
-        //     return redirect()->back()->withErrors(['Thương hiệu không tồn tại!']);
-        // }
-
+        $brand = Brand::GetBrandAll()->where('slug',$slug)->first();
+        $newSlug = $request->input('slug');
+          // Kiểm tra và tạo slug mới nếu tên sản phẩm thay đổi
+        $newSlug = $request->input('slug');
+        if ($newSlug == '' || $brand->name !== $request->input('name')) {
+            // Tạo slug mới dựa trên tên, đảm bảo không trùng lặp
+            $newSlug = Brand::GenerateUniqueSlug($request->input('name'));
+        }
         $data = [
             'name' => $request->input('name'),
             'description' => $request->input('description'),
+            'slug' => $newSlug,
         ];
 
         if ($request->hasFile('image')) {

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminOrderController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\DiscountController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AdminPostCategoryController;
 use App\Http\Controllers\Admin\AdminPostController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Admin\AdminProductCategoryController;
 use App\Http\Controllers\Admin\UploadCKImageController;
 use App\Http\Controllers\Ajax\AjaxDashboardController;
 use App\Http\Controllers\User\HomeController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\User\ProductController;
 use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\Admin\ShowroomController;
@@ -24,6 +26,7 @@ use App\Http\Middleware\CustomerAuth;
 use App\Http\Controllers\User\FavouriteController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
+Route::get('/brand/{slug}', [HomeController::class, 'brand'])->name('brands.index');
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
 Route::get('/shop/category/{slug}', [ProductController::class, 'category'])->name('shop.category');
 Route::get('/product/{slug}', [ProductController::class, 'product_details'])->name('product.detail');
@@ -86,8 +89,8 @@ Route::middleware(CustomerAuth::class)->group(function () {
     Route::get('/orders/history', [CustomerController::class, 'customerOrderHistory'])->name('customer.orders.history');
     Route::post('/orders/cancel', [CustomerController::class, 'customerOrderCancel'])->name('customer.orders.cancel');
     Route::get('/orders/{id}', [CustomerController::class, 'customerOrderDetail'])->name('customer.orders.detail');
- 
-    
+
+
     Route::prefix('wishlist')->group(function () {
         Route::get('/', [FavouriteController::class, 'index'])->name('wishlist.index'); // Xem wishlist
         Route::post('/add/{id}', [FavouriteController::class, 'add'])->name('wishlist.add'); // Thêm sản phẩm vào wishlist
@@ -112,7 +115,16 @@ Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'cha
 Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
-
+    //Discount
+    Route::prefix('discounts')->group(function () {
+        Route::get('/', [DiscountController::class, 'index'])->name('discount.index');
+        Route::get('/create', [DiscountController::class, 'create'])->name('discount.create');
+        Route::post('/', [DiscountController::class, 'store'])->name('discount.store');
+        Route::get('/{id}/edit', [DiscountController::class, 'edit'])->name('discount.edit');
+        Route::put('/{id}', [DiscountController::class, 'update'])->name('discount.update');
+        Route::delete('/{id}', [DiscountController::class, 'destroy'])->name('discount.destroy');
+        Route::post('/{id}/restore', [DiscountController::class, 'restore'])->name('discount.restore');
+    });
     // ORDER
     Route::prefix('order')->group(function () {
         Route::get('/', [AdminOrderController::class, 'index'])->name('order.index');
@@ -149,7 +161,7 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
         Route::get('restore/{id}', [AdminPostController::class, 'restore'])->name('post.restore');
         Route::delete('forceDelete/{id}', [AdminPostController::class, 'forceDelete'])->name('post.forceDelete');
     });
-   
+
     //SHOWROOM
     Route::prefix('showroom')->group(function () {
         Route::get('create', [ShowroomController::class, 'create'])->name('showroom.create'); // Route mới
@@ -199,8 +211,8 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
         Route::get('/category/deleted', [AdminProductCategoryController::class, 'deleted'])->name('productCategory.deleted');
         Route::get('/category/create', [AdminProductCategoryController::class, 'create'])->name('productCategory.create');
         Route::post('/category/store', [AdminProductCategoryController::class, 'store'])->name('productCategory.store');
-        Route::get('/category/edit/{id}', [AdminProductCategoryController::class, 'edit'])->name('productCategory.edit');
-        Route::post('/category/update/{id}', [AdminProductCategoryController::class, 'update'])->name('productCategory.update');
+        Route::get('/category/edit/{slug}', [AdminProductCategoryController::class, 'edit'])->name('productCategory.edit');
+        Route::post('/category/update/{slug}', [AdminProductCategoryController::class, 'update'])->name('productCategory.update');
         Route::delete('/category/destroy/{id}', [AdminProductCategoryController::class, 'destroy'])->name('productCategory.destroy');
         Route::get('/category/restore/{id}', [AdminProductCategoryController::class, 'restore'])->name('productCategory.restore');
         Route::delete('/category/forceDelete/{id}', [AdminProductCategoryController::class, 'forceDelete'])->name('productCategory.forceDelete');
@@ -212,8 +224,8 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
         Route::get('/deleted', [AdminProductController::class, 'deleted'])->name('product.deleted');
         Route::get('/create', [AdminProductController::class, 'create'])->name('product.create');
         Route::post('/store', [AdminProductController::class, 'store'])->name('product.store');
-        Route::get('/edit/{id}', [AdminProductController::class, 'edit'])->name('product.edit');
-        Route::post('/update/{id}', [AdminProductController::class, 'update'])->name('product.update');
+        Route::get('/edit/{slug}', [AdminProductController::class, 'edit'])->name('product.edit');
+        Route::post('/update/{slug}', [AdminProductController::class, 'update'])->name('product.update');
         Route::delete('/destroy/{id}', [AdminProductController::class, 'destroy'])->name('product.destroy');
         Route::get('/restore/{id}', [AdminProductController::class, 'restore'])->name('product.restore');
         Route::delete('/forceDelete/{id}', [AdminProductController::class, 'forceDelete'])->name('product.forceDelete');
@@ -225,10 +237,14 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
         Route::get('deleted', [BrandController::class, 'deleted'])->name('brand.deleted');
         Route::get('create', [BrandController::class, 'create'])->name('brand.create');
         Route::post('store', [BrandController::class, 'store'])->name('brand.store');
-        Route::get('edit/{id}', [BrandController::class, 'edit'])->name('brand.edit');
-        Route::post('update/{id}', [BrandController::class, 'update'])->name('brand.update');
+        Route::get('edit/{slug}', [BrandController::class, 'edit'])->name('brand.edit');
+        Route::post('update/{slug}', [BrandController::class, 'update'])->name('brand.update');
         Route::delete('destroy/{id}', [BrandController::class, 'destroy'])->name('brand.destroy');
         Route::get('restore/{id}', [BrandController::class, 'restore'])->name('brand.restore');
         Route::delete('forceDelete/{id}', [BrandController::class, 'forceDelete'])->name('brand.forceDelete');
     });
 });
+
+    //Search
+    Route::get('/search', [SearchController::class, 'index'])->name('search');
+

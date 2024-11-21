@@ -48,5 +48,9 @@ class Brand extends Model
         // Nếu có trùng lặp, thêm hậu tố
         return $count ? "{$slug}-{$count}" : $slug;
     }
+    public function brands()
+    {
+        return $this->hasMany(Product::class, 'brand_id', 'id');
 
+    }
 }
