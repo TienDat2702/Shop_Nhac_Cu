@@ -24,7 +24,7 @@
                     </div>
                     {{-- album post --}}
                     @if (count($post->albums) > 0)
-                        <div class="title3">Albums</div>
+                        <div class="title3 mt-4">Albums</div>
                         <div class="custom-carousel">
                             <div class="carousel-inner">
                                 @foreach ($post->albums as $index => $album)

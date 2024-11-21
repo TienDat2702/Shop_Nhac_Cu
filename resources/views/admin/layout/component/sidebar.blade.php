@@ -42,7 +42,7 @@
                 </li>
                 <li class="menu-item has-children">
                     <a href="javascript:void(0);" class="menu-item-button">
-                        <div class="icon"><i class="icon-file"></i></div>
+                        <div class="icon"><i class="fa-regular fa-building"></i></div>
                         <div class="text">Showrooms</div>
                     </a>
                     <ul class="sub-menu">
@@ -59,7 +59,7 @@
                     </ul>
                 </li>
                 <li class="menu-item ">
-                    <a href="{{ route('Kho.index')}}" class="menu-item-button">/-strong/-heart:>:o:-((:-h <div class="icon"><i class="icon-layers"></i></div>
+                    <a href="{{ route('Kho.index')}}" class="menu-item-button"><div class="icon"><i class="fa-solid fa-warehouse"></i></div>
                         <div class="text">Kho</div>
                     </a>
                 </li>
@@ -71,7 +71,7 @@
                 </li>
                 <li class="menu-item has-children">
                     <a href="javascript:void(0);" class="menu-item-button">
-                        <div class="icon"><i class="icon-shopping-cart"></i></div>
+                        <div class="icon"><i class="fa-solid fa-guitar"></i></div>
                         <div class="text">Sản phẩm</div>
                     </a>
                     <ul class="sub-menu">

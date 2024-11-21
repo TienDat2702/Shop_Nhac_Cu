@@ -20,7 +20,7 @@ class CustomerAuth
     {
         // Kiểm tra nếu người dùng không đăng nhập bằng guard 'customer'
         if (!Auth::guard('customer')->check()) {
-            return redirect()->route('login'); // Chuyển hướng đến trang đăng nhập nếu chưa đăng nhập
+            return redirect()->route('customer.login'); // Chuyển hướng đến trang đăng nhập nếu chưa đăng nhập
         }
 
         return $next($request);

@@ -740,9 +740,11 @@ function pureFadeOut(e) {
         const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
         if (currentScrollTop > this.lastScrollTop || currentScrollTop < this.stickyMinPos) {
+          document.body.classList.add("home-page-2");
           this.$header.classList.remove(this.selectors.stickyActiveClass);
           this.$header.classList.add('position-absolute');
         } else if (currentScrollTop > this.stickyMinPos) {
+          document.body.classList.remove("home-page-2");
           this.$header.classList.add(this.selectors.stickyActiveClass);
           this.$header.classList.remove('position-absolute');
         }

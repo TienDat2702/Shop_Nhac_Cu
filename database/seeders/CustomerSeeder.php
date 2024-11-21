@@ -23,31 +23,31 @@ class CustomerSeeder extends Seeder
             return;
         }
 
-        for ($i = 0; $i < 20; $i++) {
-            Customer::create([
-                'loyalty_level_id' => 1,
-                'name' => $faker->name,
-                'email' => $faker->unique()->safeEmail,
-                'email_verified_at' => now(),
-                'password' => Hash::make('123456789'),
-                'image' => $faker->imageUrl(225, 225, 'people'),
-                'phone' => $faker->phoneNumber,
-                'address' => $faker->address,
-                'publish' => $faker->randomElement([0, 1, 2]),
-                'deleted_at' => $faker->boolean(10) ? $faker->dateTimeBetween('-1 year', 'now') : null,
-            ]);
-        }
-        // Customer::create([
-        //     'loyalty_level_id' => 1,
-        //     'name' => 'Tiến Đạt',
-        //     'email' => 'tiendat03533@gmail.com',
-        //     'email_verified_at' => now(),
-        //     'password' => Hash::make('123456789'),
-        //     'image' => $faker->imageUrl(225, 225, 'people'),
-        //     'phone' => $faker->phoneNumber,
-        //     'address' => $faker->address,
-        //     'publish' => $faker->randomElement([0, 1, 2]),
-        //     'deleted_at' => $faker->boolean(10) ? $faker->dateTimeBetween('-1 year', 'now') : null,
-        // ]);
+        // for ($i = 0; $i < 20; $i++) {
+        //     Customer::create([
+        //         'loyalty_level_id' => 1,
+        //         'name' => $faker->name,
+        //         'email' => $faker->unique()->safeEmail,
+        //         'email_verified_at' => now(),
+        //         'password' => Hash::make('123456789'),
+        //         'image' => $faker->imageUrl(225, 225, 'people'),
+        //         'phone' => $faker->phoneNumber,
+        //         'address' => $faker->address,
+        //         'publish' => $faker->randomElement([0, 1, 2]),
+        //         'deleted_at' => $faker->boolean(10) ? $faker->dateTimeBetween('-1 year', 'now') : null,
+        //     ]);
+        // }
+        Customer::create([
+            'loyalty_level_id' => 1,
+            'name' => 'Tiến Đạt',
+            'email' => 'tiendat03533@gmail.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make('123456789'),
+            'image' => $faker->imageUrl(225, 225, 'people'),
+            'phone' => $faker->phoneNumber,
+            'address' => $faker->address,
+            'publish' => $faker->randomElement([0, 1, 2]),
+            'deleted_at' => $faker->boolean(10) ? $faker->dateTimeBetween('-1 year', 'now') : null,
+        ]);
     }
 }

@@ -3,28 +3,37 @@
 @section('main')
     <style type="text/css" media="print">
         @media print {
+    body {
+        font-size: 12pt;
+        margin: 0;
+        padding: 0;
+    }
 
-            .tf-button,
-            .wg-box:last-child {
-                display: none !important;
-            }
+    .wg-box {
+        display: block !important;
+    }
 
-            body {
-                font-size: 12pt;
-            }
+    .tf-button, .header, .footer {
+        display: none !important;
+    }
 
-            .table {
-                border-collapse: collapse;
-                width: 100%;
-            }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
 
-            .table th,
-            .table td {
-                border: 1px solid #ddd;
-                padding: 8px;
-                text-align: left;
-            }
-        }
+    table th, table td {
+        border: 1px solid #000;
+        padding: 5px;
+        text-align: left;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+}
+
     </style>
     <div class="main-content-inner">
         <div class="main-content-wrap">
@@ -44,15 +53,49 @@
                     </li>
                 </ul>
             </div>
+            @if ($order->status == 'Đã nhận hàng' || $order->status == 'Đã hủy')
+                <div style="background-color: {{ $order->status == 'Đã nhận hàng' ? '#29be29' : '#f16161'  }}"  class="notification">
+                    <span>{{ $order->status }}</span>
+                </div>
+            @endif
+           
+            <div>
+                {{-- <a class="tf-button style-1 w208 mr-2" href="{{ route('order.index') }}">Quay lại</a> --}}
+                <button class="tf-button style-1 w208" onclick="printOrder()">In đơn hàng</button>
+            </div>
+            <div style="margin-bottom: 30px" class="row">
+                <div class="col-lg-6">
+                    <div class="my-account wg-box mt-5">
+                        <h5>Thông tin khách hàng</h5>
+                        <div class="my-account__address-item__detail">
+                            <p class="mb-2"><strong>Địa chỉ :</strong> {{ $order->address }}</p>
+                            <p class="mb-2"><strong>Tên : </strong>{{ $order->customer->name }}</p>
+                            <p class="mb-2"><strong>Email : </strong>{{ $order->customer->email }}</p>
+                            <p class="mb-2"><strong>Số điện thoại :</strong> {{ $order->customer->phone }}</p>
+                            <p class="mb-2"><strong>Phương thúc thanh toán :</strong> {{ $order->payment_method }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="my-account wg-box mt-5">
+                        <h5>Thông tin giao hàng</h5>
+                        <div class="my-account__address-item">
+                            <div class="my-account__address-item__detail">
+                                <p class="mb-2"><strong>Địa chỉ giao hàng :</strong> {{ $order->address }}</p>
+                                <p class="mb-2"><strong>Tên người nhận : </strong>{{ $order->name }}</p>
+                                <p class="mb-2"><strong>Số điện thoại :</strong> {{ $order->phone }}</p>
+                                <p class="mb-2"><strong>Ghi chú :</strong> {{ $order->customer_note }}</p>
+                                <p class="mb-2"><strong>Ghi chú cửa hàng :</strong> {{ $order->user_note }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="wg-box">
                 <div class="flex items-center justify-between gap10 flex-wrap">
                     <div class="wg-filter flex-grow">
                         <h5>Sản phẩm đơn hàng</h5>
-                    </div>
-                    <div>
-                        <a class="tf-button style-1 w208 mr-2" href="{{ route('order.index') }}">Quay lại</a>
-                        <button class="tf-button style-1 w208" onclick="printOrder()">In đơn hàng</button>
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -73,7 +116,7 @@
                                     <td class="text-center">#{{ $orderDetail->product->id }}</td>
                                     <td class="pname">
                                         <div class="image">
-                                            <img src="1718066538.html" alt="" class="image">
+                                            <img src="{{ asset('uploads/products/product/' . $orderDetail->product->image) }}" alt="" class="image">
                                         </div>
                                         <div class="name">
                                             <a href="#" target="_blank"
@@ -83,17 +126,44 @@
                                     <td class="text-center">{{ number_format($orderDetail->price) }} VNĐ</td>
                                     <td class="text-center">{{ $orderDetail->quantity }}</td>
                                     <td class="text-center">{{ $orderDetail->product->brand->name ?? 'N/A' }}</td>
-                                    <td class="text-center">{{ $orderDetail->product->productCategory->summary ?? 'N/A' }}
+                                    <td class="text-center">{{ $orderDetail->product->productCategory->name ?? 'N/A' }}
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Tổng tiền</th>
+                                <td class="ps-5" colspan="5">{{ number_format($order->total) }}VNĐ</td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
-
+                {{-- <div class="table-responsive">
+                    <h5 style="margin-bottom: 20px">Thông tin đơn hàng</h5>
+                    <table class="table table-striped table-bordered table-transaction">
+                        <tbody>
+                            <tr>
+                                <th>Tổng tiền</th>
+                                <td>{{ number_format($order->total) }}VNĐ</td>
+                            </tr>
+                            <tr>
+                                <th>Phương thức thanh toán</th>
+                                <td>{{ $order->payment_method }}</td>
+                            </tr>
+                            <tr>
+                                <th>Trạng thái</th>
+                                <td class="text-uppercase font-bold">{{ $order->status }}</td>   
+                            </tr>
+                            <tr>
+                                <th>Ngày đặt hàng</th>
+                                <td> {{ date('d/m/Y', strtotime($order->created_at)) }}</td>    
+                            </tr>
+                        </tbody>
+                    </table>
+                </div> --}}
                 <div class="divider"></div>
                 <div class="flex items-center justify-between flex-wrap gap10 wgp-pagination">
-
                 </div>
             </div>
 
@@ -109,80 +179,36 @@
                     </div>
                 </div>
             @endif
-
-            <div class="wg-box mt-5">
-                <h5>Địa chỉ giao hàng</h5>
-                <div class="my-account__address-item col-md-6">
-                    <div class="my-account__address-item__detail">
-                        <p>{{ $order->address }}</p>
-                        <br>
-                        <p>{{ $order->customer->name }}</p>
-                        <br>
-                        <p>Số điện thoại: {{ $order->customer->phone }}</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="wg-box mt-5">
-                <h5>Thanh toán</h5>
-                <table class="table table-striped table-bordered table-transaction">
-                    <tbody>
-                        <tr>
-                            <th>Tổng tiền</th>
-                            <td>{{ number_format($order->total) }}VNĐ</td>
-                            <th>Mã giảm giá</th>
-                            <td>{{ $order->discount->code ?? 'N/A' }}</td>
-                            <th>Giảm giá</th>
-                            <td>{{ $order->discount->value ?? 'N/A' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Tổng tiền</th>
-                            <td>
-                                @if ($order->discount_id)
-                                    {{ number_format($order->total - $order->discount->discount_rate) }}VNĐ
-                            </td>
-                        @else
-                            {{ number_format($order->total) }} VNĐ
-                            @endif
-                            <th>Phương thức thanh toán</th>
-                            <td>Tiền mặt</td>
-                            <th>Trạng thái</th>
-                            <td class="text-uppercase font-bold">{{ $order->status }}</td>
-                        </tr>
-                        <tr>
-                            <th>Ngày đặt hàng</th>
-                            <td>{{ $order->created_at->format('Y-m-d H:i:s') }}</td>
-                            <th>Ngày giao hàng</th>
-                            <td>{{ $order->delivered_at ? $order->delivered_at->format('Y-m-d H:i:s') : 'Đang giao' }}</td>
-                            <th>Ngày hủy</th>
-                            <td>{{ $order->canceled_at ? $order->canceled_at->format('Y-m-d H:i:s') : 'N/A' }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
+            
             <div class="wg-box mt-5">
                 <h5>Cập nhật trạng thái đơn hàng</h5>
-                <div class="my-account__address-item col-md-6">
-                    <div class="my-account__address-item__detail">
-                        <form action="{{ route('order.updateStatus', $order->id) }}" method="POST">
+                <div class="my-account__address-item">
+                    <div class="my-account__address-item__detail ">
+                        <form class="row" action="{{ route('order.updateStatus', $order->id) }}" method="POST">
                             @csrf
                             @method('PUT')
-                            <div class="form-group mb-3">
+                            <div class="form-group mb-3 col-md-6">
                                 <label for="status" class="form-label fw-bold h6">Trạng thái:</label>
-                                <select name="status" id="status" class="form-select form-select-lg mt-2  fs-4 py-3">
-                                    {{-- <option class="fs-4" value="chờ duyệt" {{ $order->status == 'chờ duyệt' ? 'selected' : '' }}>Chờ duyệt</option>
-                                    <option class="fs-4" value="đang giao" {{ $order->status == 'đang giao' ? 'selected' : '' }}>Đang giao</option>
-                                    <option class="fs-4" value="đã giao" {{ $order->status == 'đã giao' ? 'selected' : '' }}>Đã giao</option>
-                                    <option class="fs-4" value="đã hủy" {{ $order->status == 'đã hủy' ? 'selected' : '' }}>Đã hủy</option> --}}
-                                    @foreach ($statuses as $status)
-                                        <option class="fs-4" value="{{ $status }}"
+                                <select {{ $order->status == 'Đã nhận hàng' ? 'disabled' : '' }} name="status" id="status" class="form-select form-select-lg mt-2  fs-4 py-3">
+                                    @if ($order->status == 'Đã nhận hàng')
+                                        <option class="fs-4" value="Đã nhận hàng" selected>Đã nhận hàng</option>
+                                    @else
+                                        @foreach ($statuses as $status)
+                                            <option class="fs-4" value="{{ $status }}"
                                             {{ $order->status == $status ? 'selected' : '' }}>{{ $status }}</option>
-                                    @endforeach
+                                        @endforeach
+                                    @endif
+                                   
                                 </select>
                             </div>
+                            <div class="form-group mb-3 col-md-6">
+                                <label for="user_note" class="form-label fw-bold h6">Ghi chú:</label>
+                               <textarea name="user_note">{{ $order->user_note ?? old('user_note') }}</textarea>
+                            </div>
 
-                            <button type="submit" class="tf-button style-1 mt-2 h5">Cập nhật trạng thái</button>
+                            <div class="d-flex justify-content-center mt-5">
+                                <button type="submit" class="tf-button style-1 mt-4 h5">Cập nhật đơn hàng</button>
+                            </div>
                         </form>
                     </div>
                 </div>

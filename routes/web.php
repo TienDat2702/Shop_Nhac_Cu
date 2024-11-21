@@ -27,7 +27,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
 Route::get('/shop/category/{slug}', [ProductController::class, 'category'])->name('shop.category');
 Route::get('/product/{slug}', [ProductController::class, 'product_details'])->name('product.detail');
-Route::post('/product/{proId}/comment', [ProductController::class, 'post_comment'])->name('product.comment');
+
 
 Route::get('/about',[HomeController::class,'about'])->name('about');
 // CONTACT
@@ -77,6 +77,22 @@ Route::middleware(CustomerAuth::class)->group(function () {
         Route::get('/verify/{token}', [CheckoutController::class, 'verify'])->name('checkout.verify');
         Route::get('/showrooms/nearest', [ShowroomController::class, 'findNearestShowroom'])->name('checkout.showroom');
     });
+
+    //comment
+    Route::post('/product/{proId}/comment', [ProductController::class, 'post_comment'])->name('product.comment');
+
+    Route::get('/logout', [CustomerController::class, 'logout'])->name('customer.logout');
+    Route::get('/orders', [CustomerController::class, 'customerOrder'])->name('customer.orders');
+    Route::get('/orders/history', [CustomerController::class, 'customerOrderHistory'])->name('customer.orders.history');
+    Route::post('/orders/cancel', [CustomerController::class, 'customerOrderCancel'])->name('customer.orders.cancel');
+    Route::get('/orders/{id}', [CustomerController::class, 'customerOrderDetail'])->name('customer.orders.detail');
+ 
+    
+    Route::prefix('wishlist')->group(function () {
+        Route::get('/', [FavouriteController::class, 'index'])->name('wishlist.index'); // Xem wishlist
+        Route::post('/add/{id}', [FavouriteController::class, 'add'])->name('wishlist.add'); // Thêm sản phẩm vào wishlist
+        Route::delete('/remove/{id}', [FavouriteController::class, 'remove'])->name('wishlist.remove'); // Xóa sản phẩm khỏi wishlist
+    });
 });
 
 
@@ -85,20 +101,6 @@ Route::post('/forgot', [CustomerController::class, 'check_forgot'])->name('custo
 Route::get('/reset-password/{token}', [CustomerController::class, 'reset_password'])->name('customer.reset_password');
 Route::post('/reset-password/{token}', [CustomerController::class, 'check_reset_password'])->name('customer.check_reset_password');
 
-
-Route::get('/logout', [CustomerController::class, 'logout'])->name('customer.logout');
-Route::get('/orders', [CustomerController::class, 'customerOrder'])->name('customer.orders');
-Route::get('/orders/history', [CustomerController::class, 'customerOrderHistory'])->name('customer.orders.history');
-Route::post('/orders/cancel', [CustomerController::class, 'customerOrderCancel'])->name('customer.orders.cancel');
-Route::get('/orders/{id}', [CustomerController::class, 'customerOrderDetail'])->name('customer.orders.detail');
- 
-
-// ABOUT
-Route::prefix('wishlist')->group(function () {
-    Route::get('/', [FavouriteController::class, 'index'])->name('wishlist.index'); // Xem wishlist
-    Route::post('/add/{id}', [FavouriteController::class, 'add'])->name('wishlist.add'); // Thêm sản phẩm vào wishlist
-    Route::delete('/remove/{id}', [FavouriteController::class, 'remove'])->name('wishlist.remove'); // Xóa sản phẩm khỏi wishlist
-});
 
 Route::get('admin/login', [AdminController::class, 'login'])->name('admin.login');
 Route::post('/admin/login', [AdminController::class, 'check_login'])->name('admin.check_login');
@@ -137,7 +139,6 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
     Route::prefix('post')->group(function () {
 
         Route::get('/', [AdminPostController::class, 'index'])->name('post.index');
-        Route::get('/test', [AdminPostController::class, 'test'])->name('post.test');
         Route::get('deleted', [AdminPostController::class, 'deleted'])->name('post.deleted');
         Route::get('search/{config}', [AdminPostController::class, 'search'])->name('post.search');
         Route::get('create', [AdminPostController::class, 'create'])->name('post.create');

@@ -86,6 +86,14 @@ class PostCategory extends Model
         return $this->belongsTo(PostCategory::class, 'parent_id');
     }
 
+    public function scopeWithPublishedPosts($query, $categories_id){
+        $query->with(['posts' => function($query){
+            $query->where('publish', 2)
+                  ->orderBy('id', 'DESC')
+                  ->take(4);
+        }])->where('publish', 2)->orderBy('id', 'DESC')->where('parent_id', $categories_id);
+    }
+
     // quan hệ posts 1-N
     public function posts() {
         return $this->hasMany(Post::class, 'post_category_id', 'id');

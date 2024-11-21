@@ -56,3 +56,11 @@
     width: 7em;
     height: 7em;
 }
+
+.my-account__address-item__detail p{
+  font-size: 17px;
+  margin-bottom: 10px !important;
+}
+.my-account.wg-box.mt-5 {
+  height: 320px;
+}

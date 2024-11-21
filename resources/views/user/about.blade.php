@@ -42,7 +42,7 @@
                             <!-- Ảnh bên trái, nội dung bên phải -->
                             <div class="image-wrapper col-lg-6">
                                 <img class="h-auto" loading="lazy"
-                                    src="{{ asset('uploads/showrooms') }}/{{ $showroom->image }}" width="450"
+                                    src="{{ asset($showroom->image) }}" width="450"
                                     height="500" alt="Hình ảnh showroom">
                             </div>
                             <div class="content-wrapper col-lg-6 px-lg-4">
@@ -60,7 +60,7 @@
                             </div>
                             <div class="image-wrapper col-lg-6">
                                 <img class="h-auto" loading="lazy"
-                                    src="{{ asset('uploads/showrooms') }}/{{ $showroom->image }}" width="450"
+                                    src="{{ asset($showroom->image) }}" width="450"
                                     height="500" alt="Hình ảnh showroom">
                             </div>
                         @endif

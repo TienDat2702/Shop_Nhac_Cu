@@ -97,6 +97,7 @@ class ProductController extends Controller
 
     public function category($slug, Request $request)
     {
+        $banners = Banner::where('position', 2)->where('publish', 2)->get();
         // Tìm danh mục dựa trên slug
         $category = ProductCategory::GetAllByPublish()->where('slug', $slug)->first();
         if (!$category) {
@@ -152,10 +153,10 @@ class ProductController extends Controller
         $products = $productsQuery->paginate(9);
 
         if (!$products->isEmpty()) {
-            return view('user.shop', compact('products', 'productCategories', 'brands', 'priceSegments'))->with('currentCategory', $category);
+            return view('user.shop', compact('products', 'productCategories', 'brands','banners', 'priceSegments'))->with('currentCategory', $category);
         } else {
             toastr()->warning('Không có sản phẩm!');
-            return view('user.shop', compact('products', 'productCategories', 'brands', 'priceSegments'))->with('currentCategory', $category);
+            return view('user.shop', compact('products', 'productCategories', 'brands','banners', 'priceSegments'))->with('currentCategory', $category);
         }
     }
 

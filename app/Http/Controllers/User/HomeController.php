@@ -24,7 +24,7 @@ class HomeController extends Controller
         $banners = Banner::where('position', 1)
                  ->where('publish', 2)
                  ->get();
-        $product_views = Product::GetProductPublish()->orderBy('view', 'desc')->take(2)->get();
+        $product_views = Product::GetProductPublish()->orderBy('view', 'desc')->take(4)->get();
         $product_price = Product::GetProductPublish()->orderBy('price_sale', 'asc')->take(8)->get();
         // $product_views = Product::orderBy('view', 'desc')->where('publish', 2)->take(2)->get();
         // $product_price = Product::orderBy('price_sale', 'asc')->where('publish', 2)->take(8)->get();
@@ -45,10 +45,12 @@ class HomeController extends Controller
                 ->orWhereIn('post_category_id', $post_category_event_child_ids)
                 ->limit(4)
                 ->get();
+        }else{
+            $posts = Post::GetPostPublish()
+            ->limit(4)
+            ->get();
         }
-        $posts = Post::GetPostPublish()
-        ->limit(4)
-        ->get();
+        
         return view('user.index', compact(
             'brands', 
             'product_views', 
