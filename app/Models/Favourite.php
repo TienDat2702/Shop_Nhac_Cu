@@ -18,7 +18,7 @@ class Favourite extends Model
     // Định nghĩa quan hệ với model Product
     public function product(): BelongsTo
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class, 'product_id', 'id');
     }
 
     // Định nghĩa quan hệ với model Customer

@@ -41,7 +41,7 @@
                     </div>
                 @endif
                 <form class="product tf-section-2 form-add-product" method="post" enctype="multipart/form-data"
-                    action="{{ route('product.update', $product->id) }}">
+                    action="{{ route('product.update', $product->slug) }}">
                     @csrf
                     <div class="wg-box">
                         <fieldset class="name">

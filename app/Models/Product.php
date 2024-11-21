@@ -40,7 +40,9 @@ class Product extends Model
         }
         return $query->paginate(9);
     }
-
+    public function scopeGetProductAll($query){
+        return $query->orderBy('id', 'DESC');
+    }
 
     public function scopeGetProductPublish($query) {
         return $query->where('publish', 2);
@@ -87,6 +89,12 @@ class Product extends Model
     {
         return $this->belongsTo(Brand::class, 'brand_id');
     }
+
+    public function favouriteByUser($userId)
+    {
+        return $this->hasOne(Favourite::class, 'product_id', 'id')->where('user_id', $userId);
+    }
+
     public function productCategory1()
     {
         return $this->belongsTo(ProductCategory::class);

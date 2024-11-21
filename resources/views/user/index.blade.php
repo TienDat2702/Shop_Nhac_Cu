@@ -1,11 +1,6 @@
 @extends('user.layouts.app')
 @section('title', 'TuneNest')
 @section('content')
-    <style>
-        .swiper-slide {
-            width: 1100px;
-        }
-    </style>
     <main>
 
         <section class="swiper-container js-swiper-slider swiper-number-pagination slideshow"
@@ -78,64 +73,67 @@
             </div>
 
 
-                <div class="container">
-                    <div
-                        class="slideshow-pagination slideshow-number-pagination d-flex align-items-center position-absolute bottom-0 mb-5">
-                    </div>
+            <div class="container">
+                <div
+                    class="slideshow-pagination slideshow-number-pagination d-flex align-items-center position-absolute bottom-0 mb-5">
                 </div>
+            </div>
         </section>
         <div class="container mw-1620 bg-white border-radius-10">
             <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
+
             <section class="category-carousel container">
                 <h2 class="section-title text-center mb-3 pb-xl-2 mb-xl-4">Các thương hiệu</h2>
 
                 <div class="position-relative">
                     <div class="swiper-container js-swiper-slider"
                         data-settings='{
-              "autoplay": {
-                "delay": 5000
-              },
-              "slidesPerView": 8,
-              "slidesPerGroup": 1,
-              "effect": "none",
-              "loop": true,
-              "navigation": {
-                "nextEl": ".products-carousel__next-1",
-                "prevEl": ".products-carousel__prev-1"
-              },
-              "breakpoints": {
-                "320": {
-                  "slidesPerView": 2,
-                  "slidesPerGroup": 2,
-                  "spaceBetween": 15
-                },
-                "768": {
-                  "slidesPerView": 4,
-                  "slidesPerGroup": 4,
-                  "spaceBetween": 30
-                },
-                "992": {
-                  "slidesPerView": 6,
-                  "slidesPerGroup": 1,
-                  "spaceBetween": 45,
-                  "pagination": false
-                },
-                "1200": {
-                  "slidesPerView": 8,
-                  "slidesPerGroup": 1,
-                  "spaceBetween": 60,
-                  "pagination": false
-                }
-              }
-            }'>
+                        "autoplay": {
+                            "delay": 5000
+                        },
+                        "slidesPerView": 8,
+                        "slidesPerGroup": 1,
+                        "effect": "none",
+                        "loop": true,
+                        "navigation": {
+                            "nextEl": ".products-carousel__next-1",
+                            "prevEl": ".products-carousel__prev-1"
+                        },
+                        "breakpoints": {
+                            "320": {
+                            "slidesPerView": 2,
+                            "slidesPerGroup": 2,
+                            "spaceBetween": 15
+                            },
+                            "768": {
+                            "slidesPerView": 4,
+                            "slidesPerGroup": 4,
+                            "spaceBetween": 30
+                            },
+                            "992": {
+                            "slidesPerView": 6,
+                            "slidesPerGroup": 1,
+                            "spaceBetween": 45,
+                            "pagination": false
+                            },
+                            "1200": {
+                            "slidesPerView": 8,
+                            "slidesPerGroup": 1,
+                            "spaceBetween": 60,
+                            "pagination": false
+                            }
+                        }
+                        }'>
                         <div class="swiper-wrapper">
                             @foreach ($brands as $brand)
                                 <div class="swiper-slide">
-                                    <img loading="lazy" class="w-100 h-auto mb-3"
+                                    <a href="{{ route('brands.index', $brand->slug) }}">
+                                        <img loading="lazy" class="w-100 h-auto mb-3"
                                         src="{{ asset('uploads/brands/' . $brand->image) }}" width="124" height="124"
                                         alt="{{ $brand->name }}" />
+                                    </a>
                                     <div class="text-center">
-                                        <a href="#" class="menu-link fw-medium">{{ $brand->name }}</a>
+                                        <a href="{{ route('brands.index', $brand->slug) }}" class="menu-link fw-medium">{{ $brand->name }}</a>
                                     </div>
                                 </div>
                             @endforeach
@@ -156,6 +154,7 @@
                     </div><!-- /.products-carousel__next -->
                 </div><!-- /.position-relative -->
             </section>
+
             <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
 
             <section class=" container">
@@ -248,7 +247,7 @@
                 }'>
                                 <div class="swiper-wrapper">
                                     @foreach ($product_price as $product)
-                                        <div class="swiper-slide product-card product-card_style3 pst">
+                                        <div class="swiper-slide product-index product-card product-card_style3 pst">
                                             <div class="product_sale">
                                                 <span>Giảm giá</span>
                                             </div>
@@ -333,7 +332,7 @@
                 <div class="row">
                     @foreach ($product_views as $product)
                         <div class="col-6 col-md-4 col-lg-3 product-view">
-                            <div class="product-card product-card-view product-card_style3 mb-3 mb-md-4 mb-xxl-5 pst">
+                            <div class="product-card product-index product-card-view product-card_style3 mb-3 mb-md-4 mb-xxl-5 pst">
                                 @if ($product->price_sale)
                                     <div class="product_sale">
                                         <span>Giảm giá</span>
@@ -376,18 +375,22 @@
                                         <a href="#" data-url="{{ route('cart.add', $product->id) }}"
                                             class="btn-link btn-link_lg me-4 text-uppercase fw-medium add-to-cart"
                                             data-aside="cartDrawer" title="Add To Cart">Thêm Giỏ Hàng</a>
-                                            <a href="{{ route('product.detail', $product->slug) }}"
-                                                class="btn-link btn-link_lg me-4 text-uppercase fw-medium"
-                                                title="Quick view">
-                                                <span class="">Xem Ngay</span>
-                                            </a>
-                                        <button class="pc__btn-wl bg-transparent border-0 js-add-wishlist"
-                                            title="Add To Wishlist">
-                                            <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_heart" />
-                                            </svg>
-                                        </button>
+                                        <a href="{{ route('product.detail', $product->slug) }}"
+                                            class="btn-link btn-link_lg me-4 text-uppercase fw-medium" title="Quick view">
+                                            <span class="">Xem Ngay</span>
+                                        </a>
+                                        <form action="{{ route('wishlist.add', $product->id) }}"
+                                            method="POST" style="display:inline;">
+                                            @csrf
+                                            <button type="submit"
+                                                class="menu-link menu-link_us-s add-to-wishlist">
+                                                <svg width="16" height="16" viewBox="0 0 20 20"
+                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <use href="#icon_heart" />
+                                                </svg>
+
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -459,13 +462,18 @@
                                                 title="Quick view">
                                                 <span class="">Xem Ngay</span>
                                             </a>
-                                        <button class="pc__btn-wl bg-transparent border-0 js-add-wishlist"
-                                            title="Add To Wishlist">
-                                            <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_heart" />
-                                            </svg>
-                                        </button>
+                                            <form action="{{ route('wishlist.add', $product->id) }}"
+                                                method="POST" style="display:inline;">
+                                                @csrf
+                                                <button type="submit"
+                                                    class="menu-link menu-link_us-s add-to-wishlist">
+                                                    <svg width="16" height="16" viewBox="0 0 20 20"
+                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <use href="#icon_heart" />
+                                                    </svg>
+
+                                                </button>
+                                            </form>
                                     </div>
                                 </div>
                             </div>
@@ -538,13 +546,23 @@
                                                         title="Quick view">
                                                         <span class="">Xem Ngay</span>
                                                     </a>
-                                                <button class="pc__btn-wl bg-transparent border-0 js-add-wishlist"
-                                                    title="Add To Wishlist">
-                                                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <use href="#icon_heart" />
-                                                    </svg>
-                                                </button>
+                                                    @if ($product->favouriteByUser(Auth::guard('customer')->user()->id))
+                                                        <form action="{{ route('wishlist.remove', $product->id) }}" method="POST" style="display:inline;">
+                                                            @csrf
+                                                            <button type="submit" class="menu-link menu-link_us-s add-to-wishlist">
+                                                                <i class="fa-solid fa-heart"></i>
+                                                            </button>
+                                                        </form>
+                                                    @else
+                                                        <form action="{{ route('wishlist.add', $product->id) }}" method="POST" style="display:inline;">
+                                                            @csrf
+                                                            <button type="submit" class="menu-link menu-link_us-s add-to-wishlist">
+                                                                <i class="fa-regular fa-heart"></i>
+                                                            </button>
+                                                        </form>
+                                                    @endif
+                                                
+                                                   
                                             </div>
                                         </div>
                                     </div>

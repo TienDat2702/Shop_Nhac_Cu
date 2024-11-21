@@ -187,29 +187,37 @@
             var disabledClass = (val.use_count >= val.use_limit || total < val.minimum_total_value) ? 'disabled-voucher' : '';
             var disabledAttribute = (val.use_count >= val.use_limit || total < val.minimum_total_value) ? 'disabled' : '';
             var daysLeft = Math.ceil((new Date(val.end_date) - new Date()) / (1000 * 60 * 60 * 24));
-            var voucherItem = `
-                <div class="voucher_item ${disabledClass}">
-                    <div class="voucher_image">
-                        <img src="http://127.0.0.1:8000/images/voucher1.png" alt="Voucher Logo">
-                    </div>
-                    <div class="voucher_content">
-                        <div class="voucher_name">${val.name}</div>
-                        <div class="voucher_des">
-                            <span>Đơn tối thiểu ${Number(val.minimum_total_value).toLocaleString()} VNĐ</span>
+            if (discounts.length > 1) {
+                var voucherItem = `
+                    <div class="voucher_item ${disabledClass}">
+                        <div class="voucher_image">
+                            <img src="http://127.0.0.1:8000/images/voucher1.png" alt="Voucher Logo">
                         </div>
-                        <div class="voucher_des">
-                            <span>Giảm tối đa ${Number(val.max_value).toLocaleString()} VNĐ </span>
+                        <div class="voucher_content">
+                            <div class="voucher_name">${val.name}</div>
+                            <div class="voucher_des">
+                                <span>Đơn tối thiểu ${Number(val.minimum_total_value).toLocaleString()} VNĐ</span>
+                            </div>
+                            <div class="voucher_des">
+                                <span>Giảm tối đa ${Number(val.max_value).toLocaleString()} VNĐ </span>
+                            </div>
+                            <div class="voucher_des d-flex align-items-center justify-content-between">
+                                <span>Hạn còn: ${ daysLeft } ngày</span>
+                                <span>SL: ${val.use_limit - val.use_count}</span>
+                            </div>
                         </div>
-                        <div class="voucher_des d-flex align-items-center justify-content-between">
-                            <span>Hạn còn: ${ daysLeft } ngày</span>
-                            <span>SL: ${val.use_limit - val.use_count}</span>
+                        <div class="voucher_radio">
+                            <input type="radio" name="voucher" value="${val.id }" ${disabledAttribute}>
                         </div>
                     </div>
-                    <div class="voucher_radio">
-                        <input type="radio" name="voucher" value="${val.id }" ${disabledAttribute}>
-                    </div>
-                </div>
-            `;
+                `;
+            }else{
+                var voucherItem = 
+                    `<div class="text-center not-fount-voucher">
+                        <i style="font-size: 50px; margin-bottom:10px" class="fa-solid fa-circle-exclamation"></i>
+                        <h4>Hiện bạn chưa có phiếu giảm giá</h4>
+                    </div>`
+            }
 
             voucherBody.append(voucherItem); // Thêm voucher vào giao diện
         });

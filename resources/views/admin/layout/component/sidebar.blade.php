@@ -60,6 +60,7 @@
                 </li>
                 <li class="menu-item ">
                     <a href="{{ route('Kho.index')}}" class="menu-item-button"><div class="icon"><i class="fa-solid fa-warehouse"></i></div>
+
                         <div class="text">Kho</div>
                     </a>
                 </li>
@@ -114,16 +115,17 @@
                 </li>
                 <li class="menu-item has-children">
                     <a href="javascript:void(0);" class="menu-item-button">
-                        <div class="icon"><i class="icon-tag"></i></div>
+                        <div class="icon"><i class="fas fa-percentage"></i></div>
                         <div class="text">Mã Giảm Giá</div>
                     </a>
                     <ul class="sub-menu">
-                        <li class="sub-menu-item">/-strong/-heart:>:o:-((:-h <a href="#" class="">
+                        <li class="sub-menu-item">
+                            <a href="{{ route('discount.index') }}" class="">
                                 <div class="text">Danh sách mã giảm giá</div>
                             </a>
                         </li>
                         <li class="sub-menu-item">
-                            <a href="#" class="">
+                            <a href="{{ route('discount.create') }}" class="">
                                 <div class="text">Thêm mã giảm giá</div>
                             </a>
                         </li>

@@ -14,9 +14,9 @@ class ProductUpdateRequest extends FormRequest
 
     public function rules(): array
     {
-        $postCategory = Product::where('slug', $this->route('slug'))->whereNull('deleted_at')->first();
+        $product = Product::where('slug', $this->route('slug'))->first();
         return [
-            'name' => 'required|unique:products,name,' . $postCategory->id . '|max:125',
+            'name' => 'required|unique:products,name,' . $product->id . '|max:125',
             // 'category_id' => 'exists:product_categories,id',
             // 'brand_id' => 'exists:brands,id',
             'price' => 'required|numeric|min:0|max:999999999',
