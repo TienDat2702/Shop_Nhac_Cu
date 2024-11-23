@@ -43,12 +43,12 @@
                                 function renderCategories($categories, $parentId = 0, $level = 1)
                                 {
                                     $hasChild = false;
-                                
+
                                     foreach ($categories as $category) {
                                         if ($category->parent_id == $parentId) {
                                             if (!$hasChild) {
                                                 $hasChild = true;
-                                
+
                                                 // Tạo tên class dựa trên cấp độ
                                                 $className = 'subcategory-list-parent' . ($level > 1 ? '-' . ($level - 1) : '');
                                                 echo '<ul class="' . $className . '" style="padding-left: ' . (10 * ($level - 1)) . 'px;">';
@@ -57,27 +57,27 @@
                                             echo '<li class="menu-item' . ($parentId == 0 ? ' parent-menu' : ' sub-menu') . '">';
                                             echo '<a href="' . route('shop.category', $category->slug) . '">';
                                             echo $category->name;
-                                
+
                                             // Gọi đệ quy để hiển thị danh mục con của danh mục hiện tại
                                             renderCategories($categories, $category->id, $level + 1);
-                                
+
                                             echo '</a>';
                                             echo '</li>';
                                         }
                                     }
-                                
+
                                     if ($hasChild) {
                                         echo '</ul>';
                                     }
                                 }
                                 @endphp
-                                
+
                                 <ul class="category-list">
                                     @php
                                         renderCategories($productCategories);
                                     @endphp
                                 </ul>
-                                
+
 
                                     {{-- <ul class="list list-inline mb-0">
                                     @foreach ($productCategories as $category)
@@ -258,14 +258,14 @@
                             <div class="swiper-slide">
                                 <div class="slide-split h-100 overflow-hidden position-relative">
                                     <!-- Ảnh nền -->
-                                    <img loading="lazy" 
-                                         src="{{ asset($banner->image ?? 'path/to/default/image.jpg') }}" 
+                                    <img loading="lazy"
+                                         src="{{ asset($banner->image ?? 'path/to/default/image.jpg') }}"
                                          alt="Đang Cập Nhật"
                                          class="slideshow-bg__img object-fit-cover w-100 h-100" />
-                                    
+
                                     <!-- Lớp phủ màu đen mờ -->
                                     <div class="overlay position-absolute top-0 start-0 w-100 h-100"></div>
-                                    
+
                                     <!-- Nội dung chữ -->
                                     <div class="slide-overlay_text container position-absolute top-50 start-0 translate-middle-y text-white text-start">
                                         <h2 class="text-uppercase section-title fw-normal mb-3">
@@ -277,7 +277,7 @@
                                 </div>
                             </div>
                             @endforeach
-                            
+
                         </div>
 
                         <div class="container p-3 p-xl-5">
@@ -408,7 +408,6 @@
                                                 class="reviews-note text-lowercase text-secondary ms-1">{{ $product->view }}
                                                 lượt xem</span>
                                         </div>
-                                        
                                         @if (array_key_exists($product->id, $product_favourite)) <!-- Sản phẩm đã yêu thích -->
                                             <form action="{{ route('wishlist.remove', $product_favourite[$product->id]) }}" method="POST" style="display:inline;">
                                                 @csrf

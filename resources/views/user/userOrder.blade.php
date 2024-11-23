@@ -47,78 +47,67 @@
                     </div>
 
                     <div class="col-lg-10">
-                        <div class="wg-table table-all-user">
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-center">Mã đơn hàng</th>
-                                            <th class="text-center">Tổng tiền</th>
-                                            {{-- <th class="text-center">Mã giảm giá</th>
-                                            <th class="text-center">Giá giảm</th>
-                                            <th class="text-center">Tổng cộng</th> --}}
-                                            <th class="text-center">Trạng thái</th>
-                                            <th class="text-center">Ngày đặt</th>
-                                            <th class="text-center">Số lượng</th>
-                                            <th class="text-center">Ngày giao</th>
-                                            <th class="text-center">Hành động</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($orders as $order)
-                                            <tr>
-                                                <td class="text-center">#{{ $order->id }}</td>
-                                                <td class="text-center">{{ number_format($order->total) }} VND</td>
-
-                                                <td class="text-center">
-                                                    @php
-                                                        $status = $order->status;
-                                                    @endphp
-
-                                                    @if($status == 'Đã giao')
-                                                        <span class="badge bg-success text-uppercase py-3 span-status">{{ $status }}</span>
-                                                    @elseif($status == 'Đã hủy')
-                                                        <span class="badge bg-danger text-uppercase py-3 span-status">{{ $status }}</span>
-                                                    @elseif($status == 'Đang giao')
-                                                        <span class="badge bg-warning text-uppercase py-3 span-status">{{ $status }}</span>
-                                                    @elseif($status == 'Duyệt')
-                                                        <span class="badge bg-primary text-uppercase py-3 span-status">Đã duyệt</span>
-                                                    @elseif($status == 'Chờ xử lý')
-                                                        <span class="badge bg-info text-uppercase py-3 span-status">{{ $status }}</span>
-                                                    @else
-                                                        <span class="badge bg-success text-uppercase py-3 span-status">{{ $status }}</span>
-                                                    @endif
-                                                </td>
-                                                <td class="text-center">
-                                                    {{ date('d/m/Y', strtotime($order->created_at)) }}
-                                                </td>
-                                                <td class="text-center">{{ $order->orderDetails->sum('quantity') }}</td>
-                                                <td>
-                                                    @if ($order->delivered_at)
-                                                        {{ date('d/m/Y', strtotime( $order->delivered_at )) }}
-                                                    @else
-                                                        Đang chờ giao hàng
-                                                    @endif
-                                                </td>
-                                                <td class="text-center">
-                                                    <a href="{{ route('customer.orders.detail', $order->id) }}">
-                                                        <div class="list-icon-function view-icon">
-                                                            <div class="item eye">
-                                                                <i class="fa fa-eye"></i>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                        <div class="page-content my-account__edit">
+                            <div class="my-account__edit-form">
+                              <form name="account_edit_form" action="#" method="POST" class="needs-validation" novalidate="">
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    <div class="form-floating my-3">
+                                      <input type="text" class="form-control" placeholder="Full Name" name="name" value="" required="">
+                                      <label for="name">Name</label>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <div class="form-floating my-3">
+                                      <input type="text" class="form-control" placeholder="Mobile Number" name="mobile" value=""
+                                        required="">
+                                      <label for="mobile">Mobile Number</label>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <div class="form-floating my-3">
+                                      <input type="email" class="form-control" placeholder="Email Address" name="email" value=""
+                                        required="">
+                                      <label for="account_email">Email Address</label>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <div class="my-3">
+                                      <h5 class="text-uppercase mb-0">Password Change</h5>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <div class="form-floating my-3">
+                                      <input type="password" class="form-control" id="old_password" name="old_password"
+                                        placeholder="Old password" required="">
+                                      <label for="old_password">Old password</label>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <div class="form-floating my-3">
+                                      <input type="password" class="form-control" id="new_password" name="new_password"
+                                        placeholder="New password" required="">
+                                      <label for="account_new_password">New password</label>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <div class="form-floating my-3">
+                                      <input type="password" class="form-control" cfpwd="" data-cf-pwd="#new_password"
+                                        id="new_password_confirmation" name="new_password_confirmation"
+                                        placeholder="Confirm new password" required="">
+                                      <label for="new_password_confirmation">Confirm new password</label>
+                                      <div class="invalid-feedback">Passwords did not match!</div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <div class="my-3">
+                                      <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </form>
                             </div>
-                        </div>
-                        <div class="divider"></div>
-                        <div class="flex items-center justify-between flex-wrap gap10 wgp-pagination">
-
-                        </div>
+                          </div>
                     </div>
 
                 </div>

@@ -2,22 +2,22 @@
         
     <!-- Header -->
     <div style="background-color: #007bff; padding: 20px; text-align: center; color: #ffffff;">
-        <h2 style="margin: 0;">Verify Your Account</h2>
+        <h2 style="margin: 0;">Xác Minh Tài Khoản Của Bạn</h2>
     </div>
 
     <!-- Body Content -->
     <div style="padding: 20px; color: #333;">
-        <h3 style="color: #333;">Hello, {{ $account->name }}!</h3>
+        <h3 style="color: #333;">Xin chào, {{ $account->name }}!</h3>
         <p style="font-size: 16px; line-height: 1.5;">
-            Welcome! To complete your registration, please verify your email address by clicking the button below. If you did not create an account, please ignore this email.
+            Chào mừng bạn đến với TuneNest! Để hoàn tất việc đăng ký, vui lòng xác minh địa chỉ email của bạn bằng cách nhấp vào nút bên dưới. Nếu bạn không tạo tài khoản này, hãy bỏ qua email này.
         </p>
         <div style="text-align: center; margin: 30px 0;">
             <a href="{{ route('customer.verify', ['email' => $account->email]) }}" style="background-color: #007bff; color: #ffffff; padding: 12px 20px; border-radius: 5px; text-decoration: none; font-size: 16px;">
-                Verify Your Account
+                Xác Minh Tài Khoản
             </a>
         </div>
         <p style="font-size: 14px; color: #777;">
-            If the button above does not work, copy and paste the following link into your browser:
+            Nếu nút trên không hoạt động, hãy sao chép và dán liên kết sau đây vào trình duyệt của bạn:
         </p>
         <p style="word-break: break-all; font-size: 14px; color: #007bff;">
             <a href="{{ route('customer.verify', ['email' => $account->email]) }}" style="color: #007bff; text-decoration: none;">
@@ -25,13 +25,13 @@
             </a>
         </p>
         <p style="font-size: 14px; color: #777; margin-top: 20px;">
-            Thank you,<br>
-            The Support Team
+            Cảm ơn bạn,<br>
+            Đội ngũ hỗ trợ của TuneNest
         </p>
     </div>
 
     <!-- Footer -->
     <div style="background-color: #f4f4f4; padding: 15px; text-align: center; font-size: 12px; color: #777;">
-        &copy; 2024 TuneNest. All rights reserved.
+        &copy; 2024 TuneNest. Mọi quyền được bảo lưu.
     </div>
 </div>

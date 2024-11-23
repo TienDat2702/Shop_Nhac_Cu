@@ -1,10 +1,23 @@
 @extends('admin.layout.layout')
-
+@section('title', 'Danh sách đơn hàng')
 @section('main')
+ <style>
+    th {
+    position: relative;
+}
+
+.sort-icon {
+    position: absolute;
+    right: 10px; /* Điều chỉnh khoảng cách từ lề phải */
+    top: 50%;
+    transform: translateY(-50%);
+}
+</style>
     <div class="main-content-inner">
         <div class="main-content-wrap">
             <div class="flex items-center flex-wrap justify-between gap20 mb-27">
                 <h3>Đơn hàng</h3>
+                
                 <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
                     <li>
                         <a href="{{ route('dashboard.index') }}">
@@ -21,20 +34,58 @@
             </div>
     
             <div class="wg-box">
-                
+                <form method="GET" action="{{ route('order.index') }}" class="flex items-center">
+                    <input type="text" name="search" placeholder="Tìm kiếm đơn hàng" value="{{ request('search') }}" class="form-control">
+                    <button type="submit" class="btn btn-primary p-3 fs-3 w-25">Tìm kiếm</button>
+                </form>            
                 <div class="wg-table table-all-user">
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered">
                             <thead>
                                 <tr>
-                                    <th style="width:70px">Mã đơn hàng</th>
-                                    <th class="text-center">Tên khách hàng</th>
-                                    <th class="text-center">Tổng tiền hàng</th>
+                                    <th style="width:70px">
+                                        Mã
+                                        <a href="{{ route('order.index', ['sort' => 'id', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}" class="sort-icon">
+                                            <i class="fa {{ request('sort') == 'id' ? (request('direction') == 'asc' ? 'fa-angle-double-down' : 'fa-angle-double-up') : 'fa-sort' }}" aria-hidden="true"></i>
+                                        </a>
+                                    </th>
+                                    <th class="text-center">
+                                        Tên khách hàng
+                                        <a href="{{ route('order.index', ['sort' => 'customer_name', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}" class="sort-icon">
+                                            <i class="fa {{ request('sort') == 'customer_name' ? (request('direction') == 'asc' ? 'fa-angle-double-down' : 'fa-angle-double-up') : 'fa-sort' }}" aria-hidden="true"></i>
+                                        </a>
+                                    </th>
+                                    <th class="text-center">
+                                        Tổng tiền hàng
+                                        <a href="{{ route('order.index', ['sort' => 'total', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}" class="sort-icon">
+                                            <i class="fa {{ request('sort') == 'total' ? (request('direction') == 'asc' ? 'fa-angle-double-down' : 'fa-angle-double-up') : 'fa-sort' }}" aria-hidden="true"></i>
+                                        </a>
+                                    </th>
                                     <th class="text-center">Trạng thái</th>
-                                    <th class="text-center">Ngày đặt hàng</th>
-                                    <th class="text-center">Số lượng sản phẩm</th>
-                                    <th class="text-center">Ngày giao hàng</th>
-                                    <th class="text-center">Hành động</th>
+                                    <th class="text-center">
+                                        Ngày đặt hàng
+                                        <a href="{{ route('order.index', ['sort' => 'created_at', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}" class="sort-icon">
+                                            <i class="fa {{ request('sort') == 'created_at' ? (request('direction') == 'asc' ? 'fa-angle-double-down' : 'fa-angle-double-up') : 'fa-sort' }}" aria-hidden="true"></i>
+                                        </a>
+                                    </th>
+                                    <th class="text-center">
+                                        Số lượng sản phẩm
+                                        <a href="{{ route('order.index', ['sort' => 'product_quantity', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}" class="sort-icon">
+                                            <i class="fa {{ request('sort') == 'product_quantity' ? (request('direction') == 'asc' ? 'fa-angle-double-down' : 'fa-angle-double-up') : 'fa-sort' }}" aria-hidden="true"></i>
+                                        </a>
+                                    </th>
+                                    <th class="text-center">
+                                        Ngày giao hàng
+                                        <a href="{{ route('order.index', ['sort' => 'delivered_at', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}" class="sort-icon">
+                                            <i class="fa {{ request('sort') == 'delivered_at' ? (request('direction') == 'asc' ? 'fa-angle-double-down' : 'fa-angle-double-up') : 'fa-sort' }}" aria-hidden="true"></i>
+                                        </a>
+                                    </th>
+                                    <th class="text-center">
+                                        Hành động
+                                        <a href="{{ route('order.index', ['sort' => 'action', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}" class="sort-icon">
+                                            <i class="fa {{ request('sort') == 'action' ? (request('direction') == 'asc' ? 'fa-angle-double-down' : 'fa-angle-double-up') : 'fa-sort' }}" aria-hidden="true"></i>
+                                        </a>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>

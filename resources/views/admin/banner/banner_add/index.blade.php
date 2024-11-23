@@ -44,7 +44,7 @@
         width: calc(100% - 10px);
         margin-bottom: 10px;
     }
-    
+
     .delete-img {
         cursor: pointer;
         color: red;
@@ -124,7 +124,7 @@
                         </div>
                     `;
                     imgPreviewsContainer.insertBefore(imgPreview, uploadContainer);
-                    
+
                     // Thêm sự kiện cho nút xóa hình ảnh
                     imgPreview.querySelector(".remove-image").addEventListener("click", function() {
                         imgPreview.remove();

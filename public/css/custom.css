@@ -1223,7 +1223,7 @@ span.swiper-pagination-bullet {
     position: relative;
     text-align: center;
   }
-  
+
   .section-title-home .section-title {
     width: 400px;
     position: relative;
@@ -1234,7 +1234,7 @@ span.swiper-pagination-bullet {
     background-color: #fff; /* Để chữ nổi bật trên nền gạch ngang */
     z-index: 1;
   }
-  
+
   .section-title-home .section-title:before,
   .section-title-home .section-title:after {
     content: "";
@@ -1245,6 +1245,7 @@ span.swiper-pagination-bullet {
     
     z-index: 0;
   }
+
   @media screen and (min-width: 1440px){
     .section-title-home .section-title:before,
     .section-title-home .section-title:after {
@@ -1257,13 +1258,13 @@ span.swiper-pagination-bullet {
     right: 100%; /* Đặt phía bên trái của tiêu đề */
     margin-right: 10px; /* Khoảng cách giữa gạch ngang và chữ */
   }
-  
+
   .section-title-home .section-title:after {
     left: 100%; /* Đặt phía bên phải của tiêu đề */
     margin-left: 10px; /* Khoảng cách giữa gạch ngang và chữ */
   }
-  
-  
+
+
 /* end product */
 
 
@@ -1279,7 +1280,7 @@ span.swiper-pagination-bullet {
 }
 .banner-hidden img{
     width: 100%;
-    
+
 }
 .products-grid-view{
     background: url(http://127.0.0.1:8000/images/banner-index.jpg) fixed top;
@@ -1326,7 +1327,7 @@ span.swiper-pagination-bullet {
 }
 .bg-info {
     background-color: #62bbe4 !important;
-}   
+}
 .bg-primary {
     background-color: #0468d0 !important;
 }
@@ -1347,18 +1348,11 @@ span.swiper-pagination-bullet {
 
 
 
-
-
-
-
-
-
-
 /* Ảnh full khung */
 .slideshow-bg__img {
     object-fit: cover; /* Ảnh sẽ giữ tỷ lệ và phủ toàn khung */
-    width: 100%; 
-    height: 100%; 
+    width: 100%;
+    height: 100%;
 }
 
 /* Lớp phủ màu */

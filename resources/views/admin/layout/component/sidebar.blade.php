@@ -42,6 +42,29 @@
                 </li>
                 <li class="menu-item has-children">
                     <a href="javascript:void(0);" class="menu-item-button">
+                        <div class="icon"><i class="fa-solid fa-address-book"></i></div>
+                        <div class="text">Người dùng</div>
+                    </a>
+                    <ul class="sub-menu">
+                        {{-- <li class="sub-menu-item">
+                            <a href="{{ route('postCategory.index') }}" class="">
+                                <div class="text">Danh mục bài viết</div>
+                            </a>
+                        </li> --}}
+                        <li class="sub-menu-item">
+                            <a href="{{ route('user.index') }}" class="">
+                                <div class="text">Danh sách quản trị viên</div>
+                            </a>
+                        </li>
+                        <li class="sub-menu-item">
+                            <a href="{{ route('customer.index') }}" class="">
+                                <div class="text">Danh sách khách hàng</div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="menu-item has-children">
+                    <a href="javascript:void(0);" class="menu-item-button">
                         <div class="icon"><i class="fa-regular fa-building"></i></div>
                         <div class="text">Showrooms</div>
                     </a>
@@ -131,12 +154,12 @@
                         </li>
                     </ul>
                 </li>
-                <li class="menu-item">
+                {{-- <li class="menu-item">
                     <a href="settings.html" class="">
                         <div class="icon"><i class="icon-settings"></i></div>
                         <div class="text">Settings</div>
                     </a>
-                </li>
+                </li> --}}
             </ul>
         </div>
     </div>

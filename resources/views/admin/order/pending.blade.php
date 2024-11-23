@@ -1,10 +1,12 @@
 @extends('admin.layout.layout')
-
+@section('title', 'Đơn hàng đang chờ duyệt')
 @section('main')
+
     <div class="main-content-inner">
         <div class="main-content-wrap">
             <div class="flex items-center flex-wrap justify-between gap20 mb-27">
                 <h3>Đơn hàng</h3>
+                
                 <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
                     <li>
                         <a href="{{ route('dashboard.index') }}">
@@ -21,13 +23,16 @@
             </div>
     
             <div class="wg-box">
-                
+                <form action="{{ route('order.search') }}" method="GET" class="flex items-center">
+                    <input type="text" name="order_id" placeholder="Tìm kiếm mã đơn hàng" class="form-control" />
+                    <button type="submit" class="btn btn-primary p-3 fs-3 w-25">Tìm kiếm</button>
+                </form>
                 <div class="wg-table table-all-user">
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered">
                             <thead>
                                 <tr>
-                                    <th style="width:70px">Mã đơn hàng</th>
+                                    <th style="width:70px">Mã</th>
                                     <th class="text-center">Tên khách hàng</th>
                                     <th class="text-center">Tổng tiền hàng</th>
                                     <th class="text-center">Trạng thái</th>

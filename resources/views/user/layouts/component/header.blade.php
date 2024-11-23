@@ -20,7 +20,7 @@
                                 @foreach ($categorie_parent_product as $parent)
                                     <li>
                                         <a href="{{ route('shop.category', $parent->slug ?? '') }}">{{ $parent->name }}</a>
-                                      
+
                                             <ul>
                                                 @foreach ($categorie_product->where('parent_id', $parent->id) as $item)
                                                 <li><a href="{{ route('shop.category', $item->slug) }}">{{ $item->name }}</a></li>
@@ -43,7 +43,7 @@
                                 @foreach ($categorie_parent_post as $parent)
                                     <li>
                                         <a href="{{ route('post.category', $parent->slug ?? '') }}">{{ $parent->name }}</a>
-                                      
+
                                             <ul>
                                                 @foreach ($categories_post->where('parent_id', $parent->id) as $item)
                                                 <li><a href="{{ route('post.category.all', $item->slug) }}">{{ $item->name }}</a></li>
@@ -58,6 +58,9 @@
                     </li>
                     <li class="navigation__item">
                         <a href="{{ route('contact') }}" class="navigation__link">Liên hệ</a>
+                    </li>
+                    <li class="navigation__item">
+                        <a href="{{ route('showrooms.map') }}" class="navigation__link">Showroom</a>
                     </li>
                 </ul>
             </nav>

@@ -1,5 +1,5 @@
 @extends('admin.layout.layout')
-
+@section('title', 'Chi tiết đơn hàng')
 @section('main')
     <style type="text/css" media="print">
         @media print {

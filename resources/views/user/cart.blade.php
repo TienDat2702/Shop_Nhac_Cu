@@ -102,7 +102,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <div class="mt-4 d-flex align-items-center justify-content-between"> 
+                        <div class="mt-4 d-flex align-items-center justify-content-between">
                             <a href="{{ route('home.index') }}"
                             class="btn btn-primary btn-comeback">TIẾP TỤC MUA HÀNG </a>
                             <a class="btn-clear"  data-text="Bạn có chắc xóa hết giỏ hàng." data-url="{{ route('cart.clear') }}" href="#">Xóa hết</a>
@@ -202,13 +202,13 @@
                         <h4>Hiện bạn chưa có phiếu giảm giá</h4>
                     </div>
                 @endif
-               
+
             </div>
             <div class="voucher_footer">
                 <a id="apply-voucher" data-url="{{ route('cart.discount') }}" href="">OK</a>
             </div>
         </div>
-        
+
         </section>
     </main>
 @endsection
@@ -217,7 +217,7 @@
 
 @section('script')
 <script>
-   
+
 
 
 </script>

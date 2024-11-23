@@ -1,3 +1,5 @@
+{{-- view/admin/posts/post/component/table.blade.php --}}
+
 <div class="wg-table table-all-user">
     @php
         $posts = ($config == 'index') ? $posts : $getDeleted
