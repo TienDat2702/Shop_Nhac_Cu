@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ProductShowroomController;
 use App\Http\Controllers\User\CustomerController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AdminCustomerController;
 use App\Http\Controllers\User\CheckoutController;
 use App\Http\Controllers\User\PostController;
 use Illuminate\Support\Facades\Route;
@@ -33,10 +34,10 @@ Route::get('/shop/category/{slug}', [ProductController::class, 'category'])->nam
 Route::get('/product/{slug}', [ProductController::class, 'product_details'])->name('product.detail');
 
 
-Route::get('/about',[HomeController::class,'about'])->name('about');
+Route::get('/about', [HomeController::class, 'about'])->name('about');
 // CONTACT
-Route::get('/contact',[HomeController::class,'contact'])->name('contact');
-Route::post('/contact/post',[HomeController::class,'postContact'])->name('contact.post');
+Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+Route::post('/contact/post', [HomeController::class, 'postContact'])->name('contact.post');
 
 // GIỎ HÀNG
 Route::prefix('cart')->group(function () {
@@ -90,8 +91,8 @@ Route::middleware(CustomerAuth::class)->group(function () {
     Route::get('/orders/history', [CustomerController::class, 'customerOrderHistory'])->name('customer.orders.history');
     Route::post('/orders/cancel', [CustomerController::class, 'customerOrderCancel'])->name('customer.orders.cancel');
     Route::get('/orders/{id}', [CustomerController::class, 'customerOrderDetail'])->name('customer.orders.detail');
- 
-    
+
+
     Route::prefix('wishlist')->group(function () {
         Route::get('/', [FavouriteController::class, 'index'])->name('wishlist.index'); // Xem wishlist
         Route::post('/add/{id}', [FavouriteController::class, 'add'])->name('wishlist.add'); // Thêm sản phẩm vào wishlist
@@ -113,7 +114,7 @@ Route::post('/reset-password/{token}', [CustomerController::class, 'check_reset_
 // Route::get('/orders/history', [CustomerController::class, 'customerOrderHistory'])->name('customer.orders.history');
 // Route::post('/orders/cancel', [CustomerController::class, 'customerOrderCancel'])->name('customer.orders.cancel');
 // Route::get('/orders/{id}', [CustomerController::class, 'customerOrderDetail'])->name('customer.orders.detail');
- 
+
 
 // // ABOUT
 // Route::prefix('wishlist')->group(function () {
@@ -147,7 +148,7 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
         Route::delete('/{id}', [DiscountController::class, 'destroy'])->name('discount.destroy');
         Route::post('/{id}/restore', [DiscountController::class, 'restore'])->name('discount.restore');
         Route::delete('discount/forceDelete/{id}', [AdminPostCategoryController::class, 'forceDelete'])->name('discount.forceDelete');
-    });    
+    });
     // ORDER
     Route::prefix('order')->group(function () {
         Route::get('/', [AdminOrderController::class, 'index'])->name('order.index');
@@ -184,9 +185,9 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
         Route::get('restore/{id}', [AdminPostController::class, 'restore'])->name('post.restore');
         Route::delete('forceDelete/{id}', [AdminPostController::class, 'forceDelete'])->name('post.forceDelete');
     });
-    
+
     //User
-    Route::prefix('user')->group(function () { 
+    Route::prefix('user')->group(function () {
         Route::get('/', [AdminAccountController::class, 'index'])->name('user.index');
         Route::get('/deleted', [AdminAccountController::class, 'deleted'])->name('user.deleted');
         Route::get('/search/{config}', [AdminAccountController::class, 'search'])->name('user.search');
@@ -198,7 +199,21 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
         Route::get('/restore/{id}', [AdminAccountController::class, 'restore'])->name('user.restore');
         Route::delete('/forceDelete/{id}', [AdminAccountController::class, 'forceDelete'])->name('user.forceDelete');
     });
+    //CUSTOMER
    
+    Route::prefix('customer')->group(function () {
+        Route::get('/', [AdminCustomerController::class, 'index'])->name('customer.index'); 
+        Route::get('/deleted', [AdminCustomerController::class, 'deleted'])->name('customer.deleted'); 
+        Route::get('/search/{config}', [AdminCustomerController::class, 'search'])->name('customer.search'); 
+        Route::get('/create', [AdminCustomerController::class, 'create'])->name('customer.create'); 
+        Route::post('/store', [AdminCustomerController::class, 'store'])->name('customer.store'); 
+        Route::get('/edit/{id}', [AdminCustomerController::class, 'edit'])->name('customer.edit');
+        Route::post('/update/{id}', [AdminCustomerController::class, 'update'])->name('customer.update'); 
+        Route::delete('/destroy/{id}', [AdminCustomerController::class, 'destroy'])->name('customer.destroy'); 
+        Route::get('/restore/{id}', [AdminCustomerController::class, 'restore'])->name('customer.restore'); 
+        Route::delete('/forceDelete/{id}', [AdminCustomerController::class, 'forceDelete'])->name('customer.forceDelete'); 
+    });
+
     //SHOWROOM
     Route::prefix('showroom')->group(function () {
         Route::get('create', [ShowroomController::class, 'create'])->name('showroom.create'); // Route mới
@@ -282,6 +297,5 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
     });
 });
 
-    //Search 
-    Route::get('/search', [SearchController::class, 'index'])->name('search');
-
+//Search 
+Route::get('/search', [SearchController::class, 'index'])->name('search');

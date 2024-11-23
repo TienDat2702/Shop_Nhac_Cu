@@ -53,7 +53,12 @@
                         </li> --}}
                         <li class="sub-menu-item">
                             <a href="{{ route('user.index') }}" class="">
-                                <div class="text">Danh sách</div>
+                                <div class="text">Danh sách quản trị viên</div>
+                            </a>
+                        </li>
+                        <li class="sub-menu-item">
+                            <a href="{{ route('customer.index') }}" class="">
+                                <div class="text">Danh sách khách hàng</div>
                             </a>
                         </li>
                     </ul>
