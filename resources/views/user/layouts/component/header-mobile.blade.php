@@ -10,11 +10,11 @@
 
         <div class="logo">
             <a href="{{ route('home.index') }}">
-                <img src="{{ asset('assets/images/logo.jpg') }}" alt="Uomo" class="logo__image d-block" />
+                <img src="{{ asset('images/logo/logo2.png') }}" alt="Uomo" class="logo__image d-block" />
             </a>
         </div>
 
-        <a href="#" class="header-tools__item header-tools__cart js-open-aside" data-aside="cartDrawer">
+        <a href="{{ route('cart.index') }}" class="header-tools__item header-tools__cart js-open-aside" data-aside="cartDrawer">
             <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
                 xmlns="http://www.w3.org/2000/svg">
                 <use href="#icon_cart" />
@@ -55,15 +55,18 @@
                         <a href="{{ route('shop.index') }}" class="navigation__link">Cửa hàng</a>
                     </li>
                     <li class="navigation__item">
+                        <a href="{{ route('post.category', $categorie_parent_post->first()->slug  ?? '') }}" class="navigation__link">Tin tức</a>
+                    </li>
+                    <li class="navigation__item">
                         <a href="
-                        {{-- {{ route('cart.index') }} --}}
+                        {{ route('cart.index') }}
                          " class="navigation__link">Giỏ hàng</a>
                     </li>
                     <li class="navigation__item">
-                        <a href="about.html" class="navigation__link">Giới thiệu</a>
+                        <a href="{{ route('about') }}" class="navigation__link">Giới thiệu</a>
                     </li>
                     <li class="navigation__item">
-                        <a href="contact.html" class="navigation__link">Liên hệ</a>
+                        <a href="{{ route('contact') }}" class="navigation__link">Liên hệ</a>
                     </li>
                 </ul>
             </div>

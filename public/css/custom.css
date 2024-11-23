@@ -1,5 +1,6 @@
 body {
     zoom: 90% !important;
+    overflow-x: hidden !important; 
 }
 
 #logo_header_mobile {
@@ -341,7 +342,7 @@ input:checked + .roundbutton:before {
 .form-content .ck-editor__editable_inline{
     height: 600px;
 }
-.form-description .ck-editor__editable_inline{
+.form-description .ck-editor__editable_inline, .form-short_description .ck-editor__editable_inline{
     height: 150px;
 }
 .product .form-description .ck-editor__editable_inline{
@@ -405,6 +406,11 @@ img.w-100.h-auto.mb-3 {
     width: 100%;
     height: 123px !important;
     border-radius: 50%;
+}
+@media (max-width: 992px){
+    img.w-100.h-auto.mb-3 {
+        height: 100% !important;
+    }
 }
 /*
 .btn-update-cart{
@@ -556,6 +562,11 @@ a.btn-clear:hover {
     padding-left: 10px;
     font-size: 18px;
 }
+@media (max-width: 942px){
+    .breadcrumbs{
+        display: none !important;
+    }
+}
 .post-single{
     margin-top: 25px;
 }
@@ -677,7 +688,7 @@ a.btn-clear:hover {
 .caption .description{
     font-size: 16px;
 }
-.category{
+.box .category{
     margin-bottom: 20px;
 }
 .category>ul {
@@ -959,7 +970,11 @@ a.btn-clear:hover {
 .post-category .image {
     width: 220px;
 }
-
+@media (max-width: 940px){
+    .post-category .image {
+        width: 100%;
+    }
+}
 .post-category-content > div > a, .list-post > .item > .read-more > a{
     color: #0548b4;
     text-decoration:underline;
@@ -1137,24 +1152,33 @@ button.menu-link.menu-link_us-s.add-to-wishlist {
 span.swiper-pagination-bullet {
     color: #fff !important;
 }
-.home-page.home-page-2 a.navigation__link,
-.home-page.home-page-2 a.header-tools__item,
-.home-page.home-page-2 a.header-tools__item.header-tools__cart,
-.home-page.home-page-2 a.header-tools__item,
-.home-page.home-page-2 a.search-field__actor {
-    color: #fff;
+
+@media (max-width: 940px){
+    a.header-tools__item.header-tools__cart{
+        color: #000 !important;
+    }
+}
+@media (min-width: 1440px){
+    h6.text_dash.text-uppercase.fs-base.fw-medium.animate.animate_fade.animate_btt.animate_delay-3,
+    h2.h1.fw-normal.mb-0.animate.animate_fade.animate_btt.animate_delay-5,
+    h2.h1.fw-bold.animate.animate_fade.animate_btt.animate_delay-5,
+    a.btn-link.btn-link_lg.default-underline.fw-medium.animate.animate_fade.animate_btt.animate_delay-7 {
+        color: #fff;
+        z-index: 30;
+    }
+    .col-md-6.col-lg-4.col-xl-20per.d-flex.align-items-center.flex-column.justify-content-center.py-4.align-items-md-start {
+        background: #efe4d2;
+    }
+    .home-page.home-page-2 a.navigation__link,
+    .home-page.home-page-2 a.header-tools__item,
+    .home-page.home-page-2 a.header-tools__item.header-tools__cart,
+    .home-page.home-page-2 a.header-tools__item,
+    .home-page.home-page-2 a.search-field__actor {
+        color: #fff;
+    }
 }
 
-h6.text_dash.text-uppercase.fs-base.fw-medium.animate.animate_fade.animate_btt.animate_delay-3,
-h2.h1.fw-normal.mb-0.animate.animate_fade.animate_btt.animate_delay-5,
-h2.h1.fw-bold.animate.animate_fade.animate_btt.animate_delay-5,
-a.btn-link.btn-link_lg.default-underline.fw-medium.animate.animate_fade.animate_btt.animate_delay-7 {
-    color: #fff;
-    z-index: 30;
-}
-.col-md-6.col-lg-4.col-xl-20per.d-flex.align-items-center.flex-column.justify-content-center.py-4.align-items-md-start {
-    background: #efe4d2;
-}
+
 
 .background-overlay {
     position: absolute;
@@ -1165,7 +1189,11 @@ a.btn-link.btn-link_lg.default-underline.fw-medium.animate.animate_fade.animate_
     background: rgb(0 0 0 / 42%);
     z-index: 1; /* Lớp phủ sẽ nằm dưới văn bản */
 }
-
+@media (max-width: 942px) {
+    .background-overlay {
+        height: 92%;
+    }
+}
 .slideshow-text {
     position: relative;
     z-index: 2; /* Đảm bảo văn bản nổi lên trên lớp phủ */
@@ -1212,13 +1240,19 @@ a.btn-link.btn-link_lg.default-underline.fw-medium.animate.animate_fade.animate_
     content: "";
     position: absolute;
     top: 50%;
-    width: 495px;/* Độ rộng của gạch ngang để kéo dài toàn màn hình */
     height: 1px; /* Độ dày của gạch ngang */
     background-color: #000; /* Màu sắc của gạch ngang */
-    transform: translateY(-50%);
+    
     z-index: 0;
   }
-  
+  @media screen and (min-width: 1440px){
+    .section-title-home .section-title:before,
+    .section-title-home .section-title:after {
+        width: 495px;
+        transform: translateY(-50%);
+    }
+}
+
   .section-title-home .section-title:before {
     right: 100%; /* Đặt phía bên trái của tiêu đề */
     margin-right: 10px; /* Khoảng cách giữa gạch ngang và chữ */
@@ -1248,23 +1282,39 @@ a.btn-link.btn-link_lg.default-underline.fw-medium.animate.animate_fade.animate_
     
 }
 .products-grid-view{
-    padding-top: 100px;
-    padding-bottom: 50px;
-    padding-left: 160px;
     background: url(http://127.0.0.1:8000/images/banner-index.jpg) fixed top;
     background-size: 100%;
     position: relative;
     background-repeat: no-repeat;
     background-size: cover;
-    
 
 }
 .product-card-view{
     background-color: #fff;
 }
-.products-grid-view > .row > .product-view{
-    max-width: 320px !important;
+@media screen and (min-width: 1440px){
+    .products-grid-view{
+        padding-top: 100px;
+        padding-bottom: 50px;
+        padding-left: 160px;
+    
+    }
+    .products-grid-view > .row > .product-view{
+        max-width: 320px !important;
+    }
 }
+@media screen and (min-width: 577px) and (max-width: 767px) {
+    .products-grid-view{
+        padding-top: 10px;
+        padding-bottom: 50px;
+        padding-left: 10px;
+    
+    }
+    .products-grid-view > .row > .product-view{
+        width: 45% !important;
+    } 
+}
+
 /* end banner hidden */
 
 
@@ -1359,5 +1409,31 @@ a.btn-link.btn-link_lg.default-underline.fw-medium.animate.animate_fade.animate_
 .product-index  .pc__info > h6.pc__title {
     overflow: hidden !important;
     height: 38px !important;
+}
+
+/* responsice post*/
+/* Mobile (max-width: 576px) */
+@media (max-width: 940px) {
+    .list-post .image img {
+        width: 100%; /* Đảm bảo ảnh vừa khung */
+        height: auto;
+    }
+
+    .list-post h3 {
+        font-size: 14px;
+    }
+
+    .list-post .read-more {
+        flex-direction: column; /* Đưa các thành phần xuống dòng */
+        align-items: flex-start;
+    }
+}
+
+
+/* Mobile (max-width: 940px) */
+@media (max-width: 940px) {
+    .post_banner{
+        display: none;
+    }
 }
 

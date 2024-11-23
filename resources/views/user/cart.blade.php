@@ -59,8 +59,8 @@
                                                     <h4>{{ $item['name'] }}</h4>
                                                 </a>
                                                 <ul class="shopping-cart__product-item__options">
-                                                    <li><a href="{{ route('shop.category', $item->productCategory->slug) }}">Danh mục: {{ $item->productCategory->name }}</a></li>
-                                                    <li><a href="#">Thương hiệu: {{ $item->brand->name }}</a></li>
+                                                    <li><a href="{{ route('shop.category', $item->productCategory->slug) }}">Danh mục: {{ $item->productCategory->name ?? '' }}</a></li>
+                                                    <li><a href="#">Thương hiệu: {{ $item->brand->name ?? '' }}</a></li>
                                                 </ul>
                                             </div>
                                         </td>

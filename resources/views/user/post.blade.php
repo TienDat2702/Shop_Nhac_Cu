@@ -47,20 +47,7 @@
                     </div>
                 </div>
                 @endif
-                {{-- <div class="categorys">
-                    @php
-                        $lastSegment = last(request()->segments());
-                    @endphp
-                    <ul class="menu-cate d-flex align-items-center justify-center">
-                        @foreach ($postCategoriesParent as $category)
-                        <li class="menu-cate-item {{ $category->slug == $lastSegment ? 'active' : ''}}">
-                            <a href="{{ route('post.category',$category->slug ) }}">
-                                <div class="text">{{ $category->name }}</div>
-                            </a>
-                        </li>
-                        @endforeach
-                    </ul>
-                </div> --}}
+            </div>
                 <nav class="nav-post">
                     @php
                         $lastSegment = last(request()->segments());
@@ -73,46 +60,51 @@
                         @endforeach    
                     </ul>
                 </nav>
-               <div class="row">
-                    <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12">
                         @foreach ($post_categories as $category)
                             <div class="list_advisory">
                                 <h2 class="title_home2">{{ $category->name }}</h2>
-                                <div class="xemtatca"><a class="post_category" href="{{ route('post.category.all',$category->slug ) }}">Xem tất cả</a></div>
-                                <div class="row">  
+                                <div class="xemtatca">
+                                    <a class="post_category" href="{{ route('post.category.all', $category->slug) }}">Xem tất cả</a>
+                                </div>
+                                <div class="row">
                                     @foreach ($category->posts as $post)
-                                        <div class="col-md-3 list-post">
+                                        <div class="col-lg-3 col-md-4 col-sm-6 col-12 list-post mb-3">
                                             <div class="item">
-                                                <div class="image"><a href="{{ route('post.detail',$post->slug) }}">
-                                                    <img src="{{ asset('uploads/posts/posts/'. $post->image) }}" alt="Ai nên chọn Casio CDP-S110?" title="Ai nên chọn Casio CDP-S110?"></a>
+                                                <div class="image">
+                                                    <a href="{{ route('post.detail', $post->slug) }}">
+                                                        <img src="{{ asset('uploads/posts/posts/' . $post->image) }}" alt="{{ $post->title }}" title="{{ $post->title }}">
+                                                    </a>
                                                     @if ($categories->name == 'Video')
                                                         <div class="icon_play">
-                                                            <a href="{{ route('post.detail',$post->slug) }}">
+                                                            <a href="{{ route('post.detail', $post->slug) }}">
                                                                 <i class="fa fa-play" aria-hidden="true"></i>
                                                             </a>
                                                         </div>
                                                     @endif
                                                 </div>
                                                 <div class="name">
-                                                    <a href="{{ route('post.detail',$post->slug) }}">
+                                                    <a href="{{ route('post.detail', $post->slug) }}">
                                                         <h3>{{ $post->title }}</h3>
                                                     </a>
                                                 </div>
                                                 <div class="read-more d-flex align-items-center justify-content-between">
-                                                    <a href="{{ route('post.detail',$post->slug) }}">Đọc thêm</a>
+                                                    <a href="{{ route('post.detail', $post->slug) }}">Đọc thêm</a>
                                                     <span>{{ date('d/m/Y', strtotime($post->created_at)) }}</span>
                                                 </div>
                                             </div>
                                         </div>
-                                    @endforeach 
+                                    @endforeach
                                 </div>
                             </div>
-                         @endforeach 
-                    </div>   
-               </div>
-               <div class="flex items-center justify-between flex-wrap gap-10 wgp-pagination">
-                {{ $post_categories->appends(request()->all())->links('pagination::bootstrap-5') }}
-            </div>
+                        @endforeach
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-center flex-wrap gap-10 wgp-pagination">
+                    {{ $post_categories->appends(request()->all())->links('pagination::bootstrap-5') }}
+                </div>
         </section>
        
     </main>

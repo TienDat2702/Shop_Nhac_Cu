@@ -74,6 +74,7 @@ class AdminProductController extends Controller
             'brand_id' => $request->input('brand_id'),
             'name' => $request->input('name'),
             'description' => $request->input('description'),
+            'short_description' => $request->input('short_description'),
             'price' => $request->input('price'),
             'price_sale' => $request->input('price_sale'),
             'slug' => $slug,
@@ -131,11 +132,12 @@ class AdminProductController extends Controller
             // Tạo slug mới dựa trên tên, đảm bảo không trùng lặp
             $newSlug = Product::GenerateUniqueSlug($request->input('name'));
         }
-
+        // dd($request->input('short_description'));
         $data = [
             'category_id' => $request->input('category_id'),
             'brand_id' => $request->input('brand_id'),
             'name' => $request->input('name'),
+            'short_description' => $request->input('short_description'),
             'description' => $request->input('description'),
             'price' => $request->input('price'),
             'price_sale' => $request->input('price_sale'),

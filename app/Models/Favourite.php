@@ -24,6 +24,6 @@ class Favourite extends Model
     // Định nghĩa quan hệ với model Customer
     public function customer(): BelongsTo
     {
-        return $this->belongsTo(Customer::class, 'customer_id');
+        return $this->belongsTo(Customer::class, 'customer_id', 'id');
     }
 }

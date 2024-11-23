@@ -101,10 +101,10 @@
                 <div class="list_news">
                     <div class="row">
                         @foreach ($post_ralate as $item)
-                            <div class="col-md-6">
+                            <div class="col-md-6 col-sm-6">
                                 <div class="item">
                                     <div class="row">
-                                        <div class="post_detail col-md-4">
+                                        <div class="post_detail col-4 ">
                                             <div class="image">
                                                 <a href="{{ route('post.detail', $item->slug) }}">
                                                     <img src="{{ asset('uploads/posts/posts/' . $item->image) }}"
@@ -122,7 +122,7 @@
 
                                             </div>
                                         </div>
-                                        <div class="col-md-8">
+                                        <div class="col-8">
                                             <div class="caption">
                                                 <div class="name"><a href="{{ route('post.detail', $item->slug) }}">
                                                         <h3 style="font-size: 18px">{{ $item->title }}</h3>

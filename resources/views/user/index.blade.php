@@ -182,8 +182,8 @@
                 <div class="row">
                     <div
                         class="col-md-6 col-lg-4 col-xl-20per d-flex align-items-center flex-column justify-content-center py-4 align-items-md-start">
-                        <h2>Giảm giá cuối năm</h2>
-
+                        <h2>Ưu đãi cuối năm</h2>
+                        <h2 class="fw-bold">Giảm giá tới 60%</h2>
                         <div class="position-relative d-flex align-items-center text-center pt-xxl-4 js-countdown mb-3"
                             data-date="18-3-2024" data-time="06:50">
                             <div class="day countdown-unit">
@@ -299,18 +299,22 @@
                                                         title="Quick view">
                                                         <span class="">Xem ngay</span>
                                                     </a>
-                                                    <form action="{{ route('wishlist.add', $product->id) }}"
-                                                        method="POST" style="display:inline;">
-                                                        @csrf
-                                                        <button type="submit"
-                                                            class="menu-link menu-link_us-s add-to-wishlist">
-                                                            <svg width="16" height="16" viewBox="0 0 20 20"
-                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <use href="#icon_heart" />
-                                                            </svg>
-
-                                                        </button>
-                                                    </form>
+                                                    @if (array_key_exists($product->id, $product_favourite)) <!-- Sản phẩm đã yêu thích -->
+                                                        <form action="{{ route('wishlist.remove', $product_favourite[$product->id]) }}" method="POST" style="display:inline;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="menu-link menu-link_us-s add-to-wishlist">
+                                                                <i class="fa-solid fa-heart"></i> <!-- Trái tim tô đen -->
+                                                            </button>
+                                                        </form>
+                                                    @else <!-- Sản phẩm chưa yêu thích -->
+                                                        <form action="{{ route('wishlist.add', $product->id) }}" method="POST" style="display:inline;">
+                                                            @csrf
+                                                            <button type="submit" class="menu-link menu-link_us-s add-to-wishlist">
+                                                                <i class="fa-regular fa-heart"></i> <!-- Trái tim rỗng -->
+                                                            </button>
+                                                        </form>
+                                                    @endif     
 
                                                 </div>
                                             </div>
@@ -379,18 +383,22 @@
                                             class="btn-link btn-link_lg me-4 text-uppercase fw-medium" title="Quick view">
                                             <span class="">Xem Ngay</span>
                                         </a>
-                                        <form action="{{ route('wishlist.add', $product->id) }}"
-                                            method="POST" style="display:inline;">
-                                            @csrf
-                                            <button type="submit"
-                                                class="menu-link menu-link_us-s add-to-wishlist">
-                                                <svg width="16" height="16" viewBox="0 0 20 20"
-                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <use href="#icon_heart" />
-                                                </svg>
-
-                                            </button>
-                                        </form>
+                                        @if (array_key_exists($product->id, $product_favourite)) <!-- Sản phẩm đã yêu thích -->
+                                            <form action="{{ route('wishlist.remove', $product_favourite[$product->id]) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="menu-link menu-link_us-s add-to-wishlist">
+                                                    <i class="fa-solid fa-heart"></i> <!-- Trái tim tô đen -->
+                                                </button>
+                                            </form>
+                                        @else <!-- Sản phẩm chưa yêu thích -->
+                                            <form action="{{ route('wishlist.add', $product->id) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                <button type="submit" class="menu-link menu-link_us-s add-to-wishlist">
+                                                    <i class="fa-regular fa-heart"></i> <!-- Trái tim rỗng -->
+                                                </button>
+                                            </form>
+                                        @endif         
                                     </div>
                                 </div>
                             </div>
@@ -414,7 +422,7 @@
                 <div class="row">
                     @foreach ($products as $product)
                         <div class="col-6 col-md-4 col-lg-3">
-                            <div class="product-card product-card_style3 mb-3 mb-md-4 mb-xxl-5 pst">
+                            <div class="product-card product-index product-card_style3 mb-3 mb-md-4 mb-xxl-5 pst">
                                 @if ($product->price_sale)
                                     <div class="product_sale">
                                         <span>Giảm giá</span>
@@ -462,18 +470,22 @@
                                                 title="Quick view">
                                                 <span class="">Xem Ngay</span>
                                             </a>
-                                            <form action="{{ route('wishlist.add', $product->id) }}"
-                                                method="POST" style="display:inline;">
-                                                @csrf
-                                                <button type="submit"
-                                                    class="menu-link menu-link_us-s add-to-wishlist">
-                                                    <svg width="16" height="16" viewBox="0 0 20 20"
-                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <use href="#icon_heart" />
-                                                    </svg>
-
-                                                </button>
-                                            </form>
+                                            @if (in_array($product->id, $product_favourite)) <!-- Sản phẩm đã yêu thích -->
+                                                <form action="{{ route('wishlist.remove', $product->id) }}" method="POST" style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="menu-link menu-link_us-s add-to-wishlist">
+                                                        <i class="fa-solid fa-heart"></i> <!-- Trái tim tô đen -->
+                                                    </button>
+                                                </form>
+                                            @else <!-- Sản phẩm chưa yêu thích -->
+                                                <form action="{{ route('wishlist.add', $product->id) }}" method="POST" style="display:inline;">
+                                                    @csrf
+                                                    <button type="submit" class="menu-link menu-link_us-s add-to-wishlist">
+                                                        <i class="fa-regular fa-heart"></i> <!-- Trái tim rỗng -->
+                                                    </button>
+                                                </form>
+                                            @endif     
                                     </div>
                                 </div>
                             </div>
@@ -488,98 +500,64 @@
             </section>
 
             {{-- tất cả sản phẩm và danh mục --}}
-            @if (count($product_cateogries)> 0)
-                @foreach ($product_cateogries as $cateogries)
-                    @if (count($cateogries->products) > 0)
+            @if ($categoriesWithProducts->count() > 0)
+            @foreach ($categoriesWithProducts as $categoryData)
+                @if ($categoryData['products']->count() > 0)
                     <section class="products-grid container">
                         <div class="section-title-home">
-                            <h2 class="section-title text-center mb-3 pb-xl-3 mb-xl-4"><span>{{ $cateogries->name }}</span></h2>
+                            <h2 class="section-title text-center mb-3 pb-xl-3 mb-xl-4">
+                                <span>{{ $categoryData['category']->name }}</span>
+                            </h2>
                         </div>
                         <div class="row">
-                            @foreach ($cateogries->products->take(4) as $product)
+                            @foreach ($categoryData['products'] as $product)
                                 <div class="col-6 col-md-4 col-lg-3">
-                                    <div class="product-card product-card_style3 mb-3 mb-md-4 mb-xxl-5 pst">
+                                    <div class="product-card product-index product-card_style3 mb-3 mb-md-4 mb-xxl-5 pst">
                                         @if ($product->price_sale)
                                             <div class="product_sale">
                                                 <span>Giảm giá</span>
                                             </div>
                                         @endif
-                                       
                                         <div class="pc__img-wrapper">
                                             <a href="{{ route('product.detail', $product->slug) }}">
                                                 <img loading="lazy"
-                                                    src="{{ asset('uploads/products/product/' . $product->image) }}"
-                                                    width="330" height="400" alt="{{ $product->name }}" class="pc__img">
+                                                     src="{{ asset('uploads/products/product/' . $product->image) }}"
+                                                     alt="{{ $product->name }}" class="pc__img">
                                                 <img loading="lazy"
-                                                @if (count($product->thumbnails) > 0) 
-                                                    src="{{ $product->thumbnails->first()->path }}"
-                                                @else
-                                                    src="{{ asset('/uploads/products/product/' . $product->image) }}"
-                                                @endif
-            
-                                                    width="258" height="313" alt="{{ $product->name }}"
-                                                    class="pc__img pc__img-second">
+                                                    @if (count($product->thumbnails) > 0) 
+                                                        src="{{ $product->thumbnails->first()->path }}"
+                                                    @else
+                                                        src="{{ asset('/uploads/products/product/' . $product->image) }}"
+                                                    @endif
+    
+                                            width="258" height="313" alt="{{ $product->name }}"
+                                            class="pc__img pc__img-second">
                                             </a>
                                         </div>
-        
-                                        <div class="pc__info position-relative">
+                                        <div class="pc__info">
                                             <h6 class="pc__title">{{ $product->name }}</h6>
                                             <div class="product-card__price d-flex align-items-center">
-                                                @if ($product->price_sale == null)
-                                                    <span class="money price text-secondary">{{ number_format($product->price) }}
-                                                        VNĐ</span>
-                                                @else
+                                                @if ($product->price_sale)
                                                     <span class="money price-old">{{ number_format($product->price) }} VNĐ</span>
-                                                    <span
-                                                        class="money price text-secondary">{{ number_format($product->price_sale) }}
-                                                        VNĐ</span>
+                                                    <span class="money price">{{ number_format($product->price_sale) }} VNĐ</span>
+                                                @else
+                                                    <span class="money price">{{ number_format($product->price) }} VNĐ</span>
                                                 @endif
-                                            </div>
-        
-                                            <div
-                                                class="anim_appear-bottom position-absolute bottom-0 start-0 d-none d-sm-flex align-items-center bg-body">
-                                                <a href="#" data-url="{{ route('cart.add', $product->id) }}"
-                                                    class="btn-link btn-link_lg me-4 text-uppercase fw-medium add-to-cart"
-                                                    data-aside="cartDrawer" title="Add To Cart">Thêm Giỏ Hàng</a>
-                                                    <a href="{{ route('product.detail', $product->slug) }}"
-                                                        class="btn-link btn-link_lg me-4 text-uppercase fw-medium"
-                                                        title="Quick view">
-                                                        <span class="">Xem Ngay</span>
-                                                    </a>
-                                                    @if ($product->favouriteByUser(Auth::guard('customer')->user()->id))
-                                                        <form action="{{ route('wishlist.remove', $product->id) }}" method="POST" style="display:inline;">
-                                                            @csrf
-                                                            <button type="submit" class="menu-link menu-link_us-s add-to-wishlist">
-                                                                <i class="fa-solid fa-heart"></i>
-                                                            </button>
-                                                        </form>
-                                                    @else
-                                                        <form action="{{ route('wishlist.add', $product->id) }}" method="POST" style="display:inline;">
-                                                            @csrf
-                                                            <button type="submit" class="menu-link menu-link_us-s add-to-wishlist">
-                                                                <i class="fa-regular fa-heart"></i>
-                                                            </button>
-                                                        </form>
-                                                    @endif
-                                                
-                                                   
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             @endforeach
-                            <div class="text-center mt-2 mb-5">
-                                <a class="btn-link btn-link_lg default-underline text-uppercase fw-medium" href="{{ route('shop.category',$cateogries->slug) }}">Xem thêm</a>
-                            </div>
                         </div>
-                        <!-- /.row -->
-        
-                       
+                        <div class="text-center mt-2 mb-5">
+                            <a class="btn-link btn-link_lg default-underline text-uppercase fw-medium"
+                               href="{{ route('shop.category', $categoryData['category']->slug) }}">Xem thêm</a>
+                        </div>
                     </section>
-                    @endif
-                
-                @endforeach
-            @endif
+                @endif
+            @endforeach
+        @endif
+        
             
             {{-- end tất cả sản phẩm và danh mục --}}
             {{-- Tin tức và sự kiên --}}

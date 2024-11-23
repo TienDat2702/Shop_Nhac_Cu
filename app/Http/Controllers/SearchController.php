@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Product; // Import model Product
 use App\Models\ProductCategory; // Import model ProductCategory
 use App\Models\Brand; // Import model Brand
+use Illuminate\Support\Facades\Auth;
 
 class SearchController extends Controller
 {
@@ -40,8 +41,13 @@ class SearchController extends Controller
                     break;
             }
         }
+        $customer = Auth::guard('customer')->user();
+
+        if ( $customer) {
+            $product_favourite = $customer->favourites->pluck('id','product_id')->toArray();
+        }
         
         // Trả về view với dữ liệu tìm kiếm
-        return view('user.search', compact('products', 'productCategories', 'brands', 'searchTerm'));
+        return view('user.search', compact('products', 'product_favourite', 'productCategories', 'brands', 'searchTerm'));
     }
 }

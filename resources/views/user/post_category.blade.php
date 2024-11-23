@@ -15,41 +15,48 @@
 
         <section class="post-single container">
                 <h3 class="mb-4">{{ $categories->name }}</h3>
-                <div class="row">
+                <di<div class="row">
                     <div class="col-lg-9 cl-l">
-                            @foreach ($posts as $post)
+                        @foreach ($posts as $post)
                             <div class="row post-category mt-3">
-                                <div class="col-3">
+                                <div class="col-lg-3 col-sm-5">
                                     <div class="image">
                                         <a href="{{ route('post.detail',$post->slug) }}">
                                             <img src="{{ asset('uploads/posts/posts/' . $post->image  ) }}" alt="">
                                         </a>
                                         @if ($categories->parent->name == 'Video')
-                                            <div class="icon_play">
-                                                <a href="{{ route('post.detail',$post->slug) }}">
-                                                    <i class="fa fa-play" aria-hidden="true"></i>
-                                                </a>
-                                            </div>
+                                        <div class="icon_play">
+                                            <a href="{{ route('post.detail',$post->slug) }}">
+                                                <i class="fa fa-play" aria-hidden="true"></i>
+                                            </a>
+                                        </div>
                                         @endif
                                     </div>
                                 </div>
-                                <div class="col-9">
+                                <div class="col-lg-9 col-sm-7">
                                     <div class="post-category-content">
                                         <a href="{{ route('post.detail',$post->slug) }}" class="title">
-                                            <h3>{{ $post->title }}</h3>
+                                            <h3 class="fs-5 fs-md-4 fs-lg-3">{{ $post->title }}</h3>
                                         </a>
                                         <a href="{{ route('post.detail',$post->slug) }}" class="post-category-description">
-                                            <p>{!! $post->description !!}</p>
+                                            <p class="fs-6 fs-md-5 fs-lg-4">{!! $post->description !!}</p>
                                         </a>
                                         <div class="d-flex align-items-center justify-content-between">
-                                            <span class="text-gray"><span class="me-3">{{ date('d/m/Y', strtotime($post->created_at)) }}</span>  {{ $post->view }} lượt xem </span>
-                                            <a href="{{ route('post.detail',$post->slug) }}"><span>Xem chi tiết</span> <i class="fa-solid fa-angle-right"></i></a>
+                                            <span class="text-gray">
+                                                <span class="me-3">{{ date('d/m/Y', strtotime($post->created_at)) }}</span>  
+                                                {{ $post->view }} lượt xem
+                                            </span>
+                                            <a href="{{ route('post.detail',$post->slug) }}">
+                                                <span>Xem chi tiết</span> <i class="fa-solid fa-angle-right"></i>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             @endforeach
                         </div>
+                    </div>
+                
                         <div class="col-lg-3 cl-r">
                             @if (count($categorie_child) > 0)
                                 <div class="box">

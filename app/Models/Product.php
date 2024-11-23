@@ -21,6 +21,7 @@ class Product extends Model
         'description',
         'publish',
         'slug',
+        'short_description',
     ];
 
     // Scope để tìm kiếm sản phẩm
@@ -90,9 +91,9 @@ class Product extends Model
         return $this->belongsTo(Brand::class, 'brand_id');
     }
 
-    public function favouriteByUser($userId)
+    public function favourite()
     {
-        return $this->hasOne(Favourite::class, 'product_id', 'id')->where('user_id', $userId);
+        return $this->hasMany(Favourite::class, 'product_id', 'id');
     }
 
     public function productCategory1()

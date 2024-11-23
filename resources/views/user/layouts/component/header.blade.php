@@ -108,6 +108,7 @@
                 @endif
                 <a href="{{ route('wishlist.index') }}" class="header-tools__item header-tools__cart">
                     <i style="font-size: 23px;" class="fa-solid fa-heart"></i>
+                    <span class="cart-amount d-block position-absolute js-cart-items-count">{{ count($favourite) }}</span>
                 </a>
 
                 @php

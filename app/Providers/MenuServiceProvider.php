@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Favourite;
 use App\Models\PostCategory;
 use App\Models\ProductCategory;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -28,11 +30,17 @@ class MenuServiceProvider extends ServiceProvider
         $categories_post = PostCategory::GetAllByPublish()->get();
         $categorie_parent_product = ProductCategory::GetAllByPublish()->where('parent_id', 0)->get();
         $categorie_product = ProductCategory::GetAllByPublish()->get();
+        $favourite = [];
+        if (Auth::guard('customer')->user()) {
+            $favourite = Favourite::where('customer_id', Auth::guard('customer')->user()->id)->get();
+        }
+        
         $view->with([
             'categorie_parent_post' => $categorie_parent_post,
             'categories_post' => $categories_post,
             'categorie_parent_product' => $categorie_parent_product,
             'categorie_product' => $categorie_product,
+            'favourite' => $favourite,
         ]);
     });
     }
