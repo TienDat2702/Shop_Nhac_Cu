@@ -47,7 +47,7 @@
                                 <button class="btn btn-primary w-100 text-uppercase mb-3" type="submit">Đăng nhập</button>
 
                                 <div class="customer-option text-center">
-                                    <a href="{{ route('customer.forgot') }}" class="btn-text">Bạn quên mật khẩu ?</a> <br>
+                                    <a href="{{ route('admin.forgot') }}" class="btn-text">Bạn quên mật khẩu ?</a> <br>
                                     
                                     <a href="{{ route('home.index') }}" class="btn-text"><- quay lại trang showroom TuneNests.com</a> 
                                 </div>

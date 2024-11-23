@@ -6,7 +6,7 @@
             <ul class="nav nav-tabs mb-5" id="login_register" role="tablist">
                 <li class="nav-item" role="presentation">
                     <a class="nav-link nav-link_underscore active" id="login-tab" data-bs-toggle="tab" href="#tab-item-login"
-                        role="tab" aria-controls="tab-item-login" aria-selected="true">Forgot Password</a>
+                        role="tab" aria-controls="tab-item-login" aria-selected="true">Quên mật khẩu</a>
                 </li>
             </ul>
             <div class="tab-content pt-2" id="login_register_tab_content">
@@ -19,7 +19,7 @@
                             <div class="form-floating mb-3">
                                 <input class="form-control form-control_gray " name="email" value=""
                                     autocomplete="email" autofocus="" type="text">
-                                <label for="email">Email address *</label>
+                                <label for="email">Địa chỉ mail *</label>
                                 @if ($errors->any())
                                     <span class="error-message"> *
                                         {{
@@ -33,12 +33,12 @@
 
                             
 
-                            <button class="btn btn-primary w-100 text-uppercase" type="submit">Send Mail</button>
+                            <button class="btn btn-primary w-100 text-uppercase" type="submit">Gửi mail</button>
 
                             <div class="customer-option mt-4 text-center">
                                 
-                                <a href="{{route('customer.register')}}" class="btn-text js-show-register">Create Account</a> |
-                                <a href="{{route('customer.login')}}" class="btn-text js-show-register">Login</a> 
+                                <a href="{{route('customer.register')}}" class="btn-text js-show-register">Tạo tài khoản</a> |
+                                <a href="{{route('customer.login')}}" class="btn-text js-show-register">Đăng nhập</a> 
                             </div>
                         </form>
                     </div>

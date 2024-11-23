@@ -6,7 +6,7 @@
             <ul class="nav nav-tabs mb-5" id="login_register" role="tablist">
                 <li class="nav-item" role="presentation">
                     <a class="nav-link nav-link_underscore active" id="login-tab" data-bs-toggle="tab" href="#tab-item-login"
-                        role="tab" aria-controls="tab-item-login" aria-selected="true">Reset Password</a>
+                        role="tab" aria-controls="tab-item-login" aria-selected="true">Đặt lại mặt khẩu</a>
                 </li>
             </ul>
             <div class="tab-content pt-2" id="login_register_tab_content">
@@ -19,7 +19,7 @@
                             <div class="form-floating mb-3">
                                 <input class="form-control form-control_gray " name="password" value=""
                                     autocomplete="new_password" autofocus="" type="text">
-                                <label for="new_password">New password *</label>
+                                <label for="new_password">Mật khẩu mới *</label>
                                 @if ($errors->any())
                                     <span class="error-message"> *
                                         {{
@@ -34,7 +34,7 @@
                             <div class="form-floating mb-3">
                                 <input id="password" type="password" class="form-control form-control_gray "
                                     name="confirm-password" autocomplete="current-password">
-                                <label for="customerPasswodInput">Confirm password *</label>
+                                <label for="customerPasswodInput">Nhập lại mật khẩu *</label>
                                 @if ($errors->any())
                                 <span class="error-message"> *
                                     {{
@@ -44,7 +44,7 @@
                             @endif
                             </div>
 
-                            <button class="btn btn-primary w-100 text-uppercase" type="submit">Reset Now</button>
+                            <button class="btn btn-primary w-100 text-uppercase" type="submit">Đặt lại</button></button>
 
                             
                         </form>

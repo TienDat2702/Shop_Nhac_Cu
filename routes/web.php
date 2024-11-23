@@ -126,7 +126,10 @@ Route::post('/reset-password/{token}', [CustomerController::class, 'check_reset_
 // >>>>>>> 74281289260033629c7263f1ebec8294a13387a8
 Route::get('admin/login', [AdminController::class, 'login'])->name('admin.login');
 Route::post('/admin/login', [AdminController::class, 'check_login'])->name('admin.check_login');
-
+Route::get('/admin/forgot', [AdminController::class, 'forgot'])->name('admin.forgot');
+Route::post('/admin/forgot', [AdminController::class, 'check_forgot'])->name('admin.check_forgot');
+Route::get('/admin/reset-password/{token}', [AdminController::class, 'reset_password'])->name('admin.reset_password');
+Route::post('/admin/reset-password/{token}', [AdminController::class, 'check_reset_password'])->name('admin.check_reset_password');
 // AJAX CHANGE PUBLISH
 Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
 
