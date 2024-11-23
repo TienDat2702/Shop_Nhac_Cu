@@ -94,11 +94,8 @@ Route::middleware(CustomerAuth::class)->group(function () {
     Route::get('/orders/history', [CustomerController::class, 'customerOrderHistory'])->name('customer.orders.history');
     Route::post('/orders/cancel', [CustomerController::class, 'customerOrderCancel'])->name('customer.orders.cancel');
     Route::get('/orders/{id}', [CustomerController::class, 'customerOrderDetail'])->name('customer.orders.detail');
-<<<<<<< HEAD
 
 
-=======
->>>>>>> ab249beb05aa4976b27aee82e92b99fc20524d47
     Route::prefix('wishlist')->group(function () {
         Route::get('/', [FavouriteController::class, 'index'])->name('wishlist.index'); // Xem wishlist
         Route::post('/add/{id}', [FavouriteController::class, 'add'])->name('wishlist.add'); // Thêm sản phẩm vào wishlist
@@ -203,7 +200,6 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
         Route::get('/restore/{id}', [AdminAccountController::class, 'restore'])->name('user.restore');
         Route::delete('/forceDelete/{id}', [AdminAccountController::class, 'forceDelete'])->name('user.forceDelete');
     });
-<<<<<<< HEAD
     //CUSTOMER
    
     Route::prefix('customer')->group(function () {
@@ -219,8 +215,6 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
         Route::delete('/forceDelete/{id}', [AdminCustomerController::class, 'forceDelete'])->name('customer.forceDelete'); 
     });
 
-=======
->>>>>>> ab249beb05aa4976b27aee82e92b99fc20524d47
     //SHOWROOM
     Route::prefix('showroom')->group(function () {
         Route::get('create', [ShowroomController::class, 'create'])->name('showroom.create'); // Route mới
@@ -304,11 +298,5 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
     });
 });
 
-<<<<<<< HEAD
 //Search 
 Route::get('/search', [SearchController::class, 'index'])->name('search');
-=======
-    //Search
-    Route::get('/search', [SearchController::class, 'index'])->name('search');
-
->>>>>>> ab249beb05aa4976b27aee82e92b99fc20524d47
