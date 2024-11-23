@@ -150,13 +150,13 @@ public function update(Request $request, $id)
         $banner->save();
 
         toastr()->success('Cập nhật Banner Thành Công');
-        
+
         // Redirect về trang danh sách banner
         return redirect()->route('banner.index');
     } catch (\Exception $e) {
         // Nếu có lỗi xảy ra
         toastr()->error('Đã xảy ra lỗi: ' . $e->getMessage());
-        
+
         // Redirect về trang danh sách banner với dữ liệu đã nhập
         return redirect()->route('banner.index')->withInput();
     }
@@ -192,13 +192,13 @@ public function forceDelete(string $id)
         if ($banner->image) {
             // Chuyển đổi tất cả dấu gạch chéo ngược thành gạch chéo xuôi
             $image_path = public_path(str_replace('\\', '/', $banner->image));
-            
+
             if (file_exists($image_path)) {
                 unlink($image_path);
             } else {
                 dd("File not found: " . $image_path); // Kiểm tra đường dẫn
             }
-        }        
+        }
         $banner->forceDelete(); // Xóa showroom vĩnh viễn
         toastr()->success('Xóa thành công!');
         return redirect()->back();

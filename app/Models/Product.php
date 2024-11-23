@@ -47,10 +47,10 @@ class Product extends Model
     public function scopeGetProductPublish($query) {
         return $query->where('publish', 2);
     }
-   
+
     public function scopeGenerateUniqueSlug($query, $str)
     {
-        // Tạo slug 
+        // Tạo slug
         $slug = Str::slug($str);
 
         // tìm xem slug có tồn tại hay chưa

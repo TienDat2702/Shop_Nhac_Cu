@@ -11,7 +11,6 @@ use App\Mail\VerifyAccount;
 use App\Models\Customer;
 use App\Models\Order;
 use Illuminate\Http\Request;
-use App\Models\User; // Đổi từ Customer sang User
 use App\Models\CustomerResetToken;
 use App\Models\LoyaltyLevel;
 use Illuminate\Support\Facades\Auth;
@@ -126,78 +125,85 @@ class CustomerController extends Controller
     }
 
     public function check_forgot(Request $req)
+{
+    $req->validate([
+        'email' => 'required|email|exists:customers,email',
+    ], [
+        'email.required' => 'Vui lòng nhập email',
+        'email.exists' => 'Email không tồn tại trong hệ thống',
+    ]);
+
+    $customer = Customer::where('email', $req->email)->first();
+    $token = \Str::random(40);
+
+    CustomerResetToken::where('email', $req->email)->delete();
+
+    $tokenData = [
+        'email' => $req->email,
+        'token' => $token,
+    ];
+
+    if (CustomerResetToken::create($tokenData)) {
+        $resetLink = route('customer.reset_password', ['token' => $token]);
+
+        // Gửi email
+        Mail::to($customer->email)->send(new ForgotPassword($customer, $resetLink));
+        return redirect()->route('customer.login')->with('success', 'Đã gửi email khôi phục mật khẩu.');
+    }
+
+    return redirect()->back()->with('error', 'Có lỗi xảy ra. Vui lòng thử lại!');
+}
+
+
+public function reset_password($token)
+{
+    // Tìm token trong cơ sở dữ liệu
+    $tokenData = CustomerResetToken::where('token', $token)->first();
+
+    // Kiểm tra token có tồn tại hay không
+    if (!$tokenData) {
+        return redirect()->route('customer.login')->with('error', 'Token không hợp lệ hoặc đã hết hạn.');
+    }
+
+    $customer = Customer::where('email', $tokenData->email)->first();
+
+    if (!$customer) {
+        return redirect()->route('customer.login')->with('error', 'Không tìm thấy khách hàng.');
+    }
+
+    // Truyền token vào view reset password
+    return view('user.reset_password', ['token' => $token]);
+}
+
+
+    public function check_reset_password(Request $request, $token)
     {
-        $req->validate([
-            'email' => 'required|exists:customers,email',
+        $request->validate([
+            'password' => 'required|min:8',
+            'confirm-password' => 'required|same:password',
         ], [
-            'email.required' => 'Bạn hãy nhập địa chỉ email',
-            'email.exists' => 'Email này không tồn tại trong hệ thống'
+            'password.required' => 'Bạn chưa nhập mật khẩu',
+            'password.min' => 'Mật khẩu ít nhất 8 ký tự',
+            'confirm-password.required' => 'Bạn chưa nhập lại mật khẩu',
+            'confirm-password.same' => 'Mật khẩu không trùng khớp',
         ]);
 
-        $customer = Customer::where('email', $req->email)->first();
-        $token = \Str::random(40);
-
-        CustomerResetToken::where('email', $req->email)->delete();
-
-        $tokenData = [
-            'email' => $req->email,
-            'token' => $token,
-        ];
-
-        if (CustomerResetToken::create($tokenData)) {
-            Mail::to($req->email)->send(new ForgotPassword($customer, $token));
-            return redirect()->route('customer.login')->with('success', 'Gửi mail thành công. Vui lòng kiểm tra email.');
-        }
-
-        return redirect()->back()->with('error', 'Có lỗi xảy ra. Vui lòng thử lại!');
-    }
-
-    public function reset_password($token)
-    {
-        $tokenData = CustomerResetToken::checkToken($token);
+        $tokenData = CustomerResetToken::where('token', $token)->first();
         $customer = $tokenData->customer ?? null;
 
         if (!$customer) {
             return redirect()->route('customer.login')->with('error', 'Không tìm thấy khách hàng.');
         }
 
-        return view('user.reset_password', compact('token'));
-    }
-    
-    public function check_reset_password($token)
-    {
-        request()->validate(
-            [
-                'password' => 'required|min:8',
-                'confirm-password' => 'required|same:password',
-            ],
-            [
-                'password.required' => 'Bạn chưa nhập mật khẩu',
-                'password.min' => 'Mật khẩu ít nhất 8 ký tự',
-                'confirm-password.required' => 'Bạn chưa nhập lại mật khẩu',
-                'confirm-password.same' => 'Mật khẩu không trùng khớp',
-            ]
-        );
-    
-        $tokenData = CustomerResetToken::checkToken($token);
-        $customer = $tokenData->customer ?? null;
-    
-        if (!$customer) {
-            return redirect()->route('customer.login')->with('error', 'Không tìm thấy khách hàng.');
-        }
-    
-        // Cập nhật mật khẩu đã mã hóa
-        $customer->password = Hash::make(request('password'));
-    
+        $customer->password = Hash::make($request->password);
+
         if ($customer->save()) {
-            // Xóa token sau khi đổi mật khẩu thành công để bảo mật
-            $tokenData->delete();
+            $tokenData->delete(); // Xóa token sau khi đặt lại mật khẩu thành công
             return redirect()->route('customer.login')->with('success', 'Cập nhật mật khẩu thành công. Vui lòng đăng nhập');
         }
-    
+
         return redirect()->back()->with('error', 'Có lỗi xảy ra. Vui lòng thử lại!');
     }
-
     public function update_profile()
     {
         $customer = Auth::guard('customer')->user();
@@ -266,7 +272,6 @@ class CustomerController extends Controller
         session()->flash('success', 'Thay đổi mật khẩu thành công.');
         return redirect()->route('customer.profile');
     }
-
     public function customerOrder()
     {
         $orders = Order::where('customer_id', Auth::guard('customer')->user()->id)->get();

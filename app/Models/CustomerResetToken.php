@@ -15,9 +15,9 @@ class CustomerResetToken extends Model
 
     protected $fillable = ['email', 'token'];
 
-    public function user()
+    public function customer()
     {
-        return $this->hasOne(User::class, 'email', 'email');
+        return $this->belongsTo(Customer::class, 'email', 'email');
     }
 
     public function scopeCheckToken($q, $token)

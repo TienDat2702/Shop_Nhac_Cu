@@ -10,13 +10,13 @@ class ForgotPassword extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $customer;
-    public $token;
+    public $recipient; // Người nhận (Admin hoặc Customer)
+    public $resetLink; // Link đặt lại mật khẩu
 
-    public function __construct($customer, $token)
+    public function __construct($recipient, $resetLink)
     {
-       $this->customer = $customer;
-       $this->token = $token;
+        $this->recipient = $recipient;
+        $this->resetLink = $resetLink;
     }
 
     public function build()
@@ -24,8 +24,8 @@ class ForgotPassword extends Mailable
         return $this->subject('Forgot Password')
                     ->view('mail.forgot_password')
                     ->with([
-                        'customer' => $this->customer,
-                        'token' => $this->token,
+                        'recipient' => $this->recipient,
+                        'resetLink' => $this->resetLink,
                     ]);
     }
 }

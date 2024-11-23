@@ -3,7 +3,7 @@
     "use strict";
     var HT = {};
     var _token = $('meta[name="csrf-token"]').attr('content');
-    
+
     HT.addToCart = () => {
         $('.add-to-cart').on('click', function(event){
             event.preventDefault();
@@ -30,14 +30,14 @@
             });
         })
     }
-    
+
     HT.removeCart = () => {
         $('.remove-cart').on('click', function(event){
             event.preventDefault();
             let _this = $(this);
             let urlCart = _this.data('url');
             let product_id = _this.data('id'); // Lấy ID sản phẩm từ thuộc tính data-id
-    
+
             $.ajax({
                 type: 'POST',
                 url: urlCart, // Sử dụng đường dẫn tương đối
@@ -54,7 +54,7 @@
                     var loyaltyAmount = parseFloat(data.loyaltyAmount.toString().replace(/,/g, '')) || 0;
 
                     var totalAmount = total - loyaltyAmount;
-                    
+
                     // Cập nhật giá trị vào giao diện người dùng
                     $('#totalAmount').text(totalAmount.toLocaleString() + ' VNĐ');
 
@@ -85,12 +85,12 @@
             e.preventDefault();
             var couponCode = $('input[name="voucher"]:checked').val(); // Lấy giá trị mã giảm giá đã chọn từ radio button
             var url = $(this).data('url'); // Lấy URL từ dữ liệu của nút bấm
-        
+
             // if (!couponCode) {
             //     toastr.error('Vui lòng chọn mã giảm giá!');
             //     return; // Dừng lại nếu chưa chọn mã giảm giá
             // }
-        
+
             $.ajax({
                 url: url,
                 type: 'POST',
@@ -105,9 +105,9 @@
                     // Cập nhật các giá trị hiển thị
                     var total = parseFloat(data.total.toString().replace(/,/g, '')) || 0;
                     var loyaltyAmount = parseFloat(data.loyaltyAmount.toString().replace(/,/g, '')) || 0;
-    
+
                     var totalAmount = total - loyaltyAmount;
-    
+
                     // Cập nhật giá trị vào giao diện người dùng
                     $('#totalAmount').text(totalAmount.toLocaleString() + ' VNĐ');
                     $('#loyalty_rate_Amount').text(loyaltyAmount.toLocaleString() + ' VNĐ');
@@ -122,7 +122,7 @@
             $('.box-voucher').hide();  // Ẩn hộp voucher
         });
     };
-    
+
 
     HT.changeQuantity = () => {
         $('.qty-control__number').on('change', function() {
@@ -162,11 +162,11 @@
                     $('#loyalty_rate_Amount').text(loyaltyAmount.toLocaleString() + ' VNĐ');
                     $('#subtotalAmount').text(response.subtotal + ' VNĐ');
                     $('#discountAmount').text(response.discountAmount.toLocaleString() + ' VNĐ')
-                    $(`.shopping-cart__subtotal-${productId}`).text(response.productTotal + ' VNĐ'); 
-                    
+                    $(`.shopping-cart__subtotal-${productId}`).text(response.productTotal + ' VNĐ');
+
                     // cập nhật voucher
                     HT.updateVoucherList(response.validDiscounts, total);
-                    
+
 
                 }
             },
@@ -212,7 +212,7 @@
                     </div>
                 `;
             }else{
-                var voucherItem = 
+                var voucherItem =
                     `<div class="text-center not-fount-voucher">
                         <i style="font-size: 50px; margin-bottom:10px" class="fa-solid fa-circle-exclamation"></i>
                         <h4>Hiện bạn chưa có phiếu giảm giá</h4>
@@ -266,7 +266,7 @@
                     });
                 }
             });
-            
+
         })
     }
 
