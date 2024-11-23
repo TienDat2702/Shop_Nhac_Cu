@@ -266,7 +266,28 @@
         })
     }
 
-    
+    // gán route khi đang ở trang nào bắt đăng nhập thì sau khi đăng nhập sẽ về route trang tiếp theo của trang đó
+    HT.loginRoute = () => {
+        $('.btn_redirect').on('click', function(){
+            localStorage.removeItem('last_route');
+            localStorage.removeItem('last_slug');
+            var route = $(this).data('route');
+            var slug = $(this).data('slug'); // Lấy slug của sản phẩm
+            if (route || slug) {
+                localStorage.setItem('last_route', route);
+                localStorage.setItem('last_slug', slug); // Lưu slug vào localStorage
+            }
+        });
+        $('.btn_login_redirect').on('click', function(){
+            $('.input_login_redirect').val(localStorage.getItem('last_route') || 'home.index');
+            $('.input_slug_redirect').val(localStorage.getItem('last_slug'));
+        })
+        $('.btn_logout_redirect').on('click', function(){
+            localStorage.removeItem('last_route');
+            localStorage.removeItem('last_slug');
+        })
+    }
+
     $(document).ready(function () {
         HT.changeStatus();
         HT.sweetalert2();
@@ -276,5 +297,6 @@
         HT.setupCkeditor();
         HT.keyUpInput();
         HT.trash();
+        HT.loginRoute();
     });
 })(jQuery);

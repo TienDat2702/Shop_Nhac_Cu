@@ -33,7 +33,6 @@
                 <th width="100px">Ảnh</th>
                 <th>Giá</th>
                 <th>Giá khuyến mãi</th>
-                <th>Mô tả</th>
                 <th>Số Lượng</th>
                 <th>Thao tác</th>
             </tr>
@@ -71,9 +70,6 @@
                     </td>
                     <td>
                         {{ number_format($item->product->price_sale, 0, ',', '.') }} VNĐ
-                    </td>
-                    <td>
-                        {{ $item->product->short_description }}
                     </td>
                     <td class="text-center">
                         {{$item->stock}}

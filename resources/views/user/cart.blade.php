@@ -71,7 +71,7 @@
                                         </td>
                                         <td>
                                             <div class="qty-control position-relative">
-                                                <input type="number" name="quantity[{{ $item->id }}]"
+                                                <input id="quantity" type="number" name="quantity[{{ $item->id }}]"
                                                     value="{{ session('carts')[$item->id]['quantity'] }}" min="1"
                                                     class="qty-control__number text-center" data-id = "{{ $item->id }}"
                                                     data-url="{{ route('cart.update.quantity', $item->id) }}"
@@ -145,20 +145,20 @@
                             </div>
                             <div class="mobile_fixed-btn_wrapper">
                                 <div class="button-wrapper container">
-                                    <a href="{{route('checkout')}}"
-                                        class="btn btn-primary btn-checkout">TIẾN HÀNH THANH
+                                    <a href="{{route('checkout')}}" data-route='checkout'
+                                        class="btn btn-primary btn-checkout btn_redirect">TIẾN HÀNH THANH
                                         TOÁN</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 @else
+                    
                     <div class="cart-null">
                         <img src="{{ asset('images/carts-null.png') }}" alt="">
                         <a class="btn-comeback" href="{{ route('home.index') }}"> Mua ngay </a>
                     </div>
         @endif
-
 
         {{-- voucher box --}}
         <div class="voucher_overlay"></div>

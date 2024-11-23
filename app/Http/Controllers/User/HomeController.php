@@ -64,7 +64,6 @@ class HomeController extends Controller
         if ( $customer) {
             $product_favourite = $customer->favourites->pluck('id','product_id')->toArray();
         }
-
         return view('user.index', compact(
             'brands', 
             'product_favourite', 

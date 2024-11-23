@@ -267,7 +267,7 @@
                                 </form>
                             @else
                                 <div class="alert alert-danger">
-                                    <strong>Bạn cần <a href="{{ route('customer.login') }}">đăng nhập</a> để bình
+                                    <strong>Bạn cần <a class="btn_redirect" href="{{ route('customer.login') }}" data-route='product.detail' data-slug='{{ $product->slug }}'>đăng nhập</a> để bình
                                         luận</strong>
                                 </div>
                             @endif

@@ -15,7 +15,7 @@ class AdminController extends Controller
 {
     public function login()
     {
-        if (auth()->check() && auth()->user()->role_id === 2) {
+        if (auth()->check() && auth()->user()) {
             return redirect()->route('dashboard.index');
         }
 
@@ -28,7 +28,7 @@ class AdminController extends Controller
         
         if (auth()->attempt($data)) {
             // Kiểm tra xem người dùng có vai trò là admin không
-            if (auth()->user()->role_id === 2) {
+            if (auth()->user()) {
                 return redirect()->route('dashboard.index')->with('success', 'Đăng nhập thành công');
             } else {
                 auth()->logout();

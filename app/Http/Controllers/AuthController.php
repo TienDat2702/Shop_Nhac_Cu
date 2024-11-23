@@ -27,7 +27,7 @@ class AuthController extends Controller
             return redirect()->route('user.shop.index')->with('success', 'Đăng nhập thành công');
         }
 
-        return redirect()->route('customer.login')->with('error', 'Email hoặc Mật khẩu không chính xác');
+        return redirect()->route('home.index')->with('error', 'Email hoặc Mật khẩu không chính xác');
     }
    
     public function register()

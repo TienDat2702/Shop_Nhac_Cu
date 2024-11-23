@@ -50,7 +50,7 @@
                         <p>Tổng tiền đơn hàng đã mua <strong>{{ number_format($total_order,0,'.',',')}} VNĐ </strong></p>
                         <p>Từ trang quản lý tài khoản của bạn, bạn có thể xem các <a class="unerline-link"
                                 href="{{ route('customer.orders.history') }}">đơn hàng gần đây</a>, quản lý các <a class="unerline-link"
-                                href="{{ route('customer.update') }}">thông tin cá nhân</a>, và <a class="unerline-link"
+                                href="{{ route('customer.update.profile') }}">thông tin cá nhân</a>, và <a class="unerline-link"
                                 href="{{ route('customer.change_password') }}">chỉnh sửa mật khẩu</a>.</p>
                     </div>
                 </div>
