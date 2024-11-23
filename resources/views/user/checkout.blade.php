@@ -242,7 +242,7 @@ function findNearestShowrooms(lat, lon) {
                 showroomList.sort((a, b) => a.distance - b.distance);
 
                 // Giới hạn chỉ 3 showroom gần nhất
-                var nearestShowrooms = showroomList.slice(0, 3);
+                nearestShowrooms = showroomList.slice(0, 3);
 
                 // Hiển thị các showroom gần nhất
                 if (nearestShowrooms.length > 0) {

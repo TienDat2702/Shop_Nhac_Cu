@@ -14,7 +14,7 @@ class UserShowroomController extends Controller
                  ->where('publish', 2)
                  ->get();
         // Lấy danh sách showroom từ cơ sở dữ liệu
-        $showrooms = Showroom::select('name', 'address', 'latitude', 'longitude')->get();
+        $showrooms = Showroom::select('name', 'address','phone', 'latitude', 'longitude')->get();
 
         // Trả dữ liệu về view
         return view('user.showroom', compact('showrooms', 'banners'));
