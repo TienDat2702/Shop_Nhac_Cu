@@ -15,6 +15,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\User\ProductController;
 use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\Admin\ShowroomController;
+use App\Http\Controllers\User\UserShowroomController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ProductShowroomController;
 use App\Http\Controllers\User\CustomerController;
@@ -30,7 +31,7 @@ Route::get('/brand/{slug}', [HomeController::class, 'brand'])->name('brands.inde
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
 Route::get('/shop/category/{slug}', [ProductController::class, 'category'])->name('shop.category');
 Route::get('/product/{slug}', [ProductController::class, 'product_details'])->name('product.detail');
-
+Route::get('/showrooms/map', [UserShowroomController::class, 'showMap'])->name('showrooms.map');
 
 Route::get('/about',[HomeController::class,'about'])->name('about');
 // CONTACT

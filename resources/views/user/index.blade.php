@@ -3,6 +3,7 @@
 @section('content')
     <main>
 
+
         <section class="swiper-container js-swiper-slider swiper-number-pagination slideshow"
             data-settings='{
         "autoplay": {
@@ -35,6 +36,7 @@
                                 {{ $banner->strong_title ?? 'Đang Cập Nhật' }}
                             </h2>
                             <a href="{{ route('shop.index') }}" class="btn-link btn-link_lg default-underline fw-medium animate animate_fade animate_btt animate_delay-7">Mua hàng</a>
+                            <a href="{{route('showrooms.map')}}">Showroom</a>
                         </div>
                     </div>
                 </div>
@@ -355,7 +357,6 @@
                                             class="pc__img pc__img-second">
                                     </a>
                                 </div>
-
                                 <div class="pc__info position-relative">
                                     <h6 class="pc__title">{{ $product->name }}</h6>
                                     <div class="product-card__price d-flex align-items-center">
