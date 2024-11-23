@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ProductShowroomController;
 use App\Http\Controllers\User\CustomerController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AdminCustomerController;
 use App\Http\Controllers\User\CheckoutController;
 use App\Http\Controllers\User\PostController;
 use Illuminate\Support\Facades\Route;
@@ -32,12 +33,12 @@ Route::get('/brand/{slug}', [HomeController::class, 'brand'])->name('brands.inde
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
 Route::get('/shop/category/{slug}', [ProductController::class, 'category'])->name('shop.category');
 Route::get('/product/{slug}', [ProductController::class, 'product_details'])->name('product.detail');
-Route::post('/product/{proId}/comment', [ProductController::class, 'post_comment'])->name('product.comment');
+Route::get('/showrooms/map', [UserShowroomController::class, 'showMap'])->name('showrooms.map');
 
-Route::get('/about',[HomeController::class,'about'])->name('about');
+Route::get('/about', [HomeController::class, 'about'])->name('about');
 // CONTACT
-Route::get('/contact',[HomeController::class,'contact'])->name('contact');
-Route::post('/contact/post',[HomeController::class,'postContact'])->name('contact.post');
+Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+Route::post('/contact/post', [HomeController::class, 'postContact'])->name('contact.post');
 
 // GIỎ HÀNG
 Route::prefix('cart')->group(function () {
@@ -84,6 +85,25 @@ Route::middleware(CustomerAuth::class)->group(function () {
         Route::get('/verify/{token}', [CheckoutController::class, 'verify'])->name('checkout.verify');
         Route::get('/showrooms/nearest', [ShowroomController::class, 'findNearestShowroom'])->name('checkout.showroom');
     });
+
+    //comment
+    Route::post('/product/{proId}/comment', [ProductController::class, 'post_comment'])->name('product.comment');
+
+    Route::get('/logout', [CustomerController::class, 'logout'])->name('customer.logout');
+    Route::get('/orders', [CustomerController::class, 'customerOrder'])->name('customer.orders');
+    Route::get('/orders/history', [CustomerController::class, 'customerOrderHistory'])->name('customer.orders.history');
+    Route::post('/orders/cancel', [CustomerController::class, 'customerOrderCancel'])->name('customer.orders.cancel');
+    Route::get('/orders/{id}', [CustomerController::class, 'customerOrderDetail'])->name('customer.orders.detail');
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> ab249beb05aa4976b27aee82e92b99fc20524d47
+    Route::prefix('wishlist')->group(function () {
+        Route::get('/', [FavouriteController::class, 'index'])->name('wishlist.index'); // Xem wishlist
+        Route::post('/add/{id}', [FavouriteController::class, 'add'])->name('wishlist.add'); // Thêm sản phẩm vào wishlist
+        Route::delete('/remove/{id}', [FavouriteController::class, 'remove'])->name('wishlist.remove'); // Xóa sản phẩm khỏi wishlist
+    });
 });
 
 
@@ -93,22 +113,21 @@ Route::get('/reset-password/{token}', [CustomerController::class, 'reset_passwor
 Route::post('/reset-password/{token}', [CustomerController::class, 'check_reset_password'])->name('customer.check_reset_password');
 
 
-Route::get('/logout', [CustomerController::class, 'logout'])->name('customer.logout');
-Route::get('/orders', [CustomerController::class, 'customerOrder'])->name('customer.orders');
-Route::get('/orders/history', [CustomerController::class, 'customerOrderHistory'])->name('customer.orders.history');
-Route::post('/orders/cancel', [CustomerController::class, 'customerOrderCancel'])->name('customer.orders.cancel');
-Route::get('/orders/{id}', [CustomerController::class, 'customerOrderDetail'])->name('customer.orders.detail');
+// Route::get('/logout', [CustomerController::class, 'logout'])->name('customer.logout');
+// Route::get('/orders', [CustomerController::class, 'customerOrder'])->name('customer.orders');
+// Route::get('/orders/history', [CustomerController::class, 'customerOrderHistory'])->name('customer.orders.history');
+// Route::post('/orders/cancel', [CustomerController::class, 'customerOrderCancel'])->name('customer.orders.cancel');
+// Route::get('/orders/{id}', [CustomerController::class, 'customerOrderDetail'])->name('customer.orders.detail');
 
 
-// ABOUT
-Route::prefix('wishlist')->group(function () {
-    Route::get('/', [FavouriteController::class, 'index'])->name('wishlist.index'); // Xem wishlist
-    Route::post('/add/{id}', [FavouriteController::class, 'add'])->name('wishlist.add'); // Thêm sản phẩm vào wishlist
-    Route::delete('/remove/{id}', [FavouriteController::class, 'remove'])->name('wishlist.remove'); // Xóa sản phẩm khỏi wishlist
-});
-Route::post('/wishlist/add/{id}', [FavouriteController::class, 'add'])->name('wishlist.add');
+// // ABOUT
+// Route::prefix('wishlist')->group(function () {
+//     Route::get('/', [FavouriteController::class, 'index'])->name('wishlist.index'); // Xem wishlist
+//     Route::post('/add/{id}', [FavouriteController::class, 'add'])->name('wishlist.add'); // Thêm sản phẩm vào wishlist
+//     Route::delete('/remove/{id}', [FavouriteController::class, 'remove'])->name('wishlist.remove'); // Xóa sản phẩm khỏi wishlist
+// });
+// Route::post('/wishlist/add/{id}', [FavouriteController::class, 'add'])->name('wishlist.add');
 
-// >>>>>>> 74281289260033629c7263f1ebec8294a13387a8
 Route::get('admin/login', [AdminController::class, 'login'])->name('admin.login');
 Route::post('/admin/login', [AdminController::class, 'check_login'])->name('admin.check_login');
 Route::get('/admin/forgot', [AdminController::class, 'forgot'])->name('admin.forgot');
@@ -131,6 +150,7 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
         Route::put('/{id}', [DiscountController::class, 'update'])->name('discount.update');
         Route::delete('/{id}', [DiscountController::class, 'destroy'])->name('discount.destroy');
         Route::post('/{id}/restore', [DiscountController::class, 'restore'])->name('discount.restore');
+        Route::delete('discount/forceDelete/{id}', [AdminPostCategoryController::class, 'forceDelete'])->name('discount.forceDelete');
     });
     // ORDER
     Route::prefix('order')->group(function () {
@@ -170,6 +190,37 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
         Route::delete('forceDelete/{id}', [AdminPostController::class, 'forceDelete'])->name('post.forceDelete');
     });
 
+    //User
+    Route::prefix('user')->group(function () {
+        Route::get('/', [AdminAccountController::class, 'index'])->name('user.index');
+        Route::get('/deleted', [AdminAccountController::class, 'deleted'])->name('user.deleted');
+        Route::get('/search/{config}', [AdminAccountController::class, 'search'])->name('user.search');
+        Route::get('/create', [AdminAccountController::class, 'create'])->name('user.create');
+        Route::post('/store', [AdminAccountController::class, 'store'])->name('user.store');
+        Route::get('/edit/{id}', [AdminAccountController::class, 'edit'])->name('user.edit');
+        Route::post('/update/{id}', [AdminAccountController::class, 'update'])->name('user.update');
+        Route::delete('/destroy/{id}', [AdminAccountController::class, 'destroy'])->name('user.destroy');
+        Route::get('/restore/{id}', [AdminAccountController::class, 'restore'])->name('user.restore');
+        Route::delete('/forceDelete/{id}', [AdminAccountController::class, 'forceDelete'])->name('user.forceDelete');
+    });
+<<<<<<< HEAD
+    //CUSTOMER
+   
+    Route::prefix('customer')->group(function () {
+        Route::get('/', [AdminCustomerController::class, 'index'])->name('customer.index'); 
+        Route::get('/deleted', [AdminCustomerController::class, 'deleted'])->name('customer.deleted'); 
+        Route::get('/search/{config}', [AdminCustomerController::class, 'search'])->name('customer.search'); 
+        Route::get('/create', [AdminCustomerController::class, 'create'])->name('customer.create'); 
+        Route::post('/store', [AdminCustomerController::class, 'store'])->name('customer.store'); 
+        Route::get('/edit/{id}', [AdminCustomerController::class, 'edit'])->name('customer.edit');
+        Route::post('/update/{id}', [AdminCustomerController::class, 'update'])->name('customer.update'); 
+        Route::delete('/destroy/{id}', [AdminCustomerController::class, 'destroy'])->name('customer.destroy'); 
+        Route::get('/restore/{id}', [AdminCustomerController::class, 'restore'])->name('customer.restore'); 
+        Route::delete('/forceDelete/{id}', [AdminCustomerController::class, 'forceDelete'])->name('customer.forceDelete'); 
+    });
+
+=======
+>>>>>>> ab249beb05aa4976b27aee82e92b99fc20524d47
     //SHOWROOM
     Route::prefix('showroom')->group(function () {
         Route::get('create', [ShowroomController::class, 'create'])->name('showroom.create'); // Route mới
@@ -253,6 +304,11 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
     });
 });
 
+<<<<<<< HEAD
+//Search 
+Route::get('/search', [SearchController::class, 'index'])->name('search');
+=======
     //Search
     Route::get('/search', [SearchController::class, 'index'])->name('search');
 
+>>>>>>> ab249beb05aa4976b27aee82e92b99fc20524d47
