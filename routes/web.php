@@ -16,6 +16,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\User\ProductController;
 use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\Admin\ShowroomController;
+use App\Http\Controllers\User\UserShowroomController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ProductShowroomController;
 use App\Http\Controllers\User\CustomerController;
@@ -32,7 +33,7 @@ Route::get('/brand/{slug}', [HomeController::class, 'brand'])->name('brands.inde
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
 Route::get('/shop/category/{slug}', [ProductController::class, 'category'])->name('shop.category');
 Route::get('/product/{slug}', [ProductController::class, 'product_details'])->name('product.detail');
-
+Route::get('/showrooms/map', [UserShowroomController::class, 'showMap'])->name('showrooms.map');
 
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 // CONTACT
@@ -91,8 +92,11 @@ Route::middleware(CustomerAuth::class)->group(function () {
     Route::get('/orders/history', [CustomerController::class, 'customerOrderHistory'])->name('customer.orders.history');
     Route::post('/orders/cancel', [CustomerController::class, 'customerOrderCancel'])->name('customer.orders.cancel');
     Route::get('/orders/{id}', [CustomerController::class, 'customerOrderDetail'])->name('customer.orders.detail');
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> ab249beb05aa4976b27aee82e92b99fc20524d47
     Route::prefix('wishlist')->group(function () {
         Route::get('/', [FavouriteController::class, 'index'])->name('wishlist.index'); // Xem wishlist
         Route::post('/add/{id}', [FavouriteController::class, 'add'])->name('wishlist.add'); // Thêm sản phẩm vào wishlist
@@ -107,8 +111,6 @@ Route::get('/reset-password/{token}', [CustomerController::class, 'reset_passwor
 Route::post('/reset-password/{token}', [CustomerController::class, 'check_reset_password'])->name('customer.check_reset_password');
 
 
-// <<<<<<< HEAD
-// =======
 // Route::get('/logout', [CustomerController::class, 'logout'])->name('customer.logout');
 // Route::get('/orders', [CustomerController::class, 'customerOrder'])->name('customer.orders');
 // Route::get('/orders/history', [CustomerController::class, 'customerOrderHistory'])->name('customer.orders.history');
@@ -124,7 +126,6 @@ Route::post('/reset-password/{token}', [CustomerController::class, 'check_reset_
 // });
 // Route::post('/wishlist/add/{id}', [FavouriteController::class, 'add'])->name('wishlist.add');
 
-// >>>>>>> 74281289260033629c7263f1ebec8294a13387a8
 Route::get('admin/login', [AdminController::class, 'login'])->name('admin.login');
 Route::post('/admin/login', [AdminController::class, 'check_login'])->name('admin.check_login');
 Route::get('/admin/forgot', [AdminController::class, 'forgot'])->name('admin.forgot');
@@ -199,6 +200,7 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
         Route::get('/restore/{id}', [AdminAccountController::class, 'restore'])->name('user.restore');
         Route::delete('/forceDelete/{id}', [AdminAccountController::class, 'forceDelete'])->name('user.forceDelete');
     });
+<<<<<<< HEAD
     //CUSTOMER
    
     Route::prefix('customer')->group(function () {
@@ -214,6 +216,8 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
         Route::delete('/forceDelete/{id}', [AdminCustomerController::class, 'forceDelete'])->name('customer.forceDelete'); 
     });
 
+=======
+>>>>>>> ab249beb05aa4976b27aee82e92b99fc20524d47
     //SHOWROOM
     Route::prefix('showroom')->group(function () {
         Route::get('create', [ShowroomController::class, 'create'])->name('showroom.create'); // Route mới
@@ -297,5 +301,11 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
     });
 });
 
+<<<<<<< HEAD
 //Search 
 Route::get('/search', [SearchController::class, 'index'])->name('search');
+=======
+    //Search
+    Route::get('/search', [SearchController::class, 'index'])->name('search');
+
+>>>>>>> ab249beb05aa4976b27aee82e92b99fc20524d47

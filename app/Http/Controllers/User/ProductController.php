@@ -116,13 +116,13 @@ class ProductController extends Controller
         if (!$category) {
             return redirect()->route('shop.index')->with('error', 'Danh mục không tồn tại.');
         }
-    
+
         // Lấy danh sách danh mục sản phẩm
         $productCategories = $this->getRecursive(); // đảm bảo phương thức này trả về danh sách các danh mục
-    
+
         // Lấy danh sách thương hiệu
         $brands = Brand::GetBrandPublish()->get();
-    
+
         // Định nghĩa các phân khúc giá
         $priceSegments = [
             '0-20000000' => 'Dưới 20 triệu',
@@ -132,16 +132,16 @@ class ProductController extends Controller
             '200000000-500000000' => '200 triệu - 500 triệu',
             '500000000-999999999' => 'Trên 500 triệu'
         ];
-    
+
         // Khởi tạo truy vấn sản phẩm cho danh mục hiện tại và danh mục con
         $categoryIds = ProductCategory::GetAllByPublish()
             ->where('id', $category->id)
             ->orWhere('parent_id', $category->id)
             ->pluck('id')
             ->toArray();
-    
+
         $productsQuery = Product::GetProductPublish()->whereIn('category_id', $categoryIds);
-    
+
         // Lọc sản phẩm theo khoảng giá nếu có
         if ($request->has('price_segment') && !empty($request->price_segment)) {
             $priceSegmentsChecked = $request->price_segment;
@@ -164,15 +164,15 @@ class ProductController extends Controller
                 });
             }
         }
-    
+
         // Lọc sản phẩm theo thương hiệu nếu có
         if ($request->filled('brand_ids')) {
             $productsQuery->whereIn('brand_id', $request->brand_ids);
         }
-    
+
         // Thực hiện phân trang
         $products = $productsQuery->paginate(9);
-    
+
         if (!$products->isEmpty()) {
             return view('user.shop', compact('products', 'productCategories', 'brands','banners', 'priceSegments'))->with('currentCategory', $category);
         } else {
@@ -180,7 +180,7 @@ class ProductController extends Controller
             return view('user.shop', compact('products', 'productCategories', 'brands','banners', 'priceSegments'))->with('currentCategory', $category);
         }
     }
-    
+
     // public function product_details($slug)
     // {
     //     $product = Product::where('slug', $slug)->first();

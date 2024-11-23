@@ -38,7 +38,7 @@ class HomeController extends Controller
         //         ->where('parent_id', $post_category_event->id)
         //         ->pluck('id')
         //         ->toArray();
-        
+
         //     // Lấy các bài viết thuộc danh mục cha "Sự Kiện" hoặc các danh mục con của nó
         //     $posts = Post::GetPostPublish()
         //         ->where('post_category_id', $post_category_event->id)
@@ -50,13 +50,13 @@ class HomeController extends Controller
         //     ->limit(4)
         //     ->get();
         // }
-        
+
         return view('user.index', compact(
-            'brands', 
-            'product_views', 
-            'product_price', 
-            'products', 
-            'banners', 
+            'brands',
+            'product_views',
+            'product_price',
+            'products',
+            'banners',
             'posts',
             'product_cateogries'
         ));
