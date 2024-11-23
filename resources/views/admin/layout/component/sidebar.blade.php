@@ -42,6 +42,24 @@
                 </li>
                 <li class="menu-item has-children">
                     <a href="javascript:void(0);" class="menu-item-button">
+                        <div class="icon"><i class="fa-solid fa-address-book"></i></div>
+                        <div class="text">Người dùng</div>
+                    </a>
+                    <ul class="sub-menu">
+                        {{-- <li class="sub-menu-item">
+                            <a href="{{ route('postCategory.index') }}" class="">
+                                <div class="text">Danh mục bài viết</div>
+                            </a>
+                        </li> --}}
+                        <li class="sub-menu-item">
+                            <a href="{{ route('user.index') }}" class="">
+                                <div class="text">Danh sách</div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="menu-item has-children">
+                    <a href="javascript:void(0);" class="menu-item-button">
                         <div class="icon"><i class="fa-regular fa-building"></i></div>
                         <div class="text">Showrooms</div>
                     </a>

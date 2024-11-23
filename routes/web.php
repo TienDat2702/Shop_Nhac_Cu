@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\DiscountController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AdminPostCategoryController;
 use App\Http\Controllers\Admin\AdminPostController;
+use App\Http\Controllers\Admin\AdminAccountController;
 use App\Http\Controllers\Admin\AdminProductCategoryController;
 use App\Http\Controllers\Admin\UploadCKImageController;
 use App\Http\Controllers\Ajax\AjaxDashboardController;
@@ -182,6 +183,20 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
         Route::delete('destroy/{id}', [AdminPostController::class, 'destroy'])->name('post.destroy');
         Route::get('restore/{id}', [AdminPostController::class, 'restore'])->name('post.restore');
         Route::delete('forceDelete/{id}', [AdminPostController::class, 'forceDelete'])->name('post.forceDelete');
+    });
+    
+    //User
+    Route::prefix('user')->group(function () { 
+        Route::get('/', [AdminAccountController::class, 'index'])->name('user.index');
+        Route::get('/deleted', [AdminAccountController::class, 'deleted'])->name('user.deleted');
+        Route::get('/search/{config}', [AdminAccountController::class, 'search'])->name('user.search');
+        Route::get('/create', [AdminAccountController::class, 'create'])->name('user.create');
+        Route::post('/store', [AdminAccountController::class, 'store'])->name('user.store');
+        Route::get('/edit/{id}', [AdminAccountController::class, 'edit'])->name('user.edit');
+        Route::post('/update/{id}', [AdminAccountController::class, 'update'])->name('user.update');
+        Route::delete('/destroy/{id}', [AdminAccountController::class, 'destroy'])->name('user.destroy');
+        Route::get('/restore/{id}', [AdminAccountController::class, 'restore'])->name('user.restore');
+        Route::delete('/forceDelete/{id}', [AdminAccountController::class, 'forceDelete'])->name('user.forceDelete');
     });
    
     //SHOWROOM
