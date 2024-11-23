@@ -197,7 +197,75 @@ class CustomerController extends Controller
     
         return redirect()->back()->with('error', 'Có lỗi xảy ra. Vui lòng thử lại!');
     }
-    
+
+    public function update_profile()
+    {
+        $customer = Auth::guard('customer')->user();
+        return view('user.update_profile', compact('customer'));
+    }
+
+    public function check_update_profile(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|string|max:15',
+            'address' => 'required|string|max:255',
+            'password' => 'required|string',
+        ], [
+            'name.required' => 'Vui lòng nhập tên đầy đủ.',
+            'email.required' => 'Vui lòng nhập địa chỉ email.',
+            'phone.required' => 'Vui lòng nhp số điện thoại.',
+            'address.required' => 'Vui lòng nhập địa chỉ.',
+            'password.required' => 'Vui lòng nhập mật khẩu.',
+        ]);
+
+        $customer = Auth::guard('customer')->user();
+
+        if (!Hash::check($request->password, $customer->password)) {
+            return redirect()->back()->withErrors(['password' => 'Mật khẩu không chính xác.']);
+        }
+
+        $customer->name = $request->name;
+        $customer->email = $request->email;
+        $customer->phone = $request->phone;
+        $customer->address = $request->address;
+
+        $customer->save();
+
+        return redirect()->route('customer.update')->with('success', 'Cập nhật thông tin thành công.');
+    }
+
+    public function change_password()
+    {
+        return view('user.userChangePassword');
+    }
+
+    public function check_change_password(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:8|confirmed',
+        ], [
+            'current_password.required' => 'Bạn chưa nhập mật khẩu hiện tại',
+            'new_password.required' => 'Bạn chưa nhập mật khẩu mới',
+            'new_password.min' => 'Mật khẩu mới phải có ít nhất 8 ký tự',
+            'new_password.confirmed' => 'Mật khẩu mới không trùng khớp',
+        ]);
+
+        $customer = Auth::guard('customer')->user();
+
+        if (!Hash::check($request->current_password, $customer->password)) {
+            session()->flash('error', 'Mật khẩu hiện tại không chính xác.');
+            return redirect()->back();
+        }
+
+        $customer->password = Hash::make($request->new_password);
+        $customer->save();
+
+        session()->flash('success', 'Thay đổi mật khẩu thành công.');
+        return redirect()->route('customer.profile');
+    }
 
     public function customerOrder()
     {

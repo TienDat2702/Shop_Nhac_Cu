@@ -67,8 +67,10 @@ Route::post('/register', [CustomerController::class, 'check_register'])->name('c
 Route::middleware(CustomerAuth::class)->group(function () {
     Route::get('/profile', [CustomerController::class, 'profile'])->name('customer.profile');
     Route::post('/profile', [CustomerController::class, 'check_profile'])->name('customer.chek_profile');
+    Route::get('/update-profile',[CustomerController::class,'update_profile'])->name('customer.update');
+    Route::post('/update-profile',[CustomerController::class,'check_update_profile'])->name('customer.check_update');
     Route::get('/change-password', [CustomerController::class, 'change_password'])->name('customer.change_password');
-    Route::post('/change-password', [CustomerController::class, 'check_change_password']);
+    Route::post('/change-password', [CustomerController::class, 'check_change_password'])->name('customer.check_change_password');
 
     // THANH TOÁN
     Route::prefix('checkout')->group(function () {
@@ -148,6 +150,7 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
     Route::prefix('order')->group(function () {
         Route::get('/', [AdminOrderController::class, 'index'])->name('order.index');
         Route::get('/pending', [AdminOrderController::class, 'OrderPending'])->name('order.pending');
+        Route::get('/orders/search', [AdminOrderController::class, 'search'])->name('order.search');
         Route::get('/detail/{id}', [AdminOrderController::class, 'show'])->name('order.show');
         Route::put('/{id}/update-status', [AdminOrderController::class, 'updateStatus'])->name('order.updateStatus');
     });
