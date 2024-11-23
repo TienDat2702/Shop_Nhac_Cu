@@ -91,7 +91,7 @@
                                 <img src="images/avatar/user-1.png" alt="">
                             </span>
                             <span class="d-flex flex-column justify-content-center">
-                                <span class="body-title mb-2">Kristin Watson</span>
+                                <span class="body-title mb-2">{{ Auth::user()->name }}</span>
                                 <span class="text-tiny">Admin</span>
                             </span>
                         </span>

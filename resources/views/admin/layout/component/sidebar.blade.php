@@ -53,7 +53,12 @@
                         </li> --}}
                         <li class="sub-menu-item">
                             <a href="{{ route('user.index') }}" class="">
-                                <div class="text">Danh sách</div>
+                                <div class="text">Danh sách quản trị viên</div>
+                            </a>
+                        </li>
+                        <li class="sub-menu-item">
+                            <a href="{{ route('customer.index') }}" class="">
+                                <div class="text">Danh sách khách hàng</div>
                             </a>
                         </li>
                     </ul>
@@ -149,12 +154,12 @@
                         </li>
                     </ul>
                 </li>
-                <li class="menu-item">
+                {{-- <li class="menu-item">
                     <a href="settings.html" class="">
                         <div class="icon"><i class="icon-settings"></i></div>
                         <div class="text">Settings</div>
                     </a>
-                </li>
+                </li> --}}
             </ul>
         </div>
     </div>

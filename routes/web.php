@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ProductShowroomController;
 use App\Http\Controllers\User\CustomerController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AdminCustomerController;
 use App\Http\Controllers\User\CheckoutController;
 use App\Http\Controllers\User\PostController;
 use Illuminate\Support\Facades\Route;
@@ -34,10 +35,10 @@ Route::get('/shop/category/{slug}', [ProductController::class, 'category'])->nam
 Route::get('/product/{slug}', [ProductController::class, 'product_details'])->name('product.detail');
 Route::get('/showrooms/map', [UserShowroomController::class, 'showMap'])->name('showrooms.map');
 
-Route::get('/about',[HomeController::class,'about'])->name('about');
+Route::get('/about', [HomeController::class, 'about'])->name('about');
 // CONTACT
-Route::get('/contact',[HomeController::class,'contact'])->name('contact');
-Route::post('/contact/post',[HomeController::class,'postContact'])->name('contact.post');
+Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+Route::post('/contact/post', [HomeController::class, 'postContact'])->name('contact.post');
 
 // GIỎ HÀNG
 Route::prefix('cart')->group(function () {
@@ -69,8 +70,10 @@ Route::post('/register', [CustomerController::class, 'check_register'])->name('c
 Route::middleware(CustomerAuth::class)->group(function () {
     Route::get('/profile', [CustomerController::class, 'profile'])->name('customer.profile');
     Route::post('/profile', [CustomerController::class, 'check_profile'])->name('customer.chek_profile');
+    Route::get('/update-profile',[CustomerController::class,'update_profile'])->name('customer.update');
+    Route::post('/update-profile',[CustomerController::class,'check_update_profile'])->name('customer.check_update');
     Route::get('/change-password', [CustomerController::class, 'change_password'])->name('customer.change_password');
-    Route::post('/change-password', [CustomerController::class, 'check_change_password']);
+    Route::post('/change-password', [CustomerController::class, 'check_change_password'])->name('customer.check_change_password');
 
     // THANH TOÁN
     Route::prefix('checkout')->group(function () {
@@ -91,6 +94,8 @@ Route::middleware(CustomerAuth::class)->group(function () {
     Route::get('/orders/history', [CustomerController::class, 'customerOrderHistory'])->name('customer.orders.history');
     Route::post('/orders/cancel', [CustomerController::class, 'customerOrderCancel'])->name('customer.orders.cancel');
     Route::get('/orders/{id}', [CustomerController::class, 'customerOrderDetail'])->name('customer.orders.detail');
+
+
     Route::prefix('wishlist')->group(function () {
         Route::get('/', [FavouriteController::class, 'index'])->name('wishlist.index'); // Xem wishlist
         Route::post('/add/{id}', [FavouriteController::class, 'add'])->name('wishlist.add'); // Thêm sản phẩm vào wishlist
@@ -148,6 +153,7 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
     Route::prefix('order')->group(function () {
         Route::get('/', [AdminOrderController::class, 'index'])->name('order.index');
         Route::get('/pending', [AdminOrderController::class, 'OrderPending'])->name('order.pending');
+        Route::get('/orders/search', [AdminOrderController::class, 'search'])->name('order.search');
         Route::get('/detail/{id}', [AdminOrderController::class, 'show'])->name('order.show');
         Route::put('/{id}/update-status', [AdminOrderController::class, 'updateStatus'])->name('order.updateStatus');
     });
@@ -194,6 +200,21 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
         Route::get('/restore/{id}', [AdminAccountController::class, 'restore'])->name('user.restore');
         Route::delete('/forceDelete/{id}', [AdminAccountController::class, 'forceDelete'])->name('user.forceDelete');
     });
+    //CUSTOMER
+   
+    Route::prefix('customer')->group(function () {
+        Route::get('/', [AdminCustomerController::class, 'index'])->name('customer.index'); 
+        Route::get('/deleted', [AdminCustomerController::class, 'deleted'])->name('customer.deleted'); 
+        Route::get('/search/{config}', [AdminCustomerController::class, 'search'])->name('customer.search'); 
+        Route::get('/create', [AdminCustomerController::class, 'create'])->name('customer.create'); 
+        Route::post('/store', [AdminCustomerController::class, 'store'])->name('customer.store'); 
+        Route::get('/edit/{id}', [AdminCustomerController::class, 'edit'])->name('customer.edit');
+        Route::post('/update/{id}', [AdminCustomerController::class, 'update'])->name('customer.update'); 
+        Route::delete('/destroy/{id}', [AdminCustomerController::class, 'destroy'])->name('customer.destroy'); 
+        Route::get('/restore/{id}', [AdminCustomerController::class, 'restore'])->name('customer.restore'); 
+        Route::delete('/forceDelete/{id}', [AdminCustomerController::class, 'forceDelete'])->name('customer.forceDelete'); 
+    });
+
     //SHOWROOM
     Route::prefix('showroom')->group(function () {
         Route::get('create', [ShowroomController::class, 'create'])->name('showroom.create'); // Route mới
@@ -277,6 +298,5 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
     });
 });
 
-    //Search
-    Route::get('/search', [SearchController::class, 'index'])->name('search');
-
+//Search 
+Route::get('/search', [SearchController::class, 'index'])->name('search');

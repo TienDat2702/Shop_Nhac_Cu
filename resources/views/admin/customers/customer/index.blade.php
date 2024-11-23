@@ -1,5 +1,5 @@
 @extends('admin.layout.layout')
-@section('title', 'Danh mục bài viết')
+@section('title', 'Danh sách khách hàng')
 @section('main')
     <div class="main-content-inner">
         <div class="main-content-wrap">
@@ -19,32 +19,12 @@
                     </li>
                 </ul>
             </div>
-            
             <div class="wg-box">
-                
                 {{-- filter --}}
-                @include('admin.posts.post_category.component.filter')
-                {{-- end filter --}}
+                @include('admin.customers.customer.component.filter')
                 {{-- table --}}
-                @include('admin.posts.post_category.component.table')
-                {{-- end table --}}
+                @include('admin.customers.customer.component.table')
             </div>
-            <nav aria-label="Page navigation example">
-                <ul class="pagination d-flex justify-content-center my-3">
-                    {{ $getDeleted->appends(request()->all())->links() }}
-                </ul>
-            </nav>
         </div>
     </div>
-    </div>
-
-
-    
-@endsection
-
-@section('css')
-
-@endsection
-@section('script')
-
 @endsection

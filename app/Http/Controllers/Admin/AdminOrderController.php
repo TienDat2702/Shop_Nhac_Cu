@@ -8,9 +8,32 @@ use App\Models\Order;
 
 class AdminOrderController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::with(['customer', 'orderDetails'])->withTrashed()->orderBy('created_at', 'desc')->paginate(10);
+        $query = Order::query();
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('id', 'like', "%{$search}%")
+                  ->orWhereHas('customer', function($q) use ($search) {
+                      $q->where('name', 'like', "%{$search}%");
+                  });
+        }
+
+        if ($request->has('sort') && $request->has('direction')) {
+            $sort = $request->input('sort');
+            $direction = $request->input('direction');
+            
+            if ($sort == 'customer_name') {
+                $query->join('customers', 'orders.customer_id', '=', 'customers.id')
+                      ->orderBy('customers.name', $direction);
+            } else {
+                $query->orderBy($sort, $direction);
+            }
+        }
+
+        $orders = $query->paginate(10);
+
         return view('admin.order.index', compact('orders'));
     }
     public function OrderPending()
@@ -18,6 +41,13 @@ class AdminOrderController extends Controller
         $orders = Order::with(['customer', 'orderDetails'])->where('status', 'chờ duyệt')->orderBy('created_at', 'desc')->paginate(10);
         return view('admin.order.pending', compact('orders'));
     }
+    public function search(Request $request)
+{
+    $orderId = $request->input('order_id');
+    $orders = Order::where('id', $orderId)->paginate(10);
+
+    return view('admin.order.pending', compact('orders'));
+}
 
     public function show($id)
     {
