@@ -1,3 +1,4 @@
+{{-- view/admin/posts/post/component/filter.blade.php --}}
 <form action="{{ route('post.index') }}">
     @if ($config == 'deleted')
     <input type="hidden" name="deleted" value="daxoa">

@@ -546,14 +546,14 @@
                                                         title="Quick view">
                                                         <span class="">Xem Ngay</span>
                                                     </a>
-                                                    @if ($product->favouriteByUser(Auth::guard('customer')->user()->id))
+                                                    {{-- @if ($product->favouriteByUser(Auth::guard('customer')->user()->id)) --}}
                                                         <form action="{{ route('wishlist.remove', $product->id) }}" method="POST" style="display:inline;">
                                                             @csrf
                                                             <button type="submit" class="menu-link menu-link_us-s add-to-wishlist">
                                                                 <i class="fa-solid fa-heart"></i>
                                                             </button>
                                                         </form>
-                                                    @else
+                                                    {{-- @else
                                                         <form action="{{ route('wishlist.add', $product->id) }}" method="POST" style="display:inline;">
                                                             @csrf
                                                             <button type="submit" class="menu-link menu-link_us-s add-to-wishlist">
@@ -561,7 +561,7 @@
                                                             </button>
                                                         </form>
                                                     @endif
-                                                
+                                                 --}}
                                                    
                                             </div>
                                         </div>
