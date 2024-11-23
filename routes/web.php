@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\DiscountController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AdminPostCategoryController;
 use App\Http\Controllers\Admin\AdminPostController;
+use App\Http\Controllers\Admin\AdminAccountController;
 use App\Http\Controllers\Admin\AdminProductCategoryController;
 use App\Http\Controllers\Admin\UploadCKImageController;
 use App\Http\Controllers\Ajax\AjaxDashboardController;
@@ -31,7 +32,7 @@ Route::get('/brand/{slug}', [HomeController::class, 'brand'])->name('brands.inde
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
 Route::get('/shop/category/{slug}', [ProductController::class, 'category'])->name('shop.category');
 Route::get('/product/{slug}', [ProductController::class, 'product_details'])->name('product.detail');
-Route::get('/showrooms/map', [UserShowroomController::class, 'showMap'])->name('showrooms.map');
+Route::post('/product/{proId}/comment', [ProductController::class, 'post_comment'])->name('product.comment');
 
 Route::get('/about',[HomeController::class,'about'])->name('about');
 // CONTACT
@@ -81,22 +82,6 @@ Route::middleware(CustomerAuth::class)->group(function () {
         Route::get('/verify/{token}', [CheckoutController::class, 'verify'])->name('checkout.verify');
         Route::get('/showrooms/nearest', [ShowroomController::class, 'findNearestShowroom'])->name('checkout.showroom');
     });
-
-    //comment
-    Route::post('/product/{proId}/comment', [ProductController::class, 'post_comment'])->name('product.comment');
-
-    Route::get('/logout', [CustomerController::class, 'logout'])->name('customer.logout');
-    Route::get('/orders', [CustomerController::class, 'customerOrder'])->name('customer.orders');
-    Route::get('/orders/history', [CustomerController::class, 'customerOrderHistory'])->name('customer.orders.history');
-    Route::post('/orders/cancel', [CustomerController::class, 'customerOrderCancel'])->name('customer.orders.cancel');
-    Route::get('/orders/{id}', [CustomerController::class, 'customerOrderDetail'])->name('customer.orders.detail');
-
-
-    Route::prefix('wishlist')->group(function () {
-        Route::get('/', [FavouriteController::class, 'index'])->name('wishlist.index'); // Xem wishlist
-        Route::post('/add/{id}', [FavouriteController::class, 'add'])->name('wishlist.add'); // Thêm sản phẩm vào wishlist
-        Route::delete('/remove/{id}', [FavouriteController::class, 'remove'])->name('wishlist.remove'); // Xóa sản phẩm khỏi wishlist
-    });
 });
 
 
@@ -106,9 +91,28 @@ Route::get('/reset-password/{token}', [CustomerController::class, 'reset_passwor
 Route::post('/reset-password/{token}', [CustomerController::class, 'check_reset_password'])->name('customer.check_reset_password');
 
 
+Route::get('/logout', [CustomerController::class, 'logout'])->name('customer.logout');
+Route::get('/orders', [CustomerController::class, 'customerOrder'])->name('customer.orders');
+Route::get('/orders/history', [CustomerController::class, 'customerOrderHistory'])->name('customer.orders.history');
+Route::post('/orders/cancel', [CustomerController::class, 'customerOrderCancel'])->name('customer.orders.cancel');
+Route::get('/orders/{id}', [CustomerController::class, 'customerOrderDetail'])->name('customer.orders.detail');
+
+
+// ABOUT
+Route::prefix('wishlist')->group(function () {
+    Route::get('/', [FavouriteController::class, 'index'])->name('wishlist.index'); // Xem wishlist
+    Route::post('/add/{id}', [FavouriteController::class, 'add'])->name('wishlist.add'); // Thêm sản phẩm vào wishlist
+    Route::delete('/remove/{id}', [FavouriteController::class, 'remove'])->name('wishlist.remove'); // Xóa sản phẩm khỏi wishlist
+});
+Route::post('/wishlist/add/{id}', [FavouriteController::class, 'add'])->name('wishlist.add');
+
+// >>>>>>> 74281289260033629c7263f1ebec8294a13387a8
 Route::get('admin/login', [AdminController::class, 'login'])->name('admin.login');
 Route::post('/admin/login', [AdminController::class, 'check_login'])->name('admin.check_login');
-
+Route::get('/admin/forgot', [AdminController::class, 'forgot'])->name('admin.forgot');
+Route::post('/admin/forgot', [AdminController::class, 'check_forgot'])->name('admin.check_forgot');
+Route::get('/admin/reset-password/{token}', [AdminController::class, 'reset_password'])->name('admin.reset_password');
+Route::post('/admin/reset-password/{token}', [AdminController::class, 'check_reset_password'])->name('admin.check_reset_password');
 // AJAX CHANGE PUBLISH
 Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
 

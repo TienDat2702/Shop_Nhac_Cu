@@ -227,6 +227,8 @@
           }'>
                         <div class="swiper-wrapper">
                             {{-- @foreach($banners as $banner)
+                            @if ($banners && count($banners) > 0)
+                            @foreach($banners as $banner)
                             <div class="swiper-slide">
                                 <div class="slide-split h-100 d-block d-md-flex overflow-hidden">
                                     <div class="slide-split_text position-relative d-flex align-items-center"
@@ -407,7 +409,10 @@
                                                 lượt xem</span>
                                         </div>
 
-                                        <button
+                                        <form action="{{ route('wishlist.add', $product->id) }}"
+                                            method="POST" style="display:inline;">
+                                            @csrf
+                                        <button  type="submit"
                                             class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist"
                                             title="Add To Wishlist">
                                             <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
@@ -415,6 +420,8 @@
                                                 <use href="#icon_heart" />
                                             </svg>
                                         </button>
+                                    </form>
+
                                     </div>
                                 </div>
                             </div>

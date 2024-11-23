@@ -10,7 +10,7 @@ class Discount extends Model
     use HasFactory;
     use SoftDeletes;
     protected $fillable = [
-        'code',
+        'name',
         'discount_rate',
         'max_value',
         'start_date',
@@ -29,7 +29,7 @@ class Discount extends Model
     ];
 
     public function scopeGetDiscount($request){
-        return $request->where('end_date', '>', now());
+        return $request->where('end_date', '>', now())->where('publish', 2);
     }
 
     public function orders()

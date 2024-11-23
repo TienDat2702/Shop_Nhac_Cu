@@ -15,9 +15,9 @@
                     <!-- Phần đăng nhập bên phải -->
                     <div class="col-lg-6 p-4">
                         <div class="login-form-wrapper">
-                            <h2 class="text-center mb-4">Admin Login</h2>
+                            <h2 class="text-center mb-4">Đăng nhập quản trị viên</h2>
                             <p class="text-center text-muted mb-4">
-                                Welcome back! Please enter your credentials to access the admin panel.
+                                Chào mừng trở lại! Vui lòng nhập thông tin đăng nhập của bạn để truy cập bảng quản trị.
                             </p>
                             <form method="POST" action="{{ route('admin.check_login') }}" name="login-form"
                                 class="needs-validation" novalidate="">
@@ -25,7 +25,7 @@
                                 <div class="form-floating mb-3">
                                     <input class="form-control form-control_gray" name="email" value=""
                                         autocomplete="email" type="email" placeholder="name@example.com" required>
-                                    <label for="email">Email address *</label>
+                                    <label for="email">Địa chỉ email *</label>
                                     @if ($errors->any())
                                         <span class="error-message">
                                             {{ $errors->first('email') }}
@@ -36,7 +36,7 @@
                                 <div class="form-floating mb-3">
                                     <input id="password" type="password" class="form-control form-control_gray"
                                         name="password" placeholder="Password" required>
-                                    <label for="password">Password *</label>
+                                    <label for="password">Mật khẩu *</label>
                                     @if ($errors->any())
                                         <span class="error-message">
                                             {{ $errors->first('password') }}
@@ -44,12 +44,12 @@
                                     @endif
                                 </div>
 
-                                <button class="btn btn-primary w-100 text-uppercase mb-3" type="submit">Log In</button>
+                                <button class="btn btn-primary w-100 text-uppercase mb-3" type="submit">Đăng nhập</button>
 
                                 <div class="customer-option text-center">
-                                    <span class="text-secondary">No account yet?</span>
-                                    <a href="{{ route('customer.register') }}" class="btn-text">Create Account</a> |
-                                    <a href="{{ route('customer.forgot') }}" class="btn-text">Forgot Password</a>
+                                    <a href="{{ route('admin.forgot') }}" class="btn-text">Bạn quên mật khẩu ?</a> <br>
+                                    
+                                    <a href="{{ route('home.index') }}" class="btn-text"><- quay lại trang showroom TuneNests.com</a> 
                                 </div>
                             </form>
                         </div>

@@ -86,7 +86,6 @@ class CartController extends Controller
             if ($customer) {
                 $loyaltyAmount = $customer->loyaltyLevel->discount_rate * $total;
             }
-
             $discountAmount = $this->applyDiscount($total);
             // dd($validDiscounts);    
             return view('user.cart', compact('products', 'total', 'discountAmount', 'discounts', 'loyaltyAmount'));
@@ -199,7 +198,7 @@ class CartController extends Controller
         try {
             $code = $request->input('coupon_code');
             $carts = session()->get('carts', []);
-
+            
             if (!empty($carts)) {
                 $productIds = array_column($carts, 'id');
                 $products = Product::GetProductPublish()->whereIn('id', $productIds)->get();

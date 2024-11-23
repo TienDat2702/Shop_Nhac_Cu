@@ -33,32 +33,51 @@
                 <form action="{{ route('discount.store') }}" method="POST">
                     @csrf
                     <div class="wg-box">
-                        <div class="form-group">
-                            <label for="code">Mã Giảm Giá</label>
-                            <input type="text" name="code" class="form-control" required>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                <label for="code" class="body-title mb-10" >Tên Mã Giảm Giá</label>
+                                <input type="text" name="name" class="form-control">
+                            </div>
+                            <div class="form-group col-6">
+                                <label class="body-title mb-10" for="discount_rate">Tỷ Lệ Giảm Giá (%)</label>
+                                <input type="number" name="discount_rate" class="form-control">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="discount_rate">Tỷ Lệ Giảm Giá (%)</label>
-                            <input type="number" name="discount_rate" class="form-control" required>
+                        
+                        <div class="row">
+                            <div class="form-group col-6">
+                                <label class="body-title mb-10" for="max_value">Giá Trị Giảm Tối Đa</label>
+                                <input type="number" name="max_value" class="form-control">
+                            </div>
+                            <div class="form-group col-6">
+                                <label class="body-title mb-10" for="use_limit">Giới Hạn Sử Dụng</label>
+                                <input type="number" name="use_limit" class="form-control">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="max_value">Giá Trị Giảm Tối Đa</label>
-                            <input type="number" name="max_value" class="form-control" required>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                <label class="body-title mb-10" for="max_value">Đơn hàng tối thiểu</label>
+                                <input type="number" name="minimum_order_value" class="form-control">
+                            </div>
+                            <div class="form-group col-6">
+                                <label class="body-title mb-10" for="use_limit">Tổng giá tối thiểu</label>
+                                <input type="number" name="minimum_total_value" class="form-control">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="start_date">Ngày Bắt Đầu</label>
-                            <input type="date" name="start_date" class="form-control" required>
+
+                        <div class="row">
+                            <div class="form-group col-6">
+                                <label class="body-title mb-10" for="start_date">Ngày Bắt Đầu</label>
+                                <input type="date" name="start_date" class="form-control">
+                            </div>
+                            <div class="form-group col-6">
+                                <label class="body-title mb-10" for="end_date">Ngày Kết Thúc</label>
+                                <input type="date" name="end_date" class="form-control">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="end_date">Ngày Kết Thúc</label>
-                            <input type="date" name="end_date" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="use_limit">Giới Hạn Sử Dụng</label>
-                            <input type="number" name="use_limit" class="form-control">
-                        </div>
-                        </div>
-                            <button class="tf-button w-full" type="submit">Thêm</button>
+                        
+                        <div class="d-flex justify-content-center">
+                            <button class="tf-button px-5" type="submit">Thêm</button>
                         </div>
                     </div>
                 </form>

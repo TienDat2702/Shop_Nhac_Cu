@@ -29,7 +29,8 @@ class FavouriteController extends Controller
             ->first();
 
         if ($existingFavourite) {
-            return redirect()->back()->with('error', 'Sản phẩm đã có trong danh sách yêu thích.');
+            toastr()->warning('Sản phẩm đã được yêu thích.');
+            return redirect()->back();
         }
 
         try {

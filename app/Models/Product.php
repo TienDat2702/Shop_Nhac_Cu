@@ -47,10 +47,10 @@ class Product extends Model
     public function scopeGetProductPublish($query) {
         return $query->where('publish', 2);
     }
-   
+
     public function scopeGenerateUniqueSlug($query, $str)
     {
-        // Tạo slug 
+        // Tạo slug
         $slug = Str::slug($str);
 
         // tìm xem slug có tồn tại hay chưa
@@ -89,6 +89,12 @@ class Product extends Model
     {
         return $this->belongsTo(Brand::class, 'brand_id');
     }
+
+    public function favouriteByUser($userId)
+    {
+        return $this->hasOne(Favourite::class, 'product_id', 'id')->where('user_id', $userId);
+    }
+
     public function productCategory1()
     {
         return $this->belongsTo(ProductCategory::class);

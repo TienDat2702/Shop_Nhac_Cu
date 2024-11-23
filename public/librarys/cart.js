@@ -3,7 +3,7 @@
     "use strict";
     var HT = {};
     var _token = $('meta[name="csrf-token"]').attr('content');
-    
+
     HT.addToCart = () => {
         $('.add-to-cart').on('click', function(event){
             event.preventDefault();
@@ -30,14 +30,14 @@
             });
         })
     }
-    
+
     HT.removeCart = () => {
         $('.remove-cart').on('click', function(event){
             event.preventDefault();
             let _this = $(this);
             let urlCart = _this.data('url');
             let product_id = _this.data('id'); // Lấy ID sản phẩm từ thuộc tính data-id
-    
+
             $.ajax({
                 type: 'POST',
                 url: urlCart, // Sử dụng đường dẫn tương đối
@@ -54,7 +54,7 @@
                     var loyaltyAmount = parseFloat(data.loyaltyAmount.toString().replace(/,/g, '')) || 0;
 
                     var totalAmount = total - loyaltyAmount;
-                    
+
                     // Cập nhật giá trị vào giao diện người dùng
                     $('#totalAmount').text(totalAmount.toLocaleString() + ' VNĐ');
 
@@ -85,12 +85,12 @@
             e.preventDefault();
             var couponCode = $('input[name="voucher"]:checked').val(); // Lấy giá trị mã giảm giá đã chọn từ radio button
             var url = $(this).data('url'); // Lấy URL từ dữ liệu của nút bấm
-        
+
             // if (!couponCode) {
             //     toastr.error('Vui lòng chọn mã giảm giá!');
             //     return; // Dừng lại nếu chưa chọn mã giảm giá
             // }
-        
+
             $.ajax({
                 url: url,
                 type: 'POST',
@@ -105,9 +105,9 @@
                     // Cập nhật các giá trị hiển thị
                     var total = parseFloat(data.total.toString().replace(/,/g, '')) || 0;
                     var loyaltyAmount = parseFloat(data.loyaltyAmount.toString().replace(/,/g, '')) || 0;
-    
+
                     var totalAmount = total - loyaltyAmount;
-    
+
                     // Cập nhật giá trị vào giao diện người dùng
                     $('#totalAmount').text(totalAmount.toLocaleString() + ' VNĐ');
                     $('#loyalty_rate_Amount').text(loyaltyAmount.toLocaleString() + ' VNĐ');
@@ -122,7 +122,7 @@
             $('.box-voucher').hide();  // Ẩn hộp voucher
         });
     };
-    
+
 
     HT.changeQuantity = () => {
         $('.qty-control__number').on('change', function() {
@@ -162,11 +162,11 @@
                     $('#loyalty_rate_Amount').text(loyaltyAmount.toLocaleString() + ' VNĐ');
                     $('#subtotalAmount').text(response.subtotal + ' VNĐ');
                     $('#discountAmount').text(response.discountAmount.toLocaleString() + ' VNĐ')
-                    $(`.shopping-cart__subtotal-${productId}`).text(response.productTotal + ' VNĐ'); 
-                    
+                    $(`.shopping-cart__subtotal-${productId}`).text(response.productTotal + ' VNĐ');
+
                     // cập nhật voucher
                     HT.updateVoucherList(response.validDiscounts, total);
-                    
+
 
                 }
             },
@@ -187,29 +187,37 @@
             var disabledClass = (val.use_count >= val.use_limit || total < val.minimum_total_value) ? 'disabled-voucher' : '';
             var disabledAttribute = (val.use_count >= val.use_limit || total < val.minimum_total_value) ? 'disabled' : '';
             var daysLeft = Math.ceil((new Date(val.end_date) - new Date()) / (1000 * 60 * 60 * 24));
-            var voucherItem = `
-                <div class="voucher_item ${disabledClass}">
-                    <div class="voucher_image">
-                        <img src="http://127.0.0.1:8000/images/voucher1.png" alt="Voucher Logo">
-                    </div>
-                    <div class="voucher_content">
-                        <div class="voucher_name">${val.name}</div>
-                        <div class="voucher_des">
-                            <span>Đơn tối thiểu ${Number(val.minimum_total_value).toLocaleString()} VNĐ</span>
+            if (discounts.length > 1) {
+                var voucherItem = `
+                    <div class="voucher_item ${disabledClass}">
+                        <div class="voucher_image">
+                            <img src="http://127.0.0.1:8000/images/voucher1.png" alt="Voucher Logo">
                         </div>
-                        <div class="voucher_des">
-                            <span>Giảm tối đa ${Number(val.max_value).toLocaleString()} VNĐ </span>
+                        <div class="voucher_content">
+                            <div class="voucher_name">${val.name}</div>
+                            <div class="voucher_des">
+                                <span>Đơn tối thiểu ${Number(val.minimum_total_value).toLocaleString()} VNĐ</span>
+                            </div>
+                            <div class="voucher_des">
+                                <span>Giảm tối đa ${Number(val.max_value).toLocaleString()} VNĐ </span>
+                            </div>
+                            <div class="voucher_des d-flex align-items-center justify-content-between">
+                                <span>Hạn còn: ${ daysLeft } ngày</span>
+                                <span>SL: ${val.use_limit - val.use_count}</span>
+                            </div>
                         </div>
-                        <div class="voucher_des d-flex align-items-center justify-content-between">
-                            <span>Hạn còn: ${ daysLeft } ngày</span>
-                            <span>SL: ${val.use_limit - val.use_count}</span>
+                        <div class="voucher_radio">
+                            <input type="radio" name="voucher" value="${val.id }" ${disabledAttribute}>
                         </div>
                     </div>
-                    <div class="voucher_radio">
-                        <input type="radio" name="voucher" value="${val.id }" ${disabledAttribute}>
-                    </div>
-                </div>
-            `;
+                `;
+            }else{
+                var voucherItem =
+                    `<div class="text-center not-fount-voucher">
+                        <i style="font-size: 50px; margin-bottom:10px" class="fa-solid fa-circle-exclamation"></i>
+                        <h4>Hiện bạn chưa có phiếu giảm giá</h4>
+                    </div>`
+            }
 
             voucherBody.append(voucherItem); // Thêm voucher vào giao diện
         });
@@ -258,7 +266,7 @@
                     });
                 }
             });
-            
+
         })
     }
 

@@ -17,7 +17,7 @@
             <div class="row">
                 @foreach ($products as $product)
                     <div class="col-6 col-md-4 col-lg-3">
-                        <div class="product-card product-card_style3 mb-3 mb-md-4 mb-xxl-5">
+                        <div class="product-card product-index product-card_style3 mb-3 mb-md-4 mb-xxl-5">
                             <div class="pc__img-wrapper">
                                 <a href="{{ route('product.detail', $product->slug) }}">
                                     <img loading="lazy" src="{{ asset('uploads/products/product/' . $product->image) }}"
@@ -45,12 +45,18 @@
                                         class="btn-link btn-link_lg me-4 text-uppercase fw-medium" title="Quick view">
                                         <span class="">Xem Ngay</span>
                                     </a>
-                                    <button class="pc__btn-wl bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                                        <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <use href="#icon_heart" />
-                                        </svg>
-                                    </button>
+                                    <form action="{{ route('wishlist.add', $product->id) }}"
+                                        method="POST" style="display:inline;">
+                                        @csrf
+                                        <button type="submit"
+                                            class="menu-link menu-link_us-s add-to-wishlist">
+                                            <svg width="16" height="16" viewBox="0 0 20 20"
+                                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <use href="#icon_heart" />
+                                            </svg>
+
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </div>

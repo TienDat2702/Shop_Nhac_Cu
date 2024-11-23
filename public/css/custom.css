@@ -1077,12 +1077,6 @@ button.menu-link.menu-link_us-s.add-to-wishlist {
     background: #fff;
 }
 
-
-
-
-
-
-
 /* product */
 .product-card{
     border: 1px solid;
@@ -1095,7 +1089,7 @@ button.menu-link.menu-link_us-s.add-to-wishlist {
     margin-right: 15px !important;
 }
 .pc__info.position-relative {
-    height: 60px;
+    height: 68px;
 }
 /*end product */
 
@@ -1361,3 +1355,9 @@ a.btn-link.btn-link_lg.default-underline.fw-medium.animate.animate_fade.animate_
     bottom: 300px;
     right: 100px;
 }
+
+.product-index  .pc__info > h6.pc__title {
+    overflow: hidden !important;
+    height: 38px !important;
+}
+
