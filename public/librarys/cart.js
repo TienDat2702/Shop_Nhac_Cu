@@ -127,6 +127,10 @@
     HT.changeQuantity = () => {
         $('.qty-control__number').on('change', function() {
             HT.change_quantity($(this))
+            // if ($(this).val() <= 0) {
+            //     $(this).val(1);
+            // }
+           
         })
         $('.qty-control__reduce').on('click', function(){
             var input = $(this).closest('tr').find('.qty-control__number');
@@ -142,6 +146,10 @@
         var quantity = input.val(); // Lấy số lượng từ input
         var url = input.data('url')
 
+        if (quantity <= 0) {
+            quantity = 1;
+        }
+
         $.ajax({
             type: 'POST',
             url: url, // Cập nhật đường dẫn tương ứng
@@ -156,7 +164,8 @@
                     var loyaltyAmount = parseFloat(response.loyaltyAmount.toString().replace(/,/g, '')) || 0;
 
                     var totalAmount = total - loyaltyAmount;
-
+                    // số lượng
+                    $('.qty-control__number').text(1);
                     // Cập nhật giá trị vào giao diện người dùng
                     $('#totalAmount').text(totalAmount.toLocaleString() + ' VNĐ');
                     $('#loyalty_rate_Amount').text(loyaltyAmount.toLocaleString() + ' VNĐ');
@@ -221,6 +230,14 @@
 
             voucherBody.append(voucherItem); // Thêm voucher vào giao diện
         });
+    }
+
+    HT.checkNumber = () => {
+        $('#quantity').on('change', function() {
+            if ($(this).val() < 1 || isNaN($(this).val())) {
+                $(this).val(1);
+            }
+        })
     }
 
     HT.ClearCart = () => {
@@ -292,7 +309,7 @@
         HT.changeQuantity();
         HT.ClearCart();
         HT.ClickVoucher()
-
+        HT.checkNumber();
     });
 
 })(jQuery);

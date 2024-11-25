@@ -104,13 +104,14 @@
                     </div>
                 @else
                     <div class="header-tools__item hover-container">
-                        <a href="{{ route('customer.profile') }}" class="header-tools__item">
+                        <a href="{{ route('customer.profile') }}" class="header-tools__item btn_redirect" data-route='customer.profile'> 
                                 <i class="fa fa-user" style="font-size: 23px;" aria-hidden="true"></i>
                         </a>
                     </div>
                 @endif
-                <a href="{{ route('wishlist.index') }}" class="header-tools__item header-tools__cart">
+                <a href="{{ route('wishlist.index') }}" class="header-tools__item header-tools__cart btn_redirect" data-route='wishlist.index'>
                     <i style="font-size: 23px;" class="fa-solid fa-heart"></i>
+                    <span class="cart-amount d-block position-absolute js-cart-items-count">{{ count($favourite) }}</span>
                 </a>
 
                 @php
@@ -123,7 +124,7 @@
                 </a>
 
                 @if (Auth::guard('customer')->check())
-                    <a href="{{ route('customer.logout') }}" class="header-tools__item"><i class="fa fa-sign-out"
+                    <a href="{{ route('customer.logout') }}" class="header-tools__item btn_logout_redirect"><i class="fa fa-sign-out"
                             style="font-size: 22px;" aria-hidden="true"></i></a>
                 @endif
             </div>

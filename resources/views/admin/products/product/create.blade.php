@@ -70,6 +70,13 @@
                 value="{{ old('stock' ?? '' ) }}">
         </fieldset>
 
+        <fieldset class="short_description">
+            <div class="form-short_description mt-3">
+                <div class="body-title mb-10">Mô tả ngắn</div>
+                <textarea type="text" name="short_description" class="form-control ck-editor" autocomplete="off" id="short_description">{{ old('short_description' ?? '') }}</textarea>
+            </div>
+        </fieldset>
+
         <fieldset class="description">
             <div class="form-description mt-3">
                 <div class="body-title mb-10">Mô tả</div>
@@ -115,6 +122,13 @@
                             @if ($val->id == old('category_id')) selected
                             @endif
                             value="{{ $val->id }}">
+                            @php
+                                $str = '';
+                                for ($i=0; $i < $val->level ; $i++) {
+                                    echo $str;
+                                    $str .= '-- ';    
+                                }
+                            @endphp 
                                 {{ $val->name }}
                             </option>
                         @endforeach

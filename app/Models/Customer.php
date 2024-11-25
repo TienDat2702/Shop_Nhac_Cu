@@ -47,6 +47,11 @@ class Customer extends Authenticatable
         return $this->hasMany(Order::class, 'customer_id', 'id');
     }
 
+
+    public function favourites()
+    {
+        return $this->hasMany(Favourite::class, 'customer_id', 'id');
+    }
     // Lấy danh sách customer được publish
     public function scopeGetCustomerPublish($query)
     {

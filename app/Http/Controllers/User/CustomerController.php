@@ -35,11 +35,20 @@ class CustomerController extends Controller
         if ($customer && is_null($customer->email_verified_at)) {
             return redirect()->route('customer.login')->with('error', 'Vui lòng xác minh email của bạn trước khi đăng nhập.');
         }
+        $route = 'home.index';
+        // Lấy route từ request (giá trị từ input hidden)
+        $route = $request->input('last_route', $route);
+        $slug = $request->input('last_slug', null); // Lấy slug nếu có
 
         if (Auth::guard('customer')->attempt($credentials)) {
-            return redirect()->route('home.index')->with('success', 'Đăng nhập thành công');
+            // Nếu có slug, chuyển hướng về trang chi tiết sản phẩm
+            if ($slug != 'undefined') {
+                return redirect()->route('product.detail', ['slug' => $slug])->with('success', 'Đăng nhập thành công');
+            }
+    
+            // Nếu không có slug, chuyển hướng về trang đã lưu trong $route
+            return redirect()->route($route)->with('success', 'Đăng nhập thành công');
         } else {
-            \Log::info('Đăng nhập thất bại với thông tin: ', $credentials);
             return redirect()->route('customer.login')->with('error', 'Email hoặc Mật khẩu không chính xác');
         }
     }
@@ -80,8 +89,8 @@ class CustomerController extends Controller
     public function logout(Request $request)
     {
         Auth::guard('customer')->logout();
-
-        $request->session()->invalidate();
+      
+        // $request->session()->invalidate();
         $request->session()->regenerateToken();
 
         return redirect()->route('customer.login');

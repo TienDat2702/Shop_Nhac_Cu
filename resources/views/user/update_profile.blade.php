@@ -107,11 +107,8 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-floating my-3">
-                                        <input type="password" class="form-control" placeholder="Mật khẩu" name="password" required="">
-                                        <label for="password">Mật khẩu</label>
-                                        @error('password')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
+                                        <a class="unerline-link"
+                                href="{{ route('customer.change_password') }}">chỉnh sửa mật khẩu</a>.</p>
                                     </div>
                                 </div>
                                 <div class="col-md-12">

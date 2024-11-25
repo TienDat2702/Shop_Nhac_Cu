@@ -92,4 +92,3 @@
             text-align: center; /* Căn giữa các nội dung có class text-center */
         }
     </style>
-@endsection

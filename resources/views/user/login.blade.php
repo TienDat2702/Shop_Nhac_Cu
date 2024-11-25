@@ -44,8 +44,10 @@
                                 </span>
                             @endif
                             </div>
-
-                            <button class="btn btn-primary w-100 text-uppercase" type="submit">Đăng nhập</button>
+                            <!-- Thẻ input ẩn để lưu giá trị từ localStorage -->
+                            <input type="hidden" class="input_login_redirect" name="last_route" id="last_route">
+                            <input type="hidden" class="input_slug_redirect" name="last_slug" value="" />
+                            <button class="btn btn-primary w-100 text-uppercase btn_login_redirect" type="submit">Đăng nhập</button>
 
                             <div class="customer-option mt-4 text-center">
                                 <span class="text-secondary">Bạn chưa có tài khoản ?</span>
@@ -53,6 +55,7 @@
                                 <a href="{{route('customer.forgot')}}" class="btn-text js-show-register">Quên mật khẩu</a> 
                             </div>
                         </form>
+                       
                     </div>
                 </div>
             </div>

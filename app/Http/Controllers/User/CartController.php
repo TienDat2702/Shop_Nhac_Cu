@@ -112,6 +112,7 @@ class CartController extends Controller
             }
 
             session()->put('carts', $carts);
+            
             return response()->json(['message' => 'Thêm giỏ hàng thành công.', 'cartCount' => count($carts)]);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
@@ -144,7 +145,7 @@ class CartController extends Controller
     {
         // try {
             $carts = session()->get('carts', []);
-
+        
             // Kiểm tra xem sản phẩm có trong giỏ hàng không
             if (!isset($carts[$id])) {
                 return response()->json(['error' => 'Không tồn tại sản phẩm trong giỏ hàng'], 404);

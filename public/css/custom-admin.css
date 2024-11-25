@@ -64,3 +64,11 @@
 .my-account.wg-box.mt-5 {
   height: 320px;
 }
+
+button.btn.btn-delete-product.text-success {
+  font-size: 16px;
+  text-decoration: underline;
+}
+select.form-control {
+  font-size: 16px;
+}

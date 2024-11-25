@@ -365,63 +365,39 @@
                                     </div>
 
                                     <div class="pc__info position-relative">
-                                        <p class="pc__category">
-                                            {{ $product->productCategory ? $product->productCategory->name : 'Không có danh mục' }}
-                                        </p>
                                         <h6 class="pc__title"><a
                                                 href="{{ route('product.detail', $product->slug) }}">{{ $product->name }}</a>
                                         </h6>
-                                        <div class="product-card__price d-flex">
-                                            @if ($product->price_sale == null)
-                                                <span class="money price">{{ number_format($product->price) }} VNĐ</span>
-                                            @else
-                                                <span class="money price-old">{{ number_format($product->price) }}
-                                                    VNĐ</span>
-                                                <span class="money price">{{ number_format($product->price_sale) }}
-                                                    VNĐ</span>
-                                            @endif
-                                        </div>
-                                        <div class="product-card__review d-flex align-items-center">
-                                            <div class="reviews-group d-flex">
-                                                <svg class="review-star" viewBox="0 0 9 9"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <use href="#icon_star" />
-                                                </svg>
-                                                <svg class="review-star" viewBox="0 0 9 9"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <use href="#icon_star" />
-                                                </svg>
-                                                <svg class="review-star" viewBox="0 0 9 9"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <use href="#icon_star" />
-                                                </svg>
-                                                <svg class="review-star" viewBox="0 0 9 9"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <use href="#icon_star" />
-                                                </svg>
-                                                <svg class="review-star" viewBox="0 0 9 9"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <use href="#icon_star" />
-                                                </svg>
-                                            </div>
-                                            <span
-                                                class="reviews-note text-lowercase text-secondary ms-1">{{ $product->view }}
-                                                lượt xem</span>
-                                        </div>
+                                        <div class="product-card__price d-flex justify-content-between">
 
-                                        <form action="{{ route('wishlist.add', $product->id) }}"
-                                            method="POST" style="display:inline;">
-                                            @csrf
-                                        <button  type="submit"
-                                            class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist"
-                                            title="Add To Wishlist">
-                                            <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_heart" />
-                                            </svg>
-                                        </button>
-                                    </form>
-
+                                            @if ($product->price_sale > 0)
+                                                <span class="money price me-2">
+                                                    {{ number_format($product->price_sale) }} VNĐ
+                                                </span>
+                                                <span class="money price text-secondary"><del>{{ number_format($product->price) }}
+                                                        VNĐ</del>
+                                                @else
+                                                    {{ number_format($product->price) }} VNĐ
+                                                 @endif
+                                            </span>
+                                            @if (array_key_exists($product->id, $product_favourite)) <!-- Sản phẩm đã yêu thích -->
+                                                <form action="{{ route('wishlist.remove', $product_favourite[$product->id]) }}" method="POST" style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="menu-link menu-link_us-s add-to-wishlist">
+                                                        <i class="fa-solid fa-heart"></i> <!-- Trái tim tô đen -->
+                                                    </button>
+                                                </form>
+                                            @else <!-- Sản phẩm chưa yêu thích -->
+                                                <form action="{{ route('wishlist.add', $product->id) }}" method="POST" style="display:inline;">
+                                                    @csrf
+                                                    <button type="submit" class="menu-link menu-link_us-s add-to-wishlist">
+                                                        <i class="fa-regular fa-heart"></i> <!-- Trái tim rỗng -->
+                                                    </button>
+                                                </form>
+                                        @endif 
+                                        </div>
+                                          
                                     </div>
                                 </div>
                             </div>

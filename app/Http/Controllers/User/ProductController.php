@@ -85,14 +85,21 @@ class ProductController extends Controller
                 $productsQuery->where('category_id', $category->id);
             }
         }
+
+        $customer = Auth::guard('customer')->user();
+        $product_favourite = [];
+        if ( $customer) {
+            $product_favourite = $customer->favourites->pluck('id','product_id')->toArray();
+        }
+
         // Phân trang sản phẩm
         $products = $productsQuery->paginate(9);
 
         if (!$products->isEmpty()) {
-            return view('user.shop', compact('products', 'productCategories', 'brands', 'banners', 'priceSegments'))->with('currentCategory', null);
+            return view('user.shop', compact('products', 'productCategories','product_favourite', 'brands', 'banners', 'priceSegments'))->with('currentCategory', null);
         } else {
             toastr()->warning('Không có sản phẩm!');
-            return view('user.shop', compact('products', 'productCategories', 'brands', 'banners', 'priceSegments'))->with('currentCategory', null);
+            return view('user.shop', compact('products', 'productCategories','product_favourite', 'brands', 'banners', 'priceSegments'))->with('currentCategory', null);
         }
     }
 
@@ -169,15 +176,19 @@ class ProductController extends Controller
         if ($request->filled('brand_ids')) {
             $productsQuery->whereIn('brand_id', $request->brand_ids);
         }
-
+        $customer = Auth::guard('customer')->user();
+        $product_favourite = [];
+        if ( $customer) {
+            $product_favourite = $customer->favourites->pluck('id','product_id')->toArray();
+        }
         // Thực hiện phân trang
         $products = $productsQuery->paginate(9);
 
         if (!$products->isEmpty()) {
-            return view('user.shop', compact('products', 'productCategories', 'brands','banners', 'priceSegments'))->with('currentCategory', $category);
+            return view('user.shop', compact('products', 'productCategories', 'product_favourite', 'brands','banners', 'priceSegments'))->with('currentCategory', $category);
         } else {
             toastr()->warning('Không có sản phẩm!');
-            return view('user.shop', compact('products', 'productCategories', 'brands','banners', 'priceSegments'))->with('currentCategory', $category);
+            return view('user.shop', compact('products', 'productCategories','product_favourite', 'brands','banners', 'priceSegments'))->with('currentCategory', $category);
         }
     }
 
@@ -203,7 +214,12 @@ class ProductController extends Controller
 
         $comments = Comment::where('product_id', $product->id)->with('customer')->latest()->get();
 
-        return view('user.product_detail', compact('product', 'brand', 'product_images', 'product_related', 'comments'));
+        $customer = Auth::guard('customer')->user();
+        $product_favourite = [];
+        if ( $customer) {
+            $product_favourite = $customer->favourites->pluck('id','product_id')->toArray();
+        }
+        return view('user.product_detail', compact('product', 'brand', 'product_images','product_favourite', 'product_related', 'comments'));
     }
 
     public function post_comment($proId, Request $request)

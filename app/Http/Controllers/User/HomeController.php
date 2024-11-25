@@ -14,6 +14,7 @@ use App\Models\ProductCategory;
 use App\Models\Showroom;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use PhpParser\Node\Expr\New_;
 
@@ -25,40 +26,54 @@ class HomeController extends Controller
                  ->where('publish', 2)
                  ->get();
         $product_views = Product::GetProductPublish()->orderBy('view', 'desc')->take(4)->get();
-        $product_price = Product::GetProductPublish()->orderBy('price_sale', 'asc')->take(8)->get();
-        // $product_views = Product::orderBy('view', 'desc')->where('publish', 2)->take(2)->get();
-        // $product_price = Product::orderBy('price_sale', 'asc')->where('publish', 2)->take(8)->get();
+        $product_price = Product::GetProductPublish()->where('price_sale', '>', 0)->orderBy('price_sale', 'asc')->take(8)->get();
         $products = Product::GetProductPublish()->orderBy('updated_at', 'desc')->paginate(8);
+
         $product_cateogries = ProductCategory::where('publish',2)->where('level',1)->take(6)->get();
+
+
+         // Lấy danh mục cha và tất cả sản phẩm liên quan (cả cha lẫn con)
+        $product_cateogries = ProductCategory::with(['children', 'products' => function ($query) {
+            $query->where('publish', 2);
+        }])
+        ->where('publish', 2)
+        ->where('level', 1)
+        ->get();
+
+        // Xử lý danh sách sản phẩm cho từng danh mục cha
+        $categoriesWithProducts = $product_cateogries->map(function ($category) {
+            $childCategoryIds = $category->children->pluck('id')->toArray();
+
+            // Gộp sản phẩm từ danh mục cha và danh mục con
+            $products = Product::where('publish', 2)
+                ->whereIn('category_id', array_merge([$category->id], $childCategoryIds))
+                ->take(4) // Giới hạn 4 sản phẩm
+                ->get();
+
+            return [
+                'category' => $category,
+                'products' => $products,
+            ];
+        });
+
         $posts = Post::GetPostPublish()->limit(4)->get();
         $post_category_event = PostCategory::GetAllByPublish()->where('name', 'Sự Kiện')->first();
-        // if ($post_category_event) {
-        //     // Lấy tất cả các ID của danh mục con
-        //     $post_category_event_child_ids = PostCategory::GetAllByPublish()
-        //         ->where('parent_id', $post_category_event->id)
-        //         ->pluck('id')
-        //         ->toArray();
-
-        //     // Lấy các bài viết thuộc danh mục cha "Sự Kiện" hoặc các danh mục con của nó
-        //     $posts = Post::GetPostPublish()
-        //         ->where('post_category_id', $post_category_event->id)
-        //         ->orWhereIn('post_category_id', $post_category_event_child_ids)
-        //         ->limit(4)
-        //         ->get();
-        // }else{
-        //     $posts = Post::GetPostPublish()
-        //     ->limit(4)
-        //     ->get();
-        // }
-
+        
+        $customer = Auth::guard('customer')->user();
+        $product_favourite = [];
+        if ( $customer) {
+            $product_favourite = $customer->favourites->pluck('id','product_id')->toArray();
+        }
         return view('user.index', compact(
-            'brands',
-            'product_views',
-            'product_price',
-            'products',
-            'banners',
+            'brands', 
+            'product_favourite', 
+            'product_views', 
+            'product_price', 
+            'products', 
+            'banners', 
             'posts',
-            'product_cateogries'
+            'product_cateogries',
+            'categoriesWithProducts'
         ));
     }
     public function about(){
@@ -72,7 +87,12 @@ class HomeController extends Controller
     public function brand($slug){
         $brand = Brand::where('slug',$slug)->first();
         $products = Product::GetProductPublish()->where('brand_id',$brand->id)->get();
-        return view('user.brand',compact('products','brand'));
+        $customer = Auth::guard('customer')->user();
+        $product_favourite = [];
+        if ( $customer) {
+            $product_favourite = $customer->favourites->pluck('id','product_id')->toArray();
+        }
+        return view('user.brand',compact('products','brand', 'product_favourite'));
     }
     public function postContact(ContactRequest $request){
         $contact = $request->validated();

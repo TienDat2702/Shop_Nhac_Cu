@@ -34,9 +34,12 @@ button.remove-cart {
     width: 100%;
     height: auto;
 }
-.shopping-cart .cart-table tbody td {
-    padding: 1.875rem 0.875rem;
+@media (min-width: 1440px){
+    .shopping-cart .cart-table tbody td {
+        padding: 1.875rem 0.875rem;
+    }
 }
+
 
 select.input-filter option {
     padding: 50px !important; /* Thay đổi giá trị padding tùy ý */

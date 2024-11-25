@@ -17,7 +17,7 @@ class AdminAuth
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!Auth::check() || !Auth::user()->isAdmin()) {
+        if (!Auth::check() || !Auth::user()) {
             // Chuyển hướng người dùng nếu chưa đăng nhập hoặc không phải admin
             return redirect()->route('admin.login');
         }

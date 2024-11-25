@@ -70,7 +70,7 @@ Route::post('/register', [CustomerController::class, 'check_register'])->name('c
 Route::middleware(CustomerAuth::class)->group(function () {
     Route::get('/profile', [CustomerController::class, 'profile'])->name('customer.profile');
     Route::post('/profile', [CustomerController::class, 'check_profile'])->name('customer.chek_profile');
-    Route::get('/update-profile',[CustomerController::class,'update_profile'])->name('customer.update');
+    Route::get('/update-profile',[CustomerController::class,'update_profile'])->name('customer.update.profile');
     Route::post('/update-profile',[CustomerController::class,'check_update_profile'])->name('customer.check_update');
     Route::get('/change-password', [CustomerController::class, 'change_password'])->name('customer.change_password');
     Route::post('/change-password', [CustomerController::class, 'check_change_password'])->name('customer.check_change_password');

@@ -103,15 +103,15 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class, 'role_id', 'id');
     }
-       // Kiểm tra nếu người dùng là admin
-       public function isAdmin()
-       {
-           return $this->role_id === 2; // role_id = 2 là admin
-       }
-   
-       // Kiểm tra nếu người dùng là customer
-       public function isCustomer()
-       {
-           return $this->role_id === 1; // role_id = 1 là khách hàng
-       }
+    // Kiểm tra nếu người dùng là admin
+    public function isAdmin()
+    {
+        return $this->role_id === 1; // role_id = 1 là admin
+    }
+
+    // Kiểm tra nếu người dùng là customer
+    public function isCustomer()
+    {
+        return $this->role_id === 2; // role_id = 2 là khách hàng
+    }
 }

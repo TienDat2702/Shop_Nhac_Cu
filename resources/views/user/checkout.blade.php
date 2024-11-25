@@ -288,12 +288,6 @@ document.getElementById('checkoutForm').addEventListener('submit', function(even
         isValid = false;
     }
 
-    // Kiểm tra nếu mảng nearestShowrooms rỗng hoặc không tồn tại
-    if (isValid && (!Array.isArray(nearestShowrooms) || nearestShowrooms.length === 0)) {
-        toastr.error("Vui lòng nhập 'Địa Chỉ Thành Phố' chính xác và chậm lại", "Lỗi");
-        isValid = false;
-    }
-
     // Nếu có lỗi thì ngăn chặn gửi form
     if (!isValid) {
         event.preventDefault();
