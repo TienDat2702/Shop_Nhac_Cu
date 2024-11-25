@@ -246,109 +246,129 @@ class CheckoutController extends Controller
         }
     }
 
-    public function onlineCheckout(CheckoutRequest $request) {
-        $method = $request->input('checkout_payment_method');
-        $carts = session()->get('carts', []);
-        $products = Product::GetProductPublish()->whereIn('id', array_column($carts, 'id'))->get();
+    public function onlineCheckout(CheckoutRequest $request)
+{
+    $method = $request->input('checkout_payment_method');
+    $carts = session()->get('carts', []);
+    $products = Product::GetProductPublish()->whereIn('id', array_column($carts, 'id'))->get();
 
-        // Tính toán tổng tiền giỏ hàng
-        $subtotal = $this->calculateTotal($carts, $products);
-        $discountAmount = $this->applyDiscount($subtotal); // Tính giảm giá
-        $loyaltyAmount = $this->loyatal_level($subtotal); // giảm giá thành viên
-        $total = $subtotal - $discountAmount - $loyaltyAmount; // Tính tổng số tiền sau khi giảm giá
-        $token = Str::random(40); // tạo token xác nhận
+    // Calculate total cart value
+    $subtotal = $this->calculateTotal($carts, $products);
+    $discountAmount = $this->applyDiscount($subtotal); // Apply discount
+    $loyaltyAmount = $this->loyatal_level($subtotal); // Apply loyalty discount
+    $total = $subtotal - $discountAmount - $loyaltyAmount; // Final total after discounts
+    $token = Str::random(40); // Generate confirmation token
 
-        // Lấy thông tin showroom gần nhất từ request (nếu có)
-        $nearestShowrooms = json_decode($request->input('nearest_showrooms'), true);
+    // Retrieve nearest showroom info from request (if any)
+    $nearestShowrooms = json_decode($request->input('nearest_showrooms'), true);
 
-        if ($nearestShowrooms) {
-            // Sắp xếp showroom theo khoảng cách từ gần đến xa
-            usort($nearestShowrooms, function ($a, $b) {
-                return $a['distance'] <=> $b['distance']; // So sánh khoảng cách
-            });
-        }
-
-        // Dữ liệu đơn hàng
-        $data = [
-            'customer_id' => Auth::guard('customer')->user()->id,
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'phone' => $request->input('phone'),
-            'address' => $request->input('address'),
-            'status' => 'Chưa xác nhận',
-            'payment_method' => $method,
-            'customer_note' => $request->input('customer_note'),
-            'total' => $total,
-            'token' => $token,
-        ];
-        $order = Order::create($data);
-
-        if ($order) {
-            session(['order' => $order->id]); // lưu vào session
-            foreach ($products as $product) {
-                $detail = [
-                    'order_id' => $order->id,
-                    'product_id' => $product->id,
-                    'quantity' => $carts[$product->id]['quantity'],
-                    'price' => $product->price_sale ? $product->price_sale : $product->price,
-                ];
-                OrderDetail::create($detail);
-
-                // Giảm số lượng tồn kho sản phẩm trong showroom gần nhất
-                $remainingQuantity = $carts[$product->id]['quantity']; // Tổng số lượng cần giảm
-                // Duyệt qua các showroom gần nhất và cập nhật tồn kho
-                if ($nearestShowrooms) {
-                    foreach ($nearestShowrooms as $showroom) {
-                        // Tìm bản ghi showroom_product dựa trên showroom_id và product_id
-                        $showroomProduct = ShowroomProduct::where('showroom_id', $showroom['id'])
-                            ->where('product_id', $product->id)
-                            ->first();
-
-                        if ($showroomProduct && $showroomProduct->stock >= $remainingQuantity) {
-                            // Trừ số lượng tồn kho của sản phẩm trong showroom
-                            ShowroomProduct::where('showroom_id', $showroom['id'])
-                                ->where('product_id', $product->id)
-                                ->decrement('stock', $remainingQuantity);
-
-                            // Đã tìm thấy showroom đủ stock, gán remainingQuantity bằng 0 để thoát khỏi vòng lặp
-                            $remainingQuantity = 0;
-                            break;
-                        }
-                    }
-                }
-
-                // Nếu sau khi duyệt hết các showroom mà số lượng vẫn còn, có thể thông báo lỗi
-                if ($remainingQuantity > 0) {
-                    toastr()->error("Sản phẩm {$product->name} không đủ số lượng trong các showroom.");
-                    return redirect()->back();
-                }
-            }
-
-            //nếu có method là VNPAY thì chuyển đến VNPAY
-
-
-            // Xử lý các phương thức thanh toán
-            if ($method == 'Thanh toán khi nhận hàng') {
-                // Xử lý thanh toán khi nhận hàng
-            }
-            if ($method == 'Thanh toán VNPAY') {
-                return $this->vnpay_payment($order->id);
-            }
-
-            if ($method == 'Thanh toán MoMo') {
-                return $this->momo_payment($order->id);
-            }
-            session()->forget('carts');
-
-            // Gửi email xác nhận đơn hàng
-            Mail::to($order->email)->send(new OrderConfirmation($order, $token));
-            toastr()->success('Thanh toán thành công');
-            return redirect()->route('checkout.completed');
-        } else {
-            toastr()->error('Thanh toán thất bại');
-            return redirect()->back();
-        }
+    if ($nearestShowrooms) {
+        // Sort showroom by proximity (closest to farthest)
+        usort($nearestShowrooms, function ($a, $b) {
+            return $a['distance'] <=> $b['distance']; // Compare distance
+        });
+        $nearestShowroom = $nearestShowrooms[0]; // Get the closest showroom
     }
+
+    // Prepare order data
+    $data = [
+        'customer_id' => Auth::guard('customer')->user()->id,
+        'name' => $request->input('name'),
+        'email' => $request->input('email'),
+        'phone' => $request->input('phone'),
+        'address' => $request->input('address'),
+        'status' => 'Chưa xác nhận', // Status: Pending
+        'payment_method' => $method,
+        'customer_note' => $request->input('customer_note'),
+        'total' => $total,
+        'token' => $token,
+    ];
+
+    // Create the order
+    $order = Order::create($data);
+
+    if ($order) {
+        session(['order' => $order->id]); // Store order ID in session
+
+        foreach ($products as $product) {
+            // Prepare order detail data
+            $detail = [
+                'order_id' => $order->id,
+                'product_id' => $product->id,
+                'quantity' => $carts[$product->id]['quantity'],
+                'price' => $product->price_sale ? $product->price_sale : $product->price,
+            ];
+            OrderDetail::create($detail);
+
+            // Decrease stock in the nearest showroom
+            $remainingQuantity = $carts[$product->id]['quantity'];
+
+            // Check in the nearest showroom first
+            $showroomProduct = ShowroomProduct::where('showroom_id', $nearestShowroom['id'])
+                ->where('product_id', $product->id)
+                ->first();
+
+            if ($showroomProduct && $showroomProduct->stock >= $remainingQuantity) {
+                // Decrement stock in nearest showroom
+                ShowroomProduct::where('showroom_id', $nearestShowroom['id'])
+                    ->where('product_id', $product->id)
+                    ->decrement('stock', $remainingQuantity);
+
+                $remainingQuantity = 0; // All required stock has been deducted
+            } else {
+                // If the nearest showroom doesn't have enough stock, check other showrooms with publish = 4
+                $showroomProductToTransfer = ShowroomProduct::where('product_id', $product->id)
+                    ->whereHas('showroom', function ($query) {
+                        $query->where('publish', 4); // Showrooms with publish = 4
+                    })
+                    ->first();
+
+                if ($showroomProductToTransfer && $showroomProductToTransfer->stock >= $remainingQuantity) {
+                    // Decrease stock in the old showroom
+                    ShowroomProduct::where('showroom_id', $showroomProductToTransfer->showroom_id)
+                        ->where('product_id', $product->id)
+                        ->decrement('stock', $remainingQuantity);
+
+                    // Transfer product to the nearest showroom
+                    ShowroomProduct::updateOrCreate(
+                        ['showroom_id' => $nearestShowroom['id'], 'product_id' => $product->id],
+                        ['stock' => 0] // Add stock to nearest showroom
+                    );
+
+                    $remainingQuantity = 0; // All required stock has been transferred
+                }
+            }
+
+            // If there is still remaining stock to be deducted after checking all showrooms
+            if ($remainingQuantity > 0) {
+                toastr()->error("Sản phẩm {$product->name} không đủ số lượng trong các showroom.");
+                return redirect()->back();
+            }
+        }
+
+        // Process payment methods
+        if ($method == 'Thanh toán khi nhận hàng') {
+            // Handle COD payment
+        } elseif ($method == 'Thanh toán VNPAY') {
+            return $this->vnpay_payment($order->id);
+        } elseif ($method == 'Thanh toán MoMo') {
+            return $this->momo_payment($order->id);
+        }
+
+        // Clear the cart
+        session()->forget('carts');
+
+        // Send order confirmation email
+        Mail::to($order->email)->send(new OrderConfirmation($order, $token));
+
+        toastr()->success('Thanh toán thành công');
+        return redirect()->route('checkout.completed');
+    } else {
+        toastr()->error('Thanh toán thất bại');
+        return redirect()->back();
+    }
+}
+
 
 
     public function order_completed(){

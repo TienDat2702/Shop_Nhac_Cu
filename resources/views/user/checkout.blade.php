@@ -242,7 +242,7 @@ function findNearestShowrooms(lat, lon) {
                 showroomList.sort((a, b) => a.distance - b.distance);
 
                 // Giới hạn chỉ 3 showroom gần nhất
-                nearestShowrooms = showroomList.slice(0, 3);
+                 nearestShowrooms = showroomList.slice(0, 1);
 
                 // Hiển thị các showroom gần nhất
                 if (nearestShowrooms.length > 0) {
@@ -250,7 +250,7 @@ function findNearestShowrooms(lat, lon) {
                     nearestShowrooms.forEach(showroom => {
                         // Kiểm tra nếu khoảng cách hợp lệ và không phải là null
                         if (showroom.distance !== null && showroom.distance !== undefined) {
-                            showroomListHTML += `<p>Showroom: ${showroom.name}, Khoảng cách: ${showroom.distance.toFixed(2)} km</p>`;
+                            showroomListHTML += `<p>Showroom gần nhất: ${showroom.name}, Khoảng cách: ${showroom.distance.toFixed(2)} km</p>`;
                         }
                     });
                     document.getElementById('showrooms').innerHTML = showroomListHTML;

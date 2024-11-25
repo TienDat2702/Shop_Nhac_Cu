@@ -83,6 +83,33 @@
                     </div>
                 </div>
             </fieldset>
+            <div id="img-previews">
+                @if (old('images'))
+                    @foreach (old('images') as $index => $image)
+                        <div class="col-md-4 img-preview-item">
+                            <img src="{{ asset('uploads/temp/' . $image) }}" class="effect8" alt="Image Preview">
+                            <div class="additional-fields">
+                                <div class="body-title">Tiêu Đề <span class="tf-color-1">*</span></div>
+                                <input type="text" name="title[]" required placeholder="Nhập tiêu đề" value="{{ old('title')[$index] ?? '' }}">
+                                <div class="body-title">Tiêu Đề Mạnh <span class="tf-color-1">*</span></div>
+                                <input type="text" name="strong_title[]" required placeholder="Nhập tiêu đề mạnh" value="{{ old('strong_title')[$index] ?? '' }}">
+                                <div class="body-title">Vị Trí Xuất Hiện <span class="tf-color-1">*</span></div>
+                                <input type="number" name="order[]" min="0" required placeholder="VD:1 là slide banner1, 2 là slide banner2" value="{{ old('order')[$index] ?? '' }}">
+                                <div class="body-title">Trang Xuất Hiện <span class="tf-color-1">*</span></div>
+                                <input type="number" name="position[]" min="0" required placeholder="VD: 1 xuất hiện ở trang chủ" value="{{ old('position')[$index] ?? '' }}">
+                                <div class="body-title">Mô Tả <span class="tf-color-1">*</span></div>
+                                <input type="text" name="description[]" placeholder="Nhập mô tả" value="{{ old('description')[$index] ?? '' }}">
+                                <button type="button" class="remove-image">Xóa</button> <!-- Nút xóa hình ảnh -->
+                            </div>
+                        </div>
+                    @endforeach
+                @endif
+            </div>
+
+            <!-- Phần upload thêm ảnh -->
+            <div id="upload-container">
+                <input type="file" name="images[]" multiple accept="image/*">
+            </div>
 
             <div class="cols gap10">
                 <button class="tf-button w-full" type="submit">Add Banner</button>
