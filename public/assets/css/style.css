@@ -12111,7 +12111,7 @@ textarea.form-control-lg {
 .menu-link {
   display: inline-block;
   position: relative;
-  padding: 0.5em 0;
+  padding: 0.1em 0;
   color: #222222;
   line-height: 1.5em; }
 
@@ -12272,7 +12272,7 @@ textarea.form-control-lg {
 
 .logo__image {
   max-width: 100%;
-  max-height: 120px; }
+  height: auto; }
 
 .header-tools {
   margin-right: -0.5rem; }
@@ -12656,8 +12656,8 @@ textarea.form-control-lg {
 .footer-middle {
   padding-top: 3.125rem;
   padding-bottom: 1.625rem; }
-  .footer-middle .logo {
-    margin-bottom: 2.75rem; }
+  /* .footer-middle .logo {
+    margin-bottom: 2.75rem; } */
   @media (min-width: 768px) {
     .footer-middle {
       padding-top: 3.75rem;
@@ -12693,9 +12693,9 @@ textarea.form-control-lg {
   .footer .sub-menu__title {
     margin-bottom: 0.875rem;
     color: inherit; }
-    @media (min-width: 992px) {
+    /* @media (min-width: 992px) {
       .footer .sub-menu__title {
-        margin-bottom: 1.875rem; } }
+        margin-bottom: 1.875rem; } } */
   .footer .menu-link {
     margin-top: 3px;
     margin-bottom: 2px; }

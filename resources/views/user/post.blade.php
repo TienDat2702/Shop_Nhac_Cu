@@ -84,9 +84,9 @@
                                                         </div>
                                                     @endif
                                                 </div>
-                                                <div class="name">
+                                                <div class="name name_post">
                                                     <a href="{{ route('post.detail', $post->slug) }}">
-                                                        <h3>{{ $post->title }}</h3>
+                                                        <h3 class="title">{{ $post->title }}</h3>
                                                     </a>
                                                 </div>
                                                 <div class="read-more d-flex align-items-center justify-content-between">

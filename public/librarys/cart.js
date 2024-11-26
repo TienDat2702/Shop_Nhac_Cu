@@ -66,7 +66,7 @@
                         // Cập nhật nội dung hiển thị giỏ hàng trống
                         $('.shop-checkout').html(` <div class="cart-null">
                             <img src="/images/carts-null.png" alt="">
-                            <a class="btn-comeback btn-comeback-pst" href="{{ route('home.index') }}"> Mua ngay </a>
+                            <a class="btn-comeback btn-comeback-pst" href="http://127.0.0.1:8000/"> Mua ngay </a>
                             </div>`);
                         }
                     // cập nhật voucher
