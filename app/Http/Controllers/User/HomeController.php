@@ -100,4 +100,11 @@ class HomeController extends Controller
         toastr()->success('Gửi thành công');
         return redirect()->route('contact');
     }
+
+    function page_chinh_sach_bao_hanh(){
+        return view('user.chinh_sach_bao_hanh');
+    }
+    function page_chinh_sach_giao_hang(){
+        return view('user.chinh_sach_giao_hang');
+    }
 }

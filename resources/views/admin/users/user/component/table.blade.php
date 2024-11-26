@@ -34,7 +34,7 @@
                             <label class="toggle">
                                 <input id="toggleswitch" class="toggleswitch" name="publish" type="checkbox"
                                     value="{{ $item->publish }}" data-id="{{ $item->id }}" data-model="User"
-                                    {{ $item->publish == 1 ? 'checked' : '' }}
+                                    {{ $item->publish == 2 ? 'checked' : '' }}
                                     {{ $config == 'deleted' ? 'disabled' : '' }}>
                                 <span class="roundbutton"></span>
                             </label>

@@ -93,6 +93,12 @@
                         <div class="text">Banner</div>
                     </a>
                 </li>
+                <li class="menu-item ">
+                    <a href="{{ route('loyalty.index')}}" class="menu-item-button">
+                        <div class="icon"><i class="icon-layers"></i></div>
+                        <div class="text">Cấp độ thành viên</div>
+                    </a>
+                </li>
                 <li class="menu-item has-children">
                     <a href="javascript:void(0);" class="menu-item-button">
                         <div class="icon"><i class="fa-solid fa-guitar"></i></div>
