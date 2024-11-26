@@ -1404,57 +1404,57 @@ function pureFadeOut(e) {
   }
 })($);
 
-(function () {
-  'use strict'
+// (function () {
+//   'use strict'
 
-  // Fetch all the forms we want to apply custom Bootstrap validation styles to
-  var forms = document.querySelectorAll('.needs-validation')
+//   // Fetch all the forms we want to apply custom Bootstrap validation styles to
+//   var forms = document.querySelectorAll('.needs-validation')
 
-  // Loop over them and prevent submission
-  Array.prototype.slice.call(forms)
-    .forEach(function (form) {
-      form.addEventListener('submit', function (event) {
-        if (!form.checkValidity()) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
+//   // Loop over them and prevent submission
+//   Array.prototype.slice.call(forms)
+//     .forEach(function (form) {
+//       form.addEventListener('submit', function (event) {
+//         if (!form.checkValidity()) {
+//           event.preventDefault();
+//           event.stopPropagation();
+//         }
 
-        form.querySelectorAll("input[data-cf-pwd]").forEach(function (el) {
-          if(form.querySelector(el.getAttribute("data-cf-pwd")).value != el.value) {
-            event.preventDefault();
-            event.stopPropagation();
-          }
-        });
+//         form.querySelectorAll("input[data-cf-pwd]").forEach(function (el) {
+//           if(form.querySelector(el.getAttribute("data-cf-pwd")).value != el.value) {
+//             event.preventDefault();
+//             event.stopPropagation();
+//           }
+//         });
 
-        form.classList.add('was-validated')
-      }, false);
+//         form.classList.add('was-validated')
+//       }, false);
 
-      form.querySelectorAll("input[data-cf-pwd]").forEach(function (el) {
-        el.addEventListener('keyup', function (event) {
-          if (!el.value || form.querySelector(el.getAttribute("data-cf-pwd")).value != el.value) {
-            el.classList.add("is-invalid");
-            el.classList.remove("is-valid");
-            el.setCustomValidity("Invalid field.");
-          } else {
-            el.classList.remove("is-invalid");
-            el.classList.add("is-valid");
-            el.setCustomValidity("");
-          }
-        });
-        form.querySelector(el.getAttribute("data-cf-pwd")).addEventListener('keyup', function (event) {
-          if (!el.value || form.querySelector(el.getAttribute("data-cf-pwd")).value != el.value) {
-            el.classList.add("is-invalid");
-            el.classList.remove("is-valid");
-            el.setCustomValidity("Invalid field.");
-          } else {
-            el.classList.remove("is-invalid");
-            el.classList.add("is-valid");
-            el.setCustomValidity("");
-          }
-        });
-      });
-    });
-})();
+//       form.querySelectorAll("input[data-cf-pwd]").forEach(function (el) {
+//         el.addEventListener('keyup', function (event) {
+//           if (!el.value || form.querySelector(el.getAttribute("data-cf-pwd")).value != el.value) {
+//             el.classList.add("is-invalid");
+//             el.classList.remove("is-valid");
+//             el.setCustomValidity("Invalid field.");
+//           } else {
+//             el.classList.remove("is-invalid");
+//             el.classList.add("is-valid");
+//             el.setCustomValidity("");
+//           }
+//         });
+//         form.querySelector(el.getAttribute("data-cf-pwd")).addEventListener('keyup', function (event) {
+//           if (!el.value || form.querySelector(el.getAttribute("data-cf-pwd")).value != el.value) {
+//             el.classList.add("is-invalid");
+//             el.classList.remove("is-valid");
+//             el.setCustomValidity("Invalid field.");
+//           } else {
+//             el.classList.remove("is-invalid");
+//             el.classList.add("is-valid");
+//             el.setCustomValidity("");
+//           }
+//         });
+//       });
+//     });
+// })();
 
 window.addEventListener('load', () => {
   try {
