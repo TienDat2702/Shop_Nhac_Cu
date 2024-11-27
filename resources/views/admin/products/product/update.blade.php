@@ -59,9 +59,14 @@
 
                             <fieldset class="price_sale">
                                 <div class="body-title mb-10">Giá khuyến mãi</div>
-                                <input class="mb-10" type="number" min="0" placeholder="Nhập giá khuyến mãi"
-                                    name="price_sale" value="{{ old('price_sale', intval($product->price_sale)) }}">
+                                <input class="mb-10" 
+                                       type="number" 
+                                       min="0" 
+                                       placeholder="Nhập giá khuyến mãi" 
+                                       name="price_sale" 
+                                       value="{{ old('price_sale', $product->price_sale > 0 ? intval($product->price_sale) : '') }}">
                             </fieldset>
+                            
                         </div>
 
                         <fieldset class="short_description">

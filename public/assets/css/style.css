@@ -10361,7 +10361,8 @@ textarea.form-control-lg {
   width: 9px;
   height: 9px;
   margin-right: .25rem;
-  fill: #ffc78b; }
+  /* fill: #ffc78b; */
+ }
 
 .pc__btn-wl {
   display: flex;
@@ -15541,3 +15542,16 @@ body.coming-soon-page {
     display: none; }
   .btn-video-player.playing svg.btn-pause {
     display: block; }
+    
+    #load-more-comments {
+      display: block;
+      margin: 10px auto;
+      color: #007bff;
+      text-decoration: underline;
+      cursor: pointer;
+  }
+  #load-more-comments:hover {
+      color: #0056b3;
+  }
+ 
+  
