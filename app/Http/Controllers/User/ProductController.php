@@ -38,10 +38,10 @@ class ProductController extends Controller
         if ($request->has('sort')) {
             switch ($request->sort) {
                 case 'price_asc':
-                    $productsQuery->orderBy('price', 'asc');
+                    $productsQuery->orderByRaw('COALESCE(price_sale, price) ASC');
                     break;
                 case 'price_desc':
-                    $productsQuery->orderBy('price', 'desc');
+                    $productsQuery->orderByRaw('COALESCE(price_sale, price) DESC');
                     break;
                 case 'name_asc':
                     $productsQuery->orderBy('name', 'asc');
@@ -51,6 +51,7 @@ class ProductController extends Controller
                     break;
             }
         }
+
 
         // Lọc sản phẩm theo khoảng giá nếu có
         if ($request->has('price_segment') && !empty($request->price_segment)) {
@@ -88,18 +89,18 @@ class ProductController extends Controller
 
         $customer = Auth::guard('customer')->user();
         $product_favourite = [];
-        if ( $customer) {
-            $product_favourite = $customer->favourites->pluck('id','product_id')->toArray();
+        if ($customer) {
+            $product_favourite = $customer->favourites->pluck('id', 'product_id')->toArray();
         }
 
         // Phân trang sản phẩm
         $products = $productsQuery->paginate(9);
 
         if (!$products->isEmpty()) {
-            return view('user.shop', compact('products', 'productCategories','product_favourite', 'brands', 'banners', 'priceSegments'))->with('currentCategory', null);
+            return view('user.shop', compact('products', 'productCategories', 'product_favourite', 'brands', 'banners', 'priceSegments'))->with('currentCategory', null);
         } else {
             toastr()->warning('Không có sản phẩm!');
-            return view('user.shop', compact('products', 'productCategories','product_favourite', 'brands', 'banners', 'priceSegments'))->with('currentCategory', null);
+            return view('user.shop', compact('products', 'productCategories', 'product_favourite', 'brands', 'banners', 'priceSegments'))->with('currentCategory', null);
         }
     }
 
@@ -178,17 +179,17 @@ class ProductController extends Controller
         }
         $customer = Auth::guard('customer')->user();
         $product_favourite = [];
-        if ( $customer) {
-            $product_favourite = $customer->favourites->pluck('id','product_id')->toArray();
+        if ($customer) {
+            $product_favourite = $customer->favourites->pluck('id', 'product_id')->toArray();
         }
         // Thực hiện phân trang
         $products = $productsQuery->paginate(9);
 
         if (!$products->isEmpty()) {
-            return view('user.shop', compact('products', 'productCategories', 'product_favourite', 'brands','banners', 'priceSegments'))->with('currentCategory', $category);
+            return view('user.shop', compact('products', 'productCategories', 'product_favourite', 'brands', 'banners', 'priceSegments'))->with('currentCategory', $category);
         } else {
             toastr()->warning('Không có sản phẩm!');
-            return view('user.shop', compact('products', 'productCategories','product_favourite', 'brands','banners', 'priceSegments'))->with('currentCategory', $category);
+            return view('user.shop', compact('products', 'productCategories', 'product_favourite', 'brands', 'banners', 'priceSegments'))->with('currentCategory', $category);
         }
     }
 
@@ -201,34 +202,70 @@ class ProductController extends Controller
         $product_related = Product::where('category_id', $product->category_id)->where('slug', '!=', $slug)->get();
         $product_images = ThumbnailProduct::where('product_id', $product->id)->get();
 
-        $comments = Comment::where('product_id', $product->id)->with('customer')->latest()->get();
-
         $customer = Auth::guard('customer')->user();
         $product_favourite = [];
-        if ( $customer) {
-            $product_favourite = $customer->favourites->pluck('id','product_id')->toArray();
+        if ($customer) {
+            $product_favourite = $customer->favourites->pluck('id', 'product_id')->toArray();
         }
-        return view('user.product_detail', compact('product', 'brand', 'product_images','product_favourite', 'product_related', 'comments'));
+        $commentCount = Comment::where('product_id', $product->id)->count();
+        // Lấy bình luận sắp xếp theo số sao từ cao đến thấp
+        $comments = Comment::where('product_id', $product->id)
+            ->with('customer')
+            ->where('rating', '>', 0) // Loại bỏ các rating không hợp lệ
+            ->orderBy('rating', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->get();
+        // Tính số sao phổ biến nhất
+        $popularRating = $comments
+            ->groupBy('rating') // Nhóm theo số sao
+            ->map(function ($group) {
+                return $group->count();
+            })
+            ->sortDesc()
+            ->keys()
+            ->first();
+        $popularRating = $popularRating ?? 0;
+
+        return view('user.product_detail', compact('product', 'brand', 'product_images', 'product_favourite', 'product_related', 'comments', 'popularRating', 'commentCount'));
     }
 
     public function post_comment($proId, Request $request)
     {
         $request->validate([
             'comment' => 'required|string',
+            'rating' => 'required|integer|min:1|max:5',
         ], [
-            'comment.required' => 'Bạn hãy nhập nội dung bình luận của bạn'
+            'comment.required' => 'Bạn hãy nhập nội dung bình luận của bạn',
+            'rating.required' => 'Bạn hãy chọn số sao đánh giá',
+            'rating.integer' => 'Số sao phải là một số nguyên',
+            'rating.min' => 'Số sao phải ít nhất là 1',
+            'rating.max' => 'Số sao không được vượt quá 5',
         ]);
 
         if (Auth::guard('customer')->check()) {
-            Comment::create([
+            $comment = Comment::create([
                 'product_id' => $proId,
                 'customer_id' => Auth::guard('customer')->id(),
                 'comment' => $request->input('comment'),
+                'rating' => $request->input('rating'),
             ]);
+
+            // Trả về phản hồi JSON nếu là AJAX
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Bình luận của bạn đã được đăng.',
+                    'comment' => $comment,
+                    'customer' => Auth::guard('customer')->user(),
+                ]);
+            }
 
             return redirect()->back()->with('success', 'Bình luận của bạn đã được đăng.');
         }
 
-        return redirect()->route('customer.login')->with('error', 'Bạn cần đăng nhập để bình luận.');
+        return response()->json([
+            'success' => false,
+            'message' => 'Bạn cần đăng nhập để bình luận.'
+        ], 401);
     }
 }

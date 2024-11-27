@@ -6,15 +6,6 @@
 <div class="container">
     <h2>Chỉnh Sửa Showroom</h2>
 
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
 
     <form class="tf-section-2 form-add-product" action="{{ route('showroom.update', $showroom->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
@@ -25,18 +16,24 @@
                 <input class="mb-10" type="text" placeholder="Nhập tên showroom" name="name" value="{{ old('name', $showroom->name) }}" required>
                 <div class="text-tiny">Nhập tên showroom tối đa 100 ký tự</div>
             </fieldset>
-
+            @error('name')
+            <span class="error-message" style="color: red;">* {{ $message }}</span>
+        @enderror
             <fieldset class="address">
                 <div class="body-title mb-10">Địa Chỉ <span class="tf-color-1">*</span></div>
                 <input class="mb-10" type="text" id="address" placeholder="Nhập địa chỉ showroom" name="address" value="{{ old('address', $showroom->address) }}" required>
-                <div class="text-tiny">Nhập địa chỉ tối đa 250 ký tự</div>
             </fieldset>
-
+            @error('address')
+            <span class="error-message" style="color: red;">* {{ $message }}</span>
+        @enderror
             <fieldset class="phone">
                 <div class="body-title mb-10">Số Điện Thoại Liên Hệ <span class="tf-color-1">*</span></div>
                 <input class="mb-10" type="text" placeholder="Nhập Số Điện Thoại Showroom" name="phone" value="{{ old('phone', $showroom->phone) }}" required>
-                <div class="text-tiny">Nhập số điện thoại</div>
+
             </fieldset>
+            @error('phone')
+            <span class="error-message" style="color: red;">* {{ $message }}</span>
+        @enderror
         </div>
 
         <div class="wg-box">
@@ -58,6 +55,9 @@
                     </div>
                 </div>
             </fieldset>
+            @error('image')
+            <span class="error-message" style="color: red;">* {{ $message }}</span>
+        @enderror
         </div>
 
         <!-- Thêm bản đồ OpenStreetMap -->

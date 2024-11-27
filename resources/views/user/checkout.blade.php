@@ -200,121 +200,124 @@
     </section>
   </main>
   <script>
-// Mảng lưu trữ showroom gần nhất
-let nearestShowrooms = [];
+    // Mảng lưu trữ showroom gần nhất
+    let nearestShowrooms = [];
 
-// Lắng nghe sự kiện blur của ô địa chỉ
-document.getElementById('address').addEventListener('blur', function (event) {
-    var address = event.target.value;
+    // Lắng nghe sự kiện blur của ô địa chỉ
+    document.getElementById('address').addEventListener('blur', function (event) {
+        var address = event.target.value;
 
-    // Sử dụng Nominatim API từ OpenStreetMap
-    if (address.length > 5){
-      var geocodeUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&addressdetails=1&countrycodes=VN`;
+        // Sử dụng Nominatim API từ OpenStreetMap
+        if (address.length > 5) {
+            var geocodeUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&addressdetails=1&countrycodes=VN`;
 
-    fetch(geocodeUrl)
-        .then(response => response.json())
-        .then(data => {
-            if (data && data.length > 0) {
-                // Lấy vĩ độ và kinh độ
-                var lat = data[0].lat;
-                var lon = data[0].lon;
+            fetch(geocodeUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.length > 0) {
+                        // Lấy vĩ độ và kinh độ
+                        var lat = data[0].lat;
+                        var lon = data[0].lon;
 
-                // Cập nhật tọa độ vào các trường ẩn
-                document.getElementById('latitude').value = lat;
-                document.getElementById('longitude').value = lon;
+                        // Cập nhật tọa độ vào các trường ẩn
+                        document.getElementById('latitude').value = lat;
+                        document.getElementById('longitude').value = lon;
 
-                // Gọi API để tìm showroom gần nhất với tọa độ đã lấy
-                findNearestShowrooms(lat, lon);
-            } else {
-                console.log("Không thể tìm thấy địa chỉ. Vui lòng thử lại.");
-            }
-        })
-        .catch(error => {
-            console.error("Error fetching geocoding data:", error);
-        });
-      }
-});
+                        // Gọi API để tìm showroom gần nhất với tọa độ đã lấy
+                        findNearestShowrooms(lat, lon);
+                    } else {
+                        console.log("Không thể tìm thấy địa chỉ. Vui lòng thử lại.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching geocoding data:", error);
+                });
+        }
+    });
 
-// Hàm tìm showroom gần nhất
-function findNearestShowrooms(lat, lon) {
-    var checkoutShowroomRoute = @json(route('checkout.showroom'));
+    // Hàm tìm showroom gần nhất
+    function findNearestShowrooms(lat, lon) {
+        var checkoutShowroomRoute = @json(route('checkout.showroom'));
 
-    // Tạo URL API tìm showroom gần nhất
-    var url = `${checkoutShowroomRoute}?lat=${lat}&lon=${lon}`;
+        // Tạo URL API tìm showroom gần nhất
+        var url = `${checkoutShowroomRoute}?lat=${lat}&lon=${lon}`;
 
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            if (data && data.showrooms) {
-                var showroomList = data.showrooms;
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.showrooms) {
+                    var showroomList = data.showrooms;
 
-                // Sắp xếp showroom theo khoảng cách từ gần đến xa
-                showroomList.sort((a, b) => a.distance - b.distance);
+                    // Sắp xếp showroom theo khoảng cách từ gần đến xa
+                    showroomList.sort((a, b) => a.distance - b.distance);
 
-                // Giới hạn chỉ 3 showroom gần nhất
-                 nearestShowrooms = showroomList.slice(0, 1);
+                    // Giới hạn chỉ 3 showroom gần nhất
+                    nearestShowrooms = showroomList.slice(0, 1);
 
-                // Hiển thị các showroom gần nhất
-                if (nearestShowrooms.length > 0) {
-                    let showroomListHTML = '';
-                    nearestShowrooms.forEach(showroom => {
-                        // Kiểm tra nếu khoảng cách hợp lệ và không phải là null
-                        if (showroom.distance !== null && showroom.distance !== undefined) {
-                            showroomListHTML += `<p>Showroom gần nhất: ${showroom.name}, Khoảng cách: ${showroom.distance.toFixed(2)} km</p>`;
-                        }
-                    });
-                    document.getElementById('showrooms').innerHTML = showroomListHTML;
-                } else {
-                    alert("Không tìm thấy showroom gần nhất.");
+                    // Hiển thị các showroom gần nhất
+                    if (nearestShowrooms.length > 0) {
+                        let showroomListHTML = '';
+                        nearestShowrooms.forEach(showroom => {
+                            // Kiểm tra nếu khoảng cách hợp lệ và không phải là null
+                            if (showroom.distance !== null && showroom.distance !== undefined) {
+                                showroomListHTML += `<p>Showroom gần nhất: ${showroom.name}, Khoảng cách: ${showroom.distance.toFixed(2)} km</p>`;
+                            }
+                        });
+                        document.getElementById('showrooms').innerHTML = showroomListHTML;
+                    } else {
+                        alert("Không tìm thấy showroom gần nhất.");
+                    }
                 }
-            }
-        })
-        .catch(error => {
-            console.error("Error finding nearest showrooms:", error);
-        });
-}
-
-
-// Lấy thông tin showroom gần nhất khi người dùng nhấn thanh toán
-document.getElementById('checkoutForm').addEventListener('submit', function(event) {
-    const cityAddress = document.getElementById('address').value.trim().toLowerCase();
-    const specificAddress = document.getElementById('specificAddress').value.trim().toLowerCase();
-    let isValid = true;
-
-    // Kiểm tra nếu các trường đều đã được điền
-    if (!cityAddress) {
-        toastr.error("Vui lòng nhập Địa Chỉ Thành Phố.", "Lỗi");
-        isValid = false;
+            })
+            .catch(error => {
+                console.error("Error finding nearest showrooms:", error);
+            });
     }
 
-    if (!specificAddress) {
-        toastr.error("Vui lòng nhập Địa chỉ cụ thể.", "Lỗi");
-        isValid = false;
-    }
+    // Lấy thông tin showroom gần nhất khi người dùng nhấn thanh toán
+    document.getElementById('checkoutForm').addEventListener('submit', function (event) {
+        const cityAddress = document.getElementById('address').value.trim().toLowerCase();
+        const specificAddress = document.getElementById('specificAddress').value.trim().toLowerCase();
+        let isValid = true;
 
-    // Kiểm tra xem quận/thành phố có trong địa chỉ cụ thể hay không
-    if (isValid && !specificAddress.includes(cityAddress)) {
-        toastr.error("Tỉnh hoặc thành phố phải trùng với địa chỉ thành phố", "Lỗi");
-        isValid = false;
-    }
+        // Kiểm tra nếu các trường đều đã được điền
+        if (!cityAddress) {
+            toastr.error("Vui lòng nhập Địa Chỉ Thành Phố.", "Lỗi");
+            isValid = false;
+        }
 
-    // Nếu có lỗi thì ngăn chặn gửi form
-    if (!isValid) {
-        event.preventDefault();
-    } else {
-        toastr.success("Thông tin hợp lệ! Đang gửi...", "Thành công");
+        if (!specificAddress) {
+            toastr.error("Vui lòng nhập Địa chỉ cụ thể.", "Lỗi");
+            isValid = false;
+        }
 
-        // Thêm thông tin showroom vào form trước khi gửi
-        const showroomDataInput = document.createElement('input');
-        showroomDataInput.type = 'hidden';
-        showroomDataInput.name = 'nearest_showrooms';
-        showroomDataInput.value = JSON.stringify(nearestShowrooms); // Chuyển đổi mảng showroom thành chuỗi JSON
-        this.appendChild(showroomDataInput);
-    }
-});
+        // Kiểm tra xem quận/thành phố có trong địa chỉ cụ thể hay không
+        if (isValid && !specificAddress.includes(cityAddress)) {
+            toastr.error("Tỉnh hoặc thành phố phải trùng với địa chỉ thành phố", "Lỗi");
+            isValid = false;
+        }
 
+        // Kiểm tra nếu nearestShowrooms trống
+        if (isValid && nearestShowrooms.length === 0) {
+            toastr.error("Hiện tại không tìm thấy showroom gần nhất hoặc đang mở cửa vui lòng thử lại sau. ", "Lỗi");
+            isValid = false;
+        }
 
+        // Nếu có lỗi thì ngăn chặn gửi form
+        if (!isValid) {
+            event.preventDefault();
+        } else {
+            toastr.success("Thông tin hợp lệ! Đang gửi...", "Thành công");
 
-</script>
+            // Thêm thông tin showroom vào form trước khi gửi
+            const showroomDataInput = document.createElement('input');
+            showroomDataInput.type = 'hidden';
+            showroomDataInput.name = 'nearest_showrooms';
+            showroomDataInput.value = JSON.stringify(nearestShowrooms); // Chuyển đổi mảng showroom thành chuỗi JSON
+            this.appendChild(showroomDataInput);
+        }
+    });
+    </script>
+
 @endsection
 

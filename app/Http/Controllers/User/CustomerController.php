@@ -54,7 +54,7 @@ class CustomerController extends Controller
                 return redirect()->route($route);
             }   
         } else {
-            return redirect()->route('customer.login')->with('error', 'Email hoặc Mật khẩu không chính xác');
+            return redirect()->route('customer.login')->withInput()->with('error', 'Email hoặc Mật khẩu không chính xác');
         }
     }
 

@@ -39,7 +39,7 @@ class AdminController extends Controller
             }
         }
         
-        return redirect()->back()->with('error', 'Tài khoản không chính xác. Vui lòng đăng nhập lại!');
+        return redirect()->back()->withInput()->with('error', 'Tài khoản không chính xác. Vui lòng đăng nhập lại!');
     }
 
     public function logout()

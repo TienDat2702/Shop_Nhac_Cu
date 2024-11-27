@@ -9,74 +9,99 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 class ProductShowroomController extends Controller
 {
     public function transfer(Request $request)
-{
-    // Xác thực dữ liệu đầu vào
-    $validator = Validator::make($request->all(), [
-        'showroom_id' => 'required|exists:showrooms,id', // showroom đích
-        'products' => 'required|array', // mảng sản phẩm
-        'products.*.id' => 'required|exists:products,id', // sản phẩm
-        'products.*.quantity' => 'required|integer|min:1', // số lượng
-    ]);
+    {
+        $validator = Validator::make($request->all(), [
+            'showroom_id' => 'required|exists:showrooms,id',
+            'products' => 'required|array',
+            'products.*.id' => 'required|exists:products,id',
+            'products.*.quantity' => 'required|integer|min:1',
+        ]);
 
-    if ($validator->fails()) {
-        // Lưu thông báo lỗi vào session và trả về phản hồi JSON
-        return response()->json(['message' => $validator->errors()->first()], 422);
-    }
-
-    $showroomId = $request->input('showroom_id'); // showroom đích
-    $currentShowroomId = Showroom::where('publish', 4)->first(); // showroom hiện tại có publish = 4
-    $products = $request->input('products');
-
-    DB::beginTransaction();
-
-    try {
-        foreach ($products as $product) {
-            $productId = $product['id'];
-            $quantity = $product['quantity'];
-
-            // Lấy tên sản phẩm từ bảng products
-            $productData = Product::find($productId);
-            $productname = $productData ? $productData->name : 'Sản phẩm không tìm thấy';
-
-            // Nếu showroom hiện tại không rỗng, kiểm tra tồn kho trước khi giảm
-            if ($currentShowroomId) {
-                $currentStock = ShowroomProduct::where('product_id', $productId)
-                    ->where('showroom_id', $currentShowroomId->id)
-                    ->value('stock'); // Lấy số lượng tồn kho hiện tại
-
-                // Kiểm tra xem số lượng tồn kho có đủ không
-                if ($currentStock < $quantity) {
-                    // Trả về phản hồi lỗi nếu tồn kho không đủ
-                    return response()->json(['message' => "Tồn kho sản phẩm {$productname} không đủ để chuyển!"], 422);
-                }
-            }
-
-            // Cập nhật hoặc chèn sản phẩm vào showroom đích
-            ShowroomProduct::updateOrInsert(
-                ['product_id' => $productId, 'showroom_id' => $showroomId],
-                ['stock' => DB::raw("COALESCE(stock, 0) + $quantity")]
-            );
-
-            // Giảm số lượng từ showroom hiện tại
-            if ($currentShowroomId) {
-                ShowroomProduct::where('product_id', $productId)
-                    ->where('showroom_id', $currentShowroomId->id) // Lấy ID của showroom
-                    ->decrement('stock', $quantity);
-            }
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()->first()], 422);
         }
 
-        DB::commit();
-        return response()->json(['message' => 'Chuyển sản phẩm thành công!']); // Trả về thông báo thành công
+        $showroomId = $request->input('showroom_id');
+        $currentShowroomId = Showroom::where('publish', 4)->first();
+        $products = $request->input('products');
 
-    } catch (\Exception $e) {
-        DB::rollback();
-        // Trả về phản hồi lỗi nếu có ngoại lệ
-        return response()->json(['message' => 'Lỗi khi chuyển sản phẩm: ' . $e->getMessage()], 500);
+        DB::beginTransaction();
+
+        try {
+            foreach ($products as $product) {
+                $productId = $product['id'];
+                $quantity = $product['quantity'];
+
+                $productData = Product::find($productId);
+                $productname = $productData ? $productData->name : 'Sản phẩm không tìm thấy';
+
+                if ($currentShowroomId) {
+                    $currentStock = ShowroomProduct::where('product_id', $productId)
+                        ->where('showroom_id', $currentShowroomId->id)
+                        ->value('stock');
+
+                    if ($currentStock < $quantity) {
+                        return response()->json(['message' => "Tồn kho sản phẩm {$productname} không đủ để chuyển!"], 422);
+                    }
+                }
+
+                ShowroomProduct::updateOrInsert(
+                    ['product_id' => $productId, 'showroom_id' => $showroomId],
+                    ['stock' => DB::raw("COALESCE(stock, 0) + $quantity")]
+                );
+
+                if ($currentShowroomId) {
+                    ShowroomProduct::where('product_id', $productId)
+                        ->where('showroom_id', $currentShowroomId->id)
+                        ->decrement('stock', $quantity);
+                }
+
+                // Lưu log
+                $log = [
+                    'from_showroom' => $currentShowroomId->name ?? 'N/A',
+                    'to_showroom' => Showroom::find($showroomId)->name ?? 'N/A',
+                    'product' => $productname,
+                    'quantity' => $quantity,
+                    'timestamp' => now()->toDateTimeString(),
+                ];
+
+                // Lấy danh sách log hiện tại trong session
+                $transferLogs = session('transfer_logs', []);
+
+                // Thêm log mới vào đầu danh sách
+                array_unshift($transferLogs, $log);
+
+                // Giữ lại tối đa 5 log
+                if (count($transferLogs) > 5) {
+                    array_pop($transferLogs);
+                }
+
+                // Lưu lại vào session
+                session(['transfer_logs' => $transferLogs]);
+            }
+
+            DB::commit();
+            return response()->json(['message' => 'Chuyển sản phẩm thành công!']);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['message' => 'Lỗi khi chuyển sản phẩm: ' . $e->getMessage()], 500);
+        }
     }
+
+
+public function showLogs()
+{
+    // Lấy logs từ session
+  $logs = Session::get('transfer_logs', []); // Lấy log từ session
+
+    // Trả về view cùng với logs
+    return view('admin.Kho_Product.transfer', compact('logs'));
 }
+
 
 
 
@@ -91,7 +116,7 @@ public function getProductsByPublishedShowroom()
 {
     // Tìm showroom có publish là 4
     $showroom = Showroom::where('publish', 4)->first();
-    $showroomid = Showroom::get();
+    $showroomid = Showroom::where('publish', 2)->get();
     // Kiểm tra xem showroom có tồn tại không
     if (!$showroom) {
         // Nếu không tìm thấy showroom, trả về thông báo lỗi
@@ -185,8 +210,16 @@ public function getProductsByPublishedShowroom()
         return redirect()->back();
     }
 
+    // Lưu log cho từng sản phẩm
+    $transferLogs = session('transfer_logs', []);
+
     // Chuyển từng sản phẩm sang showroom có publish = 4
     foreach ($showroomProducts as $showroomProduct) {
+        // Lấy thông tin sản phẩm từ bảng products
+        $product = Product::find($showroomProduct->product_id);
+        $productName = $product->name;
+        $quantity = $showroomProduct->stock;
+
         // Cộng stock vào showroom có publish = 4
         DB::table('showroom_products')->updateOrInsert(
             [
@@ -197,12 +230,32 @@ public function getProductsByPublishedShowroom()
                 'stock' => DB::raw('stock + ' . $showroomProduct->stock) // Cộng dồn số lượng hàng tồn
             ]
         );
+
+        // Lưu log cho sản phẩm này
+        $log = [
+            'from_showroom' => $currentShowroom->name ?? 'N/A',
+            'to_showroom' => $targetShowroom->name ?? 'N/A',
+            'product' => $productName, // Lưu tên sản phẩm
+            'quantity' => $quantity, // Lưu số lượng sản phẩm
+            'timestamp' => now()->toDateTimeString(),
+        ];
+
+        // Thêm log mới vào đầu danh sách
+        array_unshift($transferLogs, $log);
+
+        // Giữ lại tối đa 5 log
+        if (count($transferLogs) > 5) {
+            array_pop($transferLogs);
+        }
     }
+
+    // Lưu lại vào session
+    session(['transfer_logs' => $transferLogs]);
 
     // Xóa tất cả sản phẩm trong showroom hiện tại
     DB::table('showroom_products')->where('showroom_id', $currentShowroom->id)->delete();
 
-    toastr()->success('Tất cả sản phẩm đã được chuyển sang showroom có publish là 4 thành công!');
+    toastr()->success('Tất cả sản phẩm đã được chuyển sang Kho thành công!');
     return redirect()->back();
 }
 
@@ -244,6 +297,11 @@ public function transferProductFromShowroom(Request $request, $showroomId)
         return redirect()->back();
     }
 
+    // Lấy thông tin sản phẩm từ bảng products
+    $product = Product::find($productId);
+    $productName = $product->name;
+    $quantity = $showroomProduct->stock;
+
     // Cộng stock vào showroom có publish = 4
     DB::table('showroom_products')->updateOrInsert(
         [
@@ -261,9 +319,33 @@ public function transferProductFromShowroom(Request $request, $showroomId)
         ->where('product_id', $productId)
         ->delete();
 
+    // Lưu log
+    $log = [
+        'from_showroom' => $currentShowroom->name ?? 'N/A',
+        'to_showroom' => $targetShowroom->name ?? 'N/A',
+        'product' => $productName, // Lưu tên sản phẩm
+        'quantity' => $quantity, // Lưu số lượng sản phẩm
+        'timestamp' => now()->toDateTimeString(),
+    ];
+
+    // Lấy danh sách log hiện tại trong session
+    $transferLogs = session('transfer_logs', []);
+
+    // Thêm log mới vào đầu danh sách
+    array_unshift($transferLogs, $log);
+
+    // Giữ lại tối đa 5 log
+    if (count($transferLogs) > 5) {
+        array_pop($transferLogs);
+    }
+
+    // Lưu lại vào session
+    session(['transfer_logs' => $transferLogs]);
+
     toastr()->success('Sản phẩm đã được chuyển sang showroom có publish là 4 thành công!');
     return redirect()->back();
 }
+
 
 
 

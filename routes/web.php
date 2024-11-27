@@ -193,18 +193,18 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
         Route::delete('/forceDelete/{id}', [AdminAccountController::class, 'forceDelete'])->name('user.forceDelete');
     });
     //CUSTOMER
-   
+
     Route::prefix('customer')->group(function () {
-        Route::get('/', [AdminCustomerController::class, 'index'])->name('customer.index'); 
-        Route::get('/deleted', [AdminCustomerController::class, 'deleted'])->name('customer.deleted'); 
-        Route::get('/search/{config}', [AdminCustomerController::class, 'search'])->name('customer.search'); 
-        Route::get('/create', [AdminCustomerController::class, 'create'])->name('customer.create'); 
-        Route::post('/store', [AdminCustomerController::class, 'store'])->name('customer.store'); 
+        Route::get('/', [AdminCustomerController::class, 'index'])->name('customer.index');
+        Route::get('/deleted', [AdminCustomerController::class, 'deleted'])->name('customer.deleted');
+        Route::get('/search/{config}', [AdminCustomerController::class, 'search'])->name('customer.search');
+        Route::get('/create', [AdminCustomerController::class, 'create'])->name('customer.create');
+        Route::post('/store', [AdminCustomerController::class, 'store'])->name('customer.store');
         Route::get('/edit/{id}', [AdminCustomerController::class, 'edit'])->name('customer.edit');
-        Route::post('/update/{id}', [AdminCustomerController::class, 'update'])->name('customer.update'); 
-        Route::delete('/destroy/{id}', [AdminCustomerController::class, 'destroy'])->name('customer.destroy'); 
-        Route::get('/restore/{id}', [AdminCustomerController::class, 'restore'])->name('customer.restore'); 
-        Route::delete('/forceDelete/{id}', [AdminCustomerController::class, 'forceDelete'])->name('customer.forceDelete'); 
+        Route::post('/update/{id}', [AdminCustomerController::class, 'update'])->name('customer.update');
+        Route::delete('/destroy/{id}', [AdminCustomerController::class, 'destroy'])->name('customer.destroy');
+        Route::get('/restore/{id}', [AdminCustomerController::class, 'restore'])->name('customer.restore');
+        Route::delete('/forceDelete/{id}', [AdminCustomerController::class, 'forceDelete'])->name('customer.forceDelete');
     });
 
     //SHOWROOM
@@ -231,6 +231,7 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
         Route::post('/admin/transfer-product/{showroomId}', [ProductShowroomController::class, 'transferProductFromShowroom'])->name('Productshowroom.remove');
         Route::post('/{id}/transfer-all', [ProductShowroomController::class, 'transferAllProductsFromShowroom'])->name('showroom.transferAll');
         Route::post('/transfer-product', [ProductShowroomController::class, 'transfer'])->name('transfer.product');
+        Route::get('/showtransfer', [ProductShowroomController::class, 'showLogs'])->name('transfer.show');
     });
 
     // BANNER
@@ -296,5 +297,5 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
     });
 });
 
-//Search 
+//Search
 Route::get('/search', [SearchController::class, 'index'])->name('search');

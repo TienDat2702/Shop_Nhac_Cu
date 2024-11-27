@@ -18,7 +18,7 @@
                             @csrf
                             @method('POST')
                             <div class="form-floating mb-3">
-                                <input class="form-control form-control_gray " name="email" value=""
+                                <input class="form-control form-control_gray " name="email" value="{{ old('email') }}"
                                     autocomplete="email" autofocus="" type="text">
                                 <label for="email">Địa chỉ Mail *</label>
                                 @if ($errors->any())
