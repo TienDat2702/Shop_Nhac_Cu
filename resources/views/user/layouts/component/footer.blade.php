@@ -23,7 +23,7 @@
                     <li class="sub-menu__item"><a href="{{ route('about') }}" class="menu-link menu-link_us-s">Về Chúng Tôi</a></li>
                     <li class="sub-menu__item"><a href="{{ route('contact') }}" class="menu-link menu-link_us-s">Tin tức</a></li>
                     <li class="sub-menu__item"><a href="{{ route('contact') }}" class="menu-link menu-link_us-s">Liên Hệ</a></li>
-                    <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Showroom</a></li>
+                    <li class="sub-menu__item"><a href="{{ route('showrooms.map') }}" class="menu-link menu-link_us-s">Showroom</a></li>
                 </ul>
             </div>
             

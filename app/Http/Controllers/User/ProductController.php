@@ -38,10 +38,10 @@ class ProductController extends Controller
         if ($request->has('sort')) {
             switch ($request->sort) {
                 case 'price_asc':
-                    $productsQuery->orderBy('price', 'asc');
+                    $productsQuery->orderByRaw('COALESCE(price_sale, price) ASC');
                     break;
                 case 'price_desc':
-                    $productsQuery->orderBy('price', 'desc');
+                    $productsQuery->orderByRaw('COALESCE(price_sale, price) DESC');
                     break;
                 case 'name_asc':
                     $productsQuery->orderBy('name', 'asc');
@@ -51,6 +51,7 @@ class ProductController extends Controller
                     break;
             }
         }
+
 
         // Lọc sản phẩm theo khoảng giá nếu có
         if ($request->has('price_segment') && !empty($request->price_segment)) {
@@ -236,7 +237,7 @@ class ProductController extends Controller
             ->first();
         $popularRating = $popularRating ?? 0;
 
-        return view('user.product_detail', compact('product', 'brand', 'product_images', 'product_favourite', 'product_related', 'comments', 'popularRating','commentCount'));
+        return view('user.product_detail', compact('product', 'brand', 'product_images', 'product_favourite', 'product_related', 'comments', 'popularRating', 'commentCount'));
     }
 
     public function post_comment($proId, Request $request)
@@ -251,7 +252,7 @@ class ProductController extends Controller
             'rating.min' => 'Số sao phải ít nhất là 1',
             'rating.max' => 'Số sao không được vượt quá 5',
         ]);
-    
+
         if (Auth::guard('customer')->check()) {
             $comment = Comment::create([
                 'product_id' => $proId,
@@ -259,7 +260,7 @@ class ProductController extends Controller
                 'comment' => $request->input('comment'),
                 'rating' => $request->input('rating'),
             ]);
-    
+
             // Trả về phản hồi JSON nếu là AJAX
             if ($request->ajax()) {
                 return response()->json([
@@ -269,14 +270,13 @@ class ProductController extends Controller
                     'customer' => Auth::guard('customer')->user(),
                 ]);
             }
-    
+
             return redirect()->back()->with('success', 'Bình luận của bạn đã được đăng.');
         }
-    
+
         return response()->json([
             'success' => false,
             'message' => 'Bạn cần đăng nhập để bình luận.'
         ], 401);
     }
-    
 }
