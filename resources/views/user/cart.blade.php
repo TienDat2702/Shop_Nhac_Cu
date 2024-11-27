@@ -153,12 +153,11 @@
                         </div>
                     </div>
                 @else
-                    
                     <div class="cart-null">
                         <img src="{{ asset('images/carts-null.png') }}" alt="">
                         <a class="btn-comeback" href="{{ route('home.index') }}"> Mua ngay </a>
                     </div>
-        @endif
+                @endif
 
         {{-- voucher box --}}
         <div class="voucher_overlay"></div>

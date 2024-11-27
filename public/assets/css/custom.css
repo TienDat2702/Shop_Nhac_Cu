@@ -30,6 +30,11 @@ button.remove-cart {
     margin: 0 auto;
     text-align: center;
 }
+@media (max-width: 940px){
+    .cart-null {
+        width: 100%;
+    }
+}
 .cart-null img{
     width: 100%;
     height: auto;

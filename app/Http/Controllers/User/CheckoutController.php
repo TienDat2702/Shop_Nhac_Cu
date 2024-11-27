@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Nette\Utils\Random;
 
@@ -335,6 +336,27 @@ class CheckoutController extends Controller
                         ['stock' => 0] // Add stock to nearest showroom
                     );
 
+                    // Log the transfer in session
+                    $log = [
+                        'from_showroom' => $showroomProductToTransfer->showroom->name ?? 'N/A',
+                        'to_showroom' => $nearestShowroom['name'] ?? 'N/A',
+                        'product' => $product->name,
+                        'quantity' => $remainingQuantity,
+                        'timestamp' => now()->toDateTimeString(),
+                    ];
+
+                    // Retrieve and update transfer logs in session
+                    $transferLogs = session('transfer_logs', []);
+                    array_unshift($transferLogs, $log);
+
+                    // Keep only the most recent 5 logs
+                    if (count($transferLogs) > 5) {
+                        array_pop($transferLogs);
+                    }
+
+                    // Save logs back to session
+                    session(['transfer_logs' => $transferLogs]);
+
                     $remainingQuantity = 0; // All required stock has been transferred
                 }
             }
@@ -368,6 +390,7 @@ class CheckoutController extends Controller
         return redirect()->back();
     }
 }
+
 
 
 

@@ -18,7 +18,7 @@
                             @csrf
                             @method('POST')
                             <div class="form-floating mb-3">
-                                <input class="form-control form-control_gray " name="email" value=""
+                                <input class="form-control form-control_gray " name="email" value="{{ old('email') }}"
                                     autocomplete="email" autofocus="" type="text">
                                 <label for="email">Địa chỉ Mail *</label>
                                 @if ($errors->any())
@@ -42,7 +42,7 @@
                                         $errors->first('password')
                                     }}
                                 </span>
-                            @endif
+                                @endif
                             </div>
                             <!-- Thẻ input ẩn để lưu giá trị từ localStorage -->
                             <input type="hidden" class="input_login_redirect" name="last_route" id="last_route">

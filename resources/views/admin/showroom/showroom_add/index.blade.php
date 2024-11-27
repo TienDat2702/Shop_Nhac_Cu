@@ -5,17 +5,6 @@
 @section('main')
 <div class="container">
     <h2>Thêm Showroom</h2>
-
-    @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
-
     <form class="tf-section-2 form-add-product" method="POST" enctype="multipart/form-data" action="{{ route('showroom.store') }}">
         @csrf <!-- Sử dụng csrf_field() để tự động sinh ra token -->
 
@@ -23,19 +12,25 @@
             <fieldset class="name">
                 <div class="body-title mb-10">Tên Showroom <span class="tf-color-1">*</span></div>
                 <input class="mb-10" type="text" placeholder="Nhập tên showroom" name="name" tabindex="0" value="{{ old('name') }}" >
-                <div class="text-tiny">Nhập tên showroom tối đa 100 ký tự</div>
+                @error('name')
+                <span class="error-message" style="color: red;">* {{ $message }}</span>
+            @enderror
             </fieldset>
 
             <fieldset class="address">
                 <div class="body-title mb-10">Địa Chỉ <span class="tf-color-1">*</span></div>
                 <input class="mb-10" type="text" id="address" placeholder="Nhập địa chỉ showroom" name="address" tabindex="0" value="{{ old('address') }}" >
-                <div class="text-tiny">Nhập địa chỉ tối đa 250 ký tự</div>
+                @error('address')
+                <span class="error-message" style="color: red;">* {{ $message }}</span>
+            @enderror
             </fieldset>
 
             <fieldset class="phone">
                 <div class="body-title mb-10">Số Điện Thoại Liên Hệ<span class="tf-color-1">*</span></div>
                 <input class="mb-10" type="text" placeholder="Nhập Số Điện Thoại Showroom" name="phone" tabindex="0" value="{{ old('phone') }}" >
-                <div class="text-tiny">Nhập số điện thoại</div>
+                @error('phone')
+                <span class="error-message" style="color: red;">* {{ $message }}</span>
+            @enderror
             </fieldset>
             <div id="map" style="height: 400px;"></div>
         </div>
@@ -58,6 +53,9 @@
                     </div>
                 </div>
             </fieldset>
+            @error('image')
+                <span class="error-message" style="color: red;">* {{ $message }}</span>
+            @enderror
         </div>
 
         <!-- Thêm bản đồ OpenStreetMap -->

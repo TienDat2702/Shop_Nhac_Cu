@@ -23,7 +23,7 @@
                                 class="needs-validation" novalidate="">
                                 @csrf
                                 <div class="form-floating mb-3">
-                                    <input class="form-control form-control_gray" name="email" value=""
+                                    <input class="form-control form-control_gray" name="email" value="{{ old('email') }}"
                                         autocomplete="email" type="email" placeholder="name@example.com" required>
                                     <label for="email">Địa chỉ email *</label>
                                     @if ($errors->any())

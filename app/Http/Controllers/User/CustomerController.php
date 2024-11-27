@@ -39,17 +39,22 @@ class CustomerController extends Controller
         // Lấy route từ request (giá trị từ input hidden)
         $route = $request->input('last_route', $route);
         $slug = $request->input('last_slug', null); // Lấy slug nếu có
-
         if (Auth::guard('customer')->attempt($credentials)) {
             // Nếu có slug, chuyển hướng về trang chi tiết sản phẩm
-            if ($slug != 'undefined') {
+            if ($slug !== 'undefined' && $slug !== null) {
                 return redirect()->route('product.detail', ['slug' => $slug])->with('success', 'Đăng nhập thành công');
             }
-    
-            // Nếu không có slug, chuyển hướng về trang đã lưu trong $route
-            return redirect()->route($route)->with('success', 'Đăng nhập thành công');
+            $customer = Customer::where('id', Auth::guard('customer')->user()->id)->where('publish', 2)->first();
+            if (!$customer) {
+                Auth::guard('customer')->logout();
+                toastr()->error('Bạn đã bị chặn không thể đăng nhập');
+                return redirect()->route('customer.login');
+            }else{
+                toastr()->success('Đăng nhập thành công');
+                return redirect()->route($route);
+            }   
         } else {
-            return redirect()->route('customer.login')->with('error', 'Email hoặc Mật khẩu không chính xác');
+            return redirect()->route('customer.login')->withInput()->with('error', 'Email hoặc Mật khẩu không chính xác');
         }
     }
 

@@ -2,11 +2,16 @@ body {
     zoom: 90% !important;
     overflow-x: hidden !important; 
 }
-
+.text-danger{
+    color: red !important;
+}
 #logo_header_mobile {
     max-width: 190px;
 }
-
+.header-desk.header-desk_type_1 .logo a img{
+    max-width: 100%;
+    max-height: 120px !important;
+}
 .wg-table.table-all-user>* {
     min-width: 1260px;
 }
@@ -448,19 +453,7 @@ a.btn-clear:hover {
 
 
 /* post index */
-/* .post-index .item .caption{
-    width: 100%;
-    float: left;
-}
-.post-index .item .caption .description{
-    height: 80px;
-    float: left;
-}
-.post-index .item .caption .title{
-    width: 100%;
-    float: left;
-    height: 58px;
-} */
+
 .post-index .item .caption .description span p{
     font-size: 16px;
 
@@ -537,6 +530,12 @@ a.btn-clear:hover {
 }
 .post-category-content a{
     font-size: 17px;
+}
+.name_post {
+    height: 275px;
+}
+.name_post > a > h3{
+    font-size: 18px;
 }
 /* end post */
 
@@ -943,6 +942,7 @@ a.btn-clear:hover {
     float: left;
     height: 173px;
     overflow: hidden;
+    margin-bottom: 10px;
     border: 1px solid #ccc;
 }
 .read-more.d-flex.align-items-center.justify-content-between {
@@ -1175,6 +1175,15 @@ span.swiper-pagination-bullet {
     .home-page.home-page-2 a.header-tools__item,
     .home-page.home-page-2 a.search-field__actor {
         color: #fff;
+    }
+}
+@media (max-width: 940px){
+    h6.text_dash.text-uppercase.fs-base.fw-medium.animate.animate_fade.animate_btt.animate_delay-3,
+    h2.h1.fw-normal.mb-0.animate.animate_fade.animate_btt.animate_delay-5,
+    h2.h1.fw-bold.animate.animate_fade.animate_btt.animate_delay-5,
+    a.btn-link.btn-link_lg.default-underline.fw-medium.animate.animate_fade.animate_btt.animate_delay-7 {
+        color: #fff;
+        z-index: 30;
     }
 }
 
@@ -1431,3 +1440,63 @@ span.swiper-pagination-bullet {
     }
 }
 
+/* footer */
+.footer {
+    background-color: #000000; /* Đen */
+    color: #ffffff; /* Trắng */
+  }
+  
+  .footer .sub-menu__title {
+    color: #ffffff; /* Trắng cho tiêu đề */
+  }
+  
+  .footer .menu-link {
+    color: #ffffff; /* Trắng cho liên kết */
+    font-size: 16.5px;
+  }
+  
+  .footer .social-links a {
+    color: #ffffff; /* Trắng cho các liên kết mạng xã hội */
+  }
+  
+  .footer .footer-bottom {
+    border-color: rgba(255, 255, 255, 0.15); /* Màu sắc đường viền */
+  }
+  
+  .footer .footer__social-link:hover {
+    color: #767676; 
+  }
+
+  .footer_type_1.dark, .footer_type_2.dark {
+    background-color: #000000; /* Đen */
+    color: #ffffff; /* Trắng */
+  }
+  .pay-link {
+    display: inline-block;
+    margin: 0 0.5rem;
+}
+.footer-column .logo .logo__image{
+    width: 100% !important;
+    max-height: auto !important;
+}
+ul.social-links.list-unstyled.d-flex.flex-wrap.mb-0 {
+    margin-bottom: 15px !important;
+}
+h6.sub-menu__title.text-uppercase {
+    font-size: 18px;
+    font-weight: 600;
+}
+.footer_text_contact{
+    color: #ffd034;
+}
+span.footer-copyright.me-auto {
+    font-size: 16.5px;
+}
+.footer-settings.d-md-flex.align-items-center a{
+    color: #fff;
+    font-size: 16.5px;
+}
+.rte {
+    font-size: 18px;
+}
+/* end footer */

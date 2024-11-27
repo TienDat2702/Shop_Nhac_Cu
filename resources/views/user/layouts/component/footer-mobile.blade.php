@@ -30,7 +30,7 @@
                     </svg>
                     <span class="wishlist-amount d-block position-absolute js-wishlist-count">{{ count($favourite) }}</span>
                 </div>
-                <span>Danh sách yêu thích</span>
+                <span>yêu thích</span>
             </a>
         </div>
     </div>

@@ -52,15 +52,23 @@
                 </td>
                 <td>{{ $item->address }}</td>
                 <td>{{ $item->phone }}</td>
-                <td class="text-center">
-                    <label class="toggle">
-                        <input id="toggleswitch" class="toggleswitch" name="publish" type="checkbox"
-                            value="{{ $item->publish }}" data-id="{{ $item->id }}" data-model="Showroom"
-                            {{ $item->publish == 2 ? 'checked' : '' }}
-                            {{ $config == 'deleted' ? 'disabled' : '' }}>
-                        <span class="roundbutton"></span>
-                    </label>
-                </td>
+                @if($item->publish ==4){
+                    <td class="text-center" >
+                        <strong>Kho Tổng</strong>
+                    </td>
+                }
+                @else{
+                    <td class="text-center">
+                        <label class="toggle">
+                            <input id="toggleswitch" class="toggleswitch" name="publish" type="checkbox"
+                                value="{{ $item->publish }}" data-id="{{ $item->id }}" data-model="Showroom"
+                                {{ $item->publish == 2 ? 'checked' : '' }}
+                                {{ $config == 'deleted' ? 'disabled' : '' }}>
+                            <span class="roundbutton"></span>
+                        </label>
+                    </td>
+                }
+                @endif
                 <td>
     @if($item->latitude && $item->longitude)
         <!-- Thêm liên kết bản đồ nhỏ -->

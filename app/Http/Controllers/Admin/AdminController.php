@@ -25,18 +25,21 @@ class AdminController extends Controller
     public function check_login(AuthRequest $request)
     {
         $data = $request->only('email', 'password');
-        
         if (auth()->attempt($data)) {
             // Kiểm tra xem người dùng có vai trò là admin không
-            if (auth()->user()) {
+            // if (auth()->user()) {
+            //     return redirect()->route('dashboard.index')->with('success', 'Đăng nhập thành công');
+            // }
+            $user = User::where('id', auth()->user()->id)->where('publish', 2)->first();
+            if (!$user) {
+                auth()->logout(); 
+                return redirect()->route('admin.login')->with('error', 'Bạn đã bị chặn');
+            }else{
                 return redirect()->route('dashboard.index')->with('success', 'Đăng nhập thành công');
-            } else {
-                auth()->logout();
-                return redirect()->route('admin.login')->with('error', 'Bạn không có quyền truy cập vào khu vực này.');
             }
         }
         
-        return redirect()->back()->with('error', 'Tài khoản không chính xác. Vui lòng đăng nhập lại!');
+        return redirect()->back()->withInput()->with('error', 'Tài khoản không chính xác. Vui lòng đăng nhập lại!');
     }
 
     public function logout()
