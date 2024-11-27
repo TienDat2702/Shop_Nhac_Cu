@@ -42,7 +42,7 @@
                                         $errors->first('password')
                                     }}
                                 </span>
-                            @endif
+                                @endif
                             </div>
                             <!-- Thẻ input ẩn để lưu giá trị từ localStorage -->
                             <input type="hidden" class="input_login_redirect" name="last_route" id="last_route">

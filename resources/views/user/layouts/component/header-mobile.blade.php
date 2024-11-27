@@ -10,7 +10,7 @@
 
         <div class="logo">
             <a href="{{ route('home.index') }}">
-                <img src="{{ asset('images/logo/logo_dark.png') }}" alt="Uomo" class="logo__image d-block" />
+                <img src="{{ asset('images/logo/logo2.png') }}" alt="Uomo" class="logo__image d-block" />
             </a>
         </div>
 

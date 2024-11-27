@@ -38,9 +38,10 @@ Route::middleware(CheckCustomer::class)->group(function () {
     Route::get('/shop/category/{slug}', [ProductController::class, 'category'])->name('shop.category');
     Route::get('/product/{slug}', [ProductController::class, 'product_details'])->name('product.detail');
     Route::get('/showrooms/map', [UserShowroomController::class, 'showMap'])->name('showrooms.map');
+    // CHÍNH SÁCH
     Route::get('/showrooms/chinh_sach_bao_hanh', [HomeController::class, 'page_chinh_sach_bao_hanh'])->name('page.chinh_sach_bao_hanh');
     Route::get('/showrooms/chinh_sach_giao_hang', [HomeController::class, 'page_chinh_sach_giao_hang'])->name('page.chinh_sach_giao_hang');
-
+    // ABOUT
     Route::get('/about', [HomeController::class, 'about'])->name('about');
     // CONTACT
     Route::get('/contact', [HomeController::class, 'contact'])->name('contact');

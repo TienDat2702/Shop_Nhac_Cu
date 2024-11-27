@@ -192,17 +192,6 @@ class ProductController extends Controller
         }
     }
 
-    // public function product_details($slug)
-    // {
-    //     $product = Product::where('slug', $slug)->first();
-
-    //     $product->view += 1;
-    //     $product->save();
-    //     $brand = Brand::find($product->brand_id);
-    //     $product_images = ThumbnailProduct::where('product_id', $product->id)->get();
-    //     $product_related = Product::where('category_id', $product->category_id)->where('slug', '!=', $slug)->get();
-    //     return view('user.product_detail', compact('product', 'brand', 'product_images', 'product_related'));
-    // }
     public function product_details($slug)
     {
         $product = Product::where('slug', $slug)->firstOrFail();
