@@ -210,8 +210,16 @@ public function getProductsByPublishedShowroom()
         return redirect()->back();
     }
 
+    // Lưu log cho từng sản phẩm
+    $transferLogs = session('transfer_logs', []);
+
     // Chuyển từng sản phẩm sang showroom có publish = 4
     foreach ($showroomProducts as $showroomProduct) {
+        // Lấy thông tin sản phẩm từ bảng products
+        $product = Product::find($showroomProduct->product_id);
+        $productName = $product->name;
+        $quantity = $showroomProduct->stock;
+
         // Cộng stock vào showroom có publish = 4
         DB::table('showroom_products')->updateOrInsert(
             [
@@ -222,12 +230,32 @@ public function getProductsByPublishedShowroom()
                 'stock' => DB::raw('stock + ' . $showroomProduct->stock) // Cộng dồn số lượng hàng tồn
             ]
         );
+
+        // Lưu log cho sản phẩm này
+        $log = [
+            'from_showroom' => $currentShowroom->name ?? 'N/A',
+            'to_showroom' => $targetShowroom->name ?? 'N/A',
+            'product' => $productName, // Lưu tên sản phẩm
+            'quantity' => $quantity, // Lưu số lượng sản phẩm
+            'timestamp' => now()->toDateTimeString(),
+        ];
+
+        // Thêm log mới vào đầu danh sách
+        array_unshift($transferLogs, $log);
+
+        // Giữ lại tối đa 5 log
+        if (count($transferLogs) > 5) {
+            array_pop($transferLogs);
+        }
     }
+
+    // Lưu lại vào session
+    session(['transfer_logs' => $transferLogs]);
 
     // Xóa tất cả sản phẩm trong showroom hiện tại
     DB::table('showroom_products')->where('showroom_id', $currentShowroom->id)->delete();
 
-    toastr()->success('Tất cả sản phẩm đã được chuyển sang showroom có publish là 4 thành công!');
+    toastr()->success('Tất cả sản phẩm đã được chuyển sang Kho thành công!');
     return redirect()->back();
 }
 
@@ -269,6 +297,11 @@ public function transferProductFromShowroom(Request $request, $showroomId)
         return redirect()->back();
     }
 
+    // Lấy thông tin sản phẩm từ bảng products
+    $product = Product::find($productId);
+    $productName = $product->name;
+    $quantity = $showroomProduct->stock;
+
     // Cộng stock vào showroom có publish = 4
     DB::table('showroom_products')->updateOrInsert(
         [
@@ -286,9 +319,33 @@ public function transferProductFromShowroom(Request $request, $showroomId)
         ->where('product_id', $productId)
         ->delete();
 
+    // Lưu log
+    $log = [
+        'from_showroom' => $currentShowroom->name ?? 'N/A',
+        'to_showroom' => $targetShowroom->name ?? 'N/A',
+        'product' => $productName, // Lưu tên sản phẩm
+        'quantity' => $quantity, // Lưu số lượng sản phẩm
+        'timestamp' => now()->toDateTimeString(),
+    ];
+
+    // Lấy danh sách log hiện tại trong session
+    $transferLogs = session('transfer_logs', []);
+
+    // Thêm log mới vào đầu danh sách
+    array_unshift($transferLogs, $log);
+
+    // Giữ lại tối đa 5 log
+    if (count($transferLogs) > 5) {
+        array_pop($transferLogs);
+    }
+
+    // Lưu lại vào session
+    session(['transfer_logs' => $transferLogs]);
+
     toastr()->success('Sản phẩm đã được chuyển sang showroom có publish là 4 thành công!');
     return redirect()->back();
 }
+
 
 
 

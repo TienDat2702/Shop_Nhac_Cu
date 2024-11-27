@@ -39,7 +39,7 @@
             <button id="transferBtn" class="btn btn-outline-primary" style="font-size: 16px; padding: 10px; margin-right: 10px;">Chuyển sản phẩm</button>
 
             <!-- Nút test thử -->
-            <a href="{{route('transfer.show')}}" class="btn btn-outline-secondary" style="font-size: 16px; padding: 10px;">Test thử</a>
+            <a href="{{route('transfer.show')}}" class="btn btn-outline-secondary" style="font-size: 16px; padding: 10px; ">Lịch sử chuyển</a>
         </div>
 
         <!-- Danh sách gợi ý showroom -->

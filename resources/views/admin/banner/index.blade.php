@@ -1,5 +1,5 @@
 @extends('admin.layout.layout')
-@section('title', 'Danh sách showroom')
+@section('title', 'Danh sách Banner')
 @section('main')
     <div class="main-content-inner">
         <div class="main-content-wrap">

@@ -161,31 +161,42 @@ public function update(Request $request, $id)
     // Find showroom by id
     $showroom = Showroom::findOrFail($id);
 
-    // Prepare name to check for the "Kho" condition
-    $inputName = strtolower($request->input('name'));
+    // If showroom's publish status is 4, allow editing freely
+    if ($showroom->publish == 4) {
+        $inputName = strtolower($request->input('name'));
 
-    // Check if showroom name contains "kho"
-    if (preg_match('/kho/i', $inputName)) {
-        $existingShowroom = Showroom::whereRaw("LOWER(name) REGEXP 'kho'")->where('publish', 4)->first();
+        // Check if the name doesn't contain "Kho", "Khoo", "Khooo", "fpt"
+        if (!preg_match('/kho|fpt/i', $inputName)) {
+            // If name does not contain those terms, set publish status to 2
+            $showroom->publish = 2;
+        }
+    } else {
+        // Prepare name to check for the "Kho" condition
+        $inputName = strtolower($request->input('name'));
 
-        // If there's already a showroom with "kho" and publish = 4, return error
-        if ($existingShowroom) {
-            toastr()->error('Chỉ có thể có một showroom với tên chứa "kho" và trạng thái publish là 4.');
-            return redirect()->back()->withInput();
+        // Check if showroom name contains "kho"
+        if (preg_match('/kho/i', $inputName)) {
+            $existingShowroom = Showroom::whereRaw("LOWER(name) REGEXP 'kho'")->where('publish', 4)->first();
+
+            // If there's already a showroom with "kho" and publish = 4, return error
+            if ($existingShowroom) {
+                toastr()->error('Chỉ có thể có một showroom với tên chứa "kho" và trạng thái publish là 4.');
+                return redirect()->back()->withInput();
+            }
+
+            // Set publish status to 4 if the name contains "kho"
+            $showroom->publish = 4;
+        } else {
+            $showroom->publish = 2;
         }
 
-        // Set publish status to 4 if the name contains "kho"
-        $publishStatus = 4;
-    } else {
-        $publishStatus = 2;
-    }
+        // Ensure there's only one showroom with publish = 4
+        $existingPublishedShowroom = Showroom::where('publish', 4)->first();
 
-    // Ensure there's only one showroom with publish = 4
-    $existingPublishedShowroom = Showroom::where('publish', 4)->first();
-
-    if ($existingPublishedShowroom && $publishStatus == 4) {
-        toastr()->error('Chỉ có thể có một showroom với trạng thái publish là 4.');
-        return redirect()->back()->withInput();
+        if ($existingPublishedShowroom && $showroom->publish == 4) {
+            toastr()->error('Chỉ có thể có một showroom với trạng thái publish là 4.');
+            return redirect()->back()->withInput();
+        }
     }
 
     // Check if the name hasn't changed, then update only other fields
@@ -234,7 +245,6 @@ public function update(Request $request, $id)
     $showroom->phone = $request->phone;
     $showroom->longitude = $request->longitude;
     $showroom->latitude = $request->latitude;
-    $showroom->publish = $publishStatus;
 
     // Handle image upload if a new image is provided
     if ($request->hasFile('image')) {
@@ -259,6 +269,8 @@ public function update(Request $request, $id)
     // Redirect to showroom category index with success message
     return redirect()->route('showroomcategory.index');
 }
+
+
 
 
 public function forceDelete(string $id)
