@@ -38,7 +38,7 @@ class AdminOrderController extends Controller
     }
     public function OrderPending()
     {
-        $orders = Order::with(['customer', 'orderDetails'])->where('status', 'chờ duyệt')->orderBy('created_at', 'desc')->paginate(10);
+        $orders = Order::with(['customer', 'orderDetails'])->where('status', 'chờ xử lý')->orderBy('created_at', 'desc')->paginate(10);
         return view('admin.order.pending', compact('orders'));
     }
     public function search(Request $request)
@@ -52,7 +52,7 @@ class AdminOrderController extends Controller
     public function show($id)
     {
         $order = Order::with(['orderDetails.product.brand', 'orderDetails.product.productCategory1', 'customer', 'discount'])->withTrashed()->findOrFail($id);
-        $statuses = ['Chờ xử lý', 'Duyệt' , 'Đang giao', 'Đã giao', 'Đã hủy'];
+        $statuses = ['Chờ xử lý', 'Đã Duyệt' , 'Đang giao', 'Đã giao', 'Đã hủy'];
         return view('admin.order.detail', compact('order', 'statuses'));
     }
     public function updateStatus(Request $request, $id)
