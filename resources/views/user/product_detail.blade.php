@@ -74,21 +74,12 @@
                     <h1 class="product-single__name">{{ $product->name }}</h1>
                     <div class="product-single__rating">
                         <div class="reviews-group d-flex">
-                            <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
-                                <use href="#icon_star" />
-                            </svg>
-                            <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
-                                <use href="#icon_star" />
-                            </svg>
-                            <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
-                                <use href="#icon_star" />
-                            </svg>
-                            <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
-                                <use href="#icon_star" />
-                            </svg>
-                            <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
-                                <use href="#icon_star" />
-                            </svg>
+                            @for ($i = 1; $i <= 5; $i++)
+                                <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"
+                                    fill="{{ $i <= $popularRating ? '#FFD700' : '#ccc' }}">
+                                    <use href="#icon_star" />
+                                </svg>
+                            @endfor
                         </div>
                         <span class="reviews-note text-lowercase text-secondary ms-1">{{ $product->view }} lượt xem</span>
                     </div>
@@ -190,9 +181,11 @@
                     </li>
                     <li class="nav-item" role="presentation">
                         <a class="nav-link nav-link_underscore" id="tab-reviews-tab" data-bs-toggle="tab"
-                            href="#tab-reviews" role="tab" aria-controls="tab-reviews" aria-selected="false">Reviews
-                            (2)</a>
+                            href="#tab-reviews" role="tab" aria-controls="tab-reviews" aria-selected="false">
+                            Reviews ({{ $commentCount }})
+                        </a>
                     </li>
+                    
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="tab-description" role="tabpanel"
@@ -204,8 +197,8 @@
                     <div class="tab-pane fade" id="tab-reviews" role="tabpanel" aria-labelledby="tab-reviews-tab">
                         <h2 class="product-single__reviews-title">Đánh giá</h2>
                         <div class="product-single__comments-list">
-                            @forelse($comments as $comment)
-                                <div class="product-single__comments-item">
+                            @forelse($comments as $index => $comment)
+                                <div class="product-single__comments-item" style="{{ $index >= 5 ? 'display: none;' : '' }}">
                                     <div class="customer-avatar">
                                         <img loading="lazy" src="assets/images/avatar.jpg" alt="" />
                                     </div>
@@ -215,14 +208,13 @@
                                         </div>
                                         <div class="reviews-group d-flex">
                                             @for ($i = 1; $i <= 5; $i++)
-                                                <svg class="review-star" viewBox="0 0 9 9"
-                                                    xmlns="http://www.w3.org/2000/svg"
+                                                <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"
                                                     fill="{{ $i <= $comment->rating ? '#FFD700' : '#ccc' }}">
                                                     <use href="#icon_star" />
                                                 </svg>
                                             @endfor
                                         </div>
-                                        <div class="review-date">{{ $comment->created_at->format('F d, Y') }}</div>
+                                        <div class="review-date">{{ $comment->created_at->format('d/m/Y H:i:s') }}</div>
                                         <div class="review-text">
                                             <p>{{ $comment->comment }}</p>
                                         </div>
@@ -231,47 +223,56 @@
                             @empty
                                 <p>Chưa có đánh giá về sản phẩm. Giúp TuneNest biết về cảm nhận của bạn về sản phẩm</p>
                             @endforelse
+                        
+                            @if($comments->count() > 5)
+                                <button id="load-more-comments" class="btn btn-link">Xem thêm</button>
+                            @endif
                         </div>
+                        
 
                         <div class="product-single__review-form">
                             @if (Auth::guard('customer')->check())
-                                <form method="POST" action="{{ route('product.comment', ['proId' => $product->id]) }}">
-                                    @csrf
-                                    <h5>Hãy trở thành người đầu tiên bình luận về sản phẩm này“{{ $product->name }}”</h5>
-                                    <div class="select-star-rating">
-                                        <label>Đánh giá *</label>
-                                        <span class="star-rating">
-                                            @for ($i = 1; $i <= 5; $i++)
-                                                <svg class="star-rating__star-icon" width="12" height="12"
-                                                    fill="#ccc" viewBox="0 0 12 12" data-rating="{{ $i }}"
-                                                    onclick="document.getElementById('form-input-rating').value = {{ $i }};">
-                                                    <path
-                                                        d="M11.1429 5.04687C11.1429 4.84598 10.9286 4.76562 10.7679 4.73884L7.40625 4.25L5.89955 1.20312C5.83929 1.07589 5.72545 0.928571 5.57143 0.928571C5.41741 0.928571 5.30357 1.07589 5.2433 1.20312L3.73661 4.25L0.375 4.73884C0.207589 4.76562 0 4.84598 0 5.04687C0 5.16741 0.0870536 5.28125 0.167411 5.3683L2.60491 7.73884L2.02902 11.0871C2.02232 11.1339 2.01563 11.1741 2.01563 11.221C2.01563 11.3951 2.10268 11.5558 2.29688 11.5558C2.39063 11.5558 2.47768 11.5223 2.56473 11.4754L5.57143 9.89509L8.57813 11.4754C8.65848 11.5223 8.75223 11.5558 8.84598 11.5558C9.04018 11.5558 9.12054 11.3951 9.12054 11.221C9.12054 11.1741 9.12054 11.1339 9.11384 11.0871L8.53795 7.73884L10.9688 5.3683C11.0558 5.28125 11.1429 5.16741 11.1429 5.04687Z" />
-                                                </svg>
-                                            @endfor
-                                        </span>
-                                        <input type="hidden" id="form-input-rating" name="rating" value="1" />
-                                        <!-- Giá trị mặc định là 1 -->
-                                    </div>
-                                    <div class="mb-4">
-                                        <textarea id="form-input-review" class="form-control form-control_gray" placeholder="Bình luận về sản phẩm ..."
-                                            cols="30" rows="8" name="comment"></textarea>
-                                        @error('comment')
-                                            <span class="invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="form-action">
-                                        <button type="submit" class="btn btn-primary">Bình Luận</button>
-                                    </div>
-                                </form>
+                            <form id="comment-form" method="POST" action="{{ route('product.comment', ['proId' => $product->id]) }}">
+                                @csrf
+                                @if ($comments->isEmpty())
+                                    <h5>Hãy trở thành người đầu tiên bình luận về sản phẩm này “{{ $product->name }}”</h5>
+                                @endif
+                            
+                                <div class="select-star-rating">
+                                    <label>Đánh giá *</label>
+                                    <span class="star-rating">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <svg class="star-rating__star-icon" width="12" height="12" fill="#ccc" viewBox="0 0 12 12"
+                                                data-rating="{{ $i }}"
+                                                onclick="document.getElementById('form-input-rating').value = {{ $i }};">
+                                                <path
+                                                    d="M11.1429 5.04687C11.1429 4.84598 10.9286 4.76562 10.7679 4.73884L7.40625 4.25L5.89955 1.20312C5.83929 1.07589 5.72545 0.928571 5.57143 0.928571C5.41741 0.928571 5.30357 1.07589 5.2433 1.20312L3.73661 4.25L0.375 4.73884C0.207589 4.76562 0 4.84598 0 5.04687C0 5.16741 0.0870536 5.28125 0.167411 5.3683L2.60491 7.73884L2.02902 11.0871C2.02232 11.1339 2.01563 11.1741 2.01563 11.221C2.01563 11.3951 2.10268 11.5558 2.29688 11.5558C2.39063 11.5558 2.47768 11.5223 2.56473 11.4754L5.57143 9.89509L8.57813 11.4754C8.65848 11.5223 8.75223 11.5558 8.84598 11.5558C9.04018 11.5558 9.12054 11.3951 9.12054 11.221C9.12054 11.1741 9.12054 11.1339 9.11384 11.0871L8.53795 7.73884L10.9688 5.3683C11.0558 5.28125 11.1429 5.16741 11.1429 5.04687Z" />
+                                            </svg>
+                                        @endfor
+                                    </span>
+                                    <input type="hidden" id="form-input-rating" name="rating" value="1" />
+                                    <!-- Giá trị mặc định là 1 -->
+                                </div>
+                                <div class="mb-4">
+                                    <textarea id="form-input-review" class="form-control form-control_gray" placeholder="Bình luận về sản phẩm ..."
+                                        cols="30" rows="8" name="comment"></textarea>
+                                    @error('comment')
+                                        <span class="invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            
+                                <div class="form-action">
+                                    <button type="submit" class="btn btn-primary">Bình Luận</button>
+                                </div>
+                            </form>
+                            
                             @else
                                 <div class="alert alert-danger">
-                                    <strong>Bạn cần <a class="btn_redirect" href="{{ route('customer.login') }}" data-route='product.detail' data-slug='{{ $product->slug }}'>đăng nhập</a> để bình
-                                        luận</strong>
+                                    <strong>Bạn cần <a href="{{ route('customer.login') }}">đăng nhập</a> để bình luận</strong>
                                 </div>
                             @endif
                         </div>
+                        
 
                     </div>
                 </div>
@@ -405,3 +406,28 @@
         </section><!-- /.products-carousel container -->
     </main>
 @endsection
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    let currentIndex = 5; // Hiện tại đã hiển thị 5 bình luận
+    const comments = document.querySelectorAll('.product-single__comments-item');
+    const loadMoreButton = document.getElementById('load-more-comments');
+
+    if (loadMoreButton) {
+        loadMoreButton.addEventListener('click', function () {
+            // Hiển thị thêm 5 bình luận
+            for (let i = currentIndex; i < currentIndex + 5 && i < comments.length; i++) {
+                comments[i].style.display = 'block';
+            }
+            currentIndex += 5;
+
+            // Nếu đã hiển thị hết bình luận, ẩn nút "Xem thêm"
+            if (currentIndex >= comments.length) {
+                loadMoreButton.style.display = 'none';
+            }
+        });
+    }
+});
+
+
+
+</script>
