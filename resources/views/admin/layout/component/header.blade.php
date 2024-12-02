@@ -2,9 +2,9 @@
     <div class="wrap">
         <div class="header-left">
             <a href="index-2.html">
-                <img class="" id="logo_header_mobile" alt="" src="{{ asset('images/logo/logo.jpg') }}"
-                    data-light="{{ asset('images/logo/logo.jpg') }}" data-dark="{{ asset('images/logo/logo.jpg') }}"
-                    data-width="154px" data-height="52px" data-retina="{{ asset('images/logo/logo.jpg') }}">
+                <img class="" id="logo_header_mobile" alt="" src="{{ asset('images/logo/logo2.png') }}"
+                    data-light="{{ asset('images/logo/logo2.png') }}" data-dark="{{ asset('images/logo/logo2.png') }}"
+                    data-width="154px" data-height="52px" data-retina="{{ asset('images/logo/logo2.png') }}">
             </a>
             <div class="button-show-hide">
                 <i class="icon-menu-left"></i>

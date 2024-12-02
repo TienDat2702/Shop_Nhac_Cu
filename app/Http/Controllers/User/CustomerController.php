@@ -289,7 +289,7 @@ public function reset_password($token)
     }
     public function customerOrder()
     {
-        $orders = Order::where('customer_id', Auth::guard('customer')->user()->id)->get();
+        $orders = Order::where('customer_id', Auth::guard('customer')->user()->id)->paginate(10);
         return view('user.userOrder', compact('orders'));
     }
 
@@ -325,7 +325,6 @@ public function reset_password($token)
                 $steps = array_filter($steps, function($step) {
                     return $step['status'] != 'Chưa xác nhận';
                 });
-        
                 // Reset lại chỉ mục mảng để tránh lỗi khi duyệt mảng
                 $steps = array_values($steps);
             }
