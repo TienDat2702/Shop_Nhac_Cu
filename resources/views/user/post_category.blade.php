@@ -1,7 +1,7 @@
 @extends('user.layouts.app')
 @section('title', $categories->name)
 @section('content')
-    <main class="pt-90">
+    <main class="pt-135">
         <div class="breadcrumbs">
             <div class="container">
                 <ul>

@@ -3,8 +3,11 @@
     <div class="container">
         <div class="header-desk header-desk_type_1">
             <div class="logo">
-                <a href="{{ route('home.index') }}">
-                    <img src="{{ asset('images/logo/logo2.png') }}" alt="TuneNest" class="logo__image d-block" />
+                <a href="{{ route('home.index') }}" class="logo_trang">
+                    <img src="{{ asset('images/logo/logo_trang.png') }}" alt="TuneNest" class="logo__image d-block" />
+                </a>
+                <a href="{{ route('home.index') }}" class="logo_den">
+                    <img src="{{ asset('images/logo/logo_den.png') }}" alt="TuneNest" class="logo__image d-block" />
                 </a>
             </div>
 

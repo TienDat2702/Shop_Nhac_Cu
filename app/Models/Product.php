@@ -78,6 +78,11 @@ class Product extends Model
         return $this->hasMany(ThumbnailProduct::class, 'product_id', 'id');
     }
 
+    // quan hệ thumbnail 1-N
+    public function comments() {
+        return $this->hasMany(Comment::class, 'product_id', 'id');
+    }
+
     public function showrooms()
     {
         return $this->belongsToMany(Showroom::class, 'showroom_products')->withPivot('stock');

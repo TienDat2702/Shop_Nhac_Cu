@@ -44,9 +44,6 @@ class PostController extends Controller
             // Lấy các bài viết phổ biến
             $post_care_about = Post::where('publish', 2)->orderBy('view', 'DESC')->limit(6)->get();
             
-            // if ($post->postCategory->parent) {
-            //     # code...
-            // }
             // Lấy tất cả các ID của danh mục con
             $post_category_child = PostCategory::GetAllByPublish()
                 ->where('parent_id', $post->postCategory->parent->id ?? 0)
@@ -57,10 +54,8 @@ class PostController extends Controller
             // Lấy các bài viết thuộc danh mục cha và các danh mục con
             $post_ralate = Post::GetPostPublish()
                 ->where('post_category_id', $post->postCategory->id ?? 0)
-                // ->orWhereIn('post_category_id', $post_category_child->pluck('id')->toArray())
                 ->limit(6)
                 ->get();
-            // dd($post->postCategory->name);
             // Danh mục liên quan (danh mục con)
             $post_category_ralate = $post_category_child;
             

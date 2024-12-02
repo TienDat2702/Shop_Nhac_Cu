@@ -19,40 +19,44 @@
                     <div class="wg-table table-all-user">
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered">
-                            <thead>
-    <tr>
-        <th class="text-center">Sản phẩm</th>
-        <th class="text-center">Giá</th>
-        <th class="text-center">Ngày yêu thích</th> <!-- New column for date added -->
-        <th class="text-center">Hình ảnh</th>
-        <th class="text-center">Hành động</th>
-    </tr>
-</thead>
-<tbody>
-    @if($favourites->isEmpty())
-        <tr>
-            <td colspan="6" class="text-center">Wishlist của bạn trống</td> <!-- Updated colspan -->
-        </tr>
-    @else
-        @foreach($favourites as $favourite)
-            <tr>
-                <td class="text-center">{{ $favourite->product->name }}</td>
-                <td class="text-center">{{ number_format($favourite->product->price) }} VNĐ</td>
-                <td class="text-center">{{ $favourite->created_at->format('d/m/Y') }}</td> <!-- Display date added -->
-                <td class="text-center">
-                    <img src="{{ asset('uploads/products/product/' . $favourite->product->image) }}" alt="{{ $favourite->product->name }}" width="100">
-                </td>
-                <td class="text-center">
-                    <form action="{{ route('wishlist.remove', $favourite->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Xóa</button>
-                    </form>
-                </td>
-            </tr>
-        @endforeach
-    @endif
-</tbody>
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Sản phẩm</th>
+                                        <th class="text-center">Giá</th>
+                                        <th class="text-center">Ngày yêu thích</th>
+                                        <th class="text-center">Hình ảnh</th>
+                                        <th class="text-center">Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if($favourites->isEmpty())
+                                        <tr>
+                                            <td colspan="5" class="text-center">Wishlist của bạn trống</td>
+                                        </tr>
+                                    @else
+                                        @foreach($favourites as $favourite)
+                                            <tr>
+                                                <td class="text-center">
+                                                    <a href="{{ route('product.detail', $favourite->product->slug) }}">{{ $favourite->product->name }}</a>
+                                                </td>
+                                                <td class="text-center">{{ number_format($favourite->product->price) }} VNĐ</td>
+                                                <td class="text-center">{{ $favourite->created_at->format('d/m/Y') }}</td>
+                                                <td class="text-center">
+                                                    <a href="{{ route('product.detail', $favourite->product->slug) }}">
+                                                        <img src="{{ asset('uploads/products/product/' . $favourite->product->image) }}" alt="{{ $favourite->product->name }}" width="100">
+                                                    </a>
+                                                </td>
+                                                <td class="text-center">
+                                                    <form action="{{ route('wishlist.remove', $favourite->id) }}" method="POST" style="display:inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger">Xóa</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
+                                </tbody>
                             </table>
                         </div>
                     </div>

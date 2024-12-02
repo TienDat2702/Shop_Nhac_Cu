@@ -20,7 +20,7 @@
             <em>Kiểm tra danh sách mặt hàng của bạn</em>
           </span>
         </a>
-        <a href="" class="checkout-steps__item">
+        <a href="#" class="checkout-steps__item">
           <span class="checkout-steps__item-number">03</span>
           <span class="checkout-steps__item-title">
             <span>Xác nhận</span>
@@ -188,8 +188,7 @@
                   </div>
                   <div class="policy-text">
                     Dữ liệu cá nhân của bạn sẽ được sử dụng để xử lý đơn đặt hàng của bạn, hỗ trợ trải nghiệm của bạn trong suốt quá trình này
-                    trang web và cho các mục đích khác được mô tả trong <a href="terms.html" target="_blank">sự riêng tư
-                      chính sách</a>.
+                    trang web và cho các mục đích khác được mô tả trong
                   </div>
                 </div>
               <button id="checkoutButton" type="submit" class="btn btn-primary btn-checkout">ĐẶT HÀNG</button>

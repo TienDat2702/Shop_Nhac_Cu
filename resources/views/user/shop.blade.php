@@ -313,16 +313,6 @@
                             </select>
 
                             <div class="shop-asc__seprator mx-3 bg-light d-none d-md-block order-md-0"></div>
-
-                            <div class="col-size align-items-center order-1 d-none d-lg-flex">
-                                <span class="text-uppercase fw-medium me-2">View</span>
-                                <button class="btn-link fw-medium me-2 js-cols-size" data-target="products-grid"
-                                    data-cols="2">2</button>
-                                <button class="btn-link fw-medium me-2 js-cols-size" data-target="products-grid"
-                                    data-cols="3">3</button>
-                                <button class="btn-link fw-medium js-cols-size" data-target="products-grid"
-                                    data-cols="4">4</button>
-                            </div>
                             <div class="shop-filter d-flex align-items-center order-0 order-md-3 d-lg-none">
                                 <button class="btn-link btn-link_f d-flex align-items-center ps-0 js-open-aside"
                                     data-aside="shopFilter">
@@ -339,7 +329,12 @@
                     <div class="products-grid row row-cols-2 row-cols-md-3" id="products-grid">
                         @foreach ($products as $product)
                             <div class="product-card-wrapper">
-                                <div class="product-card mb-3 mb-md-4 mb-xxl-5">
+                                <div class="product-card mb-3 mb-md-4 mb-xxl-5 pst">
+                                    @if ($product->price_sale)
+                                    <div class="product_sale">
+                                        <span>Giảm giá</span>
+                                    </div>
+                                    @endif
                                     <div class="pc__img-wrapper">
                                         <div class="swiper-container background-img js-swiper-slider"
                                             data-settings='{"resizeObserver": true}'>

@@ -16,7 +16,7 @@ use App\Models\LoyaltyLevel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-
+use Illuminate\Support\Str;
 class CustomerController extends Controller
 {
     public function login()
@@ -148,7 +148,8 @@ class CustomerController extends Controller
     ]);
 
     $customer = Customer::where('email', $req->email)->first();
-    $token = \Str::random(40);
+    $token = Str::random(40);
+
 
     CustomerResetToken::where('email', $req->email)->delete();
 

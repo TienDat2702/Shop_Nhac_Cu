@@ -29,11 +29,6 @@
                 @include('admin.posts.post_category.component.table')
                 {{-- end table --}}
             </div>
-            {{-- <nav aria-label="Page navigation example">
-                <ul class="pagination d-flex justify-content-center my-3">
-                    {{ $postCategories->appends(request()->all())->links() }}
-                </ul>
-            </nav> --}}
         </div>
     </div>
     </div>

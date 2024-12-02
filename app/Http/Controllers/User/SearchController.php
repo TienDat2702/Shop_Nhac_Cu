@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product; // Import model Product
 use App\Models\ProductCategory; // Import model ProductCategory
@@ -17,7 +18,6 @@ class SearchController extends Controller
 
         // Tìm kiếm sản phẩm theo tên hoặc mô tả và phân trang
         $products = Product::where('name', 'LIKE', "%{$searchTerm}%")
-            ->orWhere('description', 'LIKE', "%{$searchTerm}%")
             ->paginate(10); // Điều chỉnh số lượng sản phẩm trên mỗi trang
 
         // Lấy danh sách danh mục sản phẩm
@@ -25,27 +25,12 @@ class SearchController extends Controller
 
         // Lấy danh sách thương hiệu
         $brands = Brand::all(); // Fetch all brands
-        if ($request->has('sort')) {
-            switch ($request->sort) {
-                case 'price_asc':
-                    $productsQuery->orderBy('price', 'asc');
-                    break;
-                case 'price_desc':
-                    $productsQuery->orderBy('price', 'desc');
-                    break;
-                case 'name_asc':
-                    $productsQuery->orderBy('name', 'asc');
-                    break;
-                case 'name_desc':
-                    $productsQuery->orderBy('name', 'desc');
-                    break;
-            }
-        }
         $customer = Auth::guard('customer')->user();
-
+        $product_favourite = '';
         if ( $customer) {
             $product_favourite = $customer->favourites->pluck('id','product_id')->toArray();
         }
+       
         
         // Trả về view với dữ liệu tìm kiếm
         return view('user.search', compact('products', 'product_favourite', 'productCategories', 'brands', 'searchTerm'));

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostCreateRequest;
 use App\Http\Requests\PostUpdateRequest;
-use App\Models\AlbumPost;
 use App\Models\Post;
 use App\Models\PostCategory;
 use Illuminate\Http\Request;

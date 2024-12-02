@@ -743,10 +743,17 @@ function pureFadeOut(e) {
           document.body.classList.add("home-page-2");
           this.$header.classList.remove(this.selectors.stickyActiveClass);
           this.$header.classList.add('position-absolute');
+          if (document.querySelector('.home-page')) {
+            document.querySelector('.home-page .logo_den').style.display = 'none';
+            document.querySelector('.home-page .logo_trang').style.display = 'block';
+          }
+         
         } else if (currentScrollTop > this.stickyMinPos) {
           document.body.classList.remove("home-page-2");
           this.$header.classList.add(this.selectors.stickyActiveClass);
           this.$header.classList.remove('position-absolute');
+          document.querySelector('.home-page .logo_den').style.display = 'block';
+          document.querySelector('.home-page .logo_trang').style.display = 'none';
         }
 
         this.lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;

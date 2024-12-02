@@ -31,7 +31,12 @@
             <div class="row">
                 @foreach ($products as $product)
                     <div class="col-6 col-md-4 col-lg-3">
-                        <div class="product-card product-index product-card_style3 mb-3 mb-md-4 mb-xxl-5">
+                        <div class="product-card product-index product-card_style3 mb-3 mb-md-4 mb-xxl-5 pst">
+                            @if ($product->price_sale)
+                                    <div class="product_sale">
+                                        <span>Giảm giá</span>
+                                    </div>
+                                @endif
                             <div class="pc__img-wrapper">
                                 <a href="{{ route('product.detail', $product->slug) }}">
                                     <img loading="lazy" src="{{ asset('uploads/products/product/' . $product->image) }}"

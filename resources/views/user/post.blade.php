@@ -1,7 +1,7 @@
 @extends('user.layouts.app')
 @section('title', $categories->name)
 @section('content')
-    <main class="pt-90">
+    <main class="pt-135">
         <section class="post-single container">
             <div class="advisory_latest post_banner">
                 @if (!empty($post_view->first()))

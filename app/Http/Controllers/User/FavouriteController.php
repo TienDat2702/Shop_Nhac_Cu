@@ -12,7 +12,9 @@ class FavouriteController extends Controller
 {
     public function index()
     {
-        $favourites = Favourite::with('product')->where('customer_id', Auth::guard('customer')->id())->get();
+        $favourites = Favourite::with('product')->where('customer_id', Auth::guard('customer')->id())->whereHas('product', function ($query) {
+            $query->where('publish', 2);
+        })->get();
         return view('user.favourites.index', compact('favourites'));
     }
 

@@ -202,6 +202,18 @@ class ProductController extends Controller
         $product_related = Product::where('category_id', $product->category_id)->where('slug', '!=', $slug)->get();
         $product_images = ThumbnailProduct::where('product_id', $product->id)->get();
 
+        $starts = $product->comments;
+        $totalStart = 0;
+        $indexStart = 0;
+        $averageStart = 0;
+        foreach($starts as $start){
+            $indexStart++;
+            $totalStart += $start->rating;
+        }
+        if ($indexStart >0 ) {
+            $averageStart = round($totalStart/$indexStart,1);
+        }
+
         $customer = Auth::guard('customer')->user();
         $product_favourite = [];
         if ($customer) {
@@ -226,7 +238,7 @@ class ProductController extends Controller
             ->first();
         $popularRating = $popularRating ?? 0;
 
-        return view('user.product_detail', compact('product', 'brand', 'product_images', 'product_favourite', 'product_related', 'comments', 'popularRating', 'commentCount'));
+        return view('user.product_detail', compact('product', 'brand', 'product_images', 'product_favourite', 'product_related', 'comments', 'popularRating', 'commentCount', 'averageStart'));
     }
 
     public function post_comment($proId, Request $request)

@@ -7,7 +7,7 @@ use App\Http\Requests\DiscountCreateRequest;
 use App\Http\Requests\DiscountUpdateRequest;
 use App\Models\Discount;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Carbon;
 class DiscountController extends Controller
 {
     public function index(Request $request)
@@ -37,14 +37,19 @@ class DiscountController extends Controller
 
     public function store(DiscountCreateRequest $request)
     {
-        $discount = Discount::create($request->validated());
+        $discount = new Discount();
+        $discount->name = $request->input('name');
+        $discount->discount_rate = $request->input('discount_rate');
+        $discount->max_value = $request->input('max_value');
+        $discount->minimum_total_value = $request->input('minimum_total_value');
+        $discount->minimum_order_value = $request->input('minimum_order_value');
+        $discount->start_date = $request->input('start_date');
+        $discount->end_date = $request->input('end_date');
+        $discount->use_limit = $request->input('use_limit');
+        
+        $discount->save();
 
-        if ($discount) {
-            toastr()->success('Thêm mới thành công!');
-        } else {
-            toastr()->error('Thêm mới không thành công.');
-        }
-        return redirect()->route('discount.index');
+        return redirect()->route('discount.index')->with('success', 'Mã giảm giá đã được tạo thành công.');
     }
 
     public function edit($id)
@@ -54,17 +59,30 @@ class DiscountController extends Controller
     }
 
     public function update(DiscountUpdateRequest $request, $id)
-    {
-        $discount = Discount::findOrFail($id);
-        $updated = $discount->update($request->validated());
+{
+    try {
+        // Lấy dữ liệu đã validate từ request
+        $data = $request->validated();
+
+        // Chuyển đổi ngày giờ sang định dạng chuẩn
+        $data['start_date'] = Carbon::parse($request->start_date)->format('Y-m-d H:i:s');
+        $data['end_date'] = Carbon::parse($request->end_date)->format('Y-m-d H:i:s');
+
+        // Thực hiện cập nhật
+        $updated = Discount::where('id', $id)->update($data);
 
         if ($updated) {
             toastr()->success('Cập nhật thành công!');
         } else {
-            toastr()->error('Cập nhật không thành công.');
+            toastr()->error('Không tìm thấy bản ghi cần cập nhật.');
         }
-        return redirect()->route('discount.index');
+    } catch (\Exception $e) {
+        toastr()->error('Đã xảy ra lỗi trong quá trình cập nhật.');
     }
+
+    return redirect()->route('discount.index');
+}
+
 
     public function destroy($id)
     {
@@ -77,10 +95,11 @@ class DiscountController extends Controller
 
     public function restore($id)
     {
-        $discount = Discount::onlyTrashed()->findOrFail($id);
-        $discount->restore();
-
-        toastr()->success('Khôi phục thành công!');
-        return redirect()->route('discount.index');
+        $discount = Discount::withTrashed()->find($id);
+        if ($discount) {
+            $discount->restore();
+            return redirect()->route('discount.index')->with('success', 'Mã giảm giá đã được khôi phục thành công.');
+        }
+        return redirect()->route('discount.index')->with('error', 'Mã giảm giá không tồn tại.');
     }
 }

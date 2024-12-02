@@ -8229,7 +8229,9 @@ img {
 .mw-930 {
   width: 58.125rem !important;
   max-width: 100% !important;
-  margin: 0 auto; }
+  margin: 0 auto; 
+  font-size: 16px;
+}
 
 .w-740 {
   width: 46.25rem;
@@ -10344,7 +10346,10 @@ textarea.form-control-lg {
 .pc__title {
   margin: 0;
   font-size: 1rem;
-  font-weight: 400; }
+  font-weight: 400; 
+  height: 39px;
+  overflow: hidden;
+}
 
 .price {
   font-size: 1rem; }
@@ -10358,8 +10363,8 @@ textarea.form-control-lg {
   text-decoration: line-through; }
 
 .review-star {
-  width: 9px;
-  height: 9px;
+  width: 15px;
+  height: 15px;
   margin-right: .25rem;
   /* fill: #ffc78b; */
  }

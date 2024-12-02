@@ -13,12 +13,13 @@ class DiscountUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:discounts,name,' . $this->id . '|max:50',
+            'name' => 'required|string|max:255',
             'discount_rate' => 'required|numeric|min:0|max:100',
             'max_value' => 'required|numeric|min:0',
+            'minimum_total_value' => 'required|numeric|min:0',
             'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
-            'use_limit' => 'nullable|integer|min:0',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'use_limit' => 'required|integer|min:0',
         ];
     }
 

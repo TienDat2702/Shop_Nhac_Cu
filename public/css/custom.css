@@ -27,12 +27,12 @@ body {
 .pagination {
     margin-left: 30px;
 
-    .page-link {
-        padding: 1.1rem;
-        font-size: 16px;
-    }
+   
 }
-
+.page-link {
+    padding: 1.1rem;
+    font-size: 16px;
+}
 .swal-button--confirm {
     background-color: #dc3545 !important;
     border-color: #dc3545 !important;
@@ -1103,13 +1103,10 @@ button.menu-link.menu-link_us-s.add-to-wishlist {
     width: 269px !important;
     margin-right: 15px !important;
 }
-.pc__info.position-relative {
+/* .pc__info.position-relative {
     height: 68px;
-}
+} */
 /*end product */
-
-
-
 
 /* banner */
 
@@ -1187,8 +1184,24 @@ span.swiper-pagination-bullet {
     }
 }
 
+.logo_den{
+    display: block;
+}
+.logo_trang{
+    display: none;
+}
+.home-page .logo_den{
+    display: none;
+}
+.home-page .logo_trang{
+    display: block;
+}
 
-
+@media (min-width: 1400px) {
+    div#related_products {
+        max-height: 500px;
+    }
+}
 .background-overlay {
     position: absolute;
     top: 0;

@@ -20,7 +20,12 @@
             @if($products->count())
                 @foreach ($products as $product)
                     <div class="col-6 col-md-4 col-lg-3">
-                        <div class="product-card product-card_style3 mb-3 mb-md-4 mb-xxl-5">
+                        <div class="product-card product-card_style3 mb-3 mb-md-4 mb-xxl-5 pst">
+                            @if ($product->price_sale)
+                                    <div class="product_sale">
+                                        <span>Giảm giá</span>
+                                    </div>
+                                @endif
                             <div class="pc__img-wrapper">
                                 <a href="{{ route('product.detail', $product->slug) }}">
                                     <img loading="lazy" src="{{ asset('uploads/products/product/' . $product->image) }}"
@@ -47,13 +52,25 @@
                                         class="btn-link btn-link_lg me-4 text-uppercase fw-medium" title="Quick view">
                                         <span class="">Xem Ngay</span>
                                     </a>
-                                    <button class="pc__btn-wl bg-transparent border-0 js-add-wishlist"
-                                            title="Add To Wishlist">
-                                            <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_heart" />
-                                            </svg>
-                                        </button>
+                                    @if ($product_favourite != '')
+                                        @if (array_key_exists($product->id, $product_favourite)) <!-- Sản phẩm đã yêu thích -->
+                                            <form action="{{ route('wishlist.remove', $product_favourite[$product->id]) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="menu-link menu-link_us-s add-to-wishlist">
+                                                    <i class="fa-solid fa-heart"></i> <!-- Trái tim tô đen -->
+                                                </button>
+                                            </form>
+                                        @else <!-- Sản phẩm chưa yêu thích -->
+                                            <form action="{{ route('wishlist.add', $product->id) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                <button type="submit" class="menu-link menu-link_us-s add-to-wishlist">
+                                                    <i class="fa-regular fa-heart"></i> <!-- Trái tim rỗng -->
+                                                </button>
+                                            </form>
+                                        @endif 
+                                    @endif
+                                    
                                 </div>
                             </div>
                         </div>

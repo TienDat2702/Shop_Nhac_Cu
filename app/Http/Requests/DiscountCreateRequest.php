@@ -13,12 +13,14 @@ class DiscountCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:discounts|max:50',
+            'name' => 'required|string|max:50|unique:discounts,name',
             'discount_rate' => 'required|numeric|min:0|max:100',
             'max_value' => 'required|numeric|min:0',
+            'use_limit' => 'nullable|integer|min:0',
+            'minimum_order_value' => 'nullable|numeric|min:0',
+            'minimum_total_value' => 'nullable|numeric|min:0',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after:start_date',
-            'use_limit' => 'nullable|integer|min:0',
         ];
     }
 
@@ -26,8 +28,7 @@ class DiscountCreateRequest extends FormRequest
     {
         return [
             'name.required' => 'Bạn chưa nhập mã giảm giá',
-            'name.unique' => 'Mã giảm giá đã tồn tại',
-            'name.max' => 'Mã giảm giá không được vượt quá 50 ký tự',
+            'name.exists' => 'Mã giảm giá không tồn tại',
             'discount_rate.required' => 'Bạn chưa nhập tỷ lệ giảm giá',
             'discount_rate.numeric' => 'Tỷ lệ giảm giá phải là số',
             'discount_rate.min' => 'Tỷ lệ giảm giá phải lớn hơn hoặc bằng 0',

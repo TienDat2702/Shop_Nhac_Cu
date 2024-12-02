@@ -1,7 +1,7 @@
 @extends('user.layouts.app')
 @section('title', 'TuneNest')
 @section('content')
-    <main>
+    <main>  
         <section class="swiper-container js-swiper-slider swiper-number-pagination slideshow"
             data-settings='{
         "autoplay": {
@@ -206,7 +206,7 @@
                             </div>
                         </div>
 
-                        <a href="{{ route('shop.index') }}" class="btn-link default-underline text-uppercase fw-medium mt-3">Xem tất cả</a>
+                        <a href="{{ route('shop.index') }}" class="btn-link default-underline text-uppercase fw-medium mt-3">Ghé cửa hàng</a>
                     </div>
                     <div class="col-md-6 col-lg-8 col-xl-80per">
                         <div class="position-relative">
@@ -469,14 +469,14 @@
                                                 title="Quick view">
                                                 <span class="">Xem Ngay</span>
                                             </a>
-                                            @if (in_array($product->id, $product_favourite)) <!-- Sản phẩm đã yêu thích -->
-                                                <form action="{{ route('wishlist.remove', $product->id) }}" method="POST" style="display:inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="menu-link menu-link_us-s add-to-wishlist">
-                                                        <i class="fa-solid fa-heart"></i> <!-- Trái tim tô đen -->
-                                                    </button>
-                                                </form>
+                                            @if (array_key_exists($product->id, $product_favourite)) <!-- Sản phẩm đã yêu thích -->
+                                            <form action="{{ route('wishlist.remove', $product_favourite[$product->id]) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="menu-link menu-link_us-s add-to-wishlist">
+                                                    <i class="fa-solid fa-heart"></i> <!-- Trái tim tô đen -->
+                                                </button>
+                                            </form>
                                             @else <!-- Sản phẩm chưa yêu thích -->
                                                 <form action="{{ route('wishlist.add', $product->id) }}" method="POST" style="display:inline;">
                                                     @csrf
@@ -484,7 +484,7 @@
                                                         <i class="fa-regular fa-heart"></i> <!-- Trái tim rỗng -->
                                                     </button>
                                                 </form>
-                                            @endif     
+                                            @endif      
                                     </div>
                                 </div>
                             </div>
@@ -533,17 +533,6 @@
                                             class="pc__img pc__img-second">
                                             </a>
                                         </div>
-                                        {{-- <div class="pc__info">
-                                                @if (count($product->thumbnails) > 0)
-                                                    src="{{ $product->thumbnails->first()->path }}"
-                                                @else
-                                                    src="{{ asset('/uploads/products/product/' . $product->image) }}"
-                                                @endif
-
-                                                    width="258" height="313" alt="{{ $product->name }}"
-                                                    class="pc__img pc__img-second">
-                                            </a>
-                                        </div> --}}
 
                                         <div class="pc__info position-relative">
                                             <h6 class="pc__title">{{ $product->name }}</h6>
@@ -566,22 +555,22 @@
                                                         title="Quick view">
                                                         <span class="">Xem Ngay</span>
                                                     </a>
-                                                    {{-- @if ($product->favouriteByUser(Auth::guard('customer')->user()->id)) --}}
-                                                        <form action="{{ route('wishlist.remove', $product->id) }}" method="POST" style="display:inline;">
+                                                    @if (array_key_exists($product->id, $product_favourite)) <!-- Sản phẩm đã yêu thích -->
+                                                        <form action="{{ route('wishlist.remove', $product_favourite[$product->id]) }}" method="POST" style="display:inline;">
                                                             @csrf
+                                                            @method('DELETE')
                                                             <button type="submit" class="menu-link menu-link_us-s add-to-wishlist">
-                                                                <i class="fa-solid fa-heart"></i>
+                                                                <i class="fa-solid fa-heart"></i> <!-- Trái tim tô đen -->
                                                             </button>
                                                         </form>
-                                                    {{-- @else
+                                                    @else <!-- Sản phẩm chưa yêu thích -->
                                                         <form action="{{ route('wishlist.add', $product->id) }}" method="POST" style="display:inline;">
                                                             @csrf
                                                             <button type="submit" class="menu-link menu-link_us-s add-to-wishlist">
-                                                                <i class="fa-regular fa-heart"></i>
+                                                                <i class="fa-regular fa-heart"></i> <!-- Trái tim rỗng -->
                                                             </button>
                                                         </form>
-                                                    @endif
-                                                 --}}
+                                                    @endif   
 
                                             </div>
                                         </div>
@@ -596,7 +585,7 @@
                     </section>
                 @endif
             @endforeach
-        @endif
+            @endif
         
             
             {{-- end tất cả sản phẩm và danh mục --}}

@@ -73,12 +73,34 @@
                     </div> --}}
                     <h1 class="product-single__name">{{ $product->name }}</h1>
                     <div class="product-single__rating">
-                        <div class="reviews-group d-flex">
+                        <span class="reviews-note text-lowercase text-secondary">{{$averageStart}}</span>
+                        <div class="reviews-group d-flex align-content-center">
                             @for ($i = 1; $i <= 5; $i++)
-                                <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"
-                                    fill="{{ $i <= $popularRating ? '#FFD700' : '#ccc' }}">
-                                    <use href="#icon_star" />
-                                </svg>
+                                <div style="position: relative; display: inline-block; width: 18px; height: 18px;">
+                                    <!-- Sao xám (nền) -->
+                                    <svg class="review-star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                        style="position: absolute; top: 0; left: 0;">
+                                        <use href="#icon_star" fill="#ccc" />
+                                    </svg>
+
+                                    <!-- Sao vàng (phía trên) -->
+                                    @if ($i <= floor($averageStart))
+                                        <!-- Hiển thị sao đầy đủ -->
+                                        <svg class="review-star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                            style="position: absolute; top: 0; left: 0;">
+                                            <use href="#icon_star" fill="#FFD700" />
+                                        </svg>
+                                    @elseif ($i == ceil($averageStart))
+                                        <!-- Hiển thị sao một phần theo tỷ lệ -->
+                                        @php
+                                            $percentage = ($averageStart - floor($averageStart)) * 100;
+                                        @endphp
+                                        <svg class="review-star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                            style="position: absolute; top: 0; left: 0; clip-path: inset(0 {{ 100 - $percentage }}% 0 0);">
+                                            <use href="#icon_star" fill="#FFD700" />
+                                        </svg>
+                                    @endif
+                                </div>
                             @endfor
                         </div>
                         <span class="reviews-note text-lowercase text-secondary ms-1">{{ $product->view }} lượt xem</span>
@@ -318,68 +340,67 @@
           }'>
                     <div class="swiper-wrapper">
                         @foreach ($product_related as $product)
-                            <div class="swiper-slide product-card">
-                                <div class="pc__img-wrapper">
-                                    <a href="{{ route('product.detail', $product->slug) }}">
-                                        <img loading="lazy"
-                                            src="{{ asset('uploads/products/product/' . $product->image) }}" width="330"
-                                            height="400" alt="{{ $product->name }}" class="pc__img">
-                                        <img loading="lazy"
-                                            src="{{ asset('uploads/products/product/' . $product->image) }}" width="330"
-                                            height="400" alt="{{ $product->name }}" class="pc__img pc__img-second">
-                                    </a>
-                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                    <button
-                                        class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium add-to-cart"
-                                        data-aside="cartDrawer" title="Add To Cart"
-                                        data-url="{{ route('cart.add', $product->id) }}">Thêm vào giỏ hàng</button>
-                                </div>
-
-                                <div class="pc__info position-relative">
-                                    {{ $product->productCategory ? $product->productCategory->name : '' }}
-                                    <h6 class="pc__title"><a href="details.html">{{ $product->name }}</a></h6>
-                                    <div class="product-card__price d-flex">
-                                        <span class="money price">{{ number_format($product->price) }} VNĐ</span>
-                                    </div>
-                                    <div class="product-card__review d-flex align-items-center">
-                                        <div class="reviews-group d-flex">
-                                            <svg class="review-star" viewBox="0 0 9 9"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_star" />
-                                            </svg>
-                                            <svg class="review-star" viewBox="0 0 9 9"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_star" />
-                                            </svg>
-                                            <svg class="review-star" viewBox="0 0 9 9"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_star" />
-                                            </svg>
-                                            <svg class="review-star" viewBox="0 0 9 9"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_star" />
-                                            </svg>
-                                            <svg class="review-star" viewBox="0 0 9 9"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_star" />
-                                            </svg>
+                            <div class="swiper-slide product-card-wrapper">
+                                <div class="product-card mb-3 mb-md-4 mb-xxl-5">
+                                    <div class="pc__img-wrapper">
+                                        <div class="swiper-container background-img js-swiper-slider"
+                                            data-settings='{"resizeObserver": true}'>
+                                            <div class="">
+                                                <a href="details.html"><img loading="lazy"
+                                                        src="{{ asset('uploads/products/product/' . $product->image) }}"
+                                                        width="330" height="400" alt="Cropped Faux leather Jacket"
+                                                        class="pc__img"></a>
+                                            </div>
+                                            <div class="swiper-wrapper">
+                                                <div class="swiper">
+                                                    <a href="{{ route('product.detail', $product->slug) }}"><img
+                                                            loading="lazy"
+                                                            src="{{ asset('uploads/products/product/' . $product->image) }}"
+                                                            width="330" height="400" alt="{{ $product->name }}"
+                                                            class="pc__img"></a>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <span class="reviews-note text-lowercase text-secondary ms-1">{{ $product->view }}
-                                            lượt xem</span>
+                                        <a class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium add-to-cart"
+                                            data-aside="cartDrawer" data-url="{{ route('cart.add', $product->id) }}"
+                                            title="Add To Cart">Thêm vào giỏ hàng</a>
                                     </div>
-                                    <form action="{{ route('wishlist.add', $product->id) }}"
-                                        method="POST" style="display:inline;">
-                                        @csrf
-                                        <button type="submit"
-                                            class="menu-link menu-link_us-s add-to-wishlist">
-                                            <svg width="16" height="16" viewBox="0 0 20 20"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_heart" />
-                                            </svg>
 
-                                        </button>
-                                    </form>
+                                    <div class="pc__info position-relative">
+                                        <h6 class="pc__title"><a
+                                                href="{{ route('product.detail', $product->slug) }}">{{ $product->name }}</a>
+                                        </h6>
+                                        <div class="product-card__price d-flex justify-content-between">
 
+                                            @if ($product->price_sale > 0)
+                                                <span class="money price me-2">
+                                                    {{ number_format($product->price_sale) }} VNĐ
+                                                </span>
+                                                <span class="money price text-secondary"><del>{{ number_format($product->price) }}
+                                                        VNĐ</del>
+                                                @else
+                                                    {{ number_format($product->price) }} VNĐ
+                                                 @endif
+                                            </span>
+                                            @if (array_key_exists($product->id, $product_favourite)) <!-- Sản phẩm đã yêu thích -->
+                                                <form action="{{ route('wishlist.remove', $product_favourite[$product->id]) }}" method="POST" style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="menu-link menu-link_us-s add-to-wishlist">
+                                                        <i class="fa-solid fa-heart"></i> <!-- Trái tim tô đen -->
+                                                    </button>
+                                                </form>
+                                            @else <!-- Sản phẩm chưa yêu thích -->
+                                                <form action="{{ route('wishlist.add', $product->id) }}" method="POST" style="display:inline;">
+                                                    @csrf
+                                                    <button type="submit" class="menu-link menu-link_us-s add-to-wishlist">
+                                                        <i class="fa-regular fa-heart"></i> <!-- Trái tim rỗng -->
+                                                    </button>
+                                                </form>
+                                        @endif 
+                                        </div>
+                                          
+                                    </div>
                                 </div>
                             </div>
                         @endforeach

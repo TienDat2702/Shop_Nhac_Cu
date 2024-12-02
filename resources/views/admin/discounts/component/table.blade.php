@@ -30,11 +30,11 @@
                         </div>
                     </td>
                     <td>{{ $item->discount_rate }}</td>
-                    <td>{{ $item->max_value }}</td>
+                    <td>{{ number_format($item->max_value) }}đ</td>
                     <td>{{ $item->start_date }}</td>
                     <td>{{ $item->end_date }}</td>
                     <td>{{ $item->minimum_order_value }}</td>
-                    <td>{{ $item->minimum_total_value }}</td>
+                    <td>{{ number_format($item->minimum_total_value) }}đ</td>
                     <td class="text-center">
                         <label class="toggle">
                             <input id="toggleswitch" class="toggleswitch" name="publish" type="checkbox"
@@ -47,11 +47,12 @@
                     <td class="text-center">
                         <div class="list-icon-function">
                             @if ($config == 'deleted')
-                                <a href="{{ route('discount.restore', $item->id) }}" title="Khôi phục">
-                                    <div class="item edit">
+                                <form action="{{ route('discount.restore', $item->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    <button type="submit" class="item edit" title="Khôi phục">
                                         <i class="fa-solid fa-retweet"></i>
-                                    </div>
-                                </a>
+                                    </button>
+                                </form>
                                 <form class="form-delete" action="{{ route('discount.forceDelete', $item->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
