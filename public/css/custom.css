@@ -1513,3 +1513,25 @@ span.footer-copyright.me-auto {
     font-size: 18px;
 }
 /* end footer */
+
+
+.page-content.my-account__dashboard {
+    font-size: 16px;
+}
+.page-content.my-account__dashboard > p > a{
+    color: #ba9348;
+}
+
+
+
+.marquee{
+    height: 70px;
+}
+.marquee p:hover{
+    animation-play-state: paused;
+}
+.marquee p{
+    margin: 0;
+    line-height: 70px;
+    font-size: 20px;
+}

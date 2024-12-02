@@ -590,13 +590,10 @@
             
             {{-- end tất cả sản phẩm và danh mục --}}
             {{-- Tin tức và sự kiên --}}
-
             @include('user.partials.post_index')
-
             {{-- end Tin tức và sự kiên --}}
-        </div>
 
-        <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
+        </div>
 
     </main>
 

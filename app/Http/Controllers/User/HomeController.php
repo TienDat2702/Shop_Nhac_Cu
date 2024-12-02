@@ -7,6 +7,7 @@ use App\Http\Requests\ContactRequest;
 use App\Mail\Contact;
 use App\Models\Brand;
 use App\Models\Banner;
+use App\Models\LoyaltyLevel;
 use App\Models\Post;
 use App\Models\PostCategory;
 use App\Models\Product;
@@ -29,9 +30,9 @@ class HomeController extends Controller
         $product_views = Product::GetProductPublish()->orderBy('view', 'desc')->take(4)->get();
         $product_price = Product::GetProductPublish()->where('price_sale', '>', 0)->orderBy('price_sale', 'asc')->take(8)->get();
         $products = Product::GetProductPublish()->orderBy('updated_at', 'desc')->paginate(8);
-
         $product_cateogries = ProductCategory::where('publish', 2)->where('level', 1)->take(6)->get();
-
+        
+        $loyalty = LoyaltyLevel::get()->slice(1);
 
         // Lấy danh mục cha và tất cả sản phẩm liên quan (cả cha lẫn con)
         $product_cateogries = ProductCategory::with(['children', 'products' => function ($query) {
@@ -74,6 +75,7 @@ class HomeController extends Controller
             'banners',
             'posts',
             'product_cateogries',
+            'loyalty',
             'categoriesWithProducts'
         ));
     }
