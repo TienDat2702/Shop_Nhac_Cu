@@ -99,6 +99,15 @@
                         <div class="text">Cấp độ thành viên</div>
                     </a>
                 </li>
+                <li class="menu-item ">
+                    <a href="{{ route('comment.index')}}" class="menu-item-button">
+                        <div class="icon"><i class="fa-solid fa-comment"></i></div>
+                        <div class="text">
+                            Bình luận
+                            <span class="order-new-amount">{{ count($mount_comment) }}</span>
+                        </div>
+                    </a>
+                </li>
                 <li class="menu-item has-children">
                     <a href="javascript:void(0);" class="menu-item-button">
                         <div class="icon"><i class="fa-solid fa-guitar"></i></div>
@@ -127,7 +136,8 @@
                     <a href="javascript:void(0);" class="menu-item-button">
                         <div class="icon"><i class="fa fa-shopping-cart" aria-hidden="true"></i>
                         </div>
-                        <div class="text">Đơn hàng
+                        <div class="text">
+                            Đơn hàng
                             <span class="order-new-amount">{{ count($mount_order) }}</span>
                         </div>
                         
@@ -154,11 +164,6 @@
                         <li class="sub-menu-item">
                             <a href="{{ route('discount.index') }}" class="">
                                 <div class="text">Danh sách mã giảm giá</div>
-                            </a>
-                        </li>
-                        <li class="sub-menu-item">
-                            <a href="{{ route('discount.create') }}" class="">
-                                <div class="text">Thêm mã giảm giá</div>
                             </a>
                         </li>
                     </ul>

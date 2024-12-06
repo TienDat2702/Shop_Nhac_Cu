@@ -46,17 +46,14 @@
                             {{ $item->stock }}
                         </td>
                         <td>
-                        <div class="list-icon-function">
-                        
-<form action="{{ route('Productshowroom.remove', ['showroomId' => $item->showroom->id]) }}" method="POST">
-    @csrf
-    <input type="hidden" name="product_id" value="{{ $item->product->id }}">
-    <button type="submit" class="btn btn-delete-product item text-danger delete" data-text2=" Muốn Chuyển Sản Phẩm Về Kho Tổng ?"
-    data-text=""><i class="icon-trash-2"></i></button>
-</form>
-
-                        
-                        </div>
+                            <div class="list-icon-function">
+                                <form action="{{ route('Productshowroom.remove', ['showroomId' => $item->showroom->id]) }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="product_id" value="{{ $item->product->id }}">
+                                    <button type="submit" class="btn btn-delete-product item text-danger delete" data-text2=" Muốn Chuyển Sản Phẩm Về Kho Tổng ?"
+                                    data-text=""><i class="icon-trash-2"></i></button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 @endforeach

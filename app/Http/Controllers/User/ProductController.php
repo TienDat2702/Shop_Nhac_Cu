@@ -195,11 +195,11 @@ class ProductController extends Controller
 
     public function product_details($slug)
     {
-        $product = Product::where('slug', $slug)->firstOrFail();
+        $product = Product::where('slug', $slug)->where('publish',2)->firstOrFail();
         $product->view += 1;
         $product->save();
         $brand = Brand::find($product->brand_id);
-        $product_related = Product::where('category_id', $product->category_id)->where('slug', '!=', $slug)->get();
+        $product_related = Product::where('category_id', $product->category_id)->where('slug', '!=', $slug)->where('publish',2)->get();
         $product_images = ThumbnailProduct::where('product_id', $product->id)->get();
 
         $starts = $product->comments;

@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AdminPostCategoryController;
 use App\Http\Controllers\Admin\AdminPostController;
 use App\Http\Controllers\Admin\AdminAccountController;
+use App\Http\Controllers\Admin\AdminCommentController;
 use App\Http\Controllers\Admin\AdminProductCategoryController;
 use App\Http\Controllers\Admin\UploadCKImageController;
 use App\Http\Controllers\Ajax\AjaxDashboardController;
@@ -295,6 +296,13 @@ Route::middleware(['AdminAuth'])->prefix('admin')->group(function () {
         Route::get('/', [LoyaltyController::class, 'index'])->name('loyalty.index');
         Route::post('store', [LoyaltyController::class, 'update'])->name('loyalty.update');
     });
+
+    // Bình luận
+    Route::prefix('comment')->group(function () {
+        Route::get('/', [AdminCommentController::class, 'index'])->name('comment.index');
+        Route::delete('delete/{id}', [AdminCommentController::class, 'delete'])->name('comment.delete');
+    });
+
 });
 
 //Search

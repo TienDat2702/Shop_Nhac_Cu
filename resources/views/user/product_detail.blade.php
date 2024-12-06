@@ -272,7 +272,7 @@
                                             </svg>
                                         @endfor
                                     </span>
-                                    <input type="hidden" id="form-input-rating" name="rating" value="1" />
+                                    <input type="hidden" id="form-input-rating" name="rating" value="5" />
                                     <!-- Giá trị mặc định là 1 -->
                                 </div>
                                 <div class="mb-4">
@@ -290,7 +290,7 @@
                             
                             @else
                                 <div class="alert alert-danger">
-                                    <strong>Bạn cần <a href="{{ route('customer.login') }}">đăng nhập</a> để bình luận</strong>
+                                    <strong>Bạn cần <a class="btn_redirect" href="{{ route('customer.login') }}" data-route='product.detail' data-slug='{{ $product->slug }}'>đăng nhập</a> để bình luận</strong>
                                 </div>
                             @endif
                         </div>

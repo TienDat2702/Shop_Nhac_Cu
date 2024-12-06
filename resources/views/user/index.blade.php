@@ -589,10 +589,6 @@
         
             
             {{-- end tất cả sản phẩm và danh mục --}}
-            {{-- Tin tức và sự kiên --}}
-            @include('user.partials.post_index')
-            {{-- end Tin tức và sự kiên --}}
-            
 
             {{-- thông báo giảm giá cấp độ thành viên --}}
             <marquee class="marquee" width="100%" behavior="scroll" bgcolor="#fff1d6">  
@@ -607,6 +603,11 @@
                     @endforeach
                 </p>
             </marquee>
+            
+            {{-- Tin tức và sự kiên --}}
+            @include('user.partials.post_index')
+            {{-- end Tin tức và sự kiên --}}
+            
         </div>
 
     </main>

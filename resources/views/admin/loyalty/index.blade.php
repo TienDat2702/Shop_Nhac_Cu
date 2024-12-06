@@ -49,10 +49,10 @@
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>{{ $item->level_name }}</td>
-                                            <td><input type="number" value="{{ $item->discount_rate * 100 }}"
+                                            <td><input class="input_loyalty" type="number" value="{{ $item->discount_rate * 100 }}"
                                                     name="{{'discount_rate_' . $item->id }}"> (%)</td>
                                             <td>
-                                                <input type="number" value="{{ $item->order_total_price }}"
+                                                <input class="input_loyalty" type="number" value="{{ $item->order_total_price }}"
                                                     name="{{ 'order_total_price_' . $item->id}}"> (VNĐ)
                                             </td>
                                         </tr>

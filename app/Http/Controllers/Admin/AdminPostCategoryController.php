@@ -234,15 +234,6 @@ class AdminPostCategoryController extends Controller
     }
 
 
-    //-------------------------------------- xử lý thùng rác--------------------------------------------------
-
-    // public function deleted(){
-    //     $config = 'deleted'; // phân biệt giữa trang index và trang deleted
-    //     $countDeleted = PostCategory::onlyTrashed()->get(); // đếm số phần từ
-    //     $getDeleted = PostCategory::onlyTrashed()->paginate(10); // lấy danh sách các phần tử bị xóa
-    //     return view('admin.posts.post_category.deleted', compact('getDeleted','config', 'countDeleted'));
-    // }
-
     //--------------------------------------- xử lý khôi phục-----------------------------------------------
 
     public function restore(string $id)
