@@ -1,16 +1,4 @@
- {{-- thông báo giảm giá cấp độ thành viên --}}
- <marquee class="marquee" width="100%" behavior="scroll" bgcolor="#fff1d6">  
-    <p>
-        🎉 Mua càng nhiều, giảm càng lớn 🎉:
-        @foreach ($loyalty as $item)
-            <span class="discount-info">
-                💰 Tổng tiền đơn hàng đã mua > {{ number_format($item->order_total_price) }} VNĐ 
-                =>🎖️Rank: {{ $item->level_name }} 
-                => Giảm {{ $item->discount_rate * 100 }}% cho mỗi đơn hàng 🎁;
-            </span>
-        @endforeach
-    </p>
-</marquee>
+
 <footer class="footer footer_type_2 bg-dark text-white">
     <div class="footer-middle container">
         <div class="row row-cols-lg-4 row-cols-2">

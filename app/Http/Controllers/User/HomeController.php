@@ -33,7 +33,7 @@ class HomeController extends Controller
         $product_cateogries = ProductCategory::where('publish', 2)->where('level', 1)->take(6)->get();
         
         $loyalty = LoyaltyLevel::get()->slice(1);
-
+        
         // Lấy danh mục cha và tất cả sản phẩm liên quan (cả cha lẫn con)
         $product_cateogries = ProductCategory::with(['children', 'products' => function ($query) {
             $query->where('publish', 2);

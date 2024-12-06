@@ -20,9 +20,13 @@ class AdminOrderController extends Controller
                   });
         }
 
+
         if ($request->has('sort') && $request->has('direction')) {
             $sort = $request->input('sort');
-            $direction = $request->input('direction');
+            $direction = 'desc';
+            if ($request->input('direction')) {
+                $direction = $request->input('direction');
+            }
             
             if ($sort == 'customer_name') {
                 $query->join('customers', 'orders.customer_id', '=', 'customers.id')
@@ -52,6 +56,8 @@ class AdminOrderController extends Controller
     public function show($id)
     {
         $order = Order::with(['orderDetails.product.brand', 'orderDetails.product.productCategory1', 'customer', 'discount'])->withTrashed()->findOrFail($id);
+        $order->is_new = 2;
+        $order->save();
         $statuses = ['Chờ xử lý', 'Đã Duyệt' , 'Đang giao', 'Đã giao', 'Đã hủy'];
         return view('admin.order.detail', compact('order', 'statuses'));
     }
@@ -78,6 +84,8 @@ class AdminOrderController extends Controller
 public function OrderDetail($id)
     {
         $order = Order::with(['customer', 'orderDetails'])->find($id);
+        $order->is_new = 2;
+        $order->save();
         return view('admin.order.detail', compact('order'));
     }
 }

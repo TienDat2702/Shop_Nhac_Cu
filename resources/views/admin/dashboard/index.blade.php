@@ -22,21 +22,20 @@
                     <div class="main-content-inner">
 
                         <div class="main-content-wrap">
-                            
-                                <form method="GET" action="{{ route('dashboard.index') }}" id="dateFilterForm">
-                                    <div class="flex gap20 flex-wrap-mobile">
+                            <form  class="main-content-wrap" method="GET" action="{{ route('dashboard.index') }}" id="dateFilterForm">
+                                <div class="flex gap20 flex-wrap-mobile">
                                     <div class="wg-chart-default mb-20">
                                         <div class="flex items-center justify-between">
                                             <div class="flex items-center gap14">
                                                 <div class="image ic-bg">
-                                                    <i class="fa fa-calendar-minus-o" ></i>
+                                                    <i class="fa fa-calendar-minus-o"></i>
                                                 </div>
                                                 <div>
                                                     {{-- <div class="body-text mb-2">Ngày bắt đầu:</div> --}}
                                                     <label class="body-text mb-2" for="start_date">Ngày bắt đầu:</label>
                                                     <input type="date" id="start_date" name="start_date"
-                                                value="{{ request('start_date', $startDate) }}"
-                                                onchange="document.getElementById('dateFilterForm').submit();">
+                                                        value="{{ request('start_date', $startDate) }}"
+                                                        onchange="document.getElementById('dateFilterForm').submit();">
                                                 </div>
                                             </div>
                                         </div>
@@ -50,8 +49,8 @@
                                                 <div>
                                                     <label class="body-text mb-2" for="start_date">Ngày kết thúc:</label>
                                                     <input type="date" id="end_date" name="end_date"
-                                                value="{{ request('end_date', $endDate) }}"
-                                                onchange="document.getElementById('dateFilterForm').submit();">
+                                                        value="{{ request('end_date', $endDate) }}"
+                                                        onchange="document.getElementById('dateFilterForm').submit();">
                                                 </div>
                                             </div>
                                         </div>
@@ -71,117 +70,118 @@
                                         </div>
                                     </div> --}}
                                 </div>
-                                </form>
-                            
-                            <div class="flex gap20 flex-wrap-mobile">
-                                <div class="w-half">
-                                    <div class="wg-chart-default mb-20">
-                                        <div class="flex items-center justify-between">
-                                            <div class="flex items-center gap14">
-                                                <div class="image ic-bg">
-                                                    <i class="icon-shopping-bag"></i>
-                                                </div>
-                                                <div>
-                                                    <div class="body-text mb-2">Tổng số đơn hàng</div>
-                                                    <h4>{{ $countOrder }}</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
 
 
-                                    <div class="wg-chart-default mb-20">
-                                        <div class="flex items-center justify-between">
-                                            <div class="flex items-center gap14">
-                                                <div class="image ic-bg">
-                                                    <i class="icon-dollar-sign"></i>
-                                                </div>
-                                                <div>
-                                                    <div class="body-text mb-2">Tổng số tiền</div>
-                                                    <h4>{{ number_format($totalOrder) }}</h4>
+                                <div class="flex gap20 flex-wrap-mobile">
+                                    <div class="w-half">
+                                        <div class="wg-chart-default mb-20">
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex items-center gap14">
+                                                    <div class="image ic-bg">
+                                                        <i class="icon-shopping-bag"></i>
+                                                    </div>
+                                                    <div>
+                                                        <div class="body-text mb-2">Tổng số đơn hàng</div>
+                                                        <h4>{{ $countOrder }}</h4>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
 
-                                    <div class="wg-chart-default mb-20">
-                                        <div class="flex items-center justify-between">
-                                            <div class="flex items-center gap14">
-                                                <div class="image ic-bg">
-                                                    <i class="icon-shopping-bag"></i>
-                                                </div>
-                                                <div>
-                                                    <div class="body-text mb-2">Đơn hàng chờ duyệt</div>
-                                                    <h4>{{ $countPending }}</h4>
+                                        <div class="wg-chart-default mb-20">
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex items-center gap14">
+                                                    <div class="image ic-bg">
+                                                        <i class="icon-dollar-sign"></i>
+                                                    </div>
+                                                    <div>
+                                                        <div class="body-text mb-2">Tổng số tiền</div>
+                                                        <h4>{{ number_format($totalOrder) }}</h4>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+
+
+                                        <div class="wg-chart-default mb-20">
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex items-center gap14">
+                                                    <div class="image ic-bg">
+                                                        <i class="icon-shopping-bag"></i>
+                                                    </div>
+                                                    <div>
+                                                        <div class="body-text mb-2">Đơn hàng chờ duyệt</div>
+                                                        <h4>{{ $countPending }}</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
                                     </div>
 
+                                    <div class="w-half">
+
+                                        <div class="wg-chart-default mb-20">
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex items-center gap14">
+                                                    <div class="image ic-bg">
+                                                        <i class="icon-shopping-bag"></i>
+                                                    </div>
+                                                    <div>
+                                                        <div class="body-text mb-2">Đơn hàng đã giao</div>
+                                                        <h4>{{ $countDelivered }}</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="wg-chart-default mb-20">
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex items-center gap14">
+                                                    <div class="image ic-bg">
+                                                        <i class="icon-dollar-sign"></i>
+                                                    </div>
+                                                    <div>
+                                                        <div class="body-text mb-2">Tổng tiền đơn hàng đã giao</div>
+                                                        <h4>{{ number_format($totalDelivered) }}</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="wg-chart-default mb-20">
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex items-center gap14">
+                                                    <div class="image ic-bg">
+                                                        <i class="icon-shopping-bag"></i>
+                                                    </div>
+                                                    <div>
+                                                        <div class="body-text mb-2">Đơn hàng đã hủy</div>
+                                                        <h4>{{ $countCanceled }}</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
 
 
+                                    </div>
                                 </div>
-
-                                <div class="w-half">
-
-                                    <div class="wg-chart-default mb-20">
-                                        <div class="flex items-center justify-between">
-                                            <div class="flex items-center gap14">
-                                                <div class="image ic-bg">
-                                                    <i class="icon-shopping-bag"></i>
-                                                </div>
-                                                <div>
-                                                    <div class="body-text mb-2">Đơn hàng đã giao</div>
-                                                    <h4>{{ $countDelivered }}</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="wg-chart-default mb-20">
-                                        <div class="flex items-center justify-between">
-                                            <div class="flex items-center gap14">
-                                                <div class="image ic-bg">
-                                                    <i class="icon-dollar-sign"></i>
-                                                </div>
-                                                <div>
-                                                    <div class="body-text mb-2">Tổng tiền đơn hàng đã giao</div>
-                                                    <h4>{{ number_format($totalDelivered) }}</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="wg-chart-default mb-20">
-                                        <div class="flex items-center justify-between">
-                                            <div class="flex items-center gap14">
-                                                <div class="image ic-bg">
-                                                    <i class="icon-shopping-bag"></i>
-                                                </div>
-                                                <div>
-                                                    <div class="body-text mb-2">Đơn hàng đã hủy</div>
-                                                    <h4>{{ $countCanceled }}</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-
-                                </div>
-                            </div>
+                            </form>
                         </div>
+
                     </div>
                 </div>
-
                 <div class="wg-box">
                     <div class="flex items-center justify-between">
                         <h5>Biểu đồ doanh thu</h5>
-
+    
                     </div>
                     <div class="flex flex-wrap gap40">
                         <div>
@@ -194,9 +194,9 @@
                             <div class="flex items-center gap10">
                                 <h4>{{ number_format($totalOrder) }}</h4>
                                 {{-- <div class="box-icon-trending up">
-                                <i class="icon-trending-up"></i>
-                                <div class="body-title number">0.56%</div>
-                            </div> --}}
+                                    <i class="icon-trending-up"></i>
+                                    <div class="body-title number">0.56%</div>
+                                </div> --}}
                             </div>
                         </div>
                         <div>
@@ -209,76 +209,79 @@
                             <div class="flex items-center gap10">
                                 <h4>{{ number_format($totalDelivered) }}</h4>
                                 {{-- <div class="box-icon-trending up">
-                                <i class="icon-trending-up"></i>
-                                <div class="body-title number">0.56%</div>
-                            </div> --}}
+                                    <i class="icon-trending-up"></i>
+                                    <div class="body-title number">0.56%</div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
                     <div id="line-chart-8"></div>
                 </div>
-
             </div>
-            <div class="tf-section mb-30">
 
-                <div class="wg-box">
+            
 
-                    <div class="flex items-center justify-between">
-                        <h5>Các đơn hàng mới</h5>
-                        <div class="dropdown default">
-                            <a class="btn btn-secondary dropdown-toggle" href="{{ route('order.index') }}">
-                                <span class="view-all">Xem tất cả</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="wg-table table-all-user">
-                        <div class="table-responsive">
-                            <table class="table table-striped table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th style="width:70px">Mã đơn hàng</th>
-                                        <th class="text-center">Tên khách hàng</th>
-                                        <th class="text-center">Tổng tiền hàng</th>
-                                        <th class="text-center">Trạng thái</th>
-                                        <th class="text-center">Ngày đặt hàng</th>
-                                        <th class="text-center">Số lượng sản phẩm</th>
-                                        <th class="text-center">Ngày giao hàng</th>
-                                        <th class="text-center">Hành động</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($orders as $order)
-                                        <tr>
-                                            <td class="text-center">#{{ $order->id }}</td>
-                                            <td class="text-center">{{ $order->customer->name }}</td>
-                                            <td class="text-center">
-                                                {{ $order->discount ? number_format($order->total - $order->discount->discount_rate) : number_format($order->total) }}
-                                                VND</td>
-                                            <td class="text-center text-uppercase">{{ $order->status }}</td>
-                                            <td class="text-center">{{ $order->created_at->format('Y-m-d H:i:s') }}</td>
-                                            <td class="text-center">{{ $order->orderDetails->sum('quantity') }}</td>
-                                            <td class="text-center text-uppercase">
-                                                {{ $order->delivered_at ? $order->delivered_at->format('Y-m-d H:i:s') : $order->status }}
-                                            </td>
-                                            <td class="text-center">
-                                                <a href="{{ route('order.show', $order->id) }}">
-                                                    <div class="list-icon-function view-icon">
-                                                        <div class="item eye">
-                                                            <i class="icon-eye"></i>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+        </div>
+        <div class="tf-section mb-30">
+
+            <div class="wg-box">
+
+                <div class="flex items-center justify-between">
+                    <h5>Các đơn hàng mới</h5>
+                    <div class="dropdown default">
+                        <a class="btn btn-secondary dropdown-toggle" href="{{ route('order.index') }}">
+                            <span class="view-all">Xem tất cả</span>
+                        </a>
                     </div>
                 </div>
-
+                <div class="wg-table table-all-user">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:70px">Mã đơn hàng</th>
+                                    <th class="text-center">Tên khách hàng</th>
+                                    <th class="text-center">Tổng tiền hàng</th>
+                                    <th class="text-center">Trạng thái</th>
+                                    <th class="text-center">Ngày đặt hàng</th>
+                                    <th class="text-center">Số lượng sản phẩm</th>
+                                    <th class="text-center">Ngày giao hàng</th>
+                                    <th class="text-center">Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($orders as $order)
+                                    <tr>
+                                        <td class="text-center">#{{ $order->id }}</td>
+                                        <td class="text-center">{{ $order->customer->name }}</td>
+                                        <td class="text-center">
+                                            {{ $order->discount ? number_format($order->total - $order->discount->discount_rate) : number_format($order->total) }}
+                                            VND</td>
+                                        <td class="text-center text-uppercase">{{ $order->status }}</td>
+                                        <td class="text-center">{{ $order->created_at->format('Y-m-d H:i:s') }}</td>
+                                        <td class="text-center">{{ $order->orderDetails->sum('quantity') }}</td>
+                                        <td class="text-center text-uppercase">
+                                            {{ $order->delivered_at ? $order->delivered_at->format('Y-m-d H:i:s') : $order->status }}
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="{{ route('order.show', $order->id) }}">
+                                                <div class="list-icon-function view-icon">
+                                                    <div class="item eye">
+                                                        <i class="icon-eye"></i>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
+
         </div>
+    </div>
 
     </div>
 

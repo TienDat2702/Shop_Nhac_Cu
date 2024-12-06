@@ -105,7 +105,7 @@ class CustomerController extends Controller
         $customer = Auth::guard('customer')->user(); // Lấy thông tin người dùng hiện tại
         $loyalty = $customer->loyaltyLevel;
         $total_order = 0;
-        $orders = Order::where('customer_id', $customer->id)->get();
+        $orders = Order::where('customer_id', $customer->id)->orderBy('id','DESC')->get();
         foreach($orders as $order){
             $total_order += $order->total;
         }
@@ -232,21 +232,16 @@ public function reset_password($token)
             'email' => 'required|email|max:255',
             'phone' => 'required|string|max:15',
             'address' => 'required|string|max:255',
-            'password' => 'required|string',
         ], [
             'name.required' => 'Vui lòng nhập tên đầy đủ.',
             'email.required' => 'Vui lòng nhập địa chỉ email.',
             'phone.required' => 'Vui lòng nhp số điện thoại.',
             'address.required' => 'Vui lòng nhập địa chỉ.',
-            'password.required' => 'Vui lòng nhập mật khẩu.',
         ]);
 
         $customer = Auth::guard('customer')->user();
 
-        if (!Hash::check($request->password, $customer->password)) {
-            return redirect()->back()->withErrors(['password' => 'Mật khẩu không chính xác.']);
-        }
-
+        
         $customer->name = $request->name;
         $customer->email = $request->email;
         $customer->phone = $request->phone;
@@ -254,7 +249,7 @@ public function reset_password($token)
 
         $customer->save();
 
-        return redirect()->route('customer.update')->with('success', 'Cập nhật thông tin thành công.');
+        return redirect()->route('customer.update.profile')->with('success', 'Cập nhật thông tin thành công.');
     }
 
     public function change_password()
@@ -289,7 +284,7 @@ public function reset_password($token)
     }
     public function customerOrder()
     {
-        $orders = Order::where('customer_id', Auth::guard('customer')->user()->id)->paginate(10);
+        $orders = Order::where('customer_id', Auth::guard('customer')->user()->id)->orderBy('id','DESC')->paginate(10);
         return view('user.userOrder', compact('orders'));
     }
 

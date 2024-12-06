@@ -45,14 +45,14 @@
                                 <tr>
                                     <th style="width:70px">
                                         Mã
-                                        <a href="{{ route('order.index', ['sort' => 'id', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}" class="sort-icon">
-                                            <i class="fa {{ request('sort') == 'id' ? (request('direction') == 'asc' ? 'fa-angle-double-down' : 'fa-angle-double-up') : 'fa-sort' }}" aria-hidden="true"></i>
+                                        <a href="{{ route('order.index', ['sort' => 'id', 'direction' => request('direction') == 'desc' ? 'asc' : 'desc']) }}" class="sort-icon">
+                                            <i class="fa {{ request('sort') == 'id' ? (request('direction') == 'desc' ? 'fa-angle-double-down' : 'fa-angle-double-up') : 'fa-sort' }}" aria-hidden="true"></i>
                                         </a>
                                     </th>
                                     <th class="text-center">
                                         Tên khách hàng
-                                        <a href="{{ route('order.index', ['sort' => 'customer_name', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}" class="sort-icon">
-                                            <i class="fa {{ request('sort') == 'customer_name' ? (request('direction') == 'asc' ? 'fa-angle-double-down' : 'fa-angle-double-up') : 'fa-sort' }}" aria-hidden="true"></i>
+                                        <a href="{{ route('order.index', ['sort' => 'customer_name', 'direction' => request('direction') == 'desc' ? 'asc' : 'desc']) }}" class="sort-icon">
+                                            <i class="fa {{ request('sort') == 'customer_name' ? (request('direction') == 'desc' ? 'fa-angle-double-down' : 'fa-angle-double-up') : 'fa-sort' }}" aria-hidden="true"></i>
                                         </a>
                                     </th>
                                     <th class="text-center">
@@ -91,7 +91,7 @@
                             <tbody>
                                 @if (count($orders) > 0)
                                     @foreach($orders as $order)
-                                    <tr>
+                                    <tr style="{{ $order->is_new < 2 ? 'background-color: #a8c7fa54;' : '' }}">
                                         <td class="text-center">#{{ $order->id }}</td>
                                         <td class="text-center">{{ $order->customer->name }}</td>
                                         <td class="text-center">{{ $order->discount ? number_format($order->total - $order->discount->discount_rate) : number_format($order->total) }} VND</td>

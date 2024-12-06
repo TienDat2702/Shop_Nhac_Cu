@@ -72,3 +72,19 @@ button.btn.btn-delete-product.text-success {
 select.form-control {
   font-size: 16px;
 }
+
+.pst{
+  position: relative;
+}
+.order-new-amount{
+  position: absolute;
+  left: 112px;
+  /* top: 10; */
+  background-color: red;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+  color: #fff;
+  border-radius: 50%;
+}

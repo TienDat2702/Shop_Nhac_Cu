@@ -99,16 +99,16 @@ class AdminAccountController extends Controller
             $data['password'] = bcrypt($request->input('password'));
         }
 
-        if ($request->hasFile('image')) {
-            if ($user->image) {
-                $imagePath = public_path('uploads/users/' . $user->image);
-                if (file_exists($imagePath)) {
-                    unlink($imagePath);
-                }
-            }
-        }
+        // if ($request->hasFile('image')) {
+        //     if ($user->image) {
+        //         $imagePath = public_path('uploads/users/' . $user->image);
+        //         if (file_exists($imagePath)) {
+        //             unlink($imagePath);
+        //         }
+        //     }
+        // }
 
-        $uploadPath = public_path( 'uploads/users');
+        $uploadPath = public_path( 'uploads/users/');
 
         $this->uploadImageService->uploadImage($request, $user, $uploadPath);
 

@@ -233,9 +233,7 @@ class CheckoutController extends Controller
                 // Cập nhật trạng thái đơn hàng
                 $order->status = 'Chờ xử lý';
                 $order->save();
-
-                // Xóa session
-                // session()->forget('carts');
+                
                 Mail::to($order->email)->send(new OrderSuccess($order));
                 toastr()->success('Thanh toán thành công');
                 return redirect()->route('checkout.completed'); // Chuyển hướng đến trang hoàn tất

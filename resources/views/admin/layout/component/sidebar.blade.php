@@ -127,7 +127,10 @@
                     <a href="javascript:void(0);" class="menu-item-button">
                         <div class="icon"><i class="fa fa-shopping-cart" aria-hidden="true"></i>
                         </div>
-                        <div class="text">Đơn hàng</div>
+                        <div class="text">Đơn hàng
+                            <span class="order-new-amount">{{ count($mount_order) }}</span>
+                        </div>
+                        
                     </a>
                     <ul class="sub-menu">
                         <li class="sub-menu-item">

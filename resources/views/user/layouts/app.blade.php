@@ -29,7 +29,6 @@
 
 
     <hr class="mt-5 text-secondary" />
-
     @include('user.layouts.component.footer')
 
     @include('user.layouts.component.footer-mobile')

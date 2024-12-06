@@ -12,16 +12,21 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $endDate = $request->input('end_date', Carbon::now()->format('Y-m-d'));
-        $startDate = $request->input('start_date', Carbon::now()->subMonth()->format('Y-m-d'));
+        // Đặt giờ cuối ngày cho $endDate
+        $endDate = Carbon::parse($endDate)->setTime(23, 59, 59); // 23:59:59
 
-        $countOrder = Order::count();
-        $totalOrder = Order::sum('total');
-        $countPending = Order::where('status', 'chờ xử lý')->count();
-        $totalPending = Order::where('status', 'chờ xử lý')->sum('total');
-        $countDelivered = Order::where('status', 'đã giao')->count();
-        $totalDelivered = Order::where('status', 'đã giao')->sum('total');
-        $countCanceled = Order::where('status', 'đã hủy')->count();
-        $totalCanceled = Order::where('status', 'đã hủy')->sum('total');
+        $startDate = $request->input('start_date', Carbon::now()->subMonth()->format('Y-m-d'));
+        // Đặt giờ đầu ngày cho $startDate (nếu muốn 00:00:00)
+        $startDate = Carbon::parse($startDate)->setTime(00, 00, 00); // 00:00:00
+
+        $countOrder = Order::whereBetween('created_at', [$startDate, $endDate])->count();
+        $totalOrder = Order::whereBetween('created_at', [$startDate, $endDate])->sum('total');
+        $countPending = Order::where('status', 'chờ xử lý')->whereBetween('created_at', [$startDate, $endDate])->count();
+        $totalPending = Order::where('status', 'chờ xử lý')->whereBetween('created_at', [$startDate, $endDate])->sum('total');
+        $countDelivered = Order::where('status', 'đã giao')->whereBetween('created_at', [$startDate, $endDate])->count();
+        $totalDelivered = Order::where('status', 'đã giao')->whereBetween('created_at', [$startDate, $endDate])->sum('total');
+        $countCanceled = Order::where('status', 'đã hủy')->whereBetween('created_at', [$startDate, $endDate])->count();
+        $totalCanceled = Order::where('status', 'đã hủy')->whereBetween('created_at', [$startDate, $endDate])->sum('total');
         
         $orders = Order::with(['customer', 'orderDetails'])
             ->          orderBy('created_at', 'desc')
