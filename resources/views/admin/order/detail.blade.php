@@ -63,7 +63,7 @@
             </div>
             @if ($order->status == 'Đã nhận hàng' || $order->status == 'Đã hủy')
                 <div style="background-color: {{ $order->status == 'Đã nhận hàng' ? '#29be29' : '#f16161'  }}"  class="notification">
-                    <span>{{ $order->status }}</span>
+                    <span>{{ $order->status }} vào {{ $order->status == 'Đã hủy' ? $order->canceled_at->format('d-m-Y H:i:s') : $order->delivered_at->format('d-m-Y H:i:s') }}</span>
                 </div>
             @endif
            

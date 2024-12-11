@@ -2,12 +2,13 @@
     <table style="table-layout: auto;" class="table table-striped table-bordered">
         <thead>
             <tr>
-                <th style="width: 4%;" class="text-center">STT</th>
-                <th style="width: 17%;">Khách hàng</th>
-                <th style="width: 40%;">Bình luận</th>
-                <th style="width: 6%;">Đánh giá</th>
-                <th style="width: 27%;">Sản phẩm</th>
-                <th style="width: 6%;">Thao tác</th>
+                <th class="text-center" style="width: 4%;" class="text-center">STT</th>
+                <th class="text-center" style="width: 17%;">Khách hàng</th>
+                <th class="text-center" style="width: 28%;">Bình luận</th>
+                <th class="text-center" style="width: 6%;">Đánh giá</th>
+                <th class="text-center" style="width: 27%;">Sản phẩm</th>
+                <th class="text-center" style="width: 12%;">Ngày</th>
+                <th class="text-center" style="width: 6%;">Thao tác</th>
             </tr>
         </thead>
         <tbody>
@@ -24,19 +25,20 @@
                             <td>{{ $item->comment }}</td>
                             <td class="text-center">{{ $item->rating }}/5</td>
                             <td>
-                            <a href="{{ route('product.edit', $item->product->slug) }}">
-                                    <div class="row">
-                                        <div class="col-3">
-                                            <img src="{{ asset('uploads/products/product/' . $item->product->image) }}" alt="">
-                                        </div>
-                                        <div class="col-9">
-                                            <strong>{{ $item->product->name }}</strong>
-                                            <p>Danh mục: {{  $item->product->productCategory->name ?? '' }}</p>
-                                            <p>Thương hiệu: {{  $item->product->brand->name ?? '' }}</p>
-                                        </div>
-                                    </div>  
-                            </a>
+                                <a href="{{ route('product.edit', $item->product->slug) }}">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{{ asset('uploads/products/product/' . $item->product->image) }}" alt="">
+                                            </div>
+                                            <div class="col-9">
+                                                <strong>{{ $item->product->name }}</strong>
+                                                <p>Danh mục: {{  $item->product->productCategory->name ?? '' }}</p>
+                                                <p>Thương hiệu: {{  $item->product->brand->name ?? '' }}</p>
+                                            </div>
+                                        </div>  
+                                </a>
                             </td>
+                            <td class="text-center">{{ date('d/m/Y', strtotime($item->created_at)) }}</td>
                             <td>
                                 <div class="list-icon-function d-flex justify-content-center">
                                     <form class="form-delete" action="{{ route('comment.delete', $item->id) }}" method="POST">

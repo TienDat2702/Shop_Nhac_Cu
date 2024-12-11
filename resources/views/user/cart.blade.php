@@ -1,7 +1,7 @@
 @extends('user.layouts.app')
 @section('title', 'Giỏ Hàng')
 @section('content')
-    <main class="pt-90">
+    <main class="pt-135">
         @if (session('carts') && count(session('carts')) > 0)
             <section class="shop-checkout container">
                 <h2 class="page-title">@yield('title')</h2>

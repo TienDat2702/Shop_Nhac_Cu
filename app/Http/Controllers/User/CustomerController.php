@@ -300,7 +300,8 @@ public function reset_password($token)
                 ['text' => 'Đơn hàng đã đặt', 'status' => 'Đơn hàng đã đặt'],
                 ['text' => 'Xác nhận đơn hàng', 'status' => 'Chưa xác nhận'],
                 ['text' => 'Chờ xử lý', 'status' => 'Chờ xử lý'],
-                ['text' => 'Đã duyệt', 'status' => 'Duyệt'],
+                ['text' => 'Đã duyệt', 'status' => 'Đã duyệt'],
+                ['text' => 'Đang chuẩn bị hàng', 'status' => 'Đang chuẩn bị hàng'],
                 ['text' => 'Đang giao', 'status' => 'Đang giao'],
                 ['text' => 'Đã giao', 'status' => 'Đã giao'],
             ];
@@ -309,8 +310,9 @@ public function reset_password($token)
             $statusOrder = [
                 'Đơn hàng đã đặt' => 1,
                 'Chưa xác nhận' => 2,
-                'Chờ xử lý' => 4,
-                'Duyệt' => 5,
+                'Chờ xử lý' => 3,
+                'Đã duyệt' => 4,
+                'Đang chuẩn bị hàng' => 5,
                 'Đang giao' => 6,
                 'Đã giao' => 7,
             ];
@@ -355,7 +357,7 @@ public function reset_password($token)
         // Lấy giá trị tiến trình từ trạng thái hiện tại
         $status = $statusOrder[$orderStatus] ?? 0;
         $totalSteps = count($statusOrder);
-        return ($status / $totalSteps) * 82; // Tính tỷ lệ phần trăm tiến trình
+        return ($status / $totalSteps) * 95; // Tính tỷ lệ phần trăm tiến trình
     }
     
 

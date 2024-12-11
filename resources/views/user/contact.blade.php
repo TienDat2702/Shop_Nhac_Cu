@@ -1,7 +1,7 @@
 @extends('user.layouts.app')
 @section('title', 'Liên hệ')
 @section('content')
-    <main class="pt-90">
+    <main class="pt-135">
         <div class="mb-4 pb-4"></div>
         <section class="contact-us container">
             <div class="mw-930">
@@ -13,11 +13,52 @@
         <div class="mb-4 pb-4"></div>
 
         <section class="contact-us container">
+            <div class="icon_contact row">
+                <div class="col-4 d-flex align-items-center justify-content-center">
+                    <div class="image_icon">
+                        <img src="{{ asset('images/icon/call_icon.png') }}" alt="">
+                    </div>
+                    <div class="info_contact ms-4">
+                        <p>Mua hàng: 0353397312</p>
+                        <p>Bảo hành: 0353397312</p>
+                    </div>
+                </div>
+                <div class="col-4 d-flex align-items-center justify-content-center">
+                    <div class="image_icon">
+                        <img src="{{ asset('images/icon/email_icon.png') }}" alt="">
+                    </div>
+                    <div class="info_contact ms-4">
+                        <p>contact@TuneNest.com</p>
+                        <p>support@TuneNest.com</p>
+                    </div>
+                </div>
+                <div class="col-4 d-flex align-items-center justify-content-center">
+                    <div class="image_icon">
+                        <img src="{{ asset('images/icon/location_icon.png') }}" alt="">
+                    </div>
+                    <div class="info_contact info_contact_showroom ms-4">
+                        <p>- 1 Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM</p>
+                        <p>- 42 Bạch Đằng, Hải Châu, Đà Nẵng</p>
+                        <p>- Trích Sài ,Tây Hồ ,Hà Nộ</p>
+                    </div>
+                </div>
+                {{-- <div class="col-3 d-flex align-items-center justify-content-center">
+                    <div class="image_icon">
+                        <img src="{{ asset('images/icon/calendar_icon.png') }}" alt="">
+                    </div>
+                    <div class="info_contact ms-4">
+                        <p>0353397312</p>
+                    </div>
+                </div> --}}
+            </div>
+
+            <div class="mb-4 pb-4"></div>
+
             <div class="mw-930 row">
                 <div class="contact-us__form col-lg-6 col-sm-6">
                     <form name="contact-us-form" class="needs-validation" novalidate method="POST" action="{{ route('contact.post') }}">
                         @csrf
-                        <h3 class="mb-5">Liên Hệ Với Chúng Tôi</h3>
+                        <h3 class="mb-5">Thông tin liên hệ của bạn</h3>
 
                         <!-- Tên -->
                         <div class="form-floating my-4">

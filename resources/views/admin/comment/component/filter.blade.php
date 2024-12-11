@@ -7,7 +7,20 @@
                     tabindex="2" value="{{ request('keyword') ?: old('keyword') }}" aria-required="true">
                     {{-- <i class="fa-solid fa-magnifying-glass"></i> --}}
             </fieldset>
-            <fieldset class="rating" style="width: 20%">
+            <fieldset class="created_at" style="width: 40%">
+                <div class="select">
+                    @php
+                    $created_at = request('created_at') ?: old('created_at');
+                @endphp
+                    <select class="input-filter" name="created_at">
+                        <option value="">Tháng</option>
+                        @foreach ($date as $val)
+                            <option value="{{ $val }}" {{ $created_at == $val ? 'selected' : '' }}>{{ $val }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </fieldset>
+            <fieldset class="rating" style="width: 40%">
                 <div class="select">
                     @php
                     $rating = request('rating') ?: old('rating');

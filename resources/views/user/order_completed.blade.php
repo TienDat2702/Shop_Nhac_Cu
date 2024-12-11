@@ -1,7 +1,7 @@
 @extends('user.layouts.app')
 @section('title', 'Thanh toán thành công')
 @section('content')
-    <main class="pt-90">
+    <main class="pt-135">
         <div class="mb-4 pb-4"></div>
         <section class="shop-checkout container">
             <h2 class="page-title">Đã nhận được đơn hàng</h2>

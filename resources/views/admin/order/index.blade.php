@@ -96,9 +96,9 @@
                                         <td class="text-center">{{ $order->customer->name }}</td>
                                         <td class="text-center">{{ $order->discount ? number_format($order->total - $order->discount->discount_rate) : number_format($order->total) }} VND</td>
                                         <td class="text-center text-uppercase">{{ $order->status }}</td>
-                                        <td class="text-center">{{ $order->created_at->format('Y-m-d H:i:s') }}</td>
+                                        <td class="text-center">{{ $order->created_at->format('d-m-Y H:i:s') }}</td>
                                         <td class="text-center">{{ $order->orderDetails->sum('quantity') }}</td>
-                                        <td class="text-center text-uppercase">{{ $order->delivered_at ? $order->delivered_at->format('Y-m-d H:i:s') : $order->status }}</td>
+                                        <td class="text-center text-uppercase">{{ $order->delivered_at ? $order->delivered_at->format('d-m-Y H:i:s') : 'Chưa giao' }}</td>
                                         <td class="text-center">
                                             <a href="{{ route('order.show', $order->id) }}">
                                                 <div class="list-icon-function view-icon">

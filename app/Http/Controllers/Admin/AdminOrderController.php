@@ -19,6 +19,13 @@ class AdminOrderController extends Controller
                       $q->where('name', 'like', "%{$search}%");
                   });
         }
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('id', 'like', "%{$search}%")
+                  ->orWhereHas('customer', function($q) use ($search) {
+                      $q->where('name', 'like', "%{$search}%");
+                  });
+        }
 
 
         if ($request->has('sort') && $request->has('direction')) {
@@ -58,7 +65,7 @@ class AdminOrderController extends Controller
         $order = Order::with(['orderDetails.product.brand', 'orderDetails.product.productCategory1', 'customer', 'discount'])->withTrashed()->findOrFail($id);
         $order->is_new = 2;
         $order->save();
-        $statuses = ['Chờ xử lý', 'Đã Duyệt' , 'Đang giao', 'Đã giao', 'Đã hủy'];
+        $statuses = ['Chờ xử lý', 'Đã duyệt' , 'Đang chuẩn bị hàng', 'Đang giao', 'Đã giao', 'Đã hủy'];
         return view('admin.order.detail', compact('order', 'statuses'));
     }
     public function updateStatus(Request $request, $id)
@@ -67,9 +74,9 @@ class AdminOrderController extends Controller
         $newStatus = $request->status;
         $user_note = $request->user_note;
 
-        if ($newStatus === 'đã giao' && !$order->delivered_at) {
+        if ($newStatus === 'Đã giao' && !$order->delivered_at) {
             $order->delivered_at = now();
-        } elseif ($newStatus === 'đã hủy' && !$order->canceled_at) {
+        } elseif ($newStatus === 'Đã hủy' && !$order->canceled_at) {
             $order->canceled_at = now();
         }
 

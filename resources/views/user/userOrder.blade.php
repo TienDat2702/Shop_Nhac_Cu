@@ -54,9 +54,6 @@
                                       <tr>
                                           <th class="text-center">Mã đơn hàng</th>
                                           <th class="text-center">Tổng tiền</th>
-                                          {{-- <th class="text-center">Mã giảm giá</th>
-                                          <th class="text-center">Giá giảm</th>
-                                          <th class="text-center">Tổng cộng</th> --}}
                                           <th class="text-center">Trạng thái</th>
                                           <th class="text-center">Ngày đặt</th>
                                           <th class="text-center">Số lượng</th>
@@ -69,13 +66,22 @@
                                           <tr>
                                               <td class="text-center">#{{ $order->id }}</td>
                                               <td class="text-center">{{ number_format($order->total) }} VND</td>
-                                              {{-- <td class="text-center">{{ $order->coupon_code }}</td>
-                                          <td class="text-center">{{ $order->discount_amount }}</td>
-                                          <td class="text-center">{{ $order->total_amount }}</td> --}}
 
                                               <td class="text-center">
-                                                  <span
-                                                      class="badge bg-danger text-uppercase py-3">{{ $order->status }}</span>
+                                                <span class="badge text-uppercase py-3 
+                                                    @switch($order->status)
+                                                        @case('Chờ xử lý') bg-warning @break
+                                                        @case('Đã duyệt') bg-primary @break
+                                                        @case('Đang chuẩn bị hàng') bg-info @break
+                                                        @case('Đang giao') bg-secondary @break
+                                                        @case('Đã giao') bg-success @break
+                                                        @case('Đã hủy') bg-danger @break
+                                                        @case('Đã nhận hàng') bg-success @break
+                                                        @default bg-dark
+                                                    @endswitch
+                                                ">
+                                                {{ $order->status }}
+                                            </span>
                                               </td>
                                               <td class="text-center">{{ $order->created_at }}</td>
                                               <td class="text-center">{{ $order->orderDetails->sum('quantity') }}</td>

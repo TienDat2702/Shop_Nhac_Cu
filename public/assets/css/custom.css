@@ -431,12 +431,14 @@ a.btn-voucher:hover {
   }
   
 
-
-
-
-
-
-
-
-
-  
+.image_icon {
+    width: 100px;
+}
+.info_contact p{
+    font-size: 16px;
+    margin-bottom: 0 !important;
+    font-weight: 600;
+}
+/* .info_contact_showroom p{
+    font-size: 12px !important;
+} */

@@ -2,7 +2,7 @@
 @section('title','Kết quả tìm kiếm ' . $searchTerm)
 @section('content')
 
-<main class="pt-90">
+<main class="pt-135">
     <section class="shop-main container d-flex pt-4 pt-xl-5">
         <div class="breadcrumb mb-0 d-none d-md-block flex-grow-1">
             <a href="{{ route('home.index') }}" class="menu-link menu-link_us-s text-uppercase fw-medium">Trang chủ</a>
