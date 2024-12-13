@@ -1535,3 +1535,18 @@ span.footer-copyright.me-auto {
     line-height: 70px;
     font-size: 20px;
 }
+
+df-messenger {
+    --df-messenger-bot-message: #f4f4f4; /* Màu nền tin nhắn bot */
+    --df-messenger-button-titlebar-color: #6200ea; /* Màu tiêu đề */
+    --df-messenger-chat-background-color: #ffffff; /* Màu nền hộp chat */
+    --df-messenger-user-message: #e0ffe0; /* Màu nền tin nhắn người dùng */
+}
+.link-edit-pass{
+    text-decoration: underline;
+    font-size: 16px;
+    color: blue;
+}
+.link-edit-pass:hover{
+    text-decoration: none;
+}

@@ -117,12 +117,14 @@
                                         <tr>
                                             <td class="text-center">#{{ $orderDetail->product->id }}</td>
                                             <td class="pname">
-                                                <div class="image">
-                                                    <img src="{{ asset('uploads/products/product/' .$orderDetail->product->image) }}" alt="" class="image">
-                                                </div>
-                                                <div class="name">
-                                                    <a href="#" target="_blank" class="body-title-2">{{ $orderDetail->product->name }}</a>
-                                                </div>
+                                                <a href="{{ route('product.detail',$orderDetail->product->slug) }}">
+                                                    <div class="image">
+                                                        <img src="{{ asset('uploads/products/product/' .$orderDetail->product->image) }}" alt="" class="image">
+                                                    </div>
+                                                    <div class="name">
+                                                        <a href="{{ route('product.detail',$orderDetail->product->slug) }}" target="_blank" class="body-title-2">{{ $orderDetail->product->name }}</a>
+                                                    </div>
+                                                </a>
                                             </td>
                                             <td class="text-center">
                                                 @if ($orderDetail->product->price_sale)

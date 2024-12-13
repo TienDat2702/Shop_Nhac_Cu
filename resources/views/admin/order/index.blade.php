@@ -35,8 +35,44 @@
     
             <div class="wg-box">
                 <form method="GET" action="{{ route('order.index') }}" class="flex items-center">
-                    <input type="text" name="search" placeholder="Tìm kiếm đơn hàng" value="{{ request('search') }}" class="form-control">
-                    <button type="submit" class="btn btn-primary p-3 fs-3 w-25">Tìm kiếm</button>
+                    <div class="flex items-center justify-between gap10 flex-wrap">
+                        <div style="width: 700px" class="wg-filter wg-filter-comment">
+                            <fieldset class="search" style="width: 70%">
+                                <input type="text" name="keyword" placeholder="Tìm kiếm tại đây..." class="input-filter"
+                                    tabindex="2" value="{{ request('keyword') ?: old('keyword') }}" aria-required="true">
+                                    {{-- <i class="fa-solid fa-magnifying-glass"></i> --}}
+                            </fieldset>
+                            <fieldset class="created_at" style="width: 40%">
+                                <div class="select">
+                                    @php
+                                    $created_at = request('created_at') ?: old('created_at');
+                                @endphp
+                                    <select class="input-filter" name="created_at">
+                                        <option value="">Tháng</option>
+                                        @foreach ($date as $val)
+                                            <option value="{{ $val }}" {{ $created_at == $val ? 'selected' : '' }}>{{ $val }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </fieldset>
+                            <fieldset class="status" style="width: 40%">
+                                <div class="select">
+                                    @php
+                                    $status = request('status') ?: old('status');
+                                @endphp
+                                    <select class="input-filter" name="status">
+                                        @foreach (Config('general.status') as $key => $val)
+                                            <option value="{{ $key }}" {{ $status == $key ? 'selected' : '' }}>{{ $val }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </fieldset>
+                            <div class="button-submit">
+                                <button class="btn-filter " type="submit"><span>Tìm kiếm</span></button>
+                            </div>
+                           
+                        </div>
+                    </div>
                 </form>            
                 <div class="wg-table table-all-user">
                     <div class="table-responsive">

@@ -11,10 +11,12 @@ class AdminCommentController extends Controller
     public function index(Request $request){
         $date = Comment::Date();
         $comments = Comment::orderby('id','desc')->Search($request->all());
+        
         foreach($comments as $comment){
             $comment->is_new = 2;
             $comment->save();
         }
+        
         return view('admin.comment.index', compact('comments','date'));
     }
     public function delete($id){

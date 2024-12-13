@@ -73,7 +73,10 @@
                     </div> --}}
                     <h1 class="product-single__name">{{ $product->name }}</h1>
                     <div class="product-single__rating">
-                        <span class="reviews-note text-lowercase text-secondary">{{$averageStart}}</span>
+                        @php
+                            $averageStarts = $averageStart > 0 ? $averageStart : 5
+                        @endphp
+                        <span class="reviews-note text-lowercase text-secondary">{{$averageStarts}}</span>
                         <div class="reviews-group d-flex align-content-center">
                             @for ($i = 1; $i <= 5; $i++)
                                 <div style="position: relative; display: inline-block; width: 18px; height: 18px;">
@@ -84,16 +87,16 @@
                                     </svg>
 
                                     <!-- Sao vàng (phía trên) -->
-                                    @if ($i <= floor($averageStart))
+                                    @if ($i <= floor($averageStarts))
                                         <!-- Hiển thị sao đầy đủ -->
                                         <svg class="review-star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                                             style="position: absolute; top: 0; left: 0;">
                                             <use href="#icon_star" fill="#FFD700" />
                                         </svg>
-                                    @elseif ($i == ceil($averageStart))
+                                    @elseif ($i == ceil($averageStarts))
                                         <!-- Hiển thị sao một phần theo tỷ lệ -->
                                         @php
-                                            $percentage = ($averageStart - floor($averageStart)) * 100;
+                                            $percentage = ($averageStarts - floor($averageStarts)) * 100;
                                         @endphp
                                         <svg class="review-star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                                             style="position: absolute; top: 0; left: 0; clip-path: inset(0 {{ 100 - $percentage }}% 0 0);">
@@ -125,7 +128,7 @@
                     </div>
                     <div class="product-single__addtolinks">
 
-                        <a class="menu-link menu-link_us-s add-to-wishlist">
+                        <a class="menu-link menu-link_us-s add-to-wishlist btn-redirect" data-route='product.detail' data-slug='{{ $product->slug }}'>
                             @if (array_key_exists($product->id, $product_favourite)) <!-- Sản phẩm đã yêu thích -->
                                 <form action="{{ route('wishlist.remove', $product_favourite[$product->id]) }}" method="POST" style="display:inline;">
                                     @csrf
@@ -153,7 +156,7 @@
                                     xmlns="http://www.w3.org/2000/svg">
                                     <use href="#icon_sharing" />
                                 </svg>
-                                <span>Share</span>
+                                <span>Chia sẻ</span>
                             </button>
                             <details id="Details-share-template__main" class="m-1 xl:m-1.5" hidden="">
                                 <summary class="btn-solid m-1 xl:m-1.5 pt-3.5 pb-3 px-5">+</summary>
@@ -161,9 +164,9 @@
                                     class="share-button__fallback flex items-center absolute top-full left-0 w-full px-2 py-4 bg-container shadow-theme border-t z-10">
                                     <div class="field grow mr-4">
                                         <label class="field__label sr-only" for="url">Link</label>
-                                        <input type="text" class="field__input w-full" id="url"
-                                            value="https://uomo-crystal.myshopify.com/blogs/news/go-to-wellness-tips-for-mental-health"
-                                            placeholder="Link" onclick="this.select();" readonly="">
+                                        <input type="text" class="field__input w-full" id="url" 
+                                            value="{{ url()->current() }}" 
+                                            placeholder="Link" onclick="this.select();" readonly>
                                     </div>
                                     <button class="share-button__copy no-js-hidden">
                                         <svg class="icon icon-clipboard inline-block mr-1" width="11" height="13"
@@ -178,8 +181,8 @@
                                 </div>
                             </details>
                         </share-button>
-                        <script src="js/details-disclosure.html" defer="defer"></script>
-                        <script src="js/share.html" defer="defer"></script>
+                        <script src="{{ asset('js/details-disclosure.js') }}" defer></script>
+                        <script src="{{ asset('js/share.js') }}" defer></script>
                     </div>
                     <div class="product-single__meta-info">
 
@@ -217,7 +220,7 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="tab-reviews" role="tabpanel" aria-labelledby="tab-reviews-tab">
-                        <h2 class="product-single__reviews-title">Đánh giá</h2>
+                        <h2 class="product-single__reviews-title">ĐÁNH GIÁ SẢN PHẨM</h2>
                         <div class="product-single__comments-list">
                             @forelse($comments as $index => $comment)
                                 <div class="product-single__comments-item" style="{{ $index >= 5 ? 'display: none;' : '' }}">
@@ -253,45 +256,49 @@
                         
 
                         <div class="product-single__review-form">
-                            @if (Auth::guard('customer')->check())
-                            <form id="comment-form" method="POST" action="{{ route('product.comment', ['proId' => $product->id]) }}">
-                                @csrf
-                                @if ($comments->isEmpty())
-                                    <h5>Hãy trở thành người đầu tiên bình luận về sản phẩm này “{{ $product->name }}”</h5>
-                                @endif
-                            
-                                <div class="select-star-rating">
-                                    <label>Đánh giá *</label>
-                                    <span class="star-rating">
-                                        @for ($i = 1; $i <= 5; $i++)
-                                            <svg class="star-rating__star-icon" width="12" height="12" fill="#ccc" viewBox="0 0 12 12"
-                                                data-rating="{{ $i }}"
-                                                onclick="document.getElementById('form-input-rating').value = {{ $i }};">
-                                                <path
-                                                    d="M11.1429 5.04687C11.1429 4.84598 10.9286 4.76562 10.7679 4.73884L7.40625 4.25L5.89955 1.20312C5.83929 1.07589 5.72545 0.928571 5.57143 0.928571C5.41741 0.928571 5.30357 1.07589 5.2433 1.20312L3.73661 4.25L0.375 4.73884C0.207589 4.76562 0 4.84598 0 5.04687C0 5.16741 0.0870536 5.28125 0.167411 5.3683L2.60491 7.73884L2.02902 11.0871C2.02232 11.1339 2.01563 11.1741 2.01563 11.221C2.01563 11.3951 2.10268 11.5558 2.29688 11.5558C2.39063 11.5558 2.47768 11.5223 2.56473 11.4754L5.57143 9.89509L8.57813 11.4754C8.65848 11.5223 8.75223 11.5558 8.84598 11.5558C9.04018 11.5558 9.12054 11.3951 9.12054 11.221C9.12054 11.1741 9.12054 11.1339 9.11384 11.0871L8.53795 7.73884L10.9688 5.3683C11.0558 5.28125 11.1429 5.16741 11.1429 5.04687Z" />
-                                            </svg>
-                                        @endfor
-                                    </span>
-                                    <input type="hidden" id="form-input-rating" name="rating" value="5" />
-                                    <!-- Giá trị mặc định là 1 -->
-                                </div>
-                                <div class="mb-4">
-                                    <textarea id="form-input-review" class="form-control form-control_gray" placeholder="Bình luận về sản phẩm ..."
-                                        cols="30" rows="8" name="comment"></textarea>
-                                    @error('comment')
-                                        <span class="invalid-feedback">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            
-                                <div class="form-action">
-                                    <button type="submit" class="btn btn-primary">Bình Luận</button>
-                                </div>
-                            </form>
+                            @if (Auth::guard('customer')->check() && $product_order_customer)
+                                <form id="comment-form" method="POST" action="{{ route('product.comment', ['proId' => $product->id]) }}">
+                                    @csrf
+                                    @if ($comments->isEmpty())
+                                        <h5>Hãy trở thành người đầu tiên bình luận về sản phẩm này “{{ $product->name }}”</h5>
+                                    @endif
+                                
+                                    <div class="select-star-rating">
+                                        <label>Đánh giá *</label>
+                                        <span class="star-rating">
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <svg class="star-rating__star-icon" width="12" height="12" fill="#ccc" viewBox="0 0 12 12"
+                                                    data-rating="{{ $i }}"
+                                                    onclick="document.getElementById('form-input-rating').value = {{ $i }};">
+                                                    <path
+                                                        d="M11.1429 5.04687C11.1429 4.84598 10.9286 4.76562 10.7679 4.73884L7.40625 4.25L5.89955 1.20312C5.83929 1.07589 5.72545 0.928571 5.57143 0.928571C5.41741 0.928571 5.30357 1.07589 5.2433 1.20312L3.73661 4.25L0.375 4.73884C0.207589 4.76562 0 4.84598 0 5.04687C0 5.16741 0.0870536 5.28125 0.167411 5.3683L2.60491 7.73884L2.02902 11.0871C2.02232 11.1339 2.01563 11.1741 2.01563 11.221C2.01563 11.3951 2.10268 11.5558 2.29688 11.5558C2.39063 11.5558 2.47768 11.5223 2.56473 11.4754L5.57143 9.89509L8.57813 11.4754C8.65848 11.5223 8.75223 11.5558 8.84598 11.5558C9.04018 11.5558 9.12054 11.3951 9.12054 11.221C9.12054 11.1741 9.12054 11.1339 9.11384 11.0871L8.53795 7.73884L10.9688 5.3683C11.0558 5.28125 11.1429 5.16741 11.1429 5.04687Z" />
+                                                </svg>
+                                            @endfor
+                                        </span>
+                                        <input type="hidden" id="form-input-rating" name="rating" value="5" />
+                                        <!-- Giá trị mặc định là 1 -->
+                                    </div>
+                                    <div class="mb-4">
+                                        <textarea id="form-input-review" class="form-control form-control_gray" placeholder="Bình luận về sản phẩm ..."
+                                            cols="30" rows="8" name="comment"></textarea>
+                                        @error('comment')
+                                            <span class="invalid-feedback">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                
+                                    <div class="form-action">
+                                        <button type="submit" class="btn btn-primary">Bình Luận</button>
+                                    </div>
+                                </form>
                             
                             @else
-                                <div class="alert alert-danger">
-                                    <strong>Bạn cần <a class="btn_redirect" href="{{ route('customer.login') }}" data-route='product.detail' data-slug='{{ $product->slug }}'>đăng nhập</a> để bình luận</strong>
-                                </div>
+                                {{-- <div class="alert alert-danger">
+                                    @if (!$product_order_customer)
+                                        <strong>Bạn cần mua sản phẩm mới có thể đánh giá</strong>
+                                    @else
+                                        <strong>Bạn cần <a class="btn_redirect" href="{{ route('customer.login') }}" data-route='product.detail' data-slug='{{ $product->slug }}'>đăng nhập</a> để bình luận</strong>
+                                    @endif
+                                </div> --}}
                             @endif
                         </div>
                         

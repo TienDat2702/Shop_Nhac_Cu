@@ -280,7 +280,7 @@ public function reset_password($token)
         $customer->save();
 
         session()->flash('success', 'Thay đổi mật khẩu thành công.');
-        return redirect()->route('customer.profile');
+        return redirect()->route('customer.update.profile');
     }
     public function customerOrder()
     {

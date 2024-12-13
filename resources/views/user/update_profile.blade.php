@@ -63,7 +63,7 @@
                 </ul>
             </div>
 
-            <div class="col-lg-10">
+            <div class="col-lg-6">
                 <div class="page-content my-account__edit">
                     <div class="my-account__edit-form">
                         <form name="account_edit_form" action="{{ route('customer.check_update') }}" method="POST" class="needs-validation" novalidate="">
@@ -107,7 +107,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-floating my-3">
-                                        <a class="unerline-link"
+                                        <a class="unerline-link link-edit-pass"
                                 href="{{ route('customer.change_password') }}">chỉnh sửa mật khẩu</a>.</p>
                                     </div>
                                 </div>

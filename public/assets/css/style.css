@@ -13882,9 +13882,10 @@ textarea.form-control-lg {
   font-size: 0.8125rem;
   font-weight: 500;
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   gap: 2rem;
-  margin-bottom: 2rem; }
+  /* margin-bottom: 2rem; */
+}
   .product-single__addtolinks > a, .product-single__addtolinks > .share-button > button {
     display: flex;
     align-items: center;
@@ -13900,6 +13901,7 @@ textarea.form-control-lg {
       font-size: 1rem; }
 .product-single__meta-info {
   font-size: 0.8125rem;
+  /* font-size: 16px; */
   line-height: 1.5rem;
   margin-bottom: 1.875rem; }
   .product-single__meta-info label {
@@ -13949,6 +13951,10 @@ textarea.form-control-lg {
       width: 100%;
       height: 100%;
       object-fit: cover; }
+  .product-single__comments-list {
+        padding: 10px;
+        background-color: #f6f6f6;
+  }
   .product-single__reviews-item .customer-review .customer-name {
     display: flex;
     align-items: center;

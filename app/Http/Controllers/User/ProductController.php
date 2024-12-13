@@ -10,6 +10,7 @@ use App\Models\Banner;
 use App\Models\ThumbnailProduct;
 use Illuminate\Http\Request;
 use App\Models\Comment;
+use App\Models\Customer;
 use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
@@ -195,6 +196,7 @@ class ProductController extends Controller
 
     public function product_details($slug)
     {
+
         $product = Product::where('slug', $slug)->where('publish',2)->firstOrFail();
         $product->view += 1;
         $product->save();
@@ -202,6 +204,7 @@ class ProductController extends Controller
         $product_related = Product::where('category_id', $product->category_id)->where('slug', '!=', $slug)->where('publish',2)->get();
         $product_images = ThumbnailProduct::where('product_id', $product->id)->get();
 
+        // tính toán sao đánh giá
         $starts = $product->comments;
         $totalStart = 0;
         $indexStart = 0;
@@ -214,11 +217,21 @@ class ProductController extends Controller
             $averageStart = round($totalStart/$indexStart,1);
         }
 
-        $customer = Auth::guard('customer')->user();
+        $customerAuth = Auth::guard('customer')->user();
+        
         $product_favourite = [];
-        if ($customer) {
+        $product_order_customer = 'null';
+        
+        if ($customerAuth) {
+            $customer = Customer::where('id', $customerAuth->id)->first();
             $product_favourite = $customer->favourites->pluck('id', 'product_id')->toArray();
+            // kiểm tra sản phẩm có trong đơn hàng của khách hàng hay không
+            $product_order_customer = $customer->orders()->whereHas('orderDetails', function($query) use ($product){
+                $query->where('product_id', $product->id);
+            })->exists();
         }
+        
+
         $commentCount = Comment::where('product_id', $product->id)->count();
         // Lấy bình luận sắp xếp theo số sao từ cao đến thấp
         $comments = Comment::where('product_id', $product->id)
@@ -238,7 +251,7 @@ class ProductController extends Controller
             ->first();
         $popularRating = $popularRating ?? 0;
 
-        return view('user.product_detail', compact('product', 'brand', 'product_images', 'product_favourite', 'product_related', 'comments', 'popularRating', 'commentCount', 'averageStart'));
+        return view('user.product_detail', compact('product', 'brand', 'product_images', 'product_favourite', 'product_related', 'comments', 'popularRating', 'commentCount', 'averageStart', 'product_order_customer'));
     }
 
     public function post_comment($proId, Request $request)

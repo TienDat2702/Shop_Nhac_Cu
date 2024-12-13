@@ -96,6 +96,19 @@
                         </form>
                     </div>
                 </div>
+                <a href="{{ route('wishlist.index') }}" class="header-tools__item header-tools__cart btn_redirect" data-route='wishlist.index'>
+                    <i style="font-size: 23px;" class="fa-solid fa-heart"></i>
+                    <span class="cart-amount d-block position-absolute js-cart-items-count">{{ count($favourite) }}</span>
+                </a>
+
+                @php
+                    $carts = session()->get('carts', []);
+                @endphp
+
+                <a href="{{ route('cart.index') }}" class="header-tools__item header-tools__cart">
+                    <i style="font-size: 23px;" class="fa-solid fa-bag-shopping"></i>
+                    <span class="cart-amount d-block position-absolute js-cart-items-count">{{ count($carts) }}</span>
+                </a>
                 @if (!Auth::guard('customer')->check())
                 <div class="header-tools__item hover-container">
                         <a href="{{ route('customer.login') }}" class="header-tools__item">
@@ -112,20 +125,6 @@
                         </a>
                     </div>
                 @endif
-                <a href="{{ route('wishlist.index') }}" class="header-tools__item header-tools__cart btn_redirect" data-route='wishlist.index'>
-                    <i style="font-size: 23px;" class="fa-solid fa-heart"></i>
-                    <span class="cart-amount d-block position-absolute js-cart-items-count">{{ count($favourite) }}</span>
-                </a>
-
-                @php
-                    $carts = session()->get('carts', []);
-                @endphp
-
-                <a href="{{ route('cart.index') }}" class="header-tools__item header-tools__cart">
-                    <i style="font-size: 23px;" class="fa-solid fa-bag-shopping"></i>
-                    <span class="cart-amount d-block position-absolute js-cart-items-count">{{ count($carts) }}</span>
-                </a>
-
                 @if (Auth::guard('customer')->check())
                     <a href="{{ route('customer.logout') }}" class="header-tools__item btn_logout_redirect"><i class="fa fa-sign-out"
                             style="font-size: 22px;" aria-hidden="true"></i></a>

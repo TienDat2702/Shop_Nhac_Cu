@@ -12,41 +12,39 @@ class AdminOrderController extends Controller
     {
         $query = Order::query();
 
-        if ($request->has('search')) {
-            $search = $request->input('search');
-            $query->where('id', 'like', "%{$search}%")
-                  ->orWhereHas('customer', function($q) use ($search) {
-                      $q->where('name', 'like', "%{$search}%");
-                  });
-        }
-        if ($request->has('search')) {
-            $search = $request->input('search');
-            $query->where('id', 'like', "%{$search}%")
-                  ->orWhereHas('customer', function($q) use ($search) {
-                      $q->where('name', 'like', "%{$search}%");
-                  });
-        }
+        // Tìm kiếm đơn hàng theo id hoặc tên khách hàng
+        // if ($request->has('search')) {
+        //     $search = $request->input('search');
+        //     $query->where('id', 'like', "%{$search}%")
+        //         ->orWhereHas('customer', function ($q) use ($search) {
+        //             $q->where('name', 'like', "%{$search}%");
+        //         });
+        // }
 
-
+        $orders = Order::orderby('id','desc')->Search($request->all());
+        $date = Order::Date();
+        // dd();
+        // Sắp xếp đơn hàng
         if ($request->has('sort') && $request->has('direction')) {
             $sort = $request->input('sort');
-            $direction = 'desc';
-            if ($request->input('direction')) {
-                $direction = $request->input('direction');
-            }
-            
-            if ($sort == 'customer_name') {
+            $direction = $request->input('direction') ?? 'desc';
+
+            if ($sort === 'customer_name') {
                 $query->join('customers', 'orders.customer_id', '=', 'customers.id')
-                      ->orderBy('customers.name', $direction);
+                    ->orderBy('customers.name', $direction);
             } else {
                 $query->orderBy($sort, $direction);
             }
+        } else {
+            // Mặc định sắp xếp theo ngày tạo giảm dần (đơn hàng mới nhất trước)
+            $query->orderBy('created_at', 'desc');
         }
 
-        $orders = $query->paginate(10);
+        // $orders = $query->paginate(10);
 
-        return view('admin.order.index', compact('orders'));
+        return view('admin.order.index', compact('orders', 'date'));
     }
+
     public function OrderPending()
     {
         $orders = Order::with(['customer', 'orderDetails'])->where('status', 'chờ xử lý')->orderBy('created_at', 'desc')->paginate(10);
