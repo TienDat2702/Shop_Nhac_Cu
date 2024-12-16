@@ -1550,3 +1550,6 @@ df-messenger {
 .link-edit-pass:hover{
     text-decoration: none;
 }
+.product-card__price.d-flex.justify-content-between {
+    font-size: 16px;
+}

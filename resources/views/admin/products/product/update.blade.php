@@ -159,12 +159,12 @@
                             </fieldset>
                         </div>
                         <fieldset>
-                            <div class="body-title">Upload images</div>
+                            <div class="body-title">Tải ảnh lên</div>
                             <div class="upload-image flex-grow">
                                 <div class="item" id="imgpreview"
                                     style="{{ $product->image ? 'display:block' : 'display:none' }}">
                                     <img class="imgpreview"
-                                        src="{{ asset('uploads/products/product/' . $product->image) }}" class="effect8"
+                                        src="{{ old('oldImage') ?? asset('uploads/products/product/' . $product->image) }}" class="effect8"
                                         alt="">
                                 </div>
                                 <div id="upload-file" class="item up-load">
