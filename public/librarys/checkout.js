@@ -7,6 +7,7 @@
          // Lắng nghe sự thay đổi của radio buttons
         $('input[name="checkout_payment_method"]').change(function () {
             var selectedMethod = $(this).val(); // Lấy giá trị của radio button được chọn
+            console.log(selectedMethod);
             
             // Thay đổi giá trị 'name' của button submit dựa trên phương thức thanh toán
             if (selectedMethod === 'Thanh toán VNPAY') {

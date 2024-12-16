@@ -225,10 +225,9 @@ class ProductController extends Controller
         if ($customerAuth) {
             $customer = Customer::where('id', $customerAuth->id)->first();
             $product_favourite = $customer->favourites->pluck('id', 'product_id')->toArray();
+
             // kiểm tra sản phẩm có trong đơn hàng của khách hàng hay không
-            $product_order_customer = $customer->orders()->whereHas('orderDetails', function($query) use ($product){
-                $query->where('product_id', $product->id);
-            })->exists();
+            $product_order_customer = $customer->orders()->CheckProductInOrder($product)->exists();
         }
         
 

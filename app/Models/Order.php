@@ -74,6 +74,13 @@ class Order extends Model
         return $monthYear;
     }
 
+    public function scopeCheckProductInOrder($query, $product){
+        $query->where('status', 'Đã giao hàng')->orWhere('status', 'Đã nhận hàng')
+        ->whereHas('orderDetails', function($query) use ($product) {
+            $query->where('product_id', $product->id);
+        });
+    }
+
     public function customer()
     {
         return $this->belongsTo(Customer::class, 'customer_id', 'id');
