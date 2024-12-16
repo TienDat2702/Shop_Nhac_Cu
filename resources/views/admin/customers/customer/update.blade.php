@@ -58,6 +58,16 @@
                             <input class="mb-10" type="text" placeholder="Nhập số điện thoại" name="phone"
                                 value="{{ old('phone', $customer->phone ?? '') }}">
                         </fieldset>
+                        <fieldset class="phone">
+                            <div class="body-title mb-10">Số điện thoại <span class="tf-color-1">*</span></div>
+                            <input class="mb-10" type="text" placeholder="Nhập số điện thoại" name="phone"
+                                value="{{ old('phone', $customer->phone ?? '') }}">
+                        </fieldset>
+                        <fieldset class="address">
+                            <div class="body-title mb-10">Địa chỉ <span class="tf-color-1">*</span></div>
+                            <input class="mb-10" type="text" placeholder="Nhập số địa chỉ" name="address"
+                                value="{{ old('address', $customer->address ?? '') }}">
+                        </fieldset>
                         <fieldset class="password">
                             <div class="body-title mb-10">Mật khẩu (để trống nếu không thay đổi)</div>
                             <input class="mb-10" type="password" placeholder="Nhập mật khẩu mới" name="password">
@@ -102,4 +112,13 @@
             </div>
         </div>
     </div>
+@endsection
+@section('css')
+    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+@endsection
+@section('script')
+    <script src="{{ asset('librarys/upload.js') }}"></script>
+    <script>
+        var uploadUrl = "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}";
+    </script>
 @endsection

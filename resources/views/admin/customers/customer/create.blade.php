@@ -42,15 +42,19 @@
                 <div class="wg-box">
                     <fieldset class="name">
                         <div class="body-title mb-10">Tên khách hàng <span class="tf-color-1">*</span></div>
-                        <input type="text" name="name" value="{{ old('name') }}" placeholder="Nhập tên khách hàng">
+                        <input type="text" name="name"  placeholder="Nhập tên khách hàng">
                     </fieldset>
                     <fieldset class="email">
                         <div class="body-title mb-10">Email <span class="tf-color-1">*</span></div>
-                        <input type="email" name="email" value="{{ old('email') }}" placeholder="Nhập email">
+                        <input type="email" name="email"  placeholder="Nhập email">
                     </fieldset>
                     <fieldset class="phone">
                         <div class="body-title mb-10">Số điện thoại <span class="tf-color-1">*</span></div>
-                        <input type="text" name="phone" value="{{ old('phone') }}" placeholder="Nhập số điện thoại">
+                        <input type="text" name="phone"  placeholder="Nhập số điện thoại">
+                    </fieldset>
+                    <fieldset class="address">
+                        <div class="body-title mb-10">Địa chỉ <span class="tf-color-1">*</span></div>
+                        <input type="text" name="address" placeholder="Nhập địa chỉ">
                     </fieldset>
                     <fieldset class="password">
                         <div class="body-title mb-10">Mật khẩu <span class="tf-color-1">*</span></div>
@@ -67,6 +71,9 @@
                     <fieldset>
                         <div class="body-title">Ảnh đại diện</div>
                         <div class="upload-image flex-grow">
+                            <div class="item" id="imgpreview" style="{{ old('oldImage') ? 'display:block' : 'display:none' }}">
+                                <img class="imgpreview" src="{{ old('oldImage') }}" class="effect8" alt="">
+                            </div>
                             <div id="upload-file" class="item up-load">
                                 <label class="uploadfile" for="myFile">
                                     <span class="icon">
@@ -85,4 +92,13 @@
             </form>
         </div>
     </div>
+@endsection
+@section('css')
+    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+@endsection
+@section('script')
+    <script src="{{ asset('librarys/upload.js') }}"></script>
+    <script>
+        var uploadUrl = "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}";
+    </script>
 @endsection

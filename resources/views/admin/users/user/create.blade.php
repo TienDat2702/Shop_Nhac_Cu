@@ -67,6 +67,9 @@
                     <fieldset>
                         <div class="body-title">Ảnh đại diện</div>
                         <div class="upload-image flex-grow">
+                            <div class="item" id="imgpreview" style="{{ old('oldImage') ? 'display:block' : 'display:none' }}">
+                                <img class="imgpreview" src="{{ old('oldImage') }}" class="effect8" alt="">
+                            </div>
                             <div id="upload-file" class="item up-load">
                                 <label class="uploadfile" for="myFile">
                                     <span class="icon">
@@ -85,4 +88,13 @@
             </form>
         </div>
     </div>
+@endsection
+@section('css')
+    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+@endsection
+@section('script')
+    <script src="{{ asset('librarys/upload.js') }}"></script>
+    <script>
+        var uploadUrl = "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}";
+    </script>
 @endsection
