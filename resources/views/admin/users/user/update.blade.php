@@ -7,6 +7,9 @@
         <div class="main-content-wrap">
             <div class="flex items-center flex-wrap justify-between gap20 mb-27">
                 <h3>@yield('title')</h3>
+               <?php echo sys_get_temp_dir();
+?>
+
                 <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
                     <li>
                         <a href="{{ route('dashboard.index') }}">
@@ -40,7 +43,7 @@
                         </ul>
                     </div>
                 @endif
-                <form method="post" enctype="multipart/form-data" action="{{ route('user.update', $user->id) }}">
+                <form method="POST" action="{{ route('user.update', $user->id) }}" enctype="multipart/form-data">
                     @csrf
                     <div class="wg-box">
                         <fieldset class="name">
@@ -76,6 +79,7 @@
                         <fieldset>
                             <div class="body-title">Ảnh đại diện</div>
                             <div class="upload-image flex-grow">
+                             
                                 <div class="item" id="imgpreview"
                                     style="{{ old('oldImage', $user->image) ? 'display:block' : 'display:none' }}">
                                     <img style="height: auto !important" class="imgpreview"
@@ -87,7 +91,7 @@
                                             <i class="icon-upload-cloud"></i>
                                         </span>
                                         <span class="body-text">Thả hình ảnh vào đây hoặc <span class="tf-color">Bấm để chọn</span></span>
-                                        <input class="image" type="file" id="myFile" name="image" accept="image/*">
+                                        <input class="image" type="file" id="myFile" name="image" accept="image/*" value="{{ $user->image }}">
                                         <input type="hidden" id="oldImage" name="oldImage"
                                             value="{{ old('oldImage', $user->image ?? '') }}">
                                     </label>
@@ -102,4 +106,13 @@
             </div>
         </div>
     </div>
+@endsection
+@section('css')
+<script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+@endsection
+@section('script')
+<script src="{{ asset('librarys/upload.js') }}"></script>
+<script>
+    var uploadUrl = "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}";
+</script>
 @endsection

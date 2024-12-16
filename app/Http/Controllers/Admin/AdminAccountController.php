@@ -50,6 +50,7 @@ class AdminAccountController extends Controller
 
     public function store(UserCreateRequest $request)
     {
+       
         $user = User::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
@@ -59,7 +60,7 @@ class AdminAccountController extends Controller
             'role_id' => $request->input('role_id'),
             'publish' => $request->input('publish', 1),
         ]);
-        $uploadPath = public_path( 'uploads/users');
+        $uploadPath = public_path( 'uploads/users/');
         $this->uploadImageService->uploadImage($request, $user, $uploadPath);
 
         if ($user) {
@@ -67,6 +68,7 @@ class AdminAccountController extends Controller
         } else {
             toastr()->error('Thêm người dùng mới không thành công.');
         }
+
         return redirect()->route('user.index');
     }
 
@@ -85,7 +87,7 @@ class AdminAccountController extends Controller
     public function update(UserUpdateRequest $request, string $id)
     {
         $user = User::findOrFail($id);
-
+    
         $data = [
             'name' => $request->input('name'),
             'email' => $request->input('email'),
@@ -94,31 +96,45 @@ class AdminAccountController extends Controller
             'role_id' => $request->input('role_id'),
             'publish' => $request->input('publish', 1),
         ];
-
+    
         if ($request->filled('password')) {
             $data['password'] = bcrypt($request->input('password'));
         }
-
-        // if ($request->hasFile('image')) {
-        //     if ($user->image) {
-        //         $imagePath = public_path('uploads/users/' . $user->image);
-        //         if (file_exists($imagePath)) {
-        //             unlink($imagePath);
-        //         }
-        //     }
-        // }
-
-        $uploadPath = public_path( 'uploads/users/');
-
-        $this->uploadImageService->uploadImage($request, $user, $uploadPath);
-
+    
+        // Kiểm tra và xử lý ảnh upload
+        if ($request->hasFile('image')) {
+            $uploadedImage = $request->file('image');
+    
+            if ($uploadedImage->isValid()) {
+                // Xóa ảnh cũ nếu tồn tại
+                if ($user->image) {
+                    $oldImagePath = public_path('uploads/users/' . $user->image);
+                    if (file_exists($oldImagePath)) {
+                        unlink($oldImagePath);
+                    }
+                }
+    
+                // Lưu ảnh mới
+                $uploadPath = public_path('uploads/users/');
+                $imageName = time() . '_' . $uploadedImage->getClientOriginalName();
+                $uploadedImage->move($uploadPath, $imageName);
+                $data['image'] = $imageName; // Cập nhật tên ảnh vào cơ sở dữ liệu
+            } else {
+                return back()->withErrors(['Tệp ảnh không hợp lệ hoặc bị lỗi trong quá trình tải lên.']);
+            }
+        }
+        
+        // Cập nhật dữ liệu người dùng
         if ($user->update($data)) {
             toastr()->success('Cập nhật người dùng thành công!');
         } else {
             toastr()->error('Cập nhật người dùng không thành công.');
         }
-        return redirect()->route('account.index');
+        // dd($user);
+    
+        return redirect()->route('user.index');
     }
+    
 
 
     //--------------------------------- Xử lý xóa mềm người dùng ----------------------------------------
@@ -129,7 +145,7 @@ class AdminAccountController extends Controller
 
         // Xóa ảnh nếu tồn tại
         if ($user->image) {
-            $imagePath = public_path('uploads/users/' . $user->image);
+            $imagePath = public_path('uploads/users' . $user->image);
             if (file_exists($imagePath)) {
                 unlink($imagePath);
             }
@@ -165,7 +181,7 @@ class AdminAccountController extends Controller
 
         // Xóa ảnh nếu tồn tại
         if ($user->image) {
-            $imagePath = public_path('uploads/users/' . $user->image);
+            $imagePath = public_path('uploads/users' . $user->image);
             if (file_exists($imagePath)) {
                 unlink($imagePath);
             }
