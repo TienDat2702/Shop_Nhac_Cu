@@ -68,7 +68,6 @@ class AdminAccountController extends Controller
         } else {
             toastr()->error('Thêm người dùng mới không thành công.');
         }
-        dd($user);
 
         return redirect()->route('user.index');
     }
